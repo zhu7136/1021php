@@ -35,3 +35,12 @@ motions/
 
 # User-specific optional service configuration
 .env.local
+GMR/
+humanoid-description/
+limx_rl_lab/
+holosoma-main/
+thirdparty/holosoma/
+node_modules/
+__pycache__/
+*.pyc
+

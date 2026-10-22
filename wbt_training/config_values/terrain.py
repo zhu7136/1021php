@@ -42,6 +42,7 @@ from holosoma.config_values.wbt.g1.command import (
 from holosoma.config_values.wbt.g1.observation import critic_obs_shared_terms
 from holosoma.config_values.wbt.g1.randomization import base_step_terms
 from holosoma.config_values.wbt.g1.reward import g1_29dof_wbt_reward
+from holosoma.config_values.wbt.hu_d04.reward import hu_d04_wbt_reward
 
 if TYPE_CHECKING:
     import torch
@@ -65,6 +66,67 @@ terrain_adaptive_motion_config = replace(
 
 wbt_terrain_init_pose_config = replace(
     init_pose_config, root_lin_vel=[0.1, 0.1, 0.05], root_ang_vel=[0.1, 0.1, 0.1]
+)
+
+# ---------------------------------------------------------------------------
+# Body-name sets that differ between robots. These were inline literals; they
+# are named here so the HU_D04 presets can swap them without duplicating the
+# whole terrain chain. Each entry lists the G1 semantics a robot maps onto its
+# own link names.
+# ---------------------------------------------------------------------------
+G1_TRACKED_BODY_NAMES = [
+    "pelvis",
+    "left_hip_roll_link",
+    "left_knee_link",
+    "left_ankle_roll_link",
+    "right_hip_roll_link",
+    "right_knee_link",
+    "right_ankle_roll_link",
+    "torso_link",
+    "left_shoulder_roll_link",
+    "left_elbow_link",
+    "left_wrist_yaw_link",
+    "right_shoulder_roll_link",
+    "right_elbow_link",
+    "right_wrist_yaw_link",
+]
+
+HU_D04_TRACKED_BODY_NAMES = [
+    "base_link",
+    "left_hip_roll_link",
+    "left_knee_link",
+    "left_ankle_roll_link",
+    "right_hip_roll_link",
+    "right_knee_link",
+    "right_ankle_roll_link",
+    "waist_pitch_link",
+    "left_shoulder_roll_link",
+    "left_elbow_link",
+    "left_wrist_yaw_link",
+    "right_shoulder_roll_link",
+    "right_elbow_link",
+    "right_wrist_yaw_link",
+]
+
+HU_D04_BAD_MOTION_BODY_NAMES = [
+    "left_ankle_roll_link",
+    "right_ankle_roll_link",
+    "left_wrist_yaw_link",
+    "right_wrist_yaw_link",
+]
+
+# Contact bodies that are allowed to touch terrain. G1 keeps one contact
+# point per foot; HU_D04 uses ``contact_foot_center_*``.
+G1_ALLOWED_CONTACT_REGEX = (
+    "^(?!left_foot_contact_point$)(?!right_foot_contact_point$)"
+    "(?!left_ankle_roll_link$)(?!right_ankle_roll_link$)"
+    "(?!left_wrist_yaw_link$)(?!right_wrist_yaw_link$).+$"
+)
+
+HU_D04_ALLOWED_CONTACT_REGEX = (
+    "^(?!contact_foot_center_L$)(?!contact_foot_center_R$)"
+    "(?!left_ankle_roll_link$)(?!right_ankle_roll_link$)"
+    "(?!left_wrist_yaw_link$)(?!right_wrist_yaw_link$).+$"
 )
 
 wbt_terrain_motion_config = replace(
@@ -308,15 +370,124 @@ g1_29dof_wbt_terrain_reward = RewardManagerCfg(
             func="holosoma.managers.reward.terms.wbt:UndesiredContacts",
             params={
                 "threshold": 1.0,
-                "undesired_contacts_body_names": (
-                    "^(?!left_foot_contact_point$)(?!right_foot_contact_point$)"
-                    "(?!left_ankle_roll_link$)(?!right_ankle_roll_link$)"
-                    "(?!left_wrist_yaw_link$)(?!right_wrist_yaw_link$).+$"
-                ),
+                "undesired_contacts_body_names": G1_ALLOWED_CONTACT_REGEX,
             },
             weight=-0.5,
         ),
     }
+)
+
+
+
+
+def make_terrain_reward(
+    allowed_contact_regex: str,
+    base_reward: RewardManagerCfg = g1_29dof_wbt_reward,
+) -> RewardManagerCfg:
+    """Rebuild the terrain reward with a robot-specific contact whitelist."""
+    return RewardManagerCfg(
+        terms={
+            **base_reward.terms,
+            "motion_global_ref_position_error_exp": RewardTermCfg(
+                func="holosoma.managers.reward.terms.wbt:motion_global_ref_position_error_exp",
+                params={"sigma": 0.3},
+                weight=1.0,
+            ),
+            "motion_global_ref_orientation_error_exp": RewardTermCfg(
+                func="holosoma.managers.reward.terms.wbt:motion_global_ref_orientation_error_exp",
+                params={"sigma": 0.4},
+                weight=1.0,
+            ),
+            "limits_dof_pos": RewardTermCfg(
+                func="holosoma.managers.reward.terms.wbt:limits_dof_pos",
+                params={"soft_dof_pos_limit": 0.9},
+                weight=-10.0,
+            ),
+            "undesired_contacts": RewardTermCfg(
+                func="holosoma.managers.reward.terms.wbt:UndesiredContacts",
+                params={
+                    "threshold": 1.0,
+                    "undesired_contacts_body_names": allowed_contact_regex,
+                },
+                weight=-0.5,
+            ),
+        }
+    )
+
+
+def make_terrain_termination(
+    tracked_body_names: list[str],
+    bad_motion_body_names: list[str],
+) -> TerminationManagerCfg:
+    """Rebuild the terrain termination with robot-specific body lists."""
+    return TerminationManagerCfg(
+        terms={
+            "timeout": TerminationTermCfg(
+                func="holosoma.managers.termination.terms.common:timeout_exceeded",
+                is_timeout=True,
+            ),
+            "bad_tracking": TerminationTermCfg(
+                func="holosoma.managers.termination.terms.wbt:BadTracking",
+                params={
+                    "bad_ref_pos_threshold": 0.5,
+                    "bad_ref_ori_threshold": 0.8,
+                    "bad_motion_body_pos_threshold": 0.5,
+                    "body_names_to_track": list(tracked_body_names),
+                    "bad_motion_body_pos_body_names": list(bad_motion_body_names),
+                    "bad_object_pos_threshold": 0.25,
+                    "bad_object_ori_threshold": 0.8,
+                },
+            ),
+        }
+    )
+
+
+def make_terrain_command(
+    body_name_ref: str,
+    base_config=None,
+    motion_config=None,
+    term_func: str = "holosoma.managers.command.terms.wbt:MotionCommand",
+    extra_params: dict | None = None,
+    tracked_body_names: list[str] | None = None,
+):
+    """Terrain command anchored on ``body_name_ref``.
+
+    ``motion_config`` overrides the source motion preset; otherwise
+    ``base_config`` (or the G1 terrain motion config) is used and only the
+    anchor body is replaced. ``term_func``/``extra_params`` let distillation
+    presets reuse their custom command term.
+
+    ``tracked_body_names`` overrides the source config's ``body_names_to_track``.
+    Robots whose link names differ from G1 (HU_D04) MUST pass their own list:
+    the names are resolved against the robot config, and the termination's
+    ``body_names_to_track`` must stay equal to the command's.
+    """
+    from holosoma.config_types.command import CommandTermCfg as _CommandTermCfg
+
+    source = motion_config or base_config or wbt_terrain_motion_config
+    motion = replace(source, body_name_ref=[body_name_ref])
+    if tracked_body_names is not None:
+        motion = replace(motion, body_names_to_track=list(tracked_body_names))
+    params = {"motion_config": motion, **(extra_params or {})}
+    return replace(
+        g1_29dof_wbt_command,
+        setup_terms={
+            "motion_command": _CommandTermCfg(func=term_func, params=params)
+        },
+    )
+
+
+hu_d04_terrain_reward = make_terrain_reward(
+    HU_D04_ALLOWED_CONTACT_REGEX, base_reward=hu_d04_wbt_reward
+)
+hu_d04_terrain_termination = make_terrain_termination(
+    HU_D04_TRACKED_BODY_NAMES, HU_D04_BAD_MOTION_BODY_NAMES
+)
+hu_d04_terrain_command = make_terrain_command(
+    "waist_pitch_link", tracked_body_names=HU_D04_TRACKED_BODY_NAMES
+)
+hu_d04_terrain_command_root = make_terrain_command(
+    "base_link", tracked_body_names=HU_D04_TRACKED_BODY_NAMES
 )
 
 

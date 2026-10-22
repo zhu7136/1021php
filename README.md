@@ -88,3 +88,12 @@ from your own student training run.
 ```
 
 Related: [OmniRetarget](https://omniretarget.github.io/).
+
+ hud04
+ 
+ REGISTRY="file://$HOME/.cache/php-parkour/motions-low-step" LOGGER=disabled NGPUS=1 bash wbt_training/training_runs/run_hu_d04_teacher.sh     --training.headless False  --training.num-envs 200     --training.name hu-d04-low-step-teacher
+ 
+ 
+ 
+ g1                   
+ REGISTRY="file://$HOME/.cache/php-parkour/motions-low-step" LOGGER=disabled NGPUS=1 bash wbt_training/training_runs/run_terrain_teacher.sh     --training.headless False  --training.num-envs 200     --training.name low-step-teacher-debug

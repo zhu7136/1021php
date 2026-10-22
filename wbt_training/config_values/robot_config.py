@@ -255,3 +255,177 @@ def build_g1_implicit_actuators():
             },
         ),
     }
+
+
+# ---------------------------------------------------------------------------
+# HU_D04 implicit-actuator motor calibration
+#
+# Joint limits, effort and velocity come from
+# ``humanoid-description/HU_D04_description/urdf/HU_D04_01.urdf``. Stiffness and
+# damping come from LimX's deployment calibration
+# (``limx_rl_lab/deploy/sim2sim/configs/limx_walk_mimic_sdk.yaml``), not from
+# G1's motor constants: HU_D04's leg Kp is 2-5.5x G1's (hip pitch 220 vs 40.2,
+# knee 240 vs 99.1, hip roll 200 vs 99.1). Wrist joints cap at 30/1.0.
+#
+# Only the 29 controlled joints appear; ``head_yaw_joint``/``head_pitch_joint``
+# stay in the URDF unactuated.
+# ---------------------------------------------------------------------------
+_HU_D04_EFFORT_LIMIT = {
+    "hip_pitch": 140.0,
+    "hip_roll": 140.0,
+    "hip_yaw": 140.0,
+    "knee": 140.0,
+    "ankle_pitch": 42.0,
+    "ankle_roll": 42.0,
+    "waist_yaw": 42.0,
+    "waist_roll": 42.0,
+    "waist_pitch": 42.0,
+    "shoulder_pitch": 42.0,
+    "shoulder_roll": 42.0,
+    "shoulder_yaw": 42.0,
+    "elbow": 42.0,
+    "wrist_roll": 19.0,
+    "wrist_pitch": 19.0,
+    "wrist_yaw": 19.0,
+}
+_HU_D04_VELOCITY_LIMIT = {
+    "hip_pitch": 5.0,
+    "hip_roll": 5.0,
+    "hip_yaw": 5.0,
+    "knee": 5.0,
+    "ankle_pitch": 13.6,
+    "ankle_roll": 13.6,
+    "waist_yaw": 13.6,
+    "waist_roll": 13.6,
+    "waist_pitch": 13.6,
+    "shoulder_pitch": 19.6,
+    "shoulder_roll": 19.6,
+    "shoulder_yaw": 19.6,
+    "elbow": 19.6,
+    "wrist_roll": 13.0,
+    "wrist_pitch": 13.0,
+    "wrist_yaw": 13.0,
+}
+_HU_D04_STIFFNESS = {
+    "hip_pitch": 220.0,
+    "hip_roll": 200.0,
+    "hip_yaw": 200.0,
+    "knee": 240.0,
+    "ankle_pitch": 60.0,
+    "ankle_roll": 60.0,
+    "waist_yaw": 120.0,
+    "waist_roll": 90.0,
+    "waist_pitch": 90.0,
+    "shoulder_pitch": 80.0,
+    "shoulder_roll": 80.0,
+    "shoulder_yaw": 70.0,
+    "elbow": 70.0,
+    "wrist_roll": 30.0,
+    "wrist_pitch": 30.0,
+    "wrist_yaw": 30.0,
+}
+_HU_D04_DAMPING = {
+    "hip_pitch": 6.0,
+    "hip_roll": 5.0,
+    "hip_yaw": 5.0,
+    "knee": 6.0,
+    "ankle_pitch": 1.5,
+    "ankle_roll": 1.5,
+    "waist_yaw": 3.0,
+    "waist_roll": 2.5,
+    "waist_pitch": 2.5,
+    "shoulder_pitch": 2.5,
+    "shoulder_roll": 2.5,
+    "shoulder_yaw": 2.0,
+    "elbow": 2.0,
+    "wrist_roll": 1.0,
+    "wrist_pitch": 1.0,
+    "wrist_yaw": 1.0,
+}
+
+
+def _hu_d04_group(exprs, table):
+    return {f".*_{name}_joint": table[name] for name in exprs}
+
+
+def build_hu_d04_implicit_actuators():
+    """Build the per-group implicit actuator config for HU_D04's 29 joints.
+
+    ``robot.control.implicit_actuator_builder`` points here when a preset
+    selects ``control_mode="implicit_position_target"``, so IsaacSim's built-in
+    PD drive uses HU_D04's own stiffness/damping/limits.
+    """
+    # Imported lazily so this module is importable without IsaacLab.
+    from isaaclab.actuators import ImplicitActuatorCfg
+
+    legs = ["hip_pitch", "hip_roll", "hip_yaw", "knee"]
+    arms = [
+        "shoulder_pitch",
+        "shoulder_roll",
+        "shoulder_yaw",
+        "elbow",
+        "wrist_roll",
+        "wrist_pitch",
+        "wrist_yaw",
+    ]
+    return {
+        "legs": ImplicitActuatorCfg(
+            joint_names_expr=[f".*_{name}_joint" for name in legs],
+            effort_limit_sim=_hu_d04_group(legs, _HU_D04_EFFORT_LIMIT),
+            velocity_limit_sim=_hu_d04_group(legs, _HU_D04_VELOCITY_LIMIT),
+            stiffness=_hu_d04_group(legs, _HU_D04_STIFFNESS),
+            damping=_hu_d04_group(legs, _HU_D04_DAMPING),
+        ),
+        "feet": ImplicitActuatorCfg(
+            joint_names_expr=[".*_ankle_pitch_joint", ".*_ankle_roll_joint"],
+            effort_limit_sim={
+                ".*_ankle_pitch_joint": _HU_D04_EFFORT_LIMIT["ankle_pitch"],
+                ".*_ankle_roll_joint": _HU_D04_EFFORT_LIMIT["ankle_roll"],
+            },
+            velocity_limit_sim={
+                ".*_ankle_pitch_joint": _HU_D04_VELOCITY_LIMIT["ankle_pitch"],
+                ".*_ankle_roll_joint": _HU_D04_VELOCITY_LIMIT["ankle_roll"],
+            },
+            stiffness={
+                ".*_ankle_pitch_joint": _HU_D04_STIFFNESS["ankle_pitch"],
+                ".*_ankle_roll_joint": _HU_D04_STIFFNESS["ankle_roll"],
+            },
+            damping={
+                ".*_ankle_pitch_joint": _HU_D04_DAMPING["ankle_pitch"],
+                ".*_ankle_roll_joint": _HU_D04_DAMPING["ankle_roll"],
+            },
+        ),
+        "waist": ImplicitActuatorCfg(
+            joint_names_expr=["waist_roll_joint", "waist_pitch_joint"],
+            effort_limit_sim={
+                "waist_roll_joint": _HU_D04_EFFORT_LIMIT["waist_roll"],
+                "waist_pitch_joint": _HU_D04_EFFORT_LIMIT["waist_pitch"],
+            },
+            velocity_limit_sim={
+                "waist_roll_joint": _HU_D04_VELOCITY_LIMIT["waist_roll"],
+                "waist_pitch_joint": _HU_D04_VELOCITY_LIMIT["waist_pitch"],
+            },
+            stiffness={
+                "waist_roll_joint": _HU_D04_STIFFNESS["waist_roll"],
+                "waist_pitch_joint": _HU_D04_STIFFNESS["waist_pitch"],
+            },
+            damping={
+                "waist_roll_joint": _HU_D04_DAMPING["waist_roll"],
+                "waist_pitch_joint": _HU_D04_DAMPING["waist_pitch"],
+            },
+        ),
+        "waist_yaw": ImplicitActuatorCfg(
+            joint_names_expr=["waist_yaw_joint"],
+            effort_limit_sim=_HU_D04_EFFORT_LIMIT["waist_yaw"],
+            velocity_limit_sim=_HU_D04_VELOCITY_LIMIT["waist_yaw"],
+            stiffness=_HU_D04_STIFFNESS["waist_yaw"],
+            damping=_HU_D04_DAMPING["waist_yaw"],
+        ),
+        "arms": ImplicitActuatorCfg(
+            joint_names_expr=[f".*_{name}_joint" for name in arms],
+            effort_limit_sim=_hu_d04_group(arms, _HU_D04_EFFORT_LIMIT),
+            velocity_limit_sim=_hu_d04_group(arms, _HU_D04_VELOCITY_LIMIT),
+            stiffness=_hu_d04_group(arms, _HU_D04_STIFFNESS),
+            damping=_hu_d04_group(arms, _HU_D04_DAMPING),
+        ),
+    }

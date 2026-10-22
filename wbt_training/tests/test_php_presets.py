@@ -28,10 +28,14 @@ PHP_PRESETS = (
     "g1_wbt_terrain_no_heightscan_pelvis",
     "g1_wbt_terrain_warp_distill",
     "g1_wbt_terrain_warp_distill_finetune",
+    "hu_d04_wbt_terrain_ref_noscale",
+    "hu_d04_wbt_terrain_ref_noscale_root",
+    "hu_d04_wbt_terrain_warp_distill_finetune",
 )
 
 PHP_CHECKPOINT_PATHS = (
     "wbt_training.config_values.robot_config:build_g1_implicit_actuators",
+    "wbt_training.config_values.robot_config:build_hu_d04_implicit_actuators",
     "wbt_training.config_values.terrain:height_scan",
     "wbt_training.config_values.terrain:apply_terrain_preprocess",
     "wbt_training.config_values.curriculum:RelaxTerminationThresholds",
@@ -161,12 +165,13 @@ def test_converter_works_with_only_numpy(tmp_path):
     assert result.returncode == 0, result.stderr
 
 
-def test_registry_contains_only_the_eight_php_presets():
+def test_registry_contains_only_the_php_presets():
     assert set(experiment.DEFAULTS) == set(PHP_PRESETS)
     local_presets = {
         name
         for name, value in vars(experiment).items()
-        if isinstance(value, ExperimentConfig) and name.startswith("g1_wbt")
+        if isinstance(value, ExperimentConfig)
+        and (name.startswith("g1_wbt") or name.startswith("hu_d04_wbt"))
     }
     assert local_presets == set(PHP_PRESETS)
     assert experiment.g1_29dof_wbt is g1_29dof_wbt

@@ -1,0 +1,149 @@
+name: Pytests
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  changes:
+    name: Detect Image Changes
+    runs-on: codebuild-holosoma-cpu-build-${{ github.run_id }}-${{ github.run_attempt }} buildspec-override:true
+    outputs:
+      images: ${{ steps.changes.outputs.images }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Detect image-relevant changes
+        id: changes
+        shell: bash
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          images=false
+          while IFS= read -r path; do
+            case "$path" in
+              .dockerignore|\
+              .github/workflows/build-docker-images.yaml|\
+              .github/workflows/docker-build.yaml|\
+              .github/workflows/promote-docker-images.yaml|\
+              .github/workflows/pytest.yaml|\
+              .github/workflows/test-images.yaml|\
+              conftest.py|\
+              pyproject.toml|\
+              demo_scripts/*|\
+              docker/*|\
+              scripts/*|\
+              src/*|\
+              tests/*)
+                images=true
+                break
+                ;;
+            esac
+          done < <(git diff --name-only "${BASE_SHA}...${HEAD_SHA}" --)
+          echo "images=$images" >> "$GITHUB_OUTPUT"
+          echo "Image build required: \`${images}\`." >> "$GITHUB_STEP_SUMMARY"
+
+  build-images:
+    name: Build PR Images
+    needs: changes
+    if: needs.changes.outputs.images == 'true'
+    uses: ./.github/workflows/build-docker-images.yaml
+    with:
+      image_sha: ${{ github.event.pull_request.head.sha }}
+      candidate_tag: candidate-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+    secrets: inherit
+
+  test-images:
+    name: Test Selected Images
+    needs:
+      - changes
+      - build-images
+    if: needs.changes.outputs.images == 'true'
+    uses: ./.github/workflows/test-images.yaml
+    with:
+      combined_image: ${{ vars.ECR_REGISTRY }}/holosoma:candidate-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+      isaacgym_image: ${{ vars.ECR_REGISTRY }}/holosoma-isaacgym:candidate-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+      isaacsim_image: ${{ vars.ECR_REGISTRY }}/holosoma-isaacsim:candidate-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+      mujoco_image: ${{ vars.ECR_REGISTRY }}/holosoma-mujoco:candidate-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+    secrets: inherit
+
+  pr-image-gate:
+    name: PR Image Gate
+    needs:
+      - changes
+      - build-images
+      - test-images
+    if: always() && !cancelled()
+    runs-on: codebuild-holosoma-cpu-build-${{ github.run_id }}-${{ github.run_attempt }} buildspec-override:true
+    env:
+      ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+      HOLOSOMA_COMMIT: ${{ github.event.pull_request.head.sha }}
+      CANDIDATE_TAG: candidate-${{ github.event.pull_request.head.sha }}-${{ github.run_id }}
+    steps:
+      - name: Verify required jobs
+        shell: bash
+        env:
+          BUILD_RESULT: ${{ needs.build-images.result }}
+          CHANGES_RESULT: ${{ needs.changes.result }}
+          IMAGE_CHANGES: ${{ needs.changes.outputs.images }}
+          TEST_RESULT: ${{ needs.test-images.result }}
+        run: |
+          set -euo pipefail
+          if [[ "$CHANGES_RESULT" != "success" ]]; then
+            echo "Image change detection did not succeed: ${CHANGES_RESULT}." >&2
+            exit 1
+          fi
+          if [[ "$IMAGE_CHANGES" != "true" ]]; then
+            echo "No image-relevant changes." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [[ "$BUILD_RESULT" != "success" || "$TEST_RESULT" != "success" ]]; then
+            echo "Image build result: ${BUILD_RESULT}; test result: ${TEST_RESULT}." >&2
+            exit 1
+          fi
+      - name: Set up Docker Buildx
+        if: needs.changes.outputs.images == 'true'
+        uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Tag tested image set
+        if: needs.changes.outputs.images == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          images=(
+            holosoma
+            holosoma-inference
+            holosoma-retargeting
+            holosoma-isaacgym
+            holosoma-isaacsim
+            holosoma-mujoco
+            holosoma-thor-inference
+            holosoma-thor-inference-ros
+          )
+          for image in "${images[@]}"; do
+            candidate="${ECR_REGISTRY}/${image}:${CANDIDATE_TAG}"
+            digest=$(docker buildx imagetools inspect \
+              --format '{{.Manifest.Digest}}' "$candidate")
+            [[ "$digest" =~ ^sha256:[0-9a-f]{64}$ ]] || {
+              echo "Could not resolve ${candidate} to an image digest" >&2
+              exit 1
+            }
+            src="${ECR_REGISTRY}/${image}@${digest}"
+            sha_dst="${ECR_REGISTRY}/${image}:sha-${HOLOSOMA_COMMIT}"
+            tested_dst="${ECR_REGISTRY}/${image}:tested-sha-${HOLOSOMA_COMMIT}"
+            docker buildx imagetools create \
+              --tag "$sha_dst" \
+              --tag "$tested_dst" \
+              "$src"
+          done
+          echo "Promoted tested candidate \`${CANDIDATE_TAG}\` to the SHA image set." >> "$GITHUB_STEP_SUMMARY"

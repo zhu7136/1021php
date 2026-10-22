@@ -18,6 +18,11 @@ from dataclasses import replace
 
 from dataclasses import replace as _replace
 
+from holosoma.config_types.algo import (
+    DistillationPPOAlgoConfig,
+    DistillationPPOConfig,
+    StudentTeacherModuleConfig,
+)
 from holosoma.config_types.command import CommandTermCfg
 from holosoma.config_types.curriculum import CurriculumTermCfg
 from holosoma.config_types.observation import (
@@ -261,4 +266,46 @@ g1_29dof_wbt_terrain_distill_command = replace(
             },
         )
     },
+)
+
+_student_teacher_module = StudentTeacherModuleConfig(
+    student_hidden_dims=[2048, 1024, 512, 256, 128],
+    teacher_hidden_dims=[
+        512,
+        256,
+        128,
+    ],  # MUST match g1_wbt_terrain_ref's actor hidden dims.
+    critic_hidden_dims=[512, 256, 128],
+    activation="ELU",
+    depth_backbone="holosoma.agents.modules.depth_backbone.DepthOnlyFCBackbone58x87Small",
+    depth_output_dim=32,
+)
+
+_distill_algo_base = DistillationPPOAlgoConfig(
+    _target_="wbt_training.utils.student_teacher.PhpDistillationPPO",
+    _recursive_=False,
+    config=DistillationPPOConfig(
+        module=_student_teacher_module,
+        num_learning_epochs=2,
+        num_mini_batches=96,
+        clip_param=0.2,
+        gamma=0.99,
+        lam=0.95,
+        value_loss_coef=1.0,
+        entropy_coef=0.001,
+        learning_rate=3e-4,
+        max_grad_norm=1.0,
+        schedule="adaptive",
+        desired_kl=0.01,
+        num_steps_per_env=24,
+        save_interval=500,
+        init_noise_std=0.01,
+        num_learning_iterations=30000,
+        empirical_normalization=False,
+        ppo_start_epoch=0,  # overridden for pure DAgger below
+        dagger_end_epoch=10000,
+        distill_loss_type="mse",
+        dagger_loss_coef=10.0,
+        weight_decay=0.0,
+    ),
 )

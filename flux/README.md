@@ -23,6 +23,22 @@ This single attempt is fixed at **32 environments, two PPO iterations**. An oute
 validation and training. On timeout it terminates its own worker process group.
 Scheduling, image pull and platform resource-release latency are outside that
 timer: it is **not a billing cap**. Check the Flux terminal state afterwards.
+The bootstrap now emits URL-free JSON events for download bytes/rate and each
+stage (download, extraction/hash validation, pinned dependencies, training entry).
+A POSIX main-thread timer bounds the **entire download**, including connect and
+slow trickle reads: default 180 seconds, configurable via
+`--download-timeout-seconds` from 1 to 300. The overall 900-second worker limit,
+32 environments and two requested iterations remain unchanged. There is no
+automatic retry. Partial files are retained in unique attempt directories and
+are never accepted as validated data. A completed entrypoint is not proof of
+PPO iterations or a persisted checkpoint; inspect both separately.
+
+CPU-only fault-injection tests (no remote network, package installation or GPU):
+
+```bash
+python -m unittest discover -s flux/tests -p 'test_download_diagnostics.py' -v
+```
+
 No automatic retry, continuation or hardware execution is permitted by this
 entrypoint. Logging is disabled for the plumbing check; inspect Flux logs and
 then record observed pass/fail in W&B. Actual GPU execution needs separate

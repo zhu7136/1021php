@@ -7,13 +7,18 @@ This is a simulation-only plumbing test, never hardware deployment.
 from __future__ import annotations
 
 import argparse
+from contextlib import contextmanager
 import hashlib
+import json
 import os
 from pathlib import Path
 import shutil
 import signal
 import subprocess
 import sys
+import time
+import threading
+import urllib.error
 import urllib.parse
 import urllib.request
 import zipfile
@@ -22,6 +27,66 @@ ROOT = Path(__file__).resolve().parents[1]
 ARCHIVE_SHA256 = '99c8225859128d27ec94dcc9ea7176e1257257926ae19900be40bebe4208d4e4'
 PREFIX = 'kinematic-candidates-56/'
 LIMIT_BYTES = 512 * 1024 * 1024
+DOWNLOAD_TIMEOUT_SECONDS = 180
+MAX_DOWNLOAD_TIMEOUT_SECONDS = 300
+
+
+def event(name: str, **fields) -> None:
+    """Structured diagnostics: callers must never pass URLs or credentials."""
+    print(json.dumps({'event': name, **fields}, sort_keys=True), flush=True)
+
+
+@contextmanager
+def stage(name: str):
+    started = time.monotonic()
+    event('stage_start', stage=name)
+    try:
+        yield
+    except BaseException as exc:
+        event('stage_failed', stage=name, error_type=type(exc).__name__,
+              elapsed_seconds=round(time.monotonic()-started, 3))
+        raise
+    else:
+        event('stage_complete', stage=name,
+              elapsed_seconds=round(time.monotonic()-started, 3))
+
+
+class DownloadDeadlineExceeded(TimeoutError):
+    pass
+
+
+class ArchiveValidationError(ValueError):
+    """Only fixed, URL-free messages may be preserved in an error."""
+    pass
+
+
+@contextmanager
+def download_deadline(seconds: float):
+    """Interrupt connect/read as well as slow trickle transfers on Linux.
+
+    A socket timeout alone does not bound an entire download. This bootstrap
+    calls downloads on the worker's main thread; never silently relax the limit.
+    """
+    if not 0 < seconds <= MAX_DOWNLOAD_TIMEOUT_SECONDS:
+        raise ValueError('Download deadline must be positive and at most 300 seconds')
+    if threading.current_thread() is not threading.main_thread():
+        raise RuntimeError('Bounded download requires the worker main thread')
+    if not hasattr(signal, 'setitimer'):
+        raise RuntimeError('Bounded download requires a POSIX interval timer')
+    if signal.getitimer(signal.ITIMER_REAL)[0]:
+        raise RuntimeError('Refusing to replace an existing interval timer')
+    old_handler = signal.getsignal(signal.SIGALRM)
+
+    def expired(signum, frame):
+        raise DownloadDeadlineExceeded('Download total time limit reached; URL omitted')
+
+    signal.signal(signal.SIGALRM, expired)
+    signal.setitimer(signal.ITIMER_REAL, seconds)
+    try:
+        yield
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, old_handler)
 
 
 def check_url(url: str) -> None:
@@ -39,23 +104,53 @@ class SafeRedirect(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
-def fetch_archive(url: str, destination: Path) -> None:
+def fetch_archive(url: str, destination: Path,
+                  timeout_seconds: float = DOWNLOAD_TIMEOUT_SECONDS) -> None:
     check_url(url)
     digest = hashlib.sha256()
     count = 0
+    started = time.monotonic()
+    last_report = started
+    total = None
     opener = urllib.request.build_opener(SafeRedirect())
+    event('download_start', timeout_seconds=timeout_seconds, max_bytes=LIMIT_BYTES)
     try:
-        with opener.open(url, timeout=45) as response, destination.open('wb') as target:
-            while chunk := response.read(1024 * 1024):
-                count += len(chunk)
-                if count > LIMIT_BYTES:
-                    raise ValueError('Download exceeds configured archive limit')
-                digest.update(chunk)
-                target.write(chunk)
+        with download_deadline(timeout_seconds):
+            with opener.open(url, timeout=min(45, timeout_seconds)) as response, destination.open('wb') as target:
+                headers = getattr(response, 'headers', {})
+                length = headers.get('Content-Length')
+                if length is not None:
+                    total = int(length)
+                    if total < 0 or total > LIMIT_BYTES:
+                        raise ArchiveValidationError('Invalid or oversized download Content-Length')
+                event('download_connected', content_length_bytes=total)
+                while chunk := response.read(64 * 1024):
+                    if count + len(chunk) > LIMIT_BYTES:
+                        raise ArchiveValidationError('Download exceeds configured archive limit')
+                    target.write(chunk)
+                    digest.update(chunk)
+                    first_chunk = count == 0
+                    count += len(chunk)
+                    now = time.monotonic()
+                    if first_chunk or now-last_report >= 5:
+                        elapsed = now-started
+                        event('download_progress', bytes_downloaded=count,
+                              content_length_bytes=total, elapsed_seconds=round(elapsed, 3),
+                              mib_per_second=round(count/(1024*1024*max(elapsed, 0.001)), 3))
+                        last_report = now
+                if total is not None and count != total:
+                    raise ArchiveValidationError('Download size differs from Content-Length')
+                if digest.hexdigest() != ARCHIVE_SHA256:
+                    raise ArchiveValidationError('v8 archive SHA256 mismatch; refusing to train')
     except Exception as exc:
+        event('download_failed', error_type=type(exc).__name__, bytes_downloaded=count,
+              elapsed_seconds=round(time.monotonic()-started, 3),
+              http_status=exc.code if isinstance(exc, urllib.error.HTTPError) else None)
+        if isinstance(exc, ArchiveValidationError):
+            raise ArchiveValidationError(str(exc)) from None
         raise RuntimeError('Artifact download failed ('+type(exc).__name__+'); URL omitted') from None
-    if digest.hexdigest() != ARCHIVE_SHA256:
-        raise ValueError('v8 archive SHA256 mismatch; refusing to train')
+    event('download_complete', bytes_downloaded=count,
+          elapsed_seconds=round(time.monotonic()-started, 3), sha256_verified=True)
 
 
 def extract_candidates(archive: Path, output: Path) -> None:
@@ -87,50 +182,66 @@ def extract_candidates(archive: Path, output: Path) -> None:
             raise ValueError('Candidate manifest digest mismatch')
 
 
-def worker(url: str) -> None:
+def worker(url: str, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SECONDS) -> None:
     work = ROOT/'outputs'/'hud04-flux-git-v8-smoke'
     # A unique attempt directory preserves earlier data/checkpoints on restart.
     import tempfile
     work.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix='attempt-', dir=work))
     archive = attempt/'v8.zip'
-    fetch_archive(url, archive)
+    with stage('download_archive'):
+        fetch_archive(url, archive, download_timeout_seconds)
     dataset = attempt/'candidates'
-    extract_candidates(archive, dataset)
+    with stage('extract_and_verify_candidates'):
+        extract_candidates(archive, dataset)
     print('v8 archive and all56 candidate hashes verified; installing pinned dependencies', flush=True)
     deps = ROOT/'.flux-deps'
-    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--target',
-        str(deps), '-r', str(ROOT/'flux/requirements.txt')], check=True)
+    with stage('install_pinned_dependencies'):
+        subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--target',
+            str(deps), '-r', str(ROOT/'flux/requirements.txt')], check=True)
     os.environ['PYTHONPATH'] = str(deps)+os.pathsep+os.environ.get('PYTHONPATH', '')
     sys.path.insert(0, str(deps))
     sys.argv = [str(ROOT/'flux/train_hud04.py'), '--train', '--dataset', str(dataset),
         '--acknowledge-kinematic-candidate', '--num-envs', '32', '--iterations', '2',
         '--time-limit-seconds', '900', '--logger', 'disabled', '--name', 'hud04-flux-git-v8-smoke']
     import runpy
-    runpy.run_path(str(ROOT/'flux/train_hud04.py'), run_name='__main__')
+    with stage('training_entrypoint'):
+        try:
+            runpy.run_path(str(ROOT/'flux/train_hud04.py'), run_name='__main__')
+        except SystemExit as exc:
+            if exc.code not in (0, None):
+                raise
+    event('smoke_entrypoint_complete', num_envs=32, requested_iterations=2,
+          note='Confirm PPO iteration logs and persisted checkpoint separately')
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--data-url', default=os.environ.get('HUD04_V8_DATA_URL'))
+    parser.add_argument('--download-timeout-seconds', type=int, default=DOWNLOAD_TIMEOUT_SECONDS,
+                        help='Total download deadline (1..300 seconds), within the unchanged 900-second worker limit')
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
+    if not 1 <= args.download_timeout_seconds <= MAX_DOWNLOAD_TIMEOUT_SECONDS:
+        parser.error('Download timeout must be between 1 and 300 seconds')
     if not args.data_url:
         parser.error('A short-lived v8 artifact download URL is required; never put it in Git')
     check_url(args.data_url)
     if args.worker:
-        worker(args.data_url)
+        worker(args.data_url, args.download_timeout_seconds)
         return
     launcher = Path('/isaac-sim/python.sh')
     if not launcher.is_file():
         raise SystemExit('Expected the approved Flux IsaacSim image; no CPU/system-Python fallback')
     env = os.environ.copy()
     env.update(PYTHONUNBUFFERED='1', CUDA_VISIBLE_DEVICES='0', HUD04_V8_DATA_URL=args.data_url)
-    child = subprocess.Popen([str(launcher), str(Path(__file__).resolve()), '--worker'],
+    child = subprocess.Popen([str(launcher), str(Path(__file__).resolve()), '--worker',
+        '--download-timeout-seconds', str(args.download_timeout_seconds)],
         env=env, start_new_session=True)
     try:
         result = child.wait(timeout=900)
     except (subprocess.TimeoutExpired, KeyboardInterrupt):
+        event('worker_limit_or_interrupt', worker_timeout_seconds=900)
         os.killpg(child.pid, signal.SIGTERM)
         try:
             child.wait(timeout=15)

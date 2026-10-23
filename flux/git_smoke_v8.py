@@ -1,7 +1,8 @@
 """Bounded Git-based Flux smoke bootstrap. No embedded credentials or data URLs.
 
 Provide --data-file for a mounted immutable v8 repair ZIP or W&B export ZIP.
-Alternatively provide --data-url with a short-lived HTTPS W&B artifact URL.
+Alternatively provide --data-url with the approved public GitHub Release URL
+or a short-lived HTTPS W&B artifact URL.
 This is a simulation-only plumbing test, never hardware deployment.
 """
 from __future__ import annotations
@@ -31,6 +32,8 @@ PREFIX = 'kinematic-candidates-56/'
 LIMIT_BYTES = 512 * 1024 * 1024
 DOWNLOAD_TIMEOUT_SECONDS = 180
 MAX_DOWNLOAD_TIMEOUT_SECONDS = 300
+GITHUB_RELEASE_PATH = ('/zhu7136/1021php/releases/download/hud04-data-v8-56-clips/'
+                       + ARCHIVE_NAME)
 
 
 def event(name: str, **fields) -> None:
@@ -94,10 +97,13 @@ def download_deadline(seconds: float):
 def check_url(url: str) -> None:
     parsed = urllib.parse.urlsplit(url)
     host = parsed.hostname or ''
-    allowed = host == 'storage.googleapis.com' or host.endswith('.storage.googleapis.com')
+    gcs = host == 'storage.googleapis.com' or host.endswith('.storage.googleapis.com')
+    github = (host == 'github.com' and parsed.path == GITHUB_RELEASE_PATH and not parsed.query)
+    release_cdn = host in ('release-assets.githubusercontent.com', 'objects.githubusercontent.com')
+    allowed = gcs or github or release_cdn
     if (parsed.scheme != 'https' or not allowed or parsed.username or parsed.password
             or parsed.port not in (None, 443) or parsed.fragment):
-        raise ValueError('Expected an HTTPS W&B artifact GCS download URL; URL omitted')
+        raise ValueError('Expected an approved HTTPS artifact or GitHub Release URL; URL omitted')
 
 
 class SafeRedirect(urllib.request.HTTPRedirectHandler):

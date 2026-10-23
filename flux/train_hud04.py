@@ -21,10 +21,20 @@ PACKAGE = SUBMODULE / 'src/holosoma/holosoma'
 
 def inspect_sources() -> dict:
     manifest = json.loads((ROOT / 'flux/recovered-manifest.json').read_text())
+    repair_path=ROOT/'flux/repair-manifest.json'
+    repairs=json.loads(repair_path.read_text())['files'] if repair_path.is_file() else {}
     for rel, expected in manifest.items():
+        if rel in repairs:
+            if repairs[rel]['original_sha256'] != expected:
+                raise ValueError(f'Repair provenance disagrees with original manifest: {rel}')
+            expected=repairs[rel]['repaired_sha256']
         path = ROOT / rel
         if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
             raise ValueError(f'Recovered file missing or changed: {rel}')
+    for rel,entry in repairs.items():
+        path=ROOT/rel
+        if not path.is_file() or hashlib.sha256(path.read_bytes()).hexdigest()!=entry['repaired_sha256']:
+            raise ValueError(f'Repaired source missing or changed: {rel}')
     data = ROOT / 'flux/data/motions-low-step-hu-d04'
     motions = sorted(data.glob('*_motion.npz'))
     if len(motions) != 56:
@@ -41,7 +51,21 @@ def inspect_sources() -> dict:
             raise ValueError(f'Holosoma differs from expected revision {PIN}: {rel}')
     for path in [ROOT/'wbt_training/config_values/experiment.py', ROOT/'wbt_training/config_values/hu_d04/experiment.py']:
         ast.parse(path.read_text())
-    return {'recovered_files': len(manifest), 'motion_terrain_pairs': len(motions), 'holosoma_revision': PIN}
+    return {'recovered_files': len(manifest), 'motion_terrain_pairs': len(motions), 'holosoma_revision': PIN,'repair_files':len(repairs),'original_dataset_training_allowed':False}
+
+
+def require_candidate_dataset(args) -> Path:
+    if args.dataset is None or not args.acknowledge_kinematic_candidate:
+        raise ValueError('Training blocked: supply --dataset and --acknowledge-kinematic-candidate after simulator review. Original G1 data is not HU_D04 training data.')
+    dataset=args.dataset.resolve()
+    if dataset==(ROOT/'flux/data/motions-low-step-hu-d04').resolve():
+        raise ValueError('Training on recovered G1 references is blocked; use a validated HU_D04 candidate bundle.')
+    sys.path.insert(0,str(ROOT/'flux'))
+    from validate_hud04 import validate
+    report=validate(dataset)
+    if not report['all_kinematic_gates_pass']:
+        raise ValueError('Training blocked: all 56 motions must pass independent kinematic gates. This does not certify collisions or dynamics.')
+    return dataset
 
 
 def prepare_runtime() -> Path:
@@ -62,7 +86,7 @@ def runtime_child(args) -> None:
     os.chdir(ROOT)
     import numpy as np
     from wbt_training.utils.registry import validate_bundle
-    dataset = ROOT / 'flux/data/motions-low-step-hu-d04'
+    dataset = require_candidate_dataset(args) if args.train else (args.dataset or ROOT / 'flux/data/motions-low-step-hu-d04').resolve()
     validate_bundle(dataset)
     from holosoma.config_values.robot import hu_d04
     for path in sorted(dataset.glob('*_motion.npz')):
@@ -109,6 +133,8 @@ def main() -> None:
     mode.add_argument('--train', action='store_true', help='Explicitly authorize this process to start training')
     parser.add_argument('--runtime-child', action='store_true', help=argparse.SUPPRESS)
     parser.add_argument('--install-deps', action='store_true', help='Install missing Python runtime dependencies into .flux-deps')
+    parser.add_argument('--dataset',type=Path,help='Separate HU_D04 candidate motion/terrain directory; never overwrite recovered sources')
+    parser.add_argument('--acknowledge-kinematic-candidate',action='store_true',help='Acknowledge kinematic checks are not collision/dynamics validation; controlled simulation only')
     parser.add_argument('--iterations', type=int, default=10)
     parser.add_argument('--num-envs', type=int, default=128)
     parser.add_argument('--time-limit-seconds', type=int, default=900, help='Whole-process limit, including setup')
@@ -120,6 +146,8 @@ def main() -> None:
     print(json.dumps(inspect_sources()), flush=True)
     if args.inspect or not (args.check_config or args.train):
         return
+    if args.train and not args.runtime_child:
+        require_candidate_dataset(args)
     if args.runtime_child:
         runtime_child(args)
         return

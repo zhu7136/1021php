@@ -1,5 +1,69 @@
 # HU_D04 WBT teacher on LimX Flux
 
+## Git-based v8 smoke entrypoint
+
+`git_smoke_v8.py` supports Flux pulling this branch directly, with the Holosoma
+submodule enabled. It downloads the already validated v8 artifact ZIP at runtime
+and requires its exact SHA-256 before extracting all 56 candidate motions,
+terrains, audit records and their validation manifest. The new 218 MB archive is
+not committed to Git. Original recovered input files already on this branch are
+preserved unchanged for independent validation, never used as training targets.
+
+```text
+gm-run 1021php/flux/git_smoke_v8.py --data-url <short-lived-v8-GCS-download-URL>
+```
+
+The download URL is supplied only when configuring an authorized task, never
+committed. Alternatively use `HUD04_V8_DATA_URL` if the runner supports secure
+environment injection. No GitHub, Flux or W&B API key is required in this script.
+The runner itself must still be able to clone the repository and submodule.
+
+This single attempt is fixed at **32 environments, two PPO iterations**. An outer
+900-second worker timer includes download, dependency setup, source/data
+validation and training. On timeout it terminates its own worker process group.
+Scheduling, image pull and platform resource-release latency are outside that
+timer: it is **not a billing cap**. Check the Flux terminal state afterwards.
+No automatic retry, continuation or hardware execution is permitted by this
+entrypoint. Logging is disabled for the plumbing check; inspect Flux logs and
+then record observed pass/fail in W&B. Actual GPU execution needs separate
+approval of the image/resource/time/spend bounds; publishing this branch does
+not authorize starting a task. Collision/contact/dynamics safety is unverified.
+
+## 2026-10-23 v8 repair status — no GPU training launched
+
+See `REPAIR_REPORT.md` for actual CPU results and remaining validation work. Corrected
+three config/URDF position-limit discrepancies, raised default spawn z to
+0.91 m, and added offline URDF IK, dense-grid arm projection, time scaling,
+independent output validation and a fail-closed training data gate.
+
+The original 56 motion/terrain pairs remain byte-for-byte unchanged. Their
+names match HU_D04 but their references follow G1 geometry. Do not train on them.
+`recovered-manifest.json` remains the historical upload digest; deliberate edits
+are recorded separately in `repair-manifest.json` with original/repaired hashes.
+
+Reproduce candidates on CPU (writes a separate directory; no GPU):
+
+```bash
+OPENBLAS_NUM_THREADS=1 python flux/retarget_continuous.py \
+  --all --output outputs/hud04-candidates-v8
+python flux/validate_hud04.py outputs/hud04-candidates-v8
+```
+
+The validator intentionally exits nonzero unless **all 56** pass. The v8 batch
+passes all 56 with unchanged thresholds, versus 29/56 in v7. Sequential bounded
+TRF uses the previous arm pose as the next initial guess and a small continuity
+prior, avoiding the clipped-DLS branch problems. `--skip-existing` resumes
+without overwriting outputs. CPU trials are recorded as W&B validation runs.
+Candidates omit stale `vel_cmd` and are intended only for the terrain teacher,
+not the velocity-command student/distillation pipeline. No candidate is certified
+for collision, torque, balance, foot contact or real-robot deployment.
+
+The training commands later in this recovery README are now **blocked** unless
+`--dataset PATH --acknowledge-kinematic-candidate` is supplied and independent
+validation passes for all 56. The v8 bundle clears the kinematic data gate but
+is not simulator-validated: review contact/collisions/dynamics before training.
+Do not bypass the gate or loosen thresholds merely to start training.
+
 ## Status and provenance
 
 This branch restores code, robot assets and 56 low-step motion/terrain pairs
@@ -72,7 +136,7 @@ runtime-only missing packages or IsaacSim conflicts may still need adjustment.
 Only after explicit approval, a bounded smoke-training command would be:
 
 ```text
-gm-run 1021php/flux/train_hud04.py --train --install-deps --iterations 10 --num-envs 128 --time-limit-seconds 900
+gm-run 1021php/flux/train_hud04.py --train --dataset /path/to/validated-v8-candidates --acknowledge-kinematic-candidate --install-deps --iterations 2 --num-envs 32 --time-limit-seconds 900
 ```
 
 The process limit includes setup. The launcher terminates its own child process

@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "status": "all_56_kinematic_pass_not_simulation_validated",
+  "supersedes_artifact": "zhul136-university-of-science-and-technology-of-china/HuD04_WBT/hud04-cpu-repair-partial-v7:v0",
+  "files": {
+    "flux/holosoma_overlay/config_values/robot.py": {
+      "original_sha256": "c1a3f78b5b4d87d4c4d71790de444d3c62ec6627a6955e40c529a13c62b6647d",
+      "repaired_sha256": "8145091013f1edc713d8aa8c30a81d9a5a6843b17ac762a36edbb194377f6a22",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "wbt_training/config_values/hu_d04/experiment.py": {
+      "original_sha256": "12304de58e7fcf2a91bf4c08a73a9157470f5e76f551d5fb4cd04f7c6c335869",
+      "repaired_sha256": "150fe840027573f5e0ca0790fb81c0a14fbe1d34b908ea47ef647f2b4a460375",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/train_hud04.py": {
+      "original_sha256": null,
+      "repaired_sha256": "0df8841a05b7499b6d9a5831d4b185d311a7c498523c1aa82d1b62efce8d586f",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/kinematics.py": {
+      "original_sha256": null,
+      "repaired_sha256": "b3f5f270b6b895bdfd323d93f70eb0cd48d4e2c60444a636e0c0017b8e8c3e60",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/retarget_hud04.py": {
+      "original_sha256": null,
+      "repaired_sha256": "1792bbd625c21875641e9950a057b307e71a68a748e98924640967344b830bdd",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/validate_hud04.py": {
+      "original_sha256": null,
+      "repaired_sha256": "38e6e1db05b1d1d4bb006e98cab6b2c6bf330064dc63d5d4b9b4a84275d75f0f",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/continuous_arms.py": {
+      "original_sha256": null,
+      "repaired_sha256": "05f585860704fe4624b8e4ed0bb294ff0875f9b99526f906937c1587002f8587",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/retarget_continuous.py": {
+      "original_sha256": null,
+      "repaired_sha256": "9bd9d1d40edf8402929647584eda841aca9a3ebfb2eb36bbc864f0f2bd199677",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/tests/test_repairs.py": {
+      "original_sha256": null,
+      "repaired_sha256": "b371883abd6017f3cb5f83c67217e56ea202376fd67bc12377b269ee0a2f027a",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/README.md": {
+      "original_sha256": null,
+      "repaired_sha256": "753ea48deef95bb57308e4eca101dc8b734487093ffa417d698e7e5402575ce6",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/REPAIR_REPORT.md": {
+      "original_sha256": null,
+      "repaired_sha256": "9866e21dc32b8b9335fd01cf9820544b6b8e41f4d710be1b87469565e6b58642",
+      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+    },
+    "flux/git_smoke_v8.py": {
+      "original_sha256": null,
+      "repaired_sha256": "def3827f6ca3d70afe63744a260c00af097004e1a9f443a964f5bea94d320aed",
+      "reason": "Bounded Git-based Flux smoke bootstrap with pinned runtime dataset download; no embedded credentials"
+    },
+    "flux/tests/test_git_smoke.py": {
+      "original_sha256": null,
+      "repaired_sha256": "e4d4a772d5ec709f0d6a2baaa299a6f74f3edcf3e5528b0d4359e118281e1e05",
+      "reason": "CPU-only URL, archive-integrity and extraction-safety tests for Git smoke bootstrap"
+    }
+  }
+}

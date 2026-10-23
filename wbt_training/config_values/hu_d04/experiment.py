@@ -104,7 +104,7 @@ hu_d04_wbt_terrain_ref_noscale = ExperimentConfig(
             enable_self_collisions=True,
         ),
         init_state=replace(
-            holosoma_robot.hu_d04.init_state, pos=[0.0, 0.0, 0.8]
+            holosoma_robot.hu_d04.init_state, pos=[0.0, 0.0, 0.91]
         ),
     ),
     action=_hu_d04_joint_pos_implicit,

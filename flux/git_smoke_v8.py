@@ -1,7 +1,7 @@
 """Bounded Git-based Flux smoke bootstrap. No embedded credentials or data URLs.
 
-Provide --data-url with a short-lived HTTPS download URL for the immutable v8
-repair artifact ZIP, or inject HUD04_V8_DATA_URL through a supported runner.
+Provide --data-file for a mounted immutable v8 repair ZIP or W&B export ZIP.
+Alternatively provide --data-url with a short-lived HTTPS W&B artifact URL.
 This is a simulation-only plumbing test, never hardware deployment.
 """
 from __future__ import annotations
@@ -25,6 +25,8 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 ARCHIVE_SHA256 = '99c8225859128d27ec94dcc9ea7176e1257257926ae19900be40bebe4208d4e4'
+ARCHIVE_BYTES = 218231385
+ARCHIVE_NAME = 'hud04-cpu-repair-v8-56-clips.zip'
 PREFIX = 'kinematic-candidates-56/'
 LIMIT_BYTES = 512 * 1024 * 1024
 DOWNLOAD_TIMEOUT_SECONDS = 180
@@ -153,6 +155,60 @@ def fetch_archive(url: str, destination: Path,
           elapsed_seconds=round(time.monotonic()-started, 3), sha256_verified=True)
 
 
+def stage_local_archive(source: Path, destination: Path) -> None:
+    """Read only the selected mount; never extract an untrusted wrapper tree.
+
+    A W&B whole-version export may wrap the approved ZIP with other files.
+    Accept exactly one expected member and require the original byte hash.
+    Never fall back to the network when a local source fails validation.
+    """
+    if not source.is_absolute() or not source.is_file():
+        raise ArchiveValidationError('Mounted archive must be an existing absolute file path')
+    size = source.stat().st_size
+    if not 0 < size <= LIMIT_BYTES:
+        raise ArchiveValidationError('Mounted archive exceeds configured size limit or is empty')
+    if source.resolve() == destination.resolve():
+        raise ArchiveValidationError('Source and staged archive must differ')
+
+    def copy_verified(reader) -> None:
+        digest = hashlib.sha256()
+        count = 0
+        with destination.open('xb') as target:
+            while chunk := reader.read(64 * 1024):
+                count += len(chunk)
+                if count > ARCHIVE_BYTES:
+                    raise ArchiveValidationError('Mounted v8 payload exceeds expected size')
+                target.write(chunk)
+                digest.update(chunk)
+        if count != ARCHIVE_BYTES or digest.hexdigest() != ARCHIVE_SHA256:
+            raise ArchiveValidationError('Mounted v8 archive size or SHA256 mismatch; refusing to train')
+
+    if size == ARCHIVE_BYTES:
+        with source.open('rb') as reader:
+            copy_verified(reader)
+        wrapper = False
+    else:
+        try:
+            with zipfile.ZipFile(source) as bundle:
+                members = [m for m in bundle.infolist()
+                           if not m.is_dir() and m.filename.split('/')[-1] == ARCHIVE_NAME]
+                if len(members) != 1:
+                    raise ArchiveValidationError('Export must contain exactly one approved v8 ZIP')
+                member = members[0]
+                parts = member.filename.split('/')
+                if (any(p in ('', '.', '..') for p in parts) or '\\' in member.filename
+                        or member.file_size != ARCHIVE_BYTES
+                        or (member.external_attr >> 16) & 0o170000 == 0o120000):
+                    raise ArchiveValidationError('Unsafe or incorrectly sized export member')
+                with bundle.open(member) as reader:
+                    copy_verified(reader)
+            wrapper = True
+        except zipfile.BadZipFile:
+            raise ArchiveValidationError('Mounted file is not a valid v8 archive or export ZIP') from None
+    event('local_archive_verified', bytes_staged=ARCHIVE_BYTES, sha256_verified=True,
+          export_wrapper=wrapper, network_download=False)
+
+
 def extract_candidates(archive: Path, output: Path) -> None:
     output.mkdir(parents=True, exist_ok=False)
     with zipfile.ZipFile(archive) as source:
@@ -182,15 +238,20 @@ def extract_candidates(archive: Path, output: Path) -> None:
             raise ValueError('Candidate manifest digest mismatch')
 
 
-def worker(url: str, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SECONDS) -> None:
+def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SECONDS,
+           data_file: str | None = None) -> None:
     work = ROOT/'outputs'/'hud04-flux-git-v8-smoke'
     # A unique attempt directory preserves earlier data/checkpoints on restart.
     import tempfile
     work.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix='attempt-', dir=work))
     archive = attempt/'v8.zip'
-    with stage('download_archive'):
-        fetch_archive(url, archive, download_timeout_seconds)
+    if data_file:
+        with stage('stage_local_archive'):
+            stage_local_archive(Path(data_file), archive)
+    else:
+        with stage('download_archive'):
+            fetch_archive(url, archive, download_timeout_seconds)
     dataset = attempt/'candidates'
     with stage('extract_and_verify_candidates'):
         extract_candidates(archive, dataset)
@@ -217,24 +278,33 @@ def worker(url: str, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SECONDS) -
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--data-url', default=os.environ.get('HUD04_V8_DATA_URL'))
+    sources = parser.add_mutually_exclusive_group()
+    sources.add_argument('--data-url', default=os.environ.get('HUD04_V8_DATA_URL'))
+    sources.add_argument('--data-file', default=os.environ.get('HUD04_V8_DATA_FILE'),
+                         help='Absolute mounted path to the original v8 ZIP or W&B version export ZIP')
     parser.add_argument('--download-timeout-seconds', type=int, default=DOWNLOAD_TIMEOUT_SECONDS,
                         help='Total download deadline (1..300 seconds), within the unchanged 900-second worker limit')
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
     if not 1 <= args.download_timeout_seconds <= MAX_DOWNLOAD_TIMEOUT_SECONDS:
         parser.error('Download timeout must be between 1 and 300 seconds')
-    if not args.data_url:
-        parser.error('A short-lived v8 artifact download URL is required; never put it in Git')
-    check_url(args.data_url)
+    if bool(args.data_url) == bool(args.data_file):
+        parser.error('Provide exactly one mounted data file or short-lived data URL')
+    if args.data_url:
+        check_url(args.data_url)
+    if args.data_file and not Path(args.data_file).is_absolute():
+        parser.error('Mounted data file path must be absolute')
     if args.worker:
-        worker(args.data_url, args.download_timeout_seconds)
+        worker(args.data_url, args.download_timeout_seconds, args.data_file)
         return
     launcher = Path('/isaac-sim/python.sh')
     if not launcher.is_file():
         raise SystemExit('Expected the approved Flux IsaacSim image; no CPU/system-Python fallback')
     env = os.environ.copy()
-    env.update(PYTHONUNBUFFERED='1', CUDA_VISIBLE_DEVICES='0', HUD04_V8_DATA_URL=args.data_url)
+    env.update(PYTHONUNBUFFERED='1', CUDA_VISIBLE_DEVICES='0')
+    env.pop('HUD04_V8_DATA_URL', None)
+    env.pop('HUD04_V8_DATA_FILE', None)
+    env['HUD04_V8_DATA_FILE' if args.data_file else 'HUD04_V8_DATA_URL'] = args.data_file or args.data_url
     child = subprocess.Popen([str(launcher), str(Path(__file__).resolve()), '--worker',
         '--download-timeout-seconds', str(args.download_timeout_seconds)],
         env=env, start_new_session=True)

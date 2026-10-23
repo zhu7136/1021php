@@ -1,0 +1,33 @@
+{
+  "format": "hud04-v8-git-parts-1",
+  "archive_bytes": 218231385,
+  "archive_sha256": "99c8225859128d27ec94dcc9ea7176e1257257926ae19900be40bebe4208d4e4",
+  "part_bytes": 50331648,
+  "parts": [
+    {
+      "name": "archive.part000",
+      "bytes": 50331648,
+      "sha256": "6216ca681e5999106a7e3795bf4c06fdaf5856aa0dcbe9b4f8b855e4978fbc0a"
+    },
+    {
+      "name": "archive.part001",
+      "bytes": 50331648,
+      "sha256": "7ec5fb3cc236a6a2b1a6bf62d7388b35a1d7133cf9c0cc4407099ab23c3a7b69"
+    },
+    {
+      "name": "archive.part002",
+      "bytes": 50331648,
+      "sha256": "ba923dd55b982e332fa27eda32daa88f34e198a5a73429c4e7e550b441b062f9"
+    },
+    {
+      "name": "archive.part003",
+      "bytes": 50331648,
+      "sha256": "316115ef65e4d5c55118e2398ca2e6e51cacdec9c3ea4b32841158978e2a47c5"
+    },
+    {
+      "name": "archive.part004",
+      "bytes": 16904793,
+      "sha256": "c8392e9f3e9230e4f89baf9184f1c83b594b9ecffdd188a81a84c9ae85354c44"
+    }
+  ]
+}

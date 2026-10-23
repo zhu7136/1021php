@@ -5,6 +5,8 @@ Alternatively provide --data-url with the approved public GitHub Release URL
 or a short-lived HTTPS W&B artifact URL.
 The approved anonymous Google Drive share is also supported, including its
 normal download confirmation and the verified W&B export wrapper.
+Use --data-parts-dir for five ordinary Git blobs, merged locally without a
+network download or Git LFS. Relative parts paths are relative to the repo root.
 This is a simulation-only plumbing test, never hardware deployment.
 """
 from __future__ import annotations
@@ -390,14 +392,20 @@ def extract_candidates(archive: Path, output: Path) -> None:
 
 
 def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SECONDS,
-           data_file: str | None = None) -> None:
+           data_file: str | None = None, data_parts_dir: str | None = None) -> None:
     work = ROOT/'outputs'/'hud04-flux-git-v8-smoke'
     # A unique attempt directory preserves earlier data/checkpoints on restart.
     import tempfile
     work.mkdir(parents=True, exist_ok=True)
     attempt = Path(tempfile.mkdtemp(prefix='attempt-', dir=work))
     archive = attempt/'v8.zip'
-    if data_file:
+    if data_parts_dir:
+        from git_parts_v8 import assemble_parts
+        with stage('assemble_git_parts'):
+            assemble_parts(Path(data_parts_dir), archive, ARCHIVE_BYTES, ARCHIVE_SHA256)
+            event('git_parts_verified', bytes_staged=ARCHIVE_BYTES, part_count=5,
+                  sha256_verified=True, network_download=False)
+    elif data_file:
         with stage('stage_local_archive'):
             stage_local_archive(Path(data_file), archive)
     else:
@@ -433,20 +441,24 @@ def main() -> None:
     sources.add_argument('--data-url', default=os.environ.get('HUD04_V8_DATA_URL'))
     sources.add_argument('--data-file', default=os.environ.get('HUD04_V8_DATA_FILE'),
                          help='Absolute mounted path to the original v8 ZIP or W&B version export ZIP')
+    sources.add_argument('--data-parts-dir', default=os.environ.get('HUD04_V8_DATA_PARTS_DIR'),
+                         help='Five ordinary Git parts; relative paths are relative to repository root')
     parser.add_argument('--download-timeout-seconds', type=int, default=DOWNLOAD_TIMEOUT_SECONDS,
                         help='Total download deadline (1..300 seconds), within the unchanged 900-second worker limit')
     parser.add_argument('--worker', action='store_true', help=argparse.SUPPRESS)
     args = parser.parse_args()
     if not 1 <= args.download_timeout_seconds <= MAX_DOWNLOAD_TIMEOUT_SECONDS:
         parser.error('Download timeout must be between 1 and 300 seconds')
-    if bool(args.data_url) == bool(args.data_file):
-        parser.error('Provide exactly one mounted data file or short-lived data URL')
+    if sum(bool(value) for value in (args.data_url, args.data_file, args.data_parts_dir)) != 1:
+        parser.error('Provide exactly one data file, data URL or Git parts directory')
     if args.data_url:
         check_url(args.data_url)
     if args.data_file and not Path(args.data_file).is_absolute():
         parser.error('Mounted data file path must be absolute')
+    if args.data_parts_dir and not Path(args.data_parts_dir).is_absolute():
+        args.data_parts_dir = str((ROOT / args.data_parts_dir).absolute())
     if args.worker:
-        worker(args.data_url, args.download_timeout_seconds, args.data_file)
+        worker(args.data_url, args.download_timeout_seconds, args.data_file, args.data_parts_dir)
         return
     launcher = Path('/isaac-sim/python.sh')
     if not launcher.is_file():
@@ -455,7 +467,13 @@ def main() -> None:
     env.update(PYTHONUNBUFFERED='1', CUDA_VISIBLE_DEVICES='0')
     env.pop('HUD04_V8_DATA_URL', None)
     env.pop('HUD04_V8_DATA_FILE', None)
-    env['HUD04_V8_DATA_FILE' if args.data_file else 'HUD04_V8_DATA_URL'] = args.data_file or args.data_url
+    env.pop('HUD04_V8_DATA_PARTS_DIR', None)
+    if args.data_parts_dir:
+        env['HUD04_V8_DATA_PARTS_DIR'] = args.data_parts_dir
+    elif args.data_file:
+        env['HUD04_V8_DATA_FILE'] = args.data_file
+    else:
+        env['HUD04_V8_DATA_URL'] = args.data_url
     child = subprocess.Popen([str(launcher), str(Path(__file__).resolve()), '--worker',
         '--download-timeout-seconds', str(args.download_timeout_seconds)],
         env=env, start_new_session=True)

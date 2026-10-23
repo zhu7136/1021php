@@ -44,3 +44,13 @@ node_modules/
 __pycache__/
 *.pyc
 
+# Isolated LimX Flux runtime (never commit dependencies or runtime copies).
+.flux-deps/
+.flux-runtime/
+.aria-deps/
+
+# Explicitly version the recovered HU_D04 training inputs on the Flux branch.
+!flux/data/motions-low-step-hu-d04/*.npz
+!flux/data/motions-low-step-hu-d04/*.npy
+!flux/holosoma_overlay/data/robots/hu_d04/**/*.obj
+

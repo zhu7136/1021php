@@ -24,7 +24,7 @@ from holosoma.config_types.experiment import ExperimentConfig
 from holosoma.config_values import simulator
 from holosoma.config_values.logger import wandb as wandb_logger
 from holosoma.config_values.wbt.g1.experiment import g1_29dof_wbt
-from holosoma.config_values.wbt.hu_d04.experiment import (
+from wbt_training.config_values.hu_d04.experiment import (
     hu_d04_wbt_terrain_ref_noscale,
     hu_d04_wbt_terrain_ref_noscale_root,
     hu_d04_wbt_terrain_warp_distill_finetune,

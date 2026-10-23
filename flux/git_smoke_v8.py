@@ -3,6 +3,8 @@
 Provide --data-file for a mounted immutable v8 repair ZIP or W&B export ZIP.
 Alternatively provide --data-url with the approved public GitHub Release URL
 or a short-lived HTTPS W&B artifact URL.
+The approved anonymous Google Drive share is also supported, including its
+normal download confirmation and the verified W&B export wrapper.
 This is a simulation-only plumbing test, never hardware deployment.
 """
 from __future__ import annotations
@@ -10,6 +12,8 @@ from __future__ import annotations
 import argparse
 from contextlib import contextmanager
 import hashlib
+from html.parser import HTMLParser
+import http.cookiejar
 import json
 import os
 from pathlib import Path
@@ -34,6 +38,26 @@ DOWNLOAD_TIMEOUT_SECONDS = 180
 MAX_DOWNLOAD_TIMEOUT_SECONDS = 300
 GITHUB_RELEASE_PATH = ('/zhu7136/1021php/releases/download/hud04-data-v8-56-clips/'
                        + ARCHIVE_NAME)
+DRIVE_FILE_ID = '18JsXNF4GDXUFlmlNBZ85zMT847Ks74DB'
+DRIVE_HOSTS = ('drive.google.com', 'drive.usercontent.google.com')
+
+
+def check_drive_url(url: str) -> None:
+    parsed = urllib.parse.urlsplit(url)
+    query = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
+    view = (parsed.hostname == 'drive.google.com'
+            and parsed.path == '/file/d/'+DRIVE_FILE_ID+'/view'
+            and set(query) <= {'usp'})
+    download = (parsed.path in ('/uc', '/download')
+                and (parsed.hostname == 'drive.google.com' or parsed.path == '/download')
+                and query.get('id') == [DRIVE_FILE_ID]
+                and set(query) <= {'id', 'export', 'confirm', 'uuid', 'at'}
+                and all(len(values) == 1 for values in query.values())
+                and query.get('export') == ['download'])
+    if (parsed.scheme != 'https' or parsed.hostname not in DRIVE_HOSTS
+            or parsed.username or parsed.password or parsed.port not in (None, 443)
+            or parsed.fragment or not (view or download)):
+        raise ValueError('Expected the approved HTTPS Drive file; URL omitted')
 
 
 def event(name: str, **fields) -> None:
@@ -100,10 +124,13 @@ def check_url(url: str) -> None:
     gcs = host == 'storage.googleapis.com' or host.endswith('.storage.googleapis.com')
     github = (host == 'github.com' and parsed.path == GITHUB_RELEASE_PATH and not parsed.query)
     release_cdn = host in ('release-assets.githubusercontent.com', 'objects.githubusercontent.com')
-    allowed = gcs or github or release_cdn
+    drive = host in DRIVE_HOSTS
+    if drive:
+        check_drive_url(url)
+    allowed = gcs or github or release_cdn or drive
     if (parsed.scheme != 'https' or not allowed or parsed.username or parsed.password
             or parsed.port not in (None, 443) or parsed.fragment):
-        raise ValueError('Expected an approved HTTPS artifact or GitHub Release URL; URL omitted')
+        raise ValueError('Expected an approved HTTPS data source; URL omitted')
 
 
 class SafeRedirect(urllib.request.HTTPRedirectHandler):
@@ -112,9 +139,127 @@ class SafeRedirect(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+class DriveRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        check_drive_url(newurl)
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+class DriveConfirmation(HTMLParser):
+    """Read only the normal public download form; never process login forms."""
+    def __init__(self):
+        super().__init__()
+        self.forms = []
+        self.current = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == 'form':
+            self.current = None
+            if attrs.get('id') == 'download-form':
+                self.current = {'action': attrs.get('action', ''),
+                                'method': attrs.get('method', 'get').lower(), 'fields': {}}
+                self.forms.append(self.current)
+        elif tag == 'input' and self.current is not None:
+            name = attrs.get('name')
+            if name in ('id', 'export', 'confirm', 'uuid', 'at'):
+                if name in self.current['fields']:
+                    raise ArchiveValidationError('Duplicate Drive confirmation field')
+                self.current['fields'][name] = attrs.get('value', '')
+
+    def handle_endtag(self, tag):
+        if tag == 'form':
+            self.current = None
+
+    def next_url(self, base: str) -> str:
+        if len(self.forms) != 1 or self.forms[0]['method'] != 'get':
+            raise ArchiveValidationError('Expected one anonymous Drive download confirmation form')
+        form = self.forms[0]
+        action = urllib.parse.urljoin(base, form['action'])
+        parts = urllib.parse.urlsplit(action)
+        if parts.query or parts.fragment or parts.path != '/download':
+            raise ArchiveValidationError('Unexpected Drive confirmation action')
+        url = action+'?'+urllib.parse.urlencode(form['fields'])
+        check_drive_url(url)
+        return url
+
+
+def fetch_drive_archive(url: str, destination: Path, timeout_seconds: float) -> None:
+    """Bound all confirmation, transfer and normalization under one deadline.
+
+    Standard-library only: no browser login, API key, third-party downloader,
+    automatic retries, or download of a different file ID.
+    """
+    check_drive_url(url)
+    import tempfile
+    transfer = Path(tempfile.mkdtemp(prefix='drive-transfer-', dir=destination.parent))
+    source = transfer/'download.zip'
+    url = 'https://drive.google.com/uc?export=download&id='+DRIVE_FILE_ID
+    opener = urllib.request.build_opener(DriveRedirect(),
+        urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+    started = time.monotonic()
+    count = 0
+    last_report = started
+    event('download_start', timeout_seconds=timeout_seconds, max_bytes=LIMIT_BYTES,
+          source='google_drive')
+    try:
+        with download_deadline(timeout_seconds):
+            for attempt in range(3):
+                request = urllib.request.Request(url, headers={'Accept-Encoding': 'identity'})
+                with opener.open(request, timeout=min(45, timeout_seconds)) as response:
+                    check_drive_url(response.geturl())
+                    if 'text/html' in response.headers.get('Content-Type', '').lower():
+                        body = response.read(262145)
+                        if len(body) > 262144:
+                            raise ArchiveValidationError('Drive confirmation page exceeds size limit')
+                        form = DriveConfirmation()
+                        form.feed(body.decode('utf-8', errors='replace'))
+                        url = form.next_url(response.geturl())
+                        event('download_confirmation', source='google_drive')
+                        continue
+                    length = response.headers.get('Content-Length')
+                    total = int(length) if length is not None else None
+                    if total is not None and not 0 < total <= LIMIT_BYTES:
+                        raise ArchiveValidationError('Invalid or oversized Drive Content-Length')
+                    event('download_connected', content_length_bytes=total)
+                    with source.open('xb') as target:
+                        while chunk := response.read(64 * 1024):
+                            if count == 0 and not chunk.startswith(b'PK\x03\x04'):
+                                raise ArchiveValidationError('Drive response is not a ZIP archive')
+                            if count+len(chunk) > LIMIT_BYTES:
+                                raise ArchiveValidationError('Drive download exceeds configured archive limit')
+                            target.write(chunk)
+                            first = count == 0
+                            count += len(chunk)
+                            now = time.monotonic()
+                            if first or now-last_report >= 5:
+                                event('download_progress', bytes_downloaded=count,
+                                      content_length_bytes=total, elapsed_seconds=round(now-started, 3),
+                                      mib_per_second=round(count/(1048576*max(now-started, 0.001)), 3))
+                                last_report = now
+                    if total is not None and total != count:
+                        raise ArchiveValidationError('Drive size differs from Content-Length')
+                    stage_local_archive(source.resolve(), destination)
+                    break
+            else:
+                raise ArchiveValidationError('Too many Drive confirmation pages')
+    except Exception as exc:
+        event('download_failed', error_type=type(exc).__name__, bytes_downloaded=count,
+              elapsed_seconds=round(time.monotonic()-started, 3),
+              http_status=exc.code if isinstance(exc, urllib.error.HTTPError) else None)
+        if isinstance(exc, ArchiveValidationError):
+            raise ArchiveValidationError(str(exc)) from None
+        raise RuntimeError('Drive download failed ('+type(exc).__name__+'); URL omitted') from None
+    event('download_complete', bytes_downloaded=count, normalized_archive_bytes=ARCHIVE_BYTES,
+          elapsed_seconds=round(time.monotonic()-started, 3), sha256_verified=True,
+          source='google_drive')
+
+
 def fetch_archive(url: str, destination: Path,
                   timeout_seconds: float = DOWNLOAD_TIMEOUT_SECONDS) -> None:
     check_url(url)
+    if urllib.parse.urlsplit(url).hostname in DRIVE_HOSTS:
+        return fetch_drive_archive(url, destination, timeout_seconds)
     digest = hashlib.sha256()
     count = 0
     started = time.monotonic()

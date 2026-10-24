@@ -393,6 +393,10 @@ def extract_candidates(archive: Path, output: Path) -> None:
 
 def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SECONDS,
            data_file: str | None = None, data_parts_dir: str | None = None) -> None:
+    # Fail before assembling data or installing wheels if platform Git setup failed.
+    from source_preflight import verify_sources
+    with stage('source_preflight'):
+        event('source_preflight_verified', **verify_sources(ROOT))
     work = ROOT/'outputs'/'hud04-flux-git-v8-smoke'
     # A unique attempt directory preserves earlier data/checkpoints on restart.
     import tempfile

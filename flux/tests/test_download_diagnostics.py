@@ -33,6 +33,11 @@ class DownloadDiagnosticsTests(unittest.TestCase):
         self.root = Path(tempfile.mkdtemp(dir=scratch))
         self.output = self.root/'archive.zip'
         self.stdout = io.StringIO()
+        # These tests inject later download/install failures; source failures have
+        # their own unmocked regression suite in test_source_preflight.py.
+        preflight = patch('source_preflight.verify_sources', return_value={})
+        preflight.start()
+        self.addCleanup(preflight.stop)
 
     def download(self, response=None, error=None, timeout=1):
         class Opener:
@@ -200,7 +205,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
         install.assert_called_once_with(self.root)
         self.assertEqual(train.call_count, 1)
         stages = [e['stage'] for e in self.events() if e['event']=='stage_complete']
-        self.assertEqual(stages, ['download_archive', 'extract_and_verify_candidates',
+        self.assertEqual(stages, ['source_preflight', 'download_archive', 'extract_and_verify_candidates',
             'install_pinned_dependencies', 'training_entrypoint'])
         self.assertEqual(self.events()[-1]['event'], 'smoke_entrypoint_complete')
 

@@ -1,3 +1,9 @@
+[submodule "GMR"]
+	path = GMR
+	url = https://github.com/limxdynamics/GMR.git
+[submodule "humanoid-description"]
+	path = humanoid-description
+	url = https://github.com/limxdynamics/humanoid-description.git
 [submodule "thirdparty/holosoma"]
 	path = thirdparty/holosoma
 	url = https://github.com/amazon-far/holosoma.git

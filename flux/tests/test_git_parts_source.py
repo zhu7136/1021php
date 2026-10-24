@@ -153,7 +153,8 @@ class PartsTests(unittest.TestCase):
 
     def test_git_worker_calls_all56_verification_before_dependencies(self):
         class VerifiedStop(Exception): pass
-        with patch.object(smoke, 'ROOT', self.root), patch.object(parts, 'assemble_parts') as assemble, \
+        with patch('source_preflight.verify_sources', return_value={}), \
+                patch.object(smoke, 'ROOT', self.root), patch.object(parts, 'assemble_parts') as assemble, \
                 patch.object(smoke, 'fetch_archive', side_effect=AssertionError('network forbidden')), \
                 patch.object(smoke, 'extract_candidates', side_effect=VerifiedStop) as verify, \
                 patch.object(smoke.subprocess, 'run') as dependency_install, redirect_stdout(io.StringIO()):

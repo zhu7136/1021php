@@ -1,0 +1,3 @@
+wheelhouse/*.whl -text -diff -merge -filter
+manifest.json text eol=lf
+requirements.lock text eol=lf

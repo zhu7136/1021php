@@ -15,8 +15,8 @@
     },
     "flux/train_hud04.py": {
       "original_sha256": null,
-      "repaired_sha256": "0df8841a05b7499b6d9a5831d4b185d311a7c498523c1aa82d1b62efce8d586f",
-      "reason": "2026-10-23 v8 HU_D04 configuration, continuous arm retargeting, validation or training gate; see REPAIR_REPORT.md"
+      "repaired_sha256": "91eef79b472ba1dbfd0b1b950f5f8c3a3dc49019d9c46b5817795353b8beb207",
+      "reason": "2026-10-24 offline dependency preparation: replace online pip installation with verified local-only wheels; existing training and candidate gates unchanged. Previous v8 launcher SHA256: 0df8841a05b7499b6d9a5831d4b185d311a7c498523c1aa82d1b62efce8d586f"
     },
     "flux/kinematics.py": {
       "original_sha256": null,
@@ -61,14 +61,15 @@
     },
     "flux/git_smoke_v8.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "def3827f6ca3d70afe63744a260c00af097004e1a9f443a964f5bea94d320aed",
-      "repaired_sha256": "9d104168a5894326363793480f23fb1f65adedc536a3f99aec64e1ceb8956fa9",
-      "reason": "2026-10-23 bootstrap diagnostics revision: 180-second total download deadline (max300), byte progress and URL-free stage events; unchanged32env2iter900sec, pinned archive hash, no retries"
+      "previous_repaired_sha256": "9d104168a5894326363793480f23fb1f65adedc536a3f99aec64e1ceb8956fa9",
+      "repaired_sha256": "ddea651b3dd7d0ab0adf21bfd977ff98551dd58d4d8704bf9f52a58b5f784f50",
+      "reason": "2026-10-24 offline dependencies: verified local-only wheel installer, no PyPI fallback; unchanged32env2iter900sec, pinned data archive hash and data delivery sources"
     },
     "flux/tests/test_download_diagnostics.py": {
       "original_sha256": null,
-      "repaired_sha256": "263540b8f64a03998fd4c9d8779515480e76d12661273cb265c274a33bea19f1",
-      "reason": "CPU-only fault-injected download deadline, progress, redaction and worker phase regression tests; all network/install/training calls mocked"
+      "previous_repaired_sha256": "263540b8f64a03998fd4c9d8779515480e76d12661273cb265c274a33bea19f1",
+      "repaired_sha256": "7655e47359c7ed520bf03b74bc251939d9291944fea2321d6fa25cb7de7ae16f",
+      "reason": "2026-10-24 retain worker phase/failure/budget tests with offline_dependencies.install mocked; no real network, installation or training in unit tests"
     },
     "flux/tests/test_git_smoke.py": {
       "original_sha256": null,

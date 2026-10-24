@@ -417,8 +417,8 @@ def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SEC
     print('v8 archive and all56 candidate hashes verified; installing pinned dependencies', flush=True)
     deps = ROOT/'.flux-deps'
     with stage('install_pinned_dependencies'):
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--target',
-            str(deps), '-r', str(ROOT/'flux/requirements.txt')], check=True)
+        from offline_dependencies import install
+        install(ROOT)
     os.environ['PYTHONPATH'] = str(deps)+os.pathsep+os.environ.get('PYTHONPATH', '')
     sys.path.insert(0, str(deps))
     sys.argv = [str(ROOT/'flux/train_hud04.py'), '--train', '--dataset', str(dataset),

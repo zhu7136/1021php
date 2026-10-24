@@ -188,7 +188,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
 
     def test_mock_worker_keeps_training_bounds_and_reports_phases(self):
         with patch.object(smoke, 'ROOT', self.root), patch.object(smoke, 'fetch_archive'), \
-             patch.object(smoke, 'extract_candidates'), patch.object(smoke.subprocess, 'run') as install, \
+             patch.object(smoke, 'extract_candidates'), patch('offline_dependencies.install') as install, \
              patch('runpy.run_path', side_effect=SystemExit(0)) as train, \
              patch.object(sys, 'argv', []), patch.object(sys, 'path', list(sys.path)), \
              patch.dict(smoke.os.environ), redirect_stdout(self.stdout):
@@ -197,7 +197,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
         self.assertEqual(argv[argv.index('--num-envs')+1], '32')
         self.assertEqual(argv[argv.index('--iterations')+1], '2')
         self.assertEqual(argv[argv.index('--time-limit-seconds')+1], '900')
-        self.assertEqual(install.call_args.args[0][:3], [sys.executable, '-m', 'pip'])
+        install.assert_called_once_with(self.root)
         self.assertEqual(train.call_count, 1)
         stages = [e['stage'] for e in self.events() if e['event']=='stage_complete']
         self.assertEqual(stages, ['download_archive', 'extract_and_verify_candidates',
@@ -207,7 +207,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
     def test_dependency_failure_never_calls_training(self):
         with patch.object(smoke, 'ROOT', self.root), patch.object(smoke, 'fetch_archive'), \
              patch.object(smoke, 'extract_candidates'), \
-             patch.object(smoke.subprocess, 'run', side_effect=subprocess.CalledProcessError(1, ['mock-pip'])), \
+             patch('offline_dependencies.install', side_effect=subprocess.CalledProcessError(1, ['mock-pip'])), \
              patch('runpy.run_path') as train, redirect_stdout(self.stdout), \
              self.assertRaises(subprocess.CalledProcessError):
             smoke.worker(URL)
@@ -217,7 +217,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
 
     def test_nonzero_training_exit_is_not_marked_complete(self):
         with patch.object(smoke, 'ROOT', self.root), patch.object(smoke, 'fetch_archive'), \
-             patch.object(smoke, 'extract_candidates'), patch.object(smoke.subprocess, 'run'), \
+             patch.object(smoke, 'extract_candidates'), patch('offline_dependencies.install'), \
              patch('runpy.run_path', side_effect=SystemExit(2)), \
              patch.object(sys, 'argv', []), patch.object(sys, 'path', list(sys.path)), \
              patch.dict(smoke.os.environ), redirect_stdout(self.stdout), \

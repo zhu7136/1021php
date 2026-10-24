@@ -1,0 +1,511 @@
+{
+  "schema_version": 1,
+  "target": {
+    "python": "3.11.13",
+    "implementation": "CPython",
+    "platform": "Linux x86_64",
+    "max_glibc": "2.35"
+  },
+  "wheel_count": 53,
+  "original_pin_count": 51,
+  "supplements": [
+    [
+      "pillow",
+      "13.0.0"
+    ],
+    [
+      "markupsafe",
+      "3.0.4"
+    ]
+  ],
+  "original_requirements_sha256": "d44cf109668c8b7147eaab36f49b5da2ee93867a41c31b72a2c62d2f137f01e9",
+  "lock_sha256": "8d2d319cbabc39ca6af601d8831c38a6483f4747354535402e729b9e60c27e44",
+  "wheels": [
+    {
+      "name": "absl-py",
+      "version": "2.3.1",
+      "filename": "absl_py-2.3.1-py3-none-any.whl",
+      "bytes": 135811,
+      "sha256": "eeecf07f0c2a93ace0772c92e596ace6d3d3996c042b2128459aaae2a76de11d",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "eeecf07f0c2a93ace0772c92e596ace6d3d3996c042b2128459aaae2a76de11d"
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.7.0",
+      "filename": "annotated_types-0.7.0-py3-none-any.whl",
+      "bytes": 13643,
+      "sha256": "1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "1f02e8b43a8fbbc3f3e0d4f0f4bfc8131bcb4eebe8849b8e5c773f3a1c582a53"
+    },
+    {
+      "name": "antlr4-python3-runtime",
+      "version": "4.9.3",
+      "filename": "antlr4_python3_runtime-4.9.3-py3-none-any.whl",
+      "bytes": 144590,
+      "sha256": "6861b0349563ec5e561ea13e1cc0fa808e61fd19560e6a5445c8966cc17b7fb0",
+      "origin": "local pure-Python wheel build",
+      "source_sha256": "f224469b4168294902bb1efa80a8bf7855f24c99aef99cbefc1bcd3cce77881b"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.2.25",
+      "filename": "certifi-2026.2.25-py3-none-any.whl",
+      "bytes": 153684,
+      "sha256": "027692e4402ad994f1c42e52a4997a9763c646b73e4096e4d5d6db8af1d6f0fa",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "027692e4402ad994f1c42e52a4997a9763c646b73e4096e4d5d6db8af1d6f0fa"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.4.4",
+      "filename": "charset_normalizer-3.4.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 151550,
+      "sha256": "840c25fb618a231545cbab0564a799f101b63b9901f2569faecd6b222ac72381",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "840c25fb618a231545cbab0564a799f101b63b9901f2569faecd6b222ac72381"
+    },
+    {
+      "name": "click",
+      "version": "8.4.2",
+      "filename": "click-8.4.2-py3-none-any.whl",
+      "bytes": 119243,
+      "sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "e6f9f66136c816745b9d65817da91d61d957fb16e02e4dcd0552553c5a197b76"
+    },
+    {
+      "name": "cloudpickle",
+      "version": "3.1.2",
+      "filename": "cloudpickle-3.1.2-py3-none-any.whl",
+      "bytes": 22228,
+      "sha256": "9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a"
+    },
+    {
+      "name": "docstring-parser",
+      "version": "0.17.0",
+      "filename": "docstring_parser-0.17.0-py3-none-any.whl",
+      "bytes": 36896,
+      "sha256": "cf2569abd23dce8099b300f9b4fa8191e9582dda731fd533daf54c4551658708",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "cf2569abd23dce8099b300f9b4fa8191e9582dda731fd533daf54c4551658708"
+    },
+    {
+      "name": "gitdb",
+      "version": "4.0.12",
+      "filename": "gitdb-4.0.12-py3-none-any.whl",
+      "bytes": 62794,
+      "sha256": "67073e15955400952c6565cc3e707c554a4eea2e428946f7a4c162fab9bd9bcf",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "67073e15955400952c6565cc3e707c554a4eea2e428946f7a4c162fab9bd9bcf"
+    },
+    {
+      "name": "gitpython",
+      "version": "3.1.45",
+      "filename": "gitpython-3.1.45-py3-none-any.whl",
+      "bytes": 208168,
+      "sha256": "8908cb2e02fb3b93b7eb0f2827125cb699869470432cc885f019b8fd0fccff77",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "8908cb2e02fb3b93b7eb0f2827125cb699869470432cc885f019b8fd0fccff77"
+    },
+    {
+      "name": "grpcio",
+      "version": "1.76.0",
+      "filename": "grpcio-1.76.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 6615417,
+      "sha256": "8843114c0cfce61b40ad48df65abcfc00d4dba82eae8718fab5352390848c5da",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "8843114c0cfce61b40ad48df65abcfc00d4dba82eae8718fab5352390848c5da"
+    },
+    {
+      "name": "idna",
+      "version": "3.11",
+      "filename": "idna-3.11-py3-none-any.whl",
+      "bytes": 71008,
+      "sha256": "771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "771a87f49d9defaf64091e6e6fe9c18d4833f140bd19464795bc32d966ca37ea"
+    },
+    {
+      "name": "importlib-metadata",
+      "version": "8.7.0",
+      "filename": "importlib_metadata-8.7.0-py3-none-any.whl",
+      "bytes": 27656,
+      "sha256": "e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd"
+    },
+    {
+      "name": "loguru",
+      "version": "0.7.3",
+      "filename": "loguru-0.7.3-py3-none-any.whl",
+      "bytes": 61595,
+      "sha256": "31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c"
+    },
+    {
+      "name": "markdown",
+      "version": "3.10",
+      "filename": "markdown-3.10-py3-none-any.whl",
+      "bytes": 107678,
+      "sha256": "b5b99d6951e2e4948d939255596523444c0e677c669700b1d17aa4a8a464cb7c",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "b5b99d6951e2e4948d939255596523444c0e677c669700b1d17aa4a8a464cb7c"
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.0.0",
+      "filename": "markdown_it_py-4.0.0-py3-none-any.whl",
+      "bytes": 87321,
+      "sha256": "87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "87327c59b172c5011896038353a81343b6754500a08cd7a4973bb48c6d578147"
+    },
+    {
+      "name": "markupsafe",
+      "version": "3.0.4",
+      "filename": "markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 22961,
+      "sha256": "6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808"
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2",
+      "filename": "mdurl-0.1.2-py3-none-any.whl",
+      "bytes": 9979,
+      "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"
+    },
+    {
+      "name": "ml-dtypes",
+      "version": "0.5.4",
+      "filename": "ml_dtypes-0.5.4-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 5034975,
+      "sha256": "19b9a53598f21e453ea2fbda8aa783c20faff8e1eeb0d7ab899309a0053f1483",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "19b9a53598f21e453ea2fbda8aa783c20faff8e1eeb0d7ab899309a0053f1483"
+    },
+    {
+      "name": "numpy",
+      "version": "1.26.4",
+      "filename": "numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 18252005,
+      "sha256": "666dbfb6ec68962c033a450943ded891bed2d54e6755e35e5835d63f4f6931d5",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "666dbfb6ec68962c033a450943ded891bed2d54e6755e35e5835d63f4f6931d5"
+    },
+    {
+      "name": "omegaconf",
+      "version": "2.3.0",
+      "filename": "omegaconf-2.3.0-py3-none-any.whl",
+      "bytes": 79500,
+      "sha256": "7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b"
+    },
+    {
+      "name": "onnx",
+      "version": "1.20.0",
+      "filename": "onnx-1.20.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 18119129,
+      "sha256": "71177f8fd5c0dd90697bc281f5035f73707bdac83257a5c54d74403a1100ace9",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "71177f8fd5c0dd90697bc281f5035f73707bdac83257a5c54d74403a1100ace9"
+    },
+    {
+      "name": "orjson",
+      "version": "3.11.4",
+      "filename": "orjson-3.11.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 136160,
+      "sha256": "95713e5fc8af84d8edc75b785d2386f653b63d62b16d681687746734b4dfc0be",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "95713e5fc8af84d8edc75b785d2386f653b63d62b16d681687746734b4dfc0be"
+    },
+    {
+      "name": "packaging",
+      "version": "26.2",
+      "filename": "packaging-26.2-py3-none-any.whl",
+      "bytes": 100195,
+      "sha256": "5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "5fc45236b9446107ff2415ce77c807cee2862cb6fac22b8a73826d0693b0980e"
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "filename": "pillow-13.0.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 7140667,
+      "sha256": "a625df9a2a5597fa5e5266e01aefc82604bb85d291e3547981e863560d75da6c",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "a625df9a2a5597fa5e5266e01aefc82604bb85d291e3547981e863560d75da6c"
+    },
+    {
+      "name": "platformdirs",
+      "version": "4.5.0",
+      "filename": "platformdirs-4.5.0-py3-none-any.whl",
+      "bytes": 18651,
+      "sha256": "e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "e578a81bb873cbb89a41fcc904c7ef523cc18284b7e3b3ccf06aca1403b7ebd3"
+    },
+    {
+      "name": "prettytable",
+      "version": "3.3.0",
+      "filename": "prettytable-3.3.0-py3-none-any.whl",
+      "bytes": 26815,
+      "sha256": "d1c34d72ea2c0ffd6ce5958e71c428eb21a3d40bf3133afe319b24aeed5af407",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "d1c34d72ea2c0ffd6ce5958e71c428eb21a3d40bf3133afe319b24aeed5af407"
+    },
+    {
+      "name": "protobuf",
+      "version": "6.33.1",
+      "filename": "protobuf-6.33.1-cp39-abi3-manylinux2014_x86_64.whl",
+      "bytes": 323171,
+      "sha256": "8fd7d5e0eb08cd5b87fd3df49bc193f5cfd778701f47e11d127d0afc6c39f1d1",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "8fd7d5e0eb08cd5b87fd3df49bc193f5cfd778701f47e11d127d0afc6c39f1d1"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.13.4",
+      "filename": "pydantic-2.13.4-py3-none-any.whl",
+      "bytes": 472262,
+      "sha256": "45a282cde31d808236fd7ea9d919b128653c8b38b393d1c4ab335c62924d9aba",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "45a282cde31d808236fd7ea9d919b128653c8b38b393d1c4ab335c62924d9aba"
+    },
+    {
+      "name": "pydantic-core",
+      "version": "2.46.4",
+      "filename": "pydantic_core-2.46.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 2089685,
+      "sha256": "f9fa868638bf362d3d138ea55829cefb3d5f4b0d7f142234382a15e2485dbec4",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "f9fa868638bf362d3d138ea55829cefb3d5f4b0d7f142234382a15e2485dbec4"
+    },
+    {
+      "name": "pygments",
+      "version": "2.19.2",
+      "filename": "pygments-2.19.2-py3-none-any.whl",
+      "bytes": 1225217,
+      "sha256": "86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b"
+    },
+    {
+      "name": "pyyaml",
+      "version": "6.0.3",
+      "filename": "pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 806638,
+      "sha256": "b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d"
+    },
+    {
+      "name": "requests",
+      "version": "2.32.5",
+      "filename": "requests-2.32.5-py3-none-any.whl",
+      "bytes": 64738,
+      "sha256": "2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6"
+    },
+    {
+      "name": "rich",
+      "version": "14.2.0",
+      "filename": "rich-14.2.0-py3-none-any.whl",
+      "bytes": 243393,
+      "sha256": "76bc51fe2e57d2b1be1f96c524b890b816e334ab4c1e45888799bfaab0021edd",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "76bc51fe2e57d2b1be1f96c524b890b816e334ab4c1e45888799bfaab0021edd"
+    },
+    {
+      "name": "scipy",
+      "version": "1.15.3",
+      "filename": "scipy-1.15.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 37652622,
+      "sha256": "39cb9c62e471b1bb3750066ecc3a3f3052b37751c7c3dfd0fd7e48900ed52982",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "39cb9c62e471b1bb3750066ecc3a3f3052b37751c7c3dfd0fd7e48900ed52982"
+    },
+    {
+      "name": "sentry-sdk",
+      "version": "2.71.0",
+      "filename": "sentry_sdk-2.71.0-py3-none-any.whl",
+      "bytes": 534254,
+      "sha256": "9ed36b4c206048aa67b5ddba0a6e28d59fc55cf10d60f5f7aea2c3917184bf4a",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "9ed36b4c206048aa67b5ddba0a6e28d59fc55cf10d60f5f7aea2c3917184bf4a"
+    },
+    {
+      "name": "setuptools",
+      "version": "78.1.1",
+      "filename": "setuptools-78.1.1-py3-none-any.whl",
+      "bytes": 1256462,
+      "sha256": "c3a9c4211ff4c309edb8b8c4f1cbfa7ae324c4ba9f91ff254e3d305b9fd54561",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "c3a9c4211ff4c309edb8b8c4f1cbfa7ae324c4ba9f91ff254e3d305b9fd54561"
+    },
+    {
+      "name": "smmap",
+      "version": "5.0.2",
+      "filename": "smmap-5.0.2-py3-none-any.whl",
+      "bytes": 24303,
+      "sha256": "b30115f0def7d7531d22a0fb6502488d879e75b260a9db4d0819cfb25403af5e",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "b30115f0def7d7531d22a0fb6502488d879e75b260a9db4d0819cfb25403af5e"
+    },
+    {
+      "name": "tensorboard",
+      "version": "2.20.0",
+      "filename": "tensorboard-2.20.0-py3-none-any.whl",
+      "bytes": 5525680,
+      "sha256": "9dc9f978cb84c0723acf9a345d96c184f0293d18f166bb8d59ee098e6cfaaba6",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "9dc9f978cb84c0723acf9a345d96c184f0293d18f166bb8d59ee098e6cfaaba6"
+    },
+    {
+      "name": "tensorboard-data-server",
+      "version": "0.7.2",
+      "filename": "tensorboard_data_server-0.7.2-py3-none-manylinux_2_31_x86_64.whl",
+      "bytes": 6590363,
+      "sha256": "ef687163c24185ae9754ed5650eb5bc4d84ff257aabdc33f0cc6f74d8ba54530",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "ef687163c24185ae9754ed5650eb5bc4d84ff257aabdc33f0cc6f74d8ba54530"
+    },
+    {
+      "name": "tensordict",
+      "version": "0.9.0",
+      "filename": "tensordict-0.9.0-cp311-cp311-manylinux_2_28_x86_64.whl",
+      "bytes": 423933,
+      "sha256": "9888c8fdde39bb7ec742e741917b0c18b38f1520b638a5e40c1e69dd4f4a3cd1",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "9888c8fdde39bb7ec742e741917b0c18b38f1520b638a5e40c1e69dd4f4a3cd1"
+    },
+    {
+      "name": "termcolor",
+      "version": "3.2.0",
+      "filename": "termcolor-3.2.0-py3-none-any.whl",
+      "bytes": 7698,
+      "sha256": "a10343879eba4da819353c55cb8049b0933890c2ebf9ad5d3ecd2bb32ea96ea6",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "a10343879eba4da819353c55cb8049b0933890c2ebf9ad5d3ecd2bb32ea96ea6"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.67.1",
+      "filename": "tqdm-4.67.1-py3-none-any.whl",
+      "bytes": 78540,
+      "sha256": "26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "26445eca388f82e72884e0d580d5464cd801a3ea01e63e5601bdff9ba6a48de2"
+    },
+    {
+      "name": "trimesh",
+      "version": "4.5.1",
+      "filename": "trimesh-4.5.1-py3-none-any.whl",
+      "bytes": 703652,
+      "sha256": "fe2ddcf5b091e4d93bb7b689b947b84ad7a62ca862225f2c70cef1caaac4bd32",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "fe2ddcf5b091e4d93bb7b689b947b84ad7a62ca862225f2c70cef1caaac4bd32"
+    },
+    {
+      "name": "typeguard",
+      "version": "4.4.4",
+      "filename": "typeguard-4.4.4-py3-none-any.whl",
+      "bytes": 34874,
+      "sha256": "b5f562281b6bfa1f5492470464730ef001646128b180769880468bd84b68b09e",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "b5f562281b6bfa1f5492470464730ef001646128b180769880468bd84b68b09e"
+    },
+    {
+      "name": "typing-extensions",
+      "version": "4.16.0",
+      "filename": "typing_extensions-4.16.0-py3-none-any.whl",
+      "bytes": 45571,
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.2",
+      "filename": "typing_inspection-0.4.2-py3-none-any.whl",
+      "bytes": 14611,
+      "sha256": "4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "4ed1cacbdc298c220f1bd249ed5287caa16f34d44ef4e9c3d0cbad5b521545e7"
+    },
+    {
+      "name": "tyro",
+      "version": "1.0.16",
+      "filename": "tyro-1.0.16-py3-none-any.whl",
+      "bytes": 216925,
+      "sha256": "2f9087196113699647190459a12b6b4f2784dd0703c50ab1f7bf0f85a3a794ea",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "2f9087196113699647190459a12b6b4f2784dd0703c50ab1f7bf0f85a3a794ea"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.6.3",
+      "filename": "urllib3-2.6.3-py3-none-any.whl",
+      "bytes": 131584,
+      "sha256": "bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4"
+    },
+    {
+      "name": "wandb",
+      "version": "0.23.1",
+      "filename": "wandb-0.23.1-py3-none-manylinux_2_28_x86_64.whl",
+      "bytes": 22887885,
+      "sha256": "67431cd3168d79fdb803e503bd669c577872ffd5dadfa86de733b3274b93088e",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "67431cd3168d79fdb803e503bd669c577872ffd5dadfa86de733b3274b93088e"
+    },
+    {
+      "name": "wcwidth",
+      "version": "0.2.14",
+      "filename": "wcwidth-0.2.14-py2.py3-none-any.whl",
+      "bytes": 37286,
+      "sha256": "a7bb560c8aee30f9957e5f9895805edd20602f2d7f720186dfd906e82b4982e1",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "a7bb560c8aee30f9957e5f9895805edd20602f2d7f720186dfd906e82b4982e1"
+    },
+    {
+      "name": "werkzeug",
+      "version": "3.1.4",
+      "filename": "werkzeug-3.1.4-py3-none-any.whl",
+      "bytes": 224960,
+      "sha256": "2ad50fb9ed09cc3af22c54698351027ace879a0b60a3b5edf5730b2f7d876905",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "2ad50fb9ed09cc3af22c54698351027ace879a0b60a3b5edf5730b2f7d876905"
+    },
+    {
+      "name": "zipp",
+      "version": "3.23.0",
+      "filename": "zipp-3.23.0-py3-none-any.whl",
+      "bytes": 10276,
+      "sha256": "071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e",
+      "origin": "PyPI verified wheel",
+      "source_sha256": "071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e"
+    }
+  ],
+  "image_provided": {
+    "torch": "2.7.0",
+    "CUDA": "unchanged image runtime"
+  },
+  "wheel_metadata_dependency_issues": [],
+  "runtime_abi_tested": false,
+  "gpu_started": false,
+  "flux_task_created": false,
+  "github_published": false
+}

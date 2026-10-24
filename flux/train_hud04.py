@@ -79,8 +79,9 @@ def prepare_runtime() -> Path:
 def runtime_child(args) -> None:
     deps = ROOT / '.flux-deps'
     if args.install_deps:
-        # Explicit lock only: never let pip pull a different Torch/CUDA stack.
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--target', str(deps), '-r', str(ROOT/'flux/requirements.txt')], check=True)
+        # Fail closed: missing/corrupt local wheels never fall back to PyPI.
+        from offline_dependencies import install
+        install(ROOT)
     runtime = prepare_runtime()
     sys.path[:0] = [str(deps), str(ROOT), str(runtime)]
     os.chdir(ROOT)

@@ -20,6 +20,7 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 WORKER_LIMIT_SECONDS = 900
 OUT = ROOT / "outputs/flux_replay_latest_1000"
+EXPECTED_SHA256 = "5c8573b1a954f3e58a4242f3a1858aa5de06c20c860465dddf7d373250ff2489"
 
 
 def event(name, **fields):
@@ -55,8 +56,12 @@ def upload_bundle(url: str, headers: dict):
     with urllib.request.build_opener(NoRedirect).open(request, timeout=45) as response:
         if response.status not in (200, 201, 204):
             raise RuntimeError("Diagnostic upload was not accepted")
-    event("replay_bundle_uploaded", bytes=len(payload), files=len(files),
-          sha256=hashlib.sha256(payload).hexdigest(), filename="replay_bundle.zip")
+    receipt = dict(status="uploaded", bytes=len(payload), files=len(files),
+                   sha256=hashlib.sha256(payload).hexdigest(), filename="replay_bundle.zip")
+    temporary = ROOT / "outputs/replay_bundle_receipt.json.partial"
+    temporary.write_text(json.dumps(receipt, indent=2))
+    temporary.replace(ROOT / "outputs/replay_bundle_receipt.json")
+    event("replay_bundle_uploaded", **{key: value for key, value in receipt.items() if key != "status"})
     return True
 
 
@@ -102,6 +107,12 @@ def main():
     if args.runtime_child:
         try:
             worker()
+        except BaseException as exc:
+            OUT.mkdir(parents=True, exist_ok=True)
+            failure = dict(event="replay_worker_failed", exception_type=type(exc).__name__)
+            (OUT / "failure.json").write_text(json.dumps(failure, indent=2))
+            event("replay_worker_failed", exception_type=failure['exception_type'])
+            raise
         finally:
             try:
                 upload_bundle(args.upload_url, json.loads(args.upload_headers))
@@ -109,6 +120,12 @@ def main():
                 # Exception text may contain a signed URL; emit only its type.
                 event("replay_bundle_upload_failed", exception_type=type(exc).__name__)
         return
+    # A fresh task must not accept a previous attempt's success artifacts.
+    paths = [OUT, ROOT / "outputs/replay_bundle.zip",
+             ROOT / "outputs/replay_bundle_receipt.json",
+             OUT.parent / "replay_encoder_preflight"]
+    if any(path.exists() or path.is_symlink() for path in paths):
+        raise RuntimeError("Refusing stale replay outputs; no reuse or automatic retry")
     from runtime_preflight import resolve_isaac_launcher
     launcher = resolve_isaac_launcher()
     child_env = os.environ.copy()
@@ -136,6 +153,16 @@ def main():
         raise SystemExit(124)
     if result != 0:
         raise SystemExit(result)
+    # Isaac shutdown can return zero even after a Python exception. Validate the
+    # actual sealed outputs and acknowledged upload, never the exit code alone.
+    try:
+        from replay_integrity import verify_completion, verify_upload_receipt
+        verify_completion(OUT, EXPECTED_SHA256)
+        receipt = verify_upload_receipt(OUT)
+    except Exception as exc:
+        event("replay_completion_rejected", exception_type=type(exc).__name__)
+        raise SystemExit(1) from exc
+    event("replay_artifacts_verified", control_steps=1000, bundle_sha256=receipt['sha256'])
     event("replay_entrypoint_complete", control_steps=1000, training_updates=0)
 
 

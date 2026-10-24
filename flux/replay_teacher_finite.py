@@ -29,6 +29,14 @@ def main(dataset: Path):
         raise RuntimeError("Mounted checkpoint SHA256 does not match the selected latest checkpoint")
     OUT.mkdir(parents=True, exist_ok=True)
 
+    # Explicit MP4V uses the existing OpenCV encoder, not absent system ffmpeg.
+    # Exercise the actual Holosoma path before creating a GPU simulation.
+    from holosoma.utils.video_utils import create_video
+    from replay_integrity import preflight_mp4, complete_replay
+    encoder = preflight_mp4(create_video, OUT.parent / 'replay_encoder_preflight')
+    (OUT / 'encoder_preflight.json').write_text(json.dumps(encoder, indent=2))
+    print('REPLAY_ENCODER_VERIFIED ' + json.dumps(encoder), flush=True)
+
     from holosoma.utils.eval_utils import CheckpointConfig
     from holosoma.config_types.logger import DisabledLoggerConfig
     from holosoma.config_types.video import VideoConfig, SphericalCameraConfig
@@ -56,6 +64,7 @@ def main(dataset: Path):
         logger=DisabledLoggerConfig(
             base_dir=str(OUT), headless_recording=True,
             video=VideoConfig(enabled=True, interval=1, width=640, height=360,
+                              output_format="mp4",
                               save_dir=str(OUT / "videos"), upload_to_wandb=False,
                               camera=SphericalCameraConfig(distance=3.0, azimuth=135.0, elevation=25.0)),
         ),
@@ -172,11 +181,11 @@ def main(dataset: Path):
     # reset_all performs one zero-action control step; include it in the 1,000-step budget.
     current_step[0] = 0
     frame_arrays["actions"].append(np.zeros(29, dtype=np.float32))
-    obs = env.reset_all()
-    print("REPLAY_BEGIN " + json.dumps({"steps": STEPS, "num_envs": 1, "checkpoint_sha256": EXPECTED_SHA256,
-          "checkpoint_iteration": algo.current_learning_iteration, "train_updates": 0,
-          "adaptive_sampler_restored": False, "body_names": names}), flush=True)
     try:
+        obs = env.reset_all()
+        print("REPLAY_BEGIN " + json.dumps({"steps": STEPS, "num_envs": 1, "checkpoint_sha256": EXPECTED_SHA256,
+              "checkpoint_iteration": algo.current_learning_iteration, "train_updates": 0,
+              "adaptive_sampler_restored": False, "body_names": names}), flush=True)
         for step in range(1, STEPS):
             current_step[0] = step
             actions = policy(obs)
@@ -217,16 +226,22 @@ def main(dataset: Path):
             "all_states_and_actions_finite": bool(all(np.isfinite(value).all() for value in arrays.values())),
             "body_names": names,
             "interpretation": "Contacts use the original reward regex/threshold and physics history; tilt is a fall proxy, not a validated fall label. Resets sampled before automatic reset. One-env replay is diagnostic, not success-rate estimation.",
+            "video_output_format": "mp4",
+            "video_codec": "mp4v",
+            "video_browser_compatibility": "limited; download or decode with OpenCV",
             "videos": [str(p.relative_to(OUT)) for p in (OUT / "videos").rglob("*.mp4")],
         }
         if not summary["actor_weights_unchanged"] or not summary["checkpoint_unchanged"]:
             raise RuntimeError("Read-only replay invariant failed")
         (OUT / "summary.json").write_text(json.dumps(summary, indent=2))
+        event_log.flush()
+        complete_replay(OUT, EXPECTED_SHA256)
         print("REPLAY_RESULT " + json.dumps(summary), flush=True)
     finally:
         event_log.close()
-        atexit.unregister(close_simulation_app)
-        close_simulation_app(app)
+        # Leave registered simulation cleanup to process exit. The bootstrap
+        # must upload diagnostics first: Isaac close() may terminate with code0
+        # even while handling an exception. The parent still checks artifacts.
 
 
 if __name__ == "__main__":

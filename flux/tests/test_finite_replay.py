@@ -11,14 +11,23 @@ import tempfile
 import types
 import unittest
 from unittest.mock import patch
+from unittest.mock import Mock
 
 import numpy as np
 import torch
+import cv2  # Keep native modules loaded across temporary sys.modules mock scopes.
 
 FLUX = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(FLUX))
 spec = importlib.util.spec_from_file_location("finite_replay_under_test", FLUX / "replay_teacher_finite.py")
 replay = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(replay)
+
+video_path = FLUX.parent / 'thirdparty/holosoma/src/holosoma/holosoma/utils/video_utils.py'
+video_spec = importlib.util.spec_from_file_location('pinned_replay_video_utils', video_path)
+video_utils = importlib.util.module_from_spec(video_spec)
+with patch.dict(sys.modules, {'loguru': types.SimpleNamespace(logger=Mock())}):
+    video_spec.loader.exec_module(video_utils)
 
 
 @dataclasses.dataclass
@@ -137,8 +146,17 @@ def modules_for_test(env, cfg):
     add("holosoma.utils.eval_utils", CheckpointConfig=PermissiveConfig)
     add("holosoma.config_types.logger", DisabledLoggerConfig=PermissiveConfig)
     add("holosoma.config_types.video", VideoConfig=PermissiveConfig, SphericalCameraConfig=PermissiveConfig)
+    def setup(c):
+        assert c.logger.video.output_format == 'mp4'
+        def save_video():
+            video_utils.create_video(np.zeros((3,360,640,3),dtype=np.uint8),50,
+                Path(c.logger.video.save_dir),output_format=c.logger.video.output_format,
+                wandb_logging=False,episode_id=1)
+        env.simulator.video_recorder = types.SimpleNamespace(stop_recording=save_video)
+        return env,"cuda:0",None
     add("holosoma.utils.sim_utils", setup_isaaclab_launcher=lambda:None,
-        setup_simulation_environment=lambda c:(env,"cuda:0",None), close_simulation_app=lambda app:None)
+        setup_simulation_environment=setup, close_simulation_app=lambda app:None)
+    add("holosoma.utils.video_utils", create_video=video_utils.create_video)
     add("holosoma.utils.helpers", get_class=lambda name:FakePPO)
     add("wbt_training.utils.checkpoint", load_saved_experiment_config=lambda c:(cfg,None), apply_preprocess_hook=lambda c:c)
     add("startup_diagnostics", bounded_launcher=lambda f:f)
@@ -182,8 +200,39 @@ class ReplayTests(unittest.TestCase):
             self.assertTrue(summary["actor_weights_unchanged"])
             self.assertTrue(summary["checkpoint_unchanged"])
             self.assertEqual(summary["training_updates"],0)
+            self.assertEqual(summary['video_output_format'],'mp4')
+            from replay_integrity import verify_completion
+            self.assertEqual(verify_completion(out, summary['checkpoint_sha256'])['steps'], 1000)
+            manifest = json.loads((out/'completion.json').read_text())
+            self.assertEqual(next(iter(manifest['videos'].values()))['frames'], 3)
             with np.load(out / "trajectory.npz",allow_pickle=False) as data:
                 self.assertTrue(all(len(data[key])==1000 for key in data.files))
+
+    def test_initial_reset_failure_cannot_seal_completion(self):
+        cfg=Config(Train(), Algo(), types.SimpleNamespace(dof_names=['joint_'+str(i) for i in range(29)]),
+            types.SimpleNamespace(terms={'undesired_contacts':types.SimpleNamespace(
+                params={'undesired_contacts_body_names':'pelvis','threshold':1.})}))
+        env=Environment(cfg.robot.dof_names)
+        with tempfile.TemporaryDirectory(dir='/workspace') as directory:
+            root=Path(directory)
+            inputs=root/'flux/replay-input'; inputs.mkdir(parents=True)
+            checkpoint=inputs/'selected.pt'; checkpoint.write_bytes(b'fixture')
+            out=root/'result'
+            modules=modules_for_test(env,cfg)
+            with patch.dict(sys.modules,modules), patch.object(replay,'ROOT',root), \
+                    patch.object(replay,'OUT',out), \
+                    patch.object(replay,'EXPECTED_SHA256',hashlib.sha256(b'fixture').hexdigest()), \
+                    patch.object(env,'reset_all',side_effect=RuntimeError('initial reset fixture')), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                previous_grad=torch.is_grad_enabled(); previous_argv=sys.argv[:]
+                try:
+                    with self.assertRaisesRegex(RuntimeError,'initial reset fixture'):
+                        replay.main(root)
+                finally:
+                    torch.set_grad_enabled(previous_grad); sys.argv=previous_argv
+            self.assertFalse((out/'summary.json').exists())
+            self.assertFalse((out/'completion.json').exists())
+            self.assertEqual(env.steps,0)
 
     def test_correct_source_checkpoint_hash(self):
         source = Path("/workspace/flux_inspect_TASK_20261024_030/model_00001.pt")

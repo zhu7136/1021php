@@ -50,7 +50,7 @@ def fetch_inputs(url):
     result=extract_inputs(archive,OUT/'inputs');base.save(OUT/'input_verification.json',result)
     emit('paired_eval_inputs_verified',**result)
 
-def worker(arm,run_path):
+def worker(arm,run_path,synchronized_diagnostics=False):
     if arm not in dict(ARMS):raise ValueError('Undeclared evaluation arm')
     label,seed_text=arm.split('-seed');seed=int(seed_text)
     out=OUT/arm;out.mkdir(exist_ok=False)
@@ -103,10 +103,19 @@ def worker(arm,run_path):
     weights_before={k:v.detach().clone() for k,v in algo.actor.state_dict().items()}
     motion=base.resolve_motion_command(env);stats=EnvironmentStats(env)
     capture=FirstEpisodeCapture(env,motion,stats,out/'first_episode_tracking.jsonl')
+    synchronized=None
+    if synchronized_diagnostics:
+        from synchronized_diagnostics import SynchronizedDiagnostics
+        synchronized=SynchronizedDiagnostics(env,motion,stats,out)
     emit('paired_eval_arm_begin',arm=arm,seed=seed,source_iteration=expected_iteration,
          checkpoint_sha256=base.digest(checkpoint),optimizer_loaded=False,training_updates=0)
-    result=evaluate(algo,motion,stats,seed=seed)
-    diagnostics=capture.finish(result)
+    try:
+        result=evaluate(algo,motion,stats,seed=seed)
+        diagnostics=capture.finish(result)
+        if synchronized is not None:
+            result['synchronized_diagnostics']=synchronized.finish()
+    finally:
+        if synchronized is not None:synchronized.close()
     for key,value in algo.actor.state_dict().items():
         if not torch.equal(value,weights_before[key]):raise ValueError('Evaluation changed model weights')
     if algo.actor_optimizer.state or algo.critic_optimizer.state:raise ValueError('Unexpected optimizer state')
@@ -154,8 +163,10 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--input-url');parser.add_argument('--upload-url');parser.add_argument('--upload-headers',default='{}')
     parser.add_argument('--wandb-run-path',required=True);parser.add_argument('--runtime-child',choices=list(dict(ARMS)))
+    parser.add_argument('--synchronized-diagnostics',action='store_true',
+        help='Opt-in pre-reset control/substep ankle/contact/push telemetry; no training changes')
     args=parser.parse_args()
-    if args.runtime_child:worker(args.runtime_child,args.wandb_run_path);return
+    if args.runtime_child:worker(args.runtime_child,args.wandb_run_path,args.synchronized_diagnostics);return
     if OUT.exists() or not args.input_url or not args.upload_url:raise ValueError('Fresh output and scoped capabilities required')
     OUT.mkdir(parents=True);started=time.monotonic();child=None
     base.OUT=OUT;base.ARMS=ARMS;base.BUNDLE_NAME='protected_multiseed_eval_bundle.zip'
@@ -177,8 +188,10 @@ def main():
             if remaining<60:raise TimeoutError('Insufficient approved worker time')
             env=dict(os.environ,PYTHONUNBUFFERED='1',CUDA_VISIBLE_DEVICES='0')
             for name in ['key','github','WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY']:env.pop(name,None)
-            child=subprocess.Popen([str(resolve_isaac_launcher()),str(Path(__file__).resolve()),
-                '--runtime-child',arm,'--wandb-run-path',args.wandb_run_path],env=env,start_new_session=True)
+            command=[str(resolve_isaac_launcher()),str(Path(__file__).resolve()),
+                '--runtime-child',arm,'--wandb-run-path',args.wandb_run_path]
+            if args.synchronized_diagnostics:command.append('--synchronized-diagnostics')
+            child=subprocess.Popen(command,env=env,start_new_session=True)
             try:code=wait_for_child(child,ROOT,remaining)
             except subprocess.TimeoutExpired:
                 os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=5);code=124

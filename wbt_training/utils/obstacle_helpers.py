@@ -151,29 +151,10 @@ def offset_motions_to_file(
     per_frame_offsets_xy: torch.Tensor,
     file_path: str = "motion.npz",
 ) -> None:
-    """Apply grid offsets and per-env origins to motion data, then save as NPZ."""
-    body_pos_w = torch.tensor(data["body_pos_w"], dtype=torch.float32)
-    body_pos_w[:, :, :2] += per_frame_offsets_xy.unsqueeze(1)
+    """Apply identical offsets using bounded-memory, loader-float32 NPZ writes."""
+    from wbt_training.utils.motion_replication import stream_offset_motions_to_file
 
-    E = int(env_origins.shape[0])
-    T = int(body_pos_w.shape[0])
-    env_origins_t = torch.tensor(env_origins, dtype=body_pos_w.dtype)
-
-    body_pos_w = body_pos_w.unsqueeze(0) + env_origins_t[:, None, None, :]
-    body_pos_w = body_pos_w.reshape(E * T, *body_pos_w.shape[2:])
-
-    replicated_data = {}
-    for k, v in data.items():
-        if k == "body_pos_w":
-            continue
-        arr = np.asarray(v)
-        if arr.ndim >= 1 and arr.shape[0] == T:
-            replicated_data[k] = np.concatenate([arr] * E, axis=0)
-        else:
-            replicated_data[k] = v
-
-    replicated_data["body_pos_w"] = body_pos_w.numpy()
-    np.savez(file_path, **replicated_data)
+    stream_offset_motions_to_file(data, env_origins, per_frame_offsets_xy, file_path)
 
 
 # ---------------------------------------------------------------------------

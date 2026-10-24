@@ -3,6 +3,11 @@
   "status": "all_56_kinematic_pass_not_simulation_validated",
   "supersedes_artifact": "zhul136-university-of-science-and-technology-of-china/HuD04_WBT/hud04-cpu-repair-partial-v7:v0",
   "files": {
+    "wbt_training/utils/obstacle_helpers.py": {
+      "original_sha256": "08716396ab009571d91dc4973ee3fa1a83b1f7b9b05e9a2db41ac048a7e1189a",
+      "repaired_sha256": "1c44de52bfbf66675c29226fd2434080e3bfce298a166ff1100827920e5b4c98",
+      "reason": "2026-10-24 delegate motion replication to a bounded-memory float32 NPZ writer; preserve terrain sampling, variants and loader-visible values; no new paid task"
+    },
     "flux/holosoma_overlay/config_values/robot.py": {
       "original_sha256": "c1a3f78b5b4d87d4c4d71790de444d3c62ec6627a6955e40c529a13c62b6647d",
       "repaired_sha256": "8145091013f1edc713d8aa8c30a81d9a5a6843b17ac762a36edbb194377f6a22",

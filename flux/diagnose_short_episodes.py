@@ -45,7 +45,7 @@ def heights_at_xy(mesh,points):
         result.append(float(z[inside].max()) if inside.any() else None)
     return result
 
-def diagnose(dataset,recorder_factory=None,action_transform=None):
+def diagnose(dataset,recorder_factory=None,action_transform=None,capture_steps=20):
     import numpy as np
     import torch
     from holosoma.utils.eval_utils import CheckpointConfig
@@ -191,7 +191,8 @@ def diagnose(dataset,recorder_factory=None,action_transform=None):
                     actions=algo.actor.act_inference({'actor_obs':normalized}) if mode in ('policy_mean','policy_mean_clamped','policy_mean_scaled025','default_pose_pd') else algo.actor.act({'actor_obs':normalized})
                 if action_transform is not None:actions=action_transform(env,mode,actions)
                 assert torch.isfinite(actions).all() and torch.isfinite(sim.dof_pos).all()
-                if recorder is not None and step<20:
+                # Legacy capture was step<20; keep that default for older probes.
+                if recorder is not None and step<capture_steps:
                     recorder.begin_step(mode,step,normalized,actor_mean,actions)
                 obs,_,_,_=env.step({'actions':actions})
                 if recorder is not None:assert recorder.phase is None,'Pre-reset recorder did not flush'
@@ -209,7 +210,7 @@ def diagnose(dataset,recorder_factory=None,action_transform=None):
             checkpoint_unchanged=digest(checkpoint)==SHA,actor_weights_unchanged=weights_hash()==before,
             joint_mapping_runtime_verified=True,gpu='1x4090D24GB',num_envs=NUM_ENVS,
             control_steps_per_mode=STEPS_PER_MODE,total_control_steps=len(MODES)*(STEPS_PER_MODE+1),
-            detailed_capture_steps_per_mode=20 if recorder is not None else 0,
+            detailed_capture_steps_per_mode=capture_steps if recorder is not None else 0,
             action_noise_std=algo.actor.std.detach().cpu().tolist(),results=results,
             limitations=['One short diagnostic, no success-rate/convergence estimate.',
               'Terrain regenerated, not original task034 mesh; original seed was unspecified.',
@@ -242,15 +243,14 @@ def worker():
 
 def upload(url,headers):
     # Do not include extracted input datasets/archive in the output bundle.
-    import zipfile,urllib.request,urllib.parse
+    import urllib.request,urllib.parse
+    from diagnostic_bundle import build_bundle
     p=urllib.parse.urlsplit(url)
     assert p.scheme=='https' and (p.hostname=='storage.googleapis.com' or str(p.hostname).endswith('.storage.googleapis.com'))
     assert all(k.lower()=='content-type' or k.lower().startswith('x-goog-') for k in headers)
-    files=[f for f in OUT.glob('*') if f.is_file() and f.suffix in ['.json','.jsonl','.yaml']]
-    assert all(not f.is_symlink() for f in files) and sum(f.stat().st_size for f in files)<40*1024*1024
     bundle=ROOT/'outputs/replay_bundle.zip'
-    with zipfile.ZipFile(bundle,'w',compression=zipfile.ZIP_DEFLATED) as z:
-        for f in files:z.write(f,arcname=f.name)
+    manifest=build_bundle(OUT,bundle)
+    emit('diagnostic_bundle_prepared',**manifest)
     class NoRedirect(urllib.request.HTTPRedirectHandler):
         def redirect_request(self,*a,**k):return None
     r=urllib.request.Request(url,data=bundle.read_bytes(),headers=headers,method='PUT')

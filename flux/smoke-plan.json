@@ -1,0 +1,21 @@
+{
+  "gpu_start_authorized": false,
+  "purpose": "Pipeline smoke only, not a converged locomotion teacher",
+  "project_id": "PRO_20261023_011",
+  "gpu": "1x4090D-24G",
+  "image_id": "BJX00000170",
+  "image_version": "isaac-lab2.3.1-v3",
+  "trial_count": 1,
+  "automatic_retries": 0,
+  "worker_seconds": 1200,
+  "num_envs": 128,
+  "updates": 20,
+  "dataset": "motions-locomotion",
+  "dataset_sha256": "2397220209b5ce32cd886340f5b12f62821f17e40bff0d2958b1a70295a08dcf",
+  "billing_currency": null,
+  "billing_unit": null,
+  "billing_acceptance": null,
+  "code_commit": null,
+  "output_retrieval_verified": false,
+  "aria_provenance": null
+}

@@ -59,9 +59,16 @@ class FirstEpisodeCapture:
             obs=reset(*args,**kwargs)
             # evaluate() makes two reset_all calls with one warm-up step between.
             # Only the final reset snapshot is retained; warm-up tracking is not sampled.
+            # Native RootStatesProxy is NOT a Tensor. Its public index path returns
+            # the environment's xyzw state; backing IsaacSim storage uses wxyz.
+            root_states=env.simulator.robot_root_states[:]
+            if not torch.is_tensor(root_states):raise TypeError('Root-state indexing must return a Tensor')
+            if root_states.shape!=(env.simulator.dof_pos.shape[0],13):
+                raise ValueError('Root-state shape must be (num_envs, 13)')
+            if not torch.isfinite(root_states).all():raise ValueError('Nonfinite root states')
             self.initial=dict(joint_positions=env.simulator.dof_pos.detach().cpu().tolist(),
                 joint_velocities=env.simulator.dof_vel.detach().cpu().tolist(),
-                root_states=env.simulator.robot_root_states.detach().cpu().tolist(),
+                root_states=root_states.detach().cpu().tolist(),
                 motion_frames=motion.time_steps.detach().cpu().tolist(),
                 dr_episode_count=env.dr_episode_count.detach().cpu().tolist(),
                 **{'observation/'+k:v.detach().cpu().tolist() for k,v in obs.items()})

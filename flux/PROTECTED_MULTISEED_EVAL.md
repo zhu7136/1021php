@@ -1,6 +1,31 @@
 High-level protocol: TASK097 frozen-model paired evaluation
 =========================================================
 
+TASK099 CPU-only repair (2026-10-24)
+----------------------------------
+TASK_20261024_099 stopped in initial-state snapshotting: native
+RootStatesProxy does not implement Tensor.detach(). Read it through its public
+[:] index operator first, then validate a finite (num_envs,13) Tensor and copy
+it to a CPU list. That preserves the environment-facing xyzw quaternion order;
+do not read private wxyz storage or change the native simulator class.
+
+test_root_state_proxy_contract.py executes the actual proxy class and conversion
+function AST bodies from pinned Holosoma commit
+4a0bf04cde5930af5ed59da797568d32be972525. Both source files are SHA256-checked.
+This avoids importing IsaacSim/IsaacLab on CPU; it is not a mock proxy. The old
+expression reproduces the actual AttributeError. Eleven regressions cover the
+real index interface, quaternion order, successful reset snapshots, refreshed
+proxy data, non-mutating/independent copies, invalid shape/nonfinite rejection,
+and the existing 128-step evaluation control flow with mocked simulator physics.
+Against the old snapshot code, 8 of the 11 tests error with the original missing
+detach. After the fix all 11 pass; full Flux CPU suite is 351 passing tests.
+
+No GPU validation is implied, and this repair does not authorize a new GPU task.
+Weights, source hashes, seeds, evaluation length, physical/reward/PPO settings,
+and the original single-task budget are unchanged. A separately approved task
+must use a NEW submission controller/state, this repaired commit, and fresh
+signed input/output URLs; never restart/reuse the TASK099 submission state.
+
 This entrypoint performs no training and writes no new checkpoint. It compares
 TASK_20261024_097 model_preflight.pt (iteration 0) with model_final.pt (iteration
 200), identified by the SHA256 constants in evaluate_protected_multiseed.py.

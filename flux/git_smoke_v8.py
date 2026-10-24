@@ -397,6 +397,9 @@ def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SEC
     from source_preflight import verify_sources
     with stage('source_preflight'):
         event('source_preflight_verified', **verify_sources(ROOT))
+    from runtime_preflight import verify_runtime
+    with stage('runtime_preflight'):
+        event('runtime_preflight_verified', **verify_runtime(ROOT))
     work = ROOT/'outputs'/'hud04-flux-git-v8-smoke'
     # A unique attempt directory preserves earlier data/checkpoints on restart.
     import tempfile

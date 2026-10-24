@@ -15,8 +15,9 @@
     },
     "flux/train_hud04.py": {
       "original_sha256": null,
-      "repaired_sha256": "91eef79b472ba1dbfd0b1b950f5f8c3a3dc49019d9c46b5817795353b8beb207",
-      "reason": "2026-10-24 offline dependency preparation: replace online pip installation with verified local-only wheels; existing training and candidate gates unchanged. Previous v8 launcher SHA256: 0df8841a05b7499b6d9a5831d4b185d311a7c498523c1aa82d1b62efce8d586f"
+      "previous_repaired_sha256": "91eef79b472ba1dbfd0b1b950f5f8c3a3dc49019d9c46b5817795353b8beb207",
+      "repaired_sha256": "8138c37aa698e656944a88411907c7d329b6fd9326eef42ce31ab702f6de6212",
+      "reason": "2026-10-24 vendor IsaacSim launcher resolution for standard and Flux IsaacLab layouts with explicit override; no system Python fallback or training-bound changes"
     },
     "flux/kinematics.py": {
       "original_sha256": null,
@@ -61,15 +62,20 @@
     },
     "flux/git_smoke_v8.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "ddea651b3dd7d0ab0adf21bfd977ff98551dd58d4d8704bf9f52a58b5f784f50",
-      "repaired_sha256": "9032149cb7f86d2bf035f904ca9774e8e01fb3a55fd25b7b6832147dcf5377ea",
-      "reason": "2026-10-24 fail-closed source preflight before data assembly and dependency installation; unchanged32env2iter900sec and offline dependency installation"
+      "previous_repaired_sha256": "9032149cb7f86d2bf035f904ca9774e8e01fb3a55fd25b7b6832147dcf5377ea",
+      "repaired_sha256": "b1264cbcf5c8788d0928b1d7cdc5406d8c0d9de4aaa51c8513d2941264dde40e",
+      "reason": "2026-10-24 runtime asset and vendor-launcher preflight before data assembly and dependency installation; unchanged32env2iter900sec"
     },
     "flux/tests/test_download_diagnostics.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "7655e47359c7ed520bf03b74bc251939d9291944fea2321d6fa25cb7de7ae16f",
-      "repaired_sha256": "fc9eb4473ae4a3986ee19904088c42e08588f5d153947b817ac5b51b3ec5b723",
-      "reason": "2026-10-24 include source-preflight phase in diagnostics; inject later-phase failures independently of source-preflight regression suite"
+      "previous_repaired_sha256": "fc9eb4473ae4a3986ee19904088c42e08588f5d153947b817ac5b51b3ec5b723",
+      "repaired_sha256": "a68692654e4b32494efd8e5c683d9d12aceb1637f6def215c430561a11bff512",
+      "reason": "2026-10-24 include runtime-preflight phase; isolate later-phase injected failures from dedicated asset and launcher regressions"
+    },
+    "flux/runtime_preflight.py": {
+      "original_sha256": null,
+      "repaired_sha256": "a434dcbb009e32f4998e561c83ad0741863ad34e5144719f52ea9db681b1e769",
+      "reason": "2026-10-24 statically verify IsaacSim HU_D04 meshes and require an executable vendor launcher with bundled Python before installing dependencies"
     },
     "flux/source_preflight.py": {
       "original_sha256": null,

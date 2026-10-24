@@ -38,6 +38,9 @@ class DownloadDiagnosticsTests(unittest.TestCase):
         preflight = patch('source_preflight.verify_sources', return_value={})
         preflight.start()
         self.addCleanup(preflight.stop)
+        runtime = patch('runtime_preflight.verify_runtime', return_value={})
+        runtime.start()
+        self.addCleanup(runtime.stop)
 
     def download(self, response=None, error=None, timeout=1):
         class Opener:
@@ -205,7 +208,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
         install.assert_called_once_with(self.root)
         self.assertEqual(train.call_count, 1)
         stages = [e['stage'] for e in self.events() if e['event']=='stage_complete']
-        self.assertEqual(stages, ['source_preflight', 'download_archive', 'extract_and_verify_candidates',
+        self.assertEqual(stages, ['source_preflight', 'runtime_preflight', 'download_archive', 'extract_and_verify_candidates',
             'install_pinned_dependencies', 'training_entrypoint'])
         self.assertEqual(self.events()[-1]['event'], 'smoke_entrypoint_complete')
 

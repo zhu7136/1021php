@@ -152,9 +152,9 @@ def main() -> None:
     if args.runtime_child:
         runtime_child(args)
         return
-    launcher = Path('/isaac-sim/python.sh')
-    if not launcher.is_file():
-        raise SystemExit('Expected /isaac-sim/python.sh. Use a compatible Flux IsaacSim image; no system-Python fallback.')
+    from runtime_preflight import resolve_isaac_launcher
+    launcher = resolve_isaac_launcher()
+    print(json.dumps({'event': 'isaac_launcher_selected', 'path': str(launcher)}), flush=True)
     child_env = os.environ.copy()
     child_env['PYTHONUNBUFFERED'] = '1'
     child_env['CUDA_VISIBLE_DEVICES'] = '0'

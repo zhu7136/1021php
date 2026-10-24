@@ -15,9 +15,9 @@
     },
     "flux/train_hud04.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "91eef79b472ba1dbfd0b1b950f5f8c3a3dc49019d9c46b5817795353b8beb207",
-      "repaired_sha256": "8138c37aa698e656944a88411907c7d329b6fd9326eef42ce31ab702f6de6212",
-      "reason": "2026-10-24 vendor IsaacSim launcher resolution for standard and Flux IsaacLab layouts with explicit override; no system Python fallback or training-bound changes"
+      "previous_repaired_sha256": "8138c37aa698e656944a88411907c7d329b6fd9326eef42ce31ab702f6de6212",
+      "repaired_sha256": "0737aa44e003d8022549330777feae34fa2d3a34aa5041232027251530919b10",
+      "reason": "2026-10-24 add 300-second native Isaac startup watchdog, phase markers, stack snapshots and parent log mirroring; unchanged 32env2PPO900s worker bounds"
     },
     "flux/kinematics.py": {
       "original_sha256": null,

@@ -98,6 +98,8 @@ def runtime_child(args) -> None:
         sys.argv = ['wbt_training.train_agent', '--help']
         runpy.run_module('wbt_training.train_agent', run_name='__main__')
         return
+    from startup_diagnostics import install as install_startup_diagnostics
+    install_startup_diagnostics(ROOT)
     import torch
     if not torch.cuda.is_available():
         raise RuntimeError('Training requires CUDA; refusing CPU fallback')
@@ -160,7 +162,8 @@ def main() -> None:
     child_env['CUDA_VISIBLE_DEVICES'] = '0'
     child = subprocess.Popen([str(launcher), str(Path(__file__).resolve()), '--runtime-child', *sys.argv[1:]], env=child_env, start_new_session=True)
     try:
-        raise SystemExit(child.wait(timeout=args.time_limit_seconds))
+        from startup_diagnostics import wait_for_child
+        raise SystemExit(wait_for_child(child, ROOT, args.time_limit_seconds))
     except subprocess.TimeoutExpired:
         os.killpg(child.pid, signal.SIGTERM)
         try:

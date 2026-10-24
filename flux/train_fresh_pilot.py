@@ -9,11 +9,12 @@ OUT=ROOT/'outputs/fresh_pilot'
 WORKER_SECONDS=1800
 MAX_UPDATES=200
 TRAIN_SECONDS=300
+PROTECTED=False
 def emit(event,**fields):base.emit(event.replace('low_noise_','fresh_'),**fields)
 
 class TrackingCapture:
     """Observe the native processed targets and tracking errors before automatic resets."""
-    def __init__(self,env,motion,path):
+    def __init__(self,env,motion,path,actor=None):
         self.phase='initialization';self.step=0
         self.sink=Path(path).open('w',buffering=1)
         self.original=env._check_termination
@@ -38,6 +39,20 @@ class TrackingCapture:
                 left_ankle_error_max_m=float(error.max()),left_ankle_exceeded_count=int((error>.5).sum()),
                 target_reference_abs_error_mean_rad=float((target-motion.joint_pos).abs().mean()),
                 done_count=int(env.reset_buf.bool().sum()))
+            if hasattr(terms[0],'_requested_position_targets'):
+                if outside.any():raise RuntimeError('Native applied target escaped joint hard limits')
+                request=terms[0]._requested_position_targets
+                row.update(requested_left_hip_mean_rad=float(request[:,hip].mean()),
+                    requested_left_hip_outside_fraction=float(((request[:,hip]<limits[hip,0])|(request[:,hip]>limits[hip,1])).float().mean()),
+                    requested_target_outside_fraction=float(((request<limits[:,0])|(request>limits[:,1])).float().mean()),
+                    target_guard_fraction=float((request!=target).float().mean()))
+                if self.phase=='training' and self.step>0 and actor is not None:
+                    mean=actor.action_mean
+                    if mean.shape!=request.shape:raise ValueError('Policy/target batch mismatch')
+                    mean_request=env.default_dof_pos+mean*terms[0].action_scales
+                    row.update(left_hip_policy_mean=float(mean[:,hip].mean()),
+                        left_hip_policy_std=float(actor.action_std[:,hip].mean()),
+                        left_hip_mean_request_rad=float(mean_request[:,hip].mean()))
             self.sink.write(json.dumps(row,allow_nan=False)+'\n');self.step+=1
             return result
         env._check_termination=check
@@ -66,6 +81,9 @@ def worker(run_path):
         algo=dataclasses.replace(preset.algo,config=dataclasses.replace(preset.algo.config,
             load_optimizer=True,num_learning_iterations=MAX_UPDATES,save_interval=10000000)),
         logger=DisabledLoggerConfig(base_dir=str(out),headless_recording=False))
+    if PROTECTED:
+        from wbt_training.utils.target_guard import protected_config
+        cfg=protected_config(cfg)
     torch.manual_seed(1401);torch.cuda.manual_seed_all(1401);np.random.seed(1401);random.seed(1401)
     cfg=apply_preprocess_hook(cfg);cfg.save_config(str(out/'holosoma_config.yaml'))
     if cfg.training.checkpoint is not None or cfg.training.teacher_checkpoint is not None:raise ValueError('Fresh-only trial')
@@ -75,6 +93,9 @@ def worker(run_path):
     if device!='cuda:0' or env.num_envs!=32:raise ValueError('Allocation mismatch')
     ids=list(env.simulator.dof_ids);native=list(env.simulator._robot.joint_names)
     if len(set(ids))!=29 or [native[i] for i in ids]!=list(cfg.robot.dof_names):raise ValueError('Joint mapping mismatch')
+    if PROTECTED:
+        from environment_tensor_boundary import install_environment_tensor_boundary
+        emit('protected_environment_boundary',**install_environment_tensor_boundary(env))
     algo=get_class(cfg.algo._target_)(env=env,config=cfg.algo.config,log_dir=str(out),device=device)
     algo.setup();attach_metadata(algo,cfg,run_path)
     if algo.current_learning_iteration!=0 or algo.actor_optimizer.state or algo.critic_optimizer.state:
@@ -82,7 +103,7 @@ def worker(run_path):
     preflight=roundtrip(algo,out/'model_preflight.pt')
     base.save(out/'save_reload_preflight.json',preflight);emit('fresh_save_reload_preflight_pass',**preflight)
     motion=base.resolve_motion_command(env);stats=EnvironmentStats(env)
-    capture=TrackingCapture(env,motion,out/'tracking.jsonl');atexit.register(capture.close)
+    capture=TrackingCapture(env,motion,out/'tracking.jsonl',actor=algo.actor);atexit.register(capture.close)
     capture.set_phase('evaluation_before');before=evaluate(algo,motion,stats)
     base.save(out/'evaluation_before.json',before);emit('fresh_evaluation_before',**before)
     # Restore only THIS trial's random initialization, never any previous task checkpoint.
@@ -106,6 +127,7 @@ def worker(run_path):
     base.save(out/'evaluation_after.json',after);emit('fresh_evaluation_after',**after)
     capture.close()
     result=dict(from_scratch=True,source_checkpoint=None,preflight=preflight,final_checkpoint=final,
+        protected_targets=PROTECTED,
         before=before,after=after,**trained,automatic_retries=0,
         limitation='One short plumbing/early-behavior check, not a convergence or success-rate estimate')
     if not 1<=trained['completed_updates']<=MAX_UPDATES:raise ValueError('Update bounds violated')
@@ -118,7 +140,7 @@ def main():
     if args.runtime_child:worker(args.wandb_run_path);return
     if OUT.exists() or not args.upload_url:raise ValueError('Fresh output and scoped upload required; no retry')
     OUT.mkdir(parents=True);started=time.monotonic();child=None
-    base.OUT=OUT;base.ARMS=(('fresh',1.),);base.BUNDLE_NAME='fresh_pilot_bundle.zip'
+    base.OUT=OUT;base.ARMS=(('fresh',1.),);base.BUNDLE_NAME='protected_pilot_bundle.zip' if PROTECTED else 'fresh_pilot_bundle.zip'
     def deadline(signum,frame):
         if child is not None and child.poll() is None:
             try:os.killpg(child.pid,signal.SIGKILL)
@@ -136,7 +158,8 @@ def main():
         if remaining<60:raise TimeoutError('Insufficient worker budget')
         env=dict(os.environ,PYTHONUNBUFFERED='1',CUDA_VISIBLE_DEVICES='0')
         for n in ['key','github','WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY']:env.pop(n,None)
-        child=subprocess.Popen([str(resolve_isaac_launcher()),str(Path(__file__).resolve()),
+        child_entrypoint=Path(__file__).with_name('train_protected_pilot.py') if PROTECTED else Path(__file__)
+        child=subprocess.Popen([str(resolve_isaac_launcher()),str(child_entrypoint.resolve()),
             '--runtime-child','--wandb-run-path',args.wandb_run_path],env=env,start_new_session=True)
         try:code=wait_for_child(child,ROOT,remaining)
         except subprocess.TimeoutExpired:

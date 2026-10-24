@@ -18,6 +18,7 @@ MODES=('policy_mean','policy_sample','reference_pd')
 NUM_ENVS=32
 STEPS_PER_MODE=256
 WORKER_SECONDS=900
+ENTRYPOINT=Path(__file__).resolve()
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -44,7 +45,7 @@ def heights_at_xy(mesh,points):
         result.append(float(z[inside].max()) if inside.any() else None)
     return result
 
-def diagnose(dataset):
+def diagnose(dataset,recorder_factory=None):
     import numpy as np
     import torch
     from holosoma.utils.eval_utils import CheckpointConfig
@@ -164,6 +165,11 @@ def diagnose(dataset):
                 episode_lengths=lengths,causes={n:v[done].tolist() for n,v in flags.items()},
                 tracked_errors_m=err[done].tolist(),ref_pos_error_m=torch.linalg.vector_norm(motion.ref_pos_w-motion.robot_ref_pos_w,dim=-1)[done].tolist()))+'\n')
     env._check_termination=checked
+    chain_file=None;recorder=None
+    if recorder_factory is not None:
+        chain_file=(OUT/'control_chain.jsonl').open('w',buffering=1)
+        recorder=recorder_factory(env,motion,chain_file)
+        recorder.install()
     try:
         for mode in MODES:
             torch.manual_seed(1402);torch.cuda.manual_seed_all(1402)
@@ -174,13 +180,20 @@ def diagnose(dataset):
             phase['name']=mode
             for step in range(STEPS_PER_MODE):
                 phase['step']=step
+                if recorder is not None:
+                    actor_obs=torch.cat([obs[k] for k in algo.actor_obs_keys],dim=1)
+                    normalized=algo._normalize_actor_obs(actor_obs,update=False)
+                    actor_mean=algo.actor.act_inference({'actor_obs':normalized})
                 if mode=='reference_pd':actions=(motion.joint_pos-env.default_dof_pos)/env.action_scales
                 else:
                     actor_obs=torch.cat([obs[k] for k in algo.actor_obs_keys],dim=1)
                     normalized=algo._normalize_actor_obs(actor_obs,update=False)
                     actions=algo.actor.act_inference({'actor_obs':normalized}) if mode=='policy_mean' else algo.actor.act({'actor_obs':normalized})
                 assert torch.isfinite(actions).all() and torch.isfinite(sim.dof_pos).all()
+                if recorder is not None and step<20:
+                    recorder.begin_step(mode,step,normalized,actor_mean,actions)
                 obs,_,_,_=env.step({'actions':actions})
+                if recorder is not None:assert recorder.phase is None,'Pre-reset recorder did not flush'
                 if (step+1)%64==0:emit('diagnostic_progress',mode=mode,steps=step+1,resets=counters['resets'])
             phase['name']=None
             lengths=np.asarray(counters.pop('lengths'))
@@ -194,7 +207,8 @@ def diagnose(dataset):
         summary=dict(checkpoint_sha256=SHA,checkpoint_iteration=790,training_updates=0,
             checkpoint_unchanged=digest(checkpoint)==SHA,actor_weights_unchanged=weights_hash()==before,
             joint_mapping_runtime_verified=True,gpu='1x4090D24GB',num_envs=NUM_ENVS,
-            control_steps_per_mode=STEPS_PER_MODE,total_control_steps=3*(STEPS_PER_MODE+1),
+            control_steps_per_mode=STEPS_PER_MODE,total_control_steps=len(MODES)*(STEPS_PER_MODE+1),
+            detailed_capture_steps_per_mode=20 if recorder is not None else 0,
             action_noise_std=algo.actor.std.detach().cpu().tolist(),results=results,
             limitations=['One short diagnostic, no success-rate/convergence estimate.',
               'Terrain regenerated, not original task034 mesh; original seed was unspecified.',
@@ -203,7 +217,9 @@ def diagnose(dataset):
               'Reference PD is a controller probe, not a trained policy or dynamics certificate.'])
         assert summary['checkpoint_unchanged'] and summary['actor_weights_unchanged']
         save('summary.json',summary);emit('diagnostic_complete',**summary)
-    finally:event_file.close()
+    finally:
+        event_file.close()
+        if chain_file is not None:chain_file.close()
 
 def worker():
     from source_preflight import verify_sources
@@ -261,14 +277,14 @@ def main():
     e=os.environ.copy();e.update(PYTHONUNBUFFERED='1',CUDA_VISIBLE_DEVICES='0',WANDB_MODE='disabled')
     for n in ['key','github','WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY']:e.pop(n,None)
     emit('diagnostic_worker_start',num_envs=NUM_ENVS,modes=MODES,steps_per_mode=STEPS_PER_MODE,worker_limit_seconds=WORKER_SECONDS,training_updates=0,automatic_retries=0)
-    child=subprocess.Popen([str(launcher),str(Path(__file__).resolve()),'--runtime-child','--upload-url',args.upload_url,'--upload-headers',args.upload_headers],env=e,start_new_session=True)
+    child=subprocess.Popen([str(launcher),str(ENTRYPOINT),'--runtime-child','--upload-url',args.upload_url,'--upload-headers',args.upload_headers],env=e,start_new_session=True)
     from startup_diagnostics import wait_for_child
     try:code=wait_for_child(child,ROOT,WORKER_SECONDS)
     except subprocess.TimeoutExpired:
         os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=10);raise SystemExit(124)
     assert code==0 and (OUT/'summary.json').is_file(),'No sealed diagnostic summary'
     result=json.loads((OUT/'summary.json').read_text())
-    assert result['checkpoint_unchanged'] and result['actor_weights_unchanged'] and len(result['results'])==3
+    assert result['checkpoint_unchanged'] and result['actor_weights_unchanged'] and len(result['results'])==len(MODES)
     assert (ROOT/'outputs/diagnostic_upload_receipt.json').is_file(),'Output upload unverified'
     emit('diagnostic_entrypoint_complete',checkpoint_sha256=SHA,training_updates=0)
 

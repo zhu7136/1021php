@@ -19,6 +19,20 @@ def digest(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def save(path,value):
     tmp=Path(str(path)+'.partial');tmp.write_text(json.dumps(value,indent=2,allow_nan=False));tmp.replace(path)
 
+def resolve_motion_command(env):
+    """Use the pinned Holosoma state API, not IsaacLab's get_term API."""
+    getter=getattr(env.command_manager,'get_state',None)
+    if not callable(getter):
+        raise TypeError('Pinned Holosoma CommandManager.get_state is required')
+    motion=getter('motion_command')
+    if motion is None:
+        raise ValueError('Required motion_command state is missing')
+    if not hasattr(motion,'time_steps') or not hasattr(motion,'motion_cfg'):
+        raise TypeError('motion_command lacks evaluation state')
+    if not hasattr(motion.motion_cfg,'use_adaptive_timesteps_sampler'):
+        raise TypeError('motion_command lacks native sampler configuration')
+    return motion
+
 def bootstrap():
     from source_preflight import verify_sources
     from runtime_preflight import verify_runtime
@@ -76,7 +90,7 @@ def worker(arm):
     if algo.current_learning_iteration!=790:raise ValueError('Source iteration mismatch')
     if algo.actor_learning_rate!=1e-5 or algo.critic_learning_rate!=1e-5:raise ValueError('Optimizer LR mismatch')
     if algo.empirical_normalization:raise ValueError('Unexpected observation normalization')
-    motion=env.command_manager.get_term('motion_command')
+    motion=resolve_motion_command(env)
     stats=EnvironmentStats(env)
     baseline=evaluate(algo,motion,stats)
     save(out/'evaluation_before.json',baseline)

@@ -188,7 +188,7 @@ def diagnose(dataset,recorder_factory=None,action_transform=None):
                 else:
                     actor_obs=torch.cat([obs[k] for k in algo.actor_obs_keys],dim=1)
                     normalized=algo._normalize_actor_obs(actor_obs,update=False)
-                    actions=algo.actor.act_inference({'actor_obs':normalized}) if mode in ('policy_mean','policy_mean_clamped') else algo.actor.act({'actor_obs':normalized})
+                    actions=algo.actor.act_inference({'actor_obs':normalized}) if mode in ('policy_mean','policy_mean_clamped','policy_mean_scaled025','default_pose_pd') else algo.actor.act({'actor_obs':normalized})
                 if action_transform is not None:actions=action_transform(env,mode,actions)
                 assert torch.isfinite(actions).all() and torch.isfinite(sim.dof_pos).all()
                 if recorder is not None and step<20:

@@ -137,6 +137,8 @@ def main() -> None:
     os.environ.setdefault("LOGURU_LEVEL", "WARNING")
     _stagger_multi_gpu_init()
     tyro_cfg = tyro.cli(AnnotatedExperimentConfig, config=TYRO_CONIFG)
+    from wbt_training.utils.smoke_bounds import verify_training_bounds
+    verify_training_bounds(tyro_cfg)
     setup_simulator_imports(tyro_cfg)
 
     if os.environ.get("INIT_MODE", "stagger") == "sequential":

@@ -429,7 +429,7 @@ def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SEC
     os.environ['PYTHONPATH'] = str(deps)+os.pathsep+os.environ.get('PYTHONPATH', '')
     sys.path.insert(0, str(deps))
     sys.argv = [str(ROOT/'flux/train_hud04.py'), '--train', '--dataset', str(dataset),
-        '--acknowledge-kinematic-candidate', '--num-envs', '32', '--iterations', '2',
+        '--acknowledge-kinematic-candidate', '--num-envs', '32', '--motion-variants', '32', '--iterations', '2',
         '--time-limit-seconds', '900', '--logger', 'disabled', '--name', 'hud04-flux-git-v8-smoke']
     import runpy
     with stage('training_entrypoint'):
@@ -438,7 +438,7 @@ def worker(url: str | None, download_timeout_seconds: int = DOWNLOAD_TIMEOUT_SEC
         except SystemExit as exc:
             if exc.code not in (0, None):
                 raise
-    event('smoke_entrypoint_complete', num_envs=32, requested_iterations=2,
+    event('smoke_entrypoint_complete', num_envs=32, motion_variants=32, requested_iterations=2,
           note='Confirm PPO iteration logs and persisted checkpoint separately')
 
 

@@ -122,9 +122,15 @@ def runtime_child(args) -> None:
         '--algo.config.num-learning-iterations', str(args.iterations),
         '--algo.config.save-interval', str(min(args.iterations, 10)),
     ]
+    if args.motion_variants is not None:
+        from wbt_training.utils.smoke_bounds import BOUND_ENV, variant_override
+        sys.argv += ['--training.preprocess-hook-kwargs', variant_override(args.motion_variants)]
+        os.environ[BOUND_ENV] = json.dumps(dict(num_envs=args.num_envs,
+            motion_variants=args.motion_variants, ppo_iterations=args.iterations))
     if args.logger == 'wandb':
         sys.argv += ['--logger.project', 'HuD04_WBT', '--logger.entity', 'zhul136-university-of-science-and-technology-of-china']
-    print(json.dumps({'event':'training_start','iterations':args.iterations,'num_envs':args.num_envs,'logger':args.logger}), flush=True)
+    print(json.dumps({'event':'training_start','iterations':args.iterations,'num_envs':args.num_envs,
+        'motion_variants_override':args.motion_variants,'logger':args.logger}), flush=True)
     runpy.run_module('wbt_training.train_agent', run_name='__main__')
 
 
@@ -140,12 +146,16 @@ def main() -> None:
     parser.add_argument('--acknowledge-kinematic-candidate',action='store_true',help='Acknowledge kinematic checks are not collision/dynamics validation; controlled simulation only')
     parser.add_argument('--iterations', type=int, default=10)
     parser.add_argument('--num-envs', type=int, default=128)
+    parser.add_argument('--motion-variants', type=int, default=None,
+                        help='Explicitly override terrain motion variants; default preserves experiment preset')
     parser.add_argument('--time-limit-seconds', type=int, default=900, help='Whole-process limit, including setup')
     parser.add_argument('--logger', choices=['disabled','wandb'], default='disabled')
     parser.add_argument('--name', default='hud04-flux-smoke')
     args = parser.parse_args()
     if min(args.iterations, args.num_envs, args.time_limit_seconds) < 1:
         parser.error('iterations, num-envs and time-limit-seconds must be positive')
+    if args.motion_variants is not None and args.motion_variants < 1:
+        parser.error('motion-variants must be positive')
     print(json.dumps(inspect_sources()), flush=True)
     if args.inspect or not (args.check_config or args.train):
         return

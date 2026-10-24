@@ -3,6 +3,11 @@
   "status": "all_56_kinematic_pass_not_simulation_validated",
   "supersedes_artifact": "zhul136-university-of-science-and-technology-of-china/HuD04_WBT/hud04-cpu-repair-partial-v7:v0",
   "files": {
+    "wbt_training/train_agent.py": {
+      "original_sha256": "a912488c0759787a0c117bdb2ae72f45f07ae3ece0a4f78c79d62ec04f3bb095",
+      "repaired_sha256": "4f9eeea105f0068825d7092fb5001ee84f34ef10285e0ac31862d530a038cfad",
+      "reason": "2026-10-24 verify parsed environment, motion-variant and PPO iteration bounds before simulator setup when explicitly requested by smoke launcher"
+    },
     "wbt_training/utils/obstacle_helpers.py": {
       "original_sha256": "08716396ab009571d91dc4973ee3fa1a83b1f7b9b05e9a2db41ac048a7e1189a",
       "repaired_sha256": "1c44de52bfbf66675c29226fd2434080e3bfce298a166ff1100827920e5b4c98",
@@ -20,9 +25,9 @@
     },
     "flux/train_hud04.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "8138c37aa698e656944a88411907c7d329b6fd9326eef42ce31ab702f6de6212",
-      "repaired_sha256": "0737aa44e003d8022549330777feae34fa2d3a34aa5041232027251530919b10",
-      "reason": "2026-10-24 add 300-second native Isaac startup watchdog, phase markers, stack snapshots and parent log mirroring; unchanged 32env2PPO900s worker bounds"
+      "previous_repaired_sha256": "0737aa44e003d8022549330777feae34fa2d3a34aa5041232027251530919b10",
+      "repaired_sha256": "52834fb7d71f6d62204b0ac1c52abb7c734a099a8ddcfbdf3bda3cb3bf6eaa9e",
+      "reason": "2026-10-24 explicit optional motion-variants override and parsed-count verification; keep 300s launcher watchdog and 900s worker limit"
     },
     "flux/kinematics.py": {
       "original_sha256": null,
@@ -67,15 +72,15 @@
     },
     "flux/git_smoke_v8.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "9032149cb7f86d2bf035f904ca9774e8e01fb3a55fd25b7b6832147dcf5377ea",
-      "repaired_sha256": "b1264cbcf5c8788d0928b1d7cdc5406d8c0d9de4aaa51c8513d2941264dde40e",
-      "reason": "2026-10-24 runtime asset and vendor-launcher preflight before data assembly and dependency installation; unchanged32env2iter900sec"
+      "previous_repaired_sha256": "b1264cbcf5c8788d0928b1d7cdc5406d8c0d9de4aaa51c8513d2941264dde40e",
+      "repaired_sha256": "6bb5c2ed1993e557d2e948d53d8ec87a8b1b659d20125a83fac85066abc84f95",
+      "reason": "2026-10-24 explicitly request 32 motion variants instead of inherited preset64; unchanged32env2iter900sec"
     },
     "flux/tests/test_download_diagnostics.py": {
       "original_sha256": null,
-      "previous_repaired_sha256": "fc9eb4473ae4a3986ee19904088c42e08588f5d153947b817ac5b51b3ec5b723",
-      "repaired_sha256": "a68692654e4b32494efd8e5c683d9d12aceb1637f6def215c430561a11bff512",
-      "reason": "2026-10-24 include runtime-preflight phase; isolate later-phase injected failures from dedicated asset and launcher regressions"
+      "previous_repaired_sha256": "a68692654e4b32494efd8e5c683d9d12aceb1637f6def215c430561a11bff512",
+      "repaired_sha256": "65fa105e1a40a80519c14e4b825a3a3f08c29a295d6dcdd0f89980f72d662446",
+      "reason": "2026-10-24 assert bootstrap forwards explicit motion-variants32 as well as32env2iter900sec"
     },
     "flux/runtime_preflight.py": {
       "original_sha256": null,

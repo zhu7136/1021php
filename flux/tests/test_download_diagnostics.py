@@ -203,6 +203,7 @@ class DownloadDiagnosticsTests(unittest.TestCase):
             smoke.worker(URL)
             argv = list(sys.argv)
         self.assertEqual(argv[argv.index('--num-envs')+1], '32')
+        self.assertEqual(argv[argv.index('--motion-variants')+1], '32')
         self.assertEqual(argv[argv.index('--iterations')+1], '2')
         self.assertEqual(argv[argv.index('--time-limit-seconds')+1], '900')
         install.assert_called_once_with(self.root)

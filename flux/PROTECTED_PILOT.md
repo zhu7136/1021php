@@ -31,6 +31,17 @@ are approved. Historical presets and previous checkpoints are not overwritten.
 
 ## Proposed bounded validation (awaiting fresh approval)
 
+### TASK095 initialization-order repair
+
+TASK095 reached IsaacSim scene creation but failed before PPO setup: native
+BaseTask constructs ActionManager before log buffers, and WBT creates its
+default pose only after BaseTask initialization returns. The guarded action
+constructor must not read that pose. It now defers validation until the first
+process_actions call, before native action processing; apply_actions fails closed
+until validation succeeds. No action/reward/PPO settings change in this repair.
+Six new CPU regressions cover late/missing/invalid/nonfinite poses, application
+before validation, and early reset. All 324 CPU tests pass; GPU proof is pending.
+
 One Flux task, one 4090D 24GB, 32 environments, fresh initialization, at most
 200 completed updates OR 300 seconds training; worker maximum 1800 seconds,
 excluding platform container startup/clone; no automatic retries. Includes native

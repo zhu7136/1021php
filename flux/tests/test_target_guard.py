@@ -28,15 +28,50 @@ def native_action_class():
     return m.GuardedJointPositionTargetActionTerm
 
 class TargetGuardTests(unittest.TestCase):
-    def term(self):
+    def term(self, late_init=False):
         env=NS(num_envs=2,num_dof=3,device='cpu',log_dict={},default_dof_pos=torch.zeros(2,3),
             robot_config=NS(control=NS(control_mode='implicit_position_target',action_scale=.25,
                 action_scales_by_effort_limit_over_p_gain=False,clip_actions=True,action_clip_value=100.)),
             simulator=NS(hard_dof_pos_limits=torch.tensor([[-.8727,2.094],[-1.,1.],[-2.,2.]])))
         env.simulator.apply_position_targets_at_dof=lambda t:setattr(env.simulator,'native_target',t.clone())
+        if late_init:
+            del env.default_dof_pos
+            del env.log_dict
         term=native_action_class()(NS(),env)
         env.action_manager=NS(_term_instances={'joint':term},action=torch.zeros(2,3),prev_action=torch.zeros(2,3))
         return term,env
+    def test_constructor_before_native_wbt_default_pose_and_log_dict(self):
+        # BaseTask constructs ActionManager before _init_buffers/log_dict;
+        # WholeBodyTrackingManager creates default_dof_pos after super returns.
+        t,e=self.term(late_init=True)
+        self.assertFalse(hasattr(e,'default_dof_pos'))
+        self.assertFalse(hasattr(e,'log_dict'))
+        e.log_dict={};e.default_dof_pos=torch.zeros(2,3)
+        t.process_actions(torch.ones(2,3));t.apply_actions()
+        self.assertTrue(torch.allclose(e.simulator.native_target,torch.full((2,3),.25)))
+    def test_missing_late_pose_fails_before_processing_or_application(self):
+        t,e=self.term(late_init=True);e.log_dict={}
+        with self.assertRaises(RuntimeError):t.process_actions(torch.ones(2,3))
+        self.assertTrue(torch.equal(t._raw_actions,torch.zeros(2,3)))
+        self.assertFalse(hasattr(e.simulator,'native_target'))
+    def test_late_invalid_default_pose_fails_before_native_action(self):
+        t,e=self.term(late_init=True);e.log_dict={};e.default_dof_pos=torch.full((2,3),100.)
+        with self.assertRaises(ValueError):t.process_actions(torch.ones(2,3))
+        self.assertTrue(torch.equal(t._raw_actions,torch.zeros(2,3)))
+        self.assertFalse(hasattr(e.simulator,'native_target'))
+    def test_late_nonfinite_default_pose_fails_closed(self):
+        t,e=self.term(late_init=True);e.log_dict={};e.default_dof_pos=torch.full((2,3),float('nan'))
+        with self.assertRaises(FloatingPointError):t.process_actions(torch.ones(2,3))
+        self.assertFalse(hasattr(e.simulator,'native_target'))
+    def test_no_application_before_first_pose_validation(self):
+        t,e=self.term(late_init=True)
+        with self.assertRaises(RuntimeError):t.apply_actions()
+        self.assertFalse(hasattr(e.simulator,'native_target'))
+    def test_reset_before_late_pose_initialization_is_allowed(self):
+        t,e=self.term(late_init=True);t.reset()
+        e.log_dict={};e.default_dof_pos=torch.zeros(2,3)
+        t.process_actions(torch.zeros(2,3));t.apply_actions()
+        self.assertTrue(torch.equal(e.simulator.native_target,torch.zeros(2,3)))
     def test_inside_identity_and_input_preservation(self):
         x=torch.tensor([[.1,-.2]]);old=x.clone();y=guard.protect_targets(x,torch.tensor([[-1.,1.],[-1.,1.]]))
         self.assertTrue(torch.equal(x,old));self.assertTrue(torch.equal(y,x))

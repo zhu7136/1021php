@@ -86,7 +86,10 @@ def worker(arm):
     if len(ids)!=29 or len(set(ids))!=29 or [native[i] for i in ids]!=list(cfg.robot.dof_names):
         raise ValueError('Runtime joint mapping mismatch')
     algo=get_class(cfg.algo._target_)(env=env,config=cfg.algo.config,log_dir=str(out),device=device)
-    algo.setup();algo.load(str(checkpoint))
+    algo.setup()
+    # Match native train_agent: metadata must be attached before any save.
+    algo.attach_checkpoint_metadata(cfg,None)
+    algo.load(str(checkpoint))
     if algo.current_learning_iteration!=790:raise ValueError('Source iteration mismatch')
     if algo.actor_learning_rate!=1e-5 or algo.critic_learning_rate!=1e-5:raise ValueError('Optimizer LR mismatch')
     if algo.empirical_normalization:raise ValueError('Unexpected observation normalization')
@@ -139,7 +142,7 @@ def seal(url,headers):
         files.extend(p for p in directory.glob('*') if p.is_file() and p.suffix in ('.json','.jsonl','.pt','.yaml'))
     if any(p.is_symlink() or not p.resolve().is_relative_to(OUT.resolve()) for p in files):raise ValueError('Unsafe output')
     if sum(p.stat().st_size for p in files)>128*1024*1024:raise ValueError('Raw output bound exceeded')
-    bundle=ROOT/'outputs/low_noise_trial_bundle.zip'
+    bundle=ROOT/'outputs'/globals().get('BUNDLE_NAME','low_noise_trial_bundle.zip')
     with zipfile.ZipFile(bundle,'w',compression=zipfile.ZIP_DEFLATED) as target:
         for path in sorted(files):target.write(path,arcname=str(path.relative_to(OUT)))
     if bundle.stat().st_size>32*1024*1024:raise ValueError('Compressed output bound exceeded')

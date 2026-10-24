@@ -9,9 +9,12 @@ WORKER_SECONDS=600
 SHA=base.SHA
 
 def configure():
-    from control_chain_recorder import Recorder
     original=base.diagnose
-    def diagnose(dataset):return original(dataset,recorder_factory=Recorder)
+    def diagnose(dataset):
+        # Runtime dependencies must not load in configure(): it also runs before
+        # worker() installs and prepends the verified offline dependency bundle.
+        from control_chain_recorder import Recorder
+        return original(dataset,recorder_factory=Recorder)
     base.MODES=MODES;base.NUM_ENVS=NUM_ENVS;base.STEPS_PER_MODE=STEPS_PER_MODE
     base.WORKER_SECONDS=WORKER_SECONDS
     base.OUT=base.ROOT/'outputs/control_chain_diagnostic'

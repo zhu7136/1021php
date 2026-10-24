@@ -1,4 +1,4 @@
-import ast,io,json,sys,unittest
+import ast,io,json,subprocess,sys,unittest
 from pathlib import Path
 from types import SimpleNamespace as NS
 import torch
@@ -59,5 +59,12 @@ class Tests(unittest.TestCase):
         self.assertEqual(entry.base.WORKER_SECONDS,900)
         text=(Path(__file__).resolve().parents[1]/'diagnose_short_episodes.py').read_text()
         self.assertIn('recorder_factory=None',text);self.assertIn('step<20',text)
+    def test_bootstrap_does_not_import_runtime_dependencies(self):
+        # A fresh interpreter has no site packages: configure must stay stdlib-only
+        # until worker() verifies/installs the pinned offline dependency directory.
+        flux=Path(__file__).resolve().parents[1]
+        code=f'import sys;sys.path.insert(0,{str(flux)!r});import diagnose_control_chain as e;e.configure();assert "torch" not in sys.modules;assert "typing_extensions" not in sys.modules;assert "control_chain_recorder" not in sys.modules'
+        result=subprocess.run([sys.executable,'-I','-S','-c',code],capture_output=True,text=True,timeout=15)
+        self.assertEqual(result.returncode,0,result.stderr[-2000:])
 
 if __name__=='__main__':unittest.main(verbosity=2)

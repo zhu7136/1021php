@@ -59,3 +59,18 @@ Git clone 时间也可能计费；CPU 下载速度不代表 Flux worker 的速�
 本候选尚未经过 GPU 验证；该资料包本身不是 GPU 启动授权。
 此前 task093 已验证原输入交付及短仿真，但正常退出失败。未启动 PPO，
 未验证动作物理可行性、头部保持效果或教师 checkpoint。资产来源及许可限制不变。
+
+
+## 2026-10-25 14:51 UTC：禁用 fastShutdown 关闭候选
+
+仅替换包内 overlay/flux/hud04_validate_child.py，其他 51 个成员字节不变。
+保留固定版本 Holosoma 的 close_simulation_app 无窗口关闭处理。
+在关闭前将 /app/fastShutdown 显式设为 false 并回读验证，未知设置或回读失败立即失败。
+依据为官方 IsaacSim v5.1.0 SimulationApp 源码：fast_shutdown 默认 true，
+文档说明会立即退出进程；本次验证该配置是否解释 task094 缺少返回标记。
+该上游函数跳过 USD close_stage、禁用 IsaacLab STOP 渲染回调，且不等待 Replicator；
+这不等于验证了原生 stage 清理。只有关闭函数真实返回后才写完成标记，
+仍要求子进程退出码为 0；提前 exit(0)、异常或超时均不能判成功。
+本候选尚未经过 GPU 验证；该资料包本身不是 GPU 启动授权。
+此前 task094 短仿真通过且退出码0，但关闭返回标记缺失，整体仍失败。未启动 PPO，
+未验证动作物理可行性、头部保持效果或教师 checkpoint。资产来源及许可限制不变。

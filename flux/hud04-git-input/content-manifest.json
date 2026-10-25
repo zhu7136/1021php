@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "gpu_start_authorized": false,
-  "archive_bytes": 17305440,
-  "archive_sha256": "7227ce88220fb2781c4780ef90d580d0e81c954920a476304550cde6c1316f7c",
+  "archive_bytes": 17305621,
+  "archive_sha256": "ee5aeac12664ba16e7a5298642c88aeb9e544246331f3524f57d73f88d52c433",
   "files": [
     {
       "path": "input/asset/meshes/HU_D04_01/base_link.STL",
@@ -206,8 +206,8 @@
     },
     {
       "path": "overlay/flux/hud04_validate_child.py",
-      "bytes": 8434,
-      "sha256": "0e57447b3085e3c4c9544c11f94926deda5e7a47ffbfb4c6a339617e853b29a5"
+      "bytes": 9109,
+      "sha256": "22a7639b05cefab3efb1db097e6896c3f7b00bfc8707262dadc813602491584a"
     },
     {
       "path": "overlay/wbt_training/config_values/hud04_experiment.py",

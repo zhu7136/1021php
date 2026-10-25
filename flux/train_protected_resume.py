@@ -95,7 +95,7 @@ def train_worker(run_path):
     source=OUT/'inputs/model_final.pt';algo.load(str(source))
     restored=verify_source_restore(algo,source)
     base.save(out/'source_restore.json',restored);emit('resume_source_restore_verified',**restored)
-    preflight=roundtrip(algo,OUT/'inputs/resume_preflight.pt')
+    preflight=roundtrip(algo,out/'resume_preflight.pt')
     base.save(out/'save_reload_preflight.json',preflight)
     # Native learn starts inclusively at current_learning_iteration; source iter200 means 200 COMPLETED updates.
     algo.current_learning_iteration=SOURCE_ITERATION+1

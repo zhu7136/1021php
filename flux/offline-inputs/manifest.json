@@ -1,0 +1,2153 @@
+{
+  "schema_version": 1,
+  "purpose": "CPU preparation only, NOT a trained model",
+  "gpu_start_authorized": false,
+  "worker_transfer_verified": false,
+  "publication_authorized_by_user": true,
+  "php_base": "c7c9ce3fc75a8754a7e403c58de3b6933254d01b",
+  "holosoma_commit": "4a0bf04cde5930af5ed59da797568d32be972525",
+  "dataset_original_archive_sha256": "2397220209b5ce32cd886340f5b12f62821f17e40bff0d2958b1a70295a08dcf",
+  "public_wheel_count": 70,
+  "full_wheel_count": 78,
+  "public_wheels_are_complete_training_environment": false,
+  "image_provided": {
+    "torch": "2.7.0",
+    "isaacsim": "5.1.0",
+    "isaaclab": "2.3.1",
+    "warp-lang": "verify on worker"
+  },
+  "withheld_wheels": [
+    {
+      "name": "grpcio",
+      "version": "1.84.1",
+      "file": "grpcio-1.84.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "size": 7153395,
+      "sha256": "eb881326607275ad2d2d17dce09b823472414dcc559e8f694d5607fe8af3cbc1",
+      "requires_dist": [
+        "typing-extensions~=4.12",
+        "grpcio-tools>=1.84.1; extra == \"protobuf\""
+      ],
+      "bytes": 7153395,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.3",
+      "file": "lxml-6.1.3-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+      "size": 5211431,
+      "sha256": "527195c188d7d0af748cd48d220ab8cdc5cb99be3d49ac4d9be7324d8abf9bc0",
+      "requires_dist": [
+        "cssselect>=0.7; extra == \"cssselect\"",
+        "html5lib; extra == \"html5\"",
+        "BeautifulSoup4; extra == \"htmlsoup\"",
+        "lxml_html_clean; extra == \"html-clean\""
+      ],
+      "bytes": 5211431,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "ml-dtypes",
+      "version": "0.5.4",
+      "file": "ml_dtypes-0.5.4-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "size": 5034975,
+      "sha256": "19b9a53598f21e453ea2fbda8aa783c20faff8e1eeb0d7ab899309a0053f1483",
+      "requires_dist": [
+        "numpy>=1.21",
+        "numpy>=1.21.2; python_version >= \"3.10\"",
+        "numpy>=1.23.3; python_version >= \"3.11\"",
+        "numpy>=1.26.0; python_version >= \"3.12\"",
+        "numpy>=2.1.0; python_version >= \"3.13\"",
+        "absl-py; extra == \"dev\"",
+        "pytest; extra == \"dev\"",
+        "pytest-xdist; extra == \"dev\"",
+        "pylint>=2.6.0; extra == \"dev\"",
+        "pyink; extra == \"dev\""
+      ],
+      "bytes": 5034975,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "onnxruntime",
+      "version": "1.23.2",
+      "file": "onnxruntime-1.23.2-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "size": 17372080,
+      "sha256": "da44b99206e77734c5819aa2142c69e64f3b46edc3bd314f6a45a932defc0b3e",
+      "requires_dist": [
+        "coloredlogs",
+        "flatbuffers",
+        "numpy>=1.21.6",
+        "packaging",
+        "protobuf",
+        "sympy"
+      ],
+      "bytes": 17372080,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "opencv-python",
+      "version": "4.11.0.86",
+      "file": "opencv_python-4.11.0.86-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "size": 62986597,
+      "sha256": "6b02611523803495003bd87362db3e1d2a0454a6a63025dc6658a9830570aa0d",
+      "requires_dist": [
+        "numpy>=1.13.3; python_version < \"3.7\"",
+        "numpy>=1.21.0; python_version <= \"3.9\" and platform_system == \"Darwin\" and platform_machine == \"arm64\"",
+        "numpy>=1.21.2; python_version >= \"3.10\"",
+        "numpy>=1.21.4; python_version >= \"3.10\" and platform_system == \"Darwin\"",
+        "numpy>=1.23.5; python_version >= \"3.11\"",
+        "numpy>=1.26.0; python_version >= \"3.12\"",
+        "numpy>=1.19.3; python_version >= \"3.6\" and platform_system == \"Linux\" and platform_machine == \"aarch64\"",
+        "numpy>=1.17.0; python_version >= \"3.7\"",
+        "numpy>=1.17.3; python_version >= \"3.8\"",
+        "numpy>=1.19.3; python_version >= \"3.9\""
+      ],
+      "bytes": 62986597,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "orjson",
+      "version": "3.13.0",
+      "file": "orjson-3.13.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "size": 130518,
+      "sha256": "89bcf2d4bc6c9a7e1763c8cf534f38712e66b76a0fefda7fb7785462f0d635e4",
+      "requires_dist": [],
+      "bytes": 130518,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "pillow",
+      "version": "13.0.0",
+      "file": "pillow-13.0.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "size": 7140667,
+      "sha256": "a625df9a2a5597fa5e5266e01aefc82604bb85d291e3547981e863560d75da6c",
+      "requires_dist": [
+        "furo; extra == \"docs\"",
+        "olefile; extra == \"docs\"",
+        "sphinx>=8.2; extra == \"docs\"",
+        "sphinx-autobuild; extra == \"docs\"",
+        "sphinx-copybutton; extra == \"docs\"",
+        "sphinx-inline-tabs; extra == \"docs\"",
+        "sphinxext-opengraph; extra == \"docs\"",
+        "olefile; extra == \"fpx\"",
+        "olefile; extra == \"mic\"",
+        "arro3-compute; extra == \"test-arrow\"",
+        "arro3-core; extra == \"test-arrow\"",
+        "nanoarrow; extra == \"test-arrow\"",
+        "pyarrow; extra == \"test-arrow\"",
+        "coverage>=7.4.2; extra == \"tests\"",
+        "defusedxml; extra == \"tests\"",
+        "markdown2; extra == \"tests\"",
+        "olefile; extra == \"tests\"",
+        "packaging; extra == \"tests\"",
+        "psutil; (sys_platform == \"linux\" or sys_platform == \"darwin\") and extra == \"tests\"",
+        "pytest; extra == \"tests\"",
+        "pytest-cov; extra == \"tests\"",
+        "pytest-timeout; extra == \"tests\"",
+        "pytest-xdist; extra == \"tests\"",
+        "setuptools; extra == \"tests\"",
+        "trove-classifiers>=2024.10.12; extra == \"tests\"",
+        "defusedxml; extra == \"xmp\""
+      ],
+      "bytes": 7140667,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    },
+    {
+      "name": "shapely",
+      "version": "2.2.0",
+      "file": "shapely-2.2.0-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl",
+      "size": 2307874,
+      "sha256": "5d61088e2ef71dafad0dd4fae8a521cc1f20da4a89d3096bab5b3260b39b3052",
+      "requires_dist": [
+        "numpy>=1.26"
+      ],
+      "bytes": 2307874,
+      "reason": "Bundled native third-party source-delivery obligations require further verification; not authorized by this license review for public binary redistribution."
+    }
+  ],
+  "archives": [
+    {
+      "name": "motions-locomotion.tar.gz",
+      "bytes": 128106852,
+      "sha256": "3f890165a669ceb8d49111a004290fadfc5cd4de4051e33ad86faff4cceac231",
+      "parts": [
+        {
+          "index": 0,
+          "path": "motions-locomotion.tar.gz.part000",
+          "bytes": 50331648,
+          "sha256": "d346689c29029a2e3b447d5620a86092804b027177acf2a6fdc1b99357782b25"
+        },
+        {
+          "index": 1,
+          "path": "motions-locomotion.tar.gz.part001",
+          "bytes": 50331648,
+          "sha256": "699b13734f3b4d090887ca8652e9a6510f7784dad0bbcc87599da6cb37fb00ca"
+        },
+        {
+          "index": 2,
+          "path": "motions-locomotion.tar.gz.part002",
+          "bytes": 27443556,
+          "sha256": "648e79a77f945f53862b1633e50ca4e5c0a41f397ad34cb3f2ae54afd8d79562"
+        }
+      ],
+      "extracted_files": [
+        {
+          "path": "motions-locomotion/README.md",
+          "bytes": 1068,
+          "sha256": "34b62833e1e7435ab0bc788b004054f582935d1ce84b3b8b4429360854ecb81c"
+        },
+        {
+          "path": "motions-locomotion/cfg0000_stand_2.0s_left_45_1.4s_forward_2.3s_right_90_0.9s_right_45_0.6s_right_45_2.0s_left_90_0.6s_left_45_2.6s_run_right_45_1.2s_left_45_1.3s_run_right_90_1.6s_stand_2.0s_motion.npz",
+          "bytes": 3648282,
+          "sha256": "fef9f7ce29d01c8e1441ab7f99a142bf13a76a26cc7598361d927626d96c3ecc"
+        },
+        {
+          "path": "motions-locomotion/cfg0000_stand_2.0s_left_45_1.4s_forward_2.3s_right_90_0.9s_right_45_0.6s_right_45_2.0s_left_90_0.6s_left_45_2.6s_run_right_45_1.2s_left_45_1.3s_run_right_90_1.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0001_stand_2.0s_run_left_45_2.0s_stand_2.0s_motion.npz",
+          "bytes": 1195562,
+          "sha256": "c6654d7f37fd8b56af9c3404751ec05bd750659e289c6bb666650e533f6809db"
+        },
+        {
+          "path": "motions-locomotion/cfg0001_stand_2.0s_run_left_45_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 4128,
+          "sha256": "9fa8379526393959e8f4a8ee4baf772be6dbfc5405013d6fae0643296db0e466"
+        },
+        {
+          "path": "motions-locomotion/cfg0002_stand_2.0s_forward_1.2s_forward_1.6s_left_45_1.0s_right_45_2.0s_stand_2.0s_motion.npz",
+          "bytes": 1947202,
+          "sha256": "26ce6eb495c7e9dbb4cd15748d2294a3a4c0d445653af8658eca29d6319a5e63"
+        },
+        {
+          "path": "motions-locomotion/cfg0002_stand_2.0s_forward_1.2s_forward_1.6s_left_45_1.0s_right_45_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0003_stand_2.0s_right_45_2.0s_run_right_45_1.2s_run_right_90_2.9s_forward_1.3s_stand_2.0s_motion.npz",
+          "bytes": 2255770,
+          "sha256": "3893af21e7729a349b2d6279e90c683ea37e41574312d702bb151b95f90fb7e6"
+        },
+        {
+          "path": "motions-locomotion/cfg0003_stand_2.0s_right_45_2.0s_run_right_45_1.2s_run_right_90_2.9s_forward_1.3s_stand_2.0s_terrain.npy",
+          "bytes": 5728,
+          "sha256": "6704684b7d37014144a9512663d446a4aa5339db1f57e7d1f044d205d286924f"
+        },
+        {
+          "path": "motions-locomotion/cfg0004_stand_2.0s_run_right_45_2.2s_right_45_0.8s_run_right_45_1.2s_run_left_45_1.2s_right_45_1.3s_run_left_90_1.9s_run_right_90_2.9s_right_90_2.8s_forward_2.0s_left_90_0.7s_stand_2.0s_motion.npz",
+          "bytes": 4158606,
+          "sha256": "195e3e5db8ca4ceb2c4c1f5398ba230cca9c396465dc3e272be54af3ef4970af"
+        },
+        {
+          "path": "motions-locomotion/cfg0004_stand_2.0s_run_right_45_2.2s_right_45_0.8s_run_right_45_1.2s_run_left_45_1.2s_right_45_1.3s_run_left_90_1.9s_run_right_90_2.9s_right_90_2.8s_forward_2.0s_left_90_0.7s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0005_stand_2.0s_run_left_45_1.2s_run_forward_1.5s_right_90_2.6s_left_90_1.2s_right_45_0.9s_run_forward_1.2s_left_45_2.4s_left_45_0.5s_run_left_45_2.3s_left_45_2.4s_stand_2.0s_motion.npz",
+          "bytes": 3980586,
+          "sha256": "af35cc1318deea6bf1f8ccf6d00380e53b87e18756ce9bbf4246033a89885170"
+        },
+        {
+          "path": "motions-locomotion/cfg0005_stand_2.0s_run_left_45_1.2s_run_forward_1.5s_right_90_2.6s_left_90_1.2s_right_45_0.9s_run_forward_1.2s_left_45_2.4s_left_45_0.5s_run_left_45_2.3s_left_45_2.4s_stand_2.0s_terrain.npy",
+          "bytes": 10528,
+          "sha256": "449ddb8235087567376dbab0a8555d97444ad852db3c1231908ab42673235b12"
+        },
+        {
+          "path": "motions-locomotion/cfg0006_stand_2.0s_run_forward_1.4s_stand_2.0s_motion.npz",
+          "bytes": 1072926,
+          "sha256": "e33fe0fd5838b6fd7f5ef681ee9b3e4d603a54e811415628819e1b4045225636"
+        },
+        {
+          "path": "motions-locomotion/cfg0006_stand_2.0s_run_forward_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0007_stand_2.0s_run_forward_2.7s_run_right_90_1.3s_stand_2.0s_motion.npz",
+          "bytes": 1583250,
+          "sha256": "0647fac82409756caacdd36cbec6370bf2a2c53b4670c5f13190890f5ad14435"
+        },
+        {
+          "path": "motions-locomotion/cfg0007_stand_2.0s_run_forward_2.7s_run_right_90_1.3s_stand_2.0s_terrain.npy",
+          "bytes": 9728,
+          "sha256": "a8dc2f4a0b1407076ba36eba6805852d9ea7b3f1ef31475b24614433bfc97fdd"
+        },
+        {
+          "path": "motions-locomotion/cfg0008_stand_2.0s_right_90_1.3s_forward_2.3s_run_left_90_2.7s_run_right_45_1.2s_left_45_2.4s_run_left_45_2.4s_left_45_1.8s_run_right_45_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3826302,
+          "sha256": "f5e21f974948bdb14bbfec140b52a91b5138a35c2c1bb966a5d1f77128bd411f"
+        },
+        {
+          "path": "motions-locomotion/cfg0008_stand_2.0s_right_90_1.3s_forward_2.3s_run_left_90_2.7s_run_right_45_1.2s_left_45_2.4s_run_left_45_2.4s_left_45_1.8s_run_right_45_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0009_stand_2.0s_right_90_0.6s_run_right_90_1.3s_run_forward_2.8s_run_right_90_1.5s_right_45_1.1s_stand_2.0s_motion.npz",
+          "bytes": 2224122,
+          "sha256": "31a240ca9536eb3fd5a504a7e9e611c52899336efc390ce4722488c90b3ed9dd"
+        },
+        {
+          "path": "motions-locomotion/cfg0009_stand_2.0s_right_90_0.6s_run_right_90_1.3s_run_forward_2.8s_run_right_90_1.5s_right_45_1.1s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "4618d410d86d0eb6617fa12b0d2e9a3ccc152fc81e8f13eb0f243a3c902e8357"
+        },
+        {
+          "path": "motions-locomotion/cfg0010_stand_2.0s_left_45_1.2s_forward_2.8s_right_45_2.1s_right_90_2.5s_left_45_2.7s_right_45_2.5s_left_45_1.3s_stand_2.0s_motion.npz",
+          "bytes": 3790698,
+          "sha256": "19fd75093df3ea187f0c40e57354d3259f9cbc31fb16350558a5b1efe415236c"
+        },
+        {
+          "path": "motions-locomotion/cfg0010_stand_2.0s_left_45_1.2s_forward_2.8s_right_45_2.1s_right_90_2.5s_left_45_2.7s_right_45_2.5s_left_45_1.3s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0011_stand_2.0s_run_left_45_1.2s_right_90_2.5s_run_left_90_1.2s_run_forward_1.5s_left_90_0.8s_run_forward_2.9s_run_forward_1.8s_right_45_1.4s_right_90_2.9s_left_45_1.7s_stand_2.0s_motion.npz",
+          "bytes": 4340582,
+          "sha256": "fe92069d0b41f84ba1ead78297de1d3b10e52da166c0256149d56dc61a51c034"
+        },
+        {
+          "path": "motions-locomotion/cfg0011_stand_2.0s_run_left_45_1.2s_right_90_2.5s_run_left_90_1.2s_run_forward_1.5s_left_90_0.8s_run_forward_2.9s_run_forward_1.8s_right_45_1.4s_right_90_2.9s_left_45_1.7s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "918033075fb3e283dba1426ea1a8f3f07d841cf174dc8ff3c028ba67dd3496ff"
+        },
+        {
+          "path": "motions-locomotion/cfg0012_stand_2.0s_run_right_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 1037322,
+          "sha256": "23f024e37883cecfb655bd9f6c2fa9e4793feaabdbf443b8a90b94bf6794b412"
+        },
+        {
+          "path": "motions-locomotion/cfg0012_stand_2.0s_run_right_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0013_stand_2.0s_left_90_2.0s_run_right_45_1.2s_right_45_2.8s_left_90_0.9s_run_left_90_3.0s_run_left_45_2.2s_right_90_1.1s_run_right_45_1.4s_right_45_2.1s_run_forward_1.2s_stand_2.0s_motion.npz",
+          "bytes": 4304978,
+          "sha256": "1069eac994f33521688fa09048965f8c87794a32e5bae0b176b8b72da086f4ac"
+        },
+        {
+          "path": "motions-locomotion/cfg0013_stand_2.0s_left_90_2.0s_run_right_45_1.2s_right_45_2.8s_left_90_0.9s_run_left_90_3.0s_run_left_45_2.2s_right_90_1.1s_run_right_45_1.4s_right_45_2.1s_run_forward_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 4128,
+          "sha256": "a9792a3f41176145c7799102a6538a15ecaca6400dc7dd4f6acb70d4da51a53e"
+        },
+        {
+          "path": "motions-locomotion/cfg0014_stand_2.0s_forward_1.3s_right_45_0.6s_forward_2.2s_stand_2.0s_motion.npz",
+          "bytes": 1606986,
+          "sha256": "82d417627d95a5b073e107f28368cce1e56a8656f599ff918481e281bcd8178c"
+        },
+        {
+          "path": "motions-locomotion/cfg0014_stand_2.0s_forward_1.3s_right_45_0.6s_forward_2.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0015_stand_2.0s_run_forward_1.8s_run_left_45_2.1s_right_90_2.2s_left_45_2.8s_stand_2.0s_motion.npz",
+          "bytes": 2560382,
+          "sha256": "c64370b3fe48898d974fa29d1d00e7936facc38c4d109fcc7fdba79ff914982e"
+        },
+        {
+          "path": "motions-locomotion/cfg0015_stand_2.0s_run_forward_1.8s_run_left_45_2.1s_right_90_2.2s_left_45_2.8s_stand_2.0s_terrain.npy",
+          "bytes": 5728,
+          "sha256": "84a7457f4c99aa65ff9fab0845f20e630510dc80928ebc0c0f714b30773231ed"
+        },
+        {
+          "path": "motions-locomotion/cfg0016_stand_2.0s_right_45_1.4s_stand_2.0s_motion.npz",
+          "bytes": 1065014,
+          "sha256": "a041f1d4b0ad08e3038b5ec39adfa2e5d6fa511330214c33b7e59ab26cf6e6e5"
+        },
+        {
+          "path": "motions-locomotion/cfg0016_stand_2.0s_right_45_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0017_stand_2.0s_run_right_90_2.8s_run_forward_1.2s_right_45_2.5s_run_left_90_1.8s_run_left_45_1.2s_run_left_90_2.8s_left_90_1.3s_right_90_2.3s_left_90_2.7s_right_45_2.1s_stand_2.0s_motion.npz",
+          "bytes": 4902334,
+          "sha256": "620583406f4c682b6219a54b419318912e93e6b2077b9c0a046fc8b36a4a9106"
+        },
+        {
+          "path": "motions-locomotion/cfg0017_stand_2.0s_run_right_90_2.8s_run_forward_1.2s_right_45_2.5s_run_left_90_1.8s_run_left_45_1.2s_run_left_90_2.8s_left_90_1.3s_right_90_2.3s_left_90_2.7s_right_45_2.1s_stand_2.0s_terrain.npy",
+          "bytes": 10528,
+          "sha256": "6a8f62e0b25671d4730b2e6ecb4a0e75c253123f333d84c5088d15423e6905e4"
+        },
+        {
+          "path": "motions-locomotion/cfg0018_stand_2.0s_run_right_45_1.2s_run_right_45_2.0s_stand_2.0s_motion.npz",
+          "bytes": 1432922,
+          "sha256": "683c3b21be79d91d1652073ede6d8a41363816cd824ee0a3920e2a296416094f"
+        },
+        {
+          "path": "motions-locomotion/cfg0018_stand_2.0s_run_right_45_1.2s_run_right_45_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0019_stand_2.0s_right_90_0.8s_run_right_90_1.2s_run_left_45_1.9s_run_right_90_2.1s_run_left_45_2.3s_run_forward_1.3s_right_45_2.1s_left_90_2.1s_run_right_45_1.2s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3992454,
+          "sha256": "a75b111b406407f1a3f0a981bdc7d335328997e44c96595e4c5ac50a55de83e2"
+        },
+        {
+          "path": "motions-locomotion/cfg0019_stand_2.0s_right_90_0.8s_run_right_90_1.2s_run_left_45_1.9s_run_right_90_2.1s_run_left_45_2.3s_run_forward_1.3s_right_45_2.1s_left_90_2.1s_run_right_45_1.2s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 10528,
+          "sha256": "d52bf39ef0ab24e223097a9660e4651b87079a1d08e522590d3c6d19d26225e3"
+        },
+        {
+          "path": "motions-locomotion/cfg0020_stand_2.0s_left_45_2.9s_forward_2.7s_left_45_2.5s_left_90_1.9s_left_90_1.0s_run_left_45_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3217078,
+          "sha256": "cd01948ee66e17b50aa73be1771949a637a816b09c0688b5cb59b2aae9889c4b"
+        },
+        {
+          "path": "motions-locomotion/cfg0020_stand_2.0s_left_45_2.9s_forward_2.7s_left_45_2.5s_left_90_1.9s_left_90_1.0s_run_left_45_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0021_stand_2.0s_run_right_90_2.1s_left_45_2.9s_run_left_45_2.8s_run_left_45_1.2s_run_right_90_1.6s_run_left_90_2.9s_run_right_45_1.2s_right_90_2.6s_run_right_45_1.2s_forward_2.8s_stand_2.0s_motion.npz",
+          "bytes": 5009146,
+          "sha256": "c40aa01aea190d071e198806adffd6ca550ce12864aae7b310cb9768a44349f2"
+        },
+        {
+          "path": "motions-locomotion/cfg0021_stand_2.0s_run_right_90_2.1s_left_45_2.9s_run_left_45_2.8s_run_left_45_1.2s_run_right_90_1.6s_run_left_90_2.9s_run_right_45_1.2s_right_90_2.6s_run_right_45_1.2s_forward_2.8s_stand_2.0s_terrain.npy",
+          "bytes": 4928,
+          "sha256": "a0ea658503a013906a4ccfddb42dba5f7e7f493bb3bdd1a8cdf978d8e02c5b82"
+        },
+        {
+          "path": "motions-locomotion/cfg0022_stand_2.0s_left_45_1.9s_stand_2.0s_motion.npz",
+          "bytes": 1175782,
+          "sha256": "d2f6257a63da9da7d05b220bb2e214bb202fe44d5e161f42397c2f3a5973133e"
+        },
+        {
+          "path": "motions-locomotion/cfg0022_stand_2.0s_left_45_1.9s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0023_stand_2.0s_run_right_45_2.0s_right_90_0.9s_run_forward_2.7s_left_45_2.2s_right_90_1.4s_run_left_45_2.5s_left_90_2.7s_run_left_90_1.8s_forward_2.5s_right_90_2.3s_stand_2.0s_motion.npz",
+          "bytes": 4926070,
+          "sha256": "b0394f84eca3ce86dd9fe7f262eb0a0fae17899bc717e560aea41c5140624ae5"
+        },
+        {
+          "path": "motions-locomotion/cfg0023_stand_2.0s_run_right_45_2.0s_right_90_0.9s_run_forward_2.7s_left_45_2.2s_right_90_1.4s_run_left_45_2.5s_left_90_2.7s_run_left_90_1.8s_forward_2.5s_right_90_2.3s_stand_2.0s_terrain.npy",
+          "bytes": 6528,
+          "sha256": "1e69ce37100227bb62bbb8b7a97327664c831ff5102bb40671bd0ecb79714426"
+        },
+        {
+          "path": "motions-locomotion/cfg0024_stand_2.0s_run_right_45_2.7s_left_90_1.4s_stand_2.0s_motion.npz",
+          "bytes": 1618854,
+          "sha256": "df37fbd410e291c049e76251bda81e8e57f199b9c542ff3bf9b7731e225ed243"
+        },
+        {
+          "path": "motions-locomotion/cfg0024_stand_2.0s_run_right_45_2.7s_left_90_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0025_stand_2.0s_run_right_45_1.9s_stand_2.0s_motion.npz",
+          "bytes": 1179738,
+          "sha256": "d7252e86079e49b9ed76fa7e36849d912133e082689455a146ab46ee3458cef2"
+        },
+        {
+          "path": "motions-locomotion/cfg0025_stand_2.0s_run_right_45_1.9s_stand_2.0s_terrain.npy",
+          "bytes": 4128,
+          "sha256": "193ce163b5a9a0af2e59e64a65e2e368f04561f3b8d8010ff3bb6f30d5f7d7ee"
+        },
+        {
+          "path": "motions-locomotion/cfg0026_stand_2.0s_left_45_1.7s_right_90_1.2s_run_right_45_1.2s_stand_2.0s_motion.npz",
+          "bytes": 1599074,
+          "sha256": "06f6f46091b67dc2f43f4c9248d1a2ba7ab885a4222c7f94e76c13f34dbeeed4"
+        },
+        {
+          "path": "motions-locomotion/cfg0026_stand_2.0s_left_45_1.7s_right_90_1.2s_run_right_45_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0027_stand_2.0s_run_right_90_2.6s_right_45_0.8s_left_90_2.4s_run_forward_2.1s_stand_2.0s_motion.npz",
+          "bytes": 2346758,
+          "sha256": "dce0650abb321ee5f7cd5efd0c8190508aa914c9e2d3133049ddd66b93dd45d6"
+        },
+        {
+          "path": "motions-locomotion/cfg0027_stand_2.0s_run_right_90_2.6s_right_45_0.8s_left_90_2.4s_run_forward_2.1s_stand_2.0s_terrain.npy",
+          "bytes": 7328,
+          "sha256": "f25d406ce1a5352432cd21b58bd60516f315e669dd612c41c9e0042cbc996aa3"
+        },
+        {
+          "path": "motions-locomotion/cfg0028_stand_2.0s_left_90_0.6s_run_right_45_1.9s_run_right_45_2.3s_forward_1.8s_run_right_90_2.5s_run_forward_1.6s_stand_2.0s_motion.npz",
+          "bytes": 2896642,
+          "sha256": "a89892a1b4b72ae5035fc9af0e9f5629ecd3c5ed88f68e50a8fa55367d34c278"
+        },
+        {
+          "path": "motions-locomotion/cfg0028_stand_2.0s_left_90_0.6s_run_right_45_1.9s_run_right_45_2.3s_forward_1.8s_run_right_90_2.5s_run_forward_1.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0029_stand_2.0s_run_left_90_1.2s_forward_2.6s_left_45_1.5s_run_forward_1.2s_right_90_1.9s_right_45_2.2s_forward_2.9s_right_45_1.9s_run_right_90_1.5s_left_45_1.4s_stand_2.0s_motion.npz",
+          "bytes": 4399922,
+          "sha256": "76a4b7bc1bdd575c862fa40370e579a2415ee0fe1c95a1d508e6251101ae4fad"
+        },
+        {
+          "path": "motions-locomotion/cfg0029_stand_2.0s_run_left_90_1.2s_forward_2.6s_left_45_1.5s_run_forward_1.2s_right_90_1.9s_right_45_2.2s_forward_2.9s_right_45_1.9s_run_right_90_1.5s_left_45_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 10528,
+          "sha256": "02825af8a6f79d899ca336dfbdeae41fd5f29060b28082271c239b79d3b24276"
+        },
+        {
+          "path": "motions-locomotion/cfg0030_stand_2.0s_left_45_0.5s_stand_2.0s_motion.npz",
+          "bytes": 902818,
+          "sha256": "8dceb6646941ab5b16cc6a51143455b37dbf29aac597fec19de2e8ea2a27c3d3"
+        },
+        {
+          "path": "motions-locomotion/cfg0030_stand_2.0s_left_45_0.5s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0031_stand_2.0s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 1037322,
+          "sha256": "72b4358599cf9c3723e6610e903f0f91a9bb3e8bf4564ddaf72e66ef6d249162"
+        },
+        {
+          "path": "motions-locomotion/cfg0031_stand_2.0s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 4928,
+          "sha256": "74184126072de8155df8ea19e21636f887a65c11f522a8c866fa061bf23fb90f"
+        },
+        {
+          "path": "motions-locomotion/cfg0032_stand_2.0s_left_45_2.6s_run_right_45_1.7s_stand_2.0s_motion.npz",
+          "bytes": 1650502,
+          "sha256": "33e1f405a591c7f501b16fd968d9129da1cc1c534ff541046566e7e474c23df1"
+        },
+        {
+          "path": "motions-locomotion/cfg0032_stand_2.0s_left_45_2.6s_run_right_45_1.7s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0033_stand_2.0s_left_90_1.7s_left_90_0.9s_run_left_90_1.5s_run_right_45_2.1s_stand_2.0s_motion.npz",
+          "bytes": 2026322,
+          "sha256": "f323758b528d3a6fe8715bc6a90957ecdf5948990544f1fe549a368516325865"
+        },
+        {
+          "path": "motions-locomotion/cfg0033_stand_2.0s_left_90_1.7s_left_90_0.9s_run_left_90_1.5s_run_right_45_2.1s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "0652f2a9f28ba4b2e02955737de832f3a97dd23dcb7973fc3f2bb1eba3880eb7"
+        },
+        {
+          "path": "motions-locomotion/cfg0034_stand_2.0s_left_90_1.4s_right_90_1.8s_run_right_45_2.1s_run_right_90_1.2s_run_left_45_1.2s_right_45_2.9s_run_right_45_1.5s_right_45_1.6s_right_90_2.9s_run_left_45_2.9s_stand_2.0s_motion.npz",
+          "bytes": 4637282,
+          "sha256": "cc17935ec4e7b398f955f37f77211a2f06b1c64ca52c6133948aec2e5cd051dc"
+        },
+        {
+          "path": "motions-locomotion/cfg0034_stand_2.0s_left_90_1.4s_right_90_1.8s_run_right_45_2.1s_run_right_90_1.2s_run_left_45_1.2s_right_45_2.9s_run_right_45_1.5s_right_45_1.6s_right_90_2.9s_run_left_45_2.9s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0035_stand_2.0s_run_forward_1.2s_stand_2.0s_motion.npz",
+          "bytes": 1037322,
+          "sha256": "0c913d32fe45341bc01a9fc0bbf4ed061cbe0b8dd7e55a51c1b5f8e46cece34a"
+        },
+        {
+          "path": "motions-locomotion/cfg0035_stand_2.0s_run_forward_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 7328,
+          "sha256": "4dd475a10db6270edb4db0ad2ed3e92c8e5e396369cbd0ea34dfedb036cb90b3"
+        },
+        {
+          "path": "motions-locomotion/cfg0036_stand_2.0s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 1037322,
+          "sha256": "72b4358599cf9c3723e6610e903f0f91a9bb3e8bf4564ddaf72e66ef6d249162"
+        },
+        {
+          "path": "motions-locomotion/cfg0036_stand_2.0s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0037_stand_2.0s_run_right_45_1.2s_run_left_90_1.2s_left_45_2.6s_stand_2.0s_motion.npz",
+          "bytes": 1788962,
+          "sha256": "dc137d1bfa224818ab320d35eda55d9b52548e16ab402296a84203249466ed00"
+        },
+        {
+          "path": "motions-locomotion/cfg0037_stand_2.0s_run_right_45_1.2s_run_left_90_1.2s_left_45_2.6s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "d2e8fc24504c769858be30a3bed66ddeb8e4e43493054cadf78ab2ed8ae7d3df"
+        },
+        {
+          "path": "motions-locomotion/cfg0038_stand_2.0s_right_45_2.5s_right_45_0.8s_left_45_2.1s_run_forward_2.3s_forward_1.2s_run_right_90_2.4s_run_right_45_3.0s_right_45_1.4s_run_right_90_1.4s_right_45_2.6s_stand_2.0s_motion.npz",
+          "bytes": 4684754,
+          "sha256": "ece21345c5a88eb0d2fea911e3226bdd76828761d8632b23318326152378b14f"
+        },
+        {
+          "path": "motions-locomotion/cfg0038_stand_2.0s_right_45_2.5s_right_45_0.8s_left_45_2.1s_run_forward_2.3s_forward_1.2s_run_right_90_2.4s_run_right_45_3.0s_right_45_1.4s_run_right_90_1.4s_right_45_2.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0039_stand_2.0s_forward_2.4s_left_45_0.8s_forward_1.8s_right_45_1.3s_left_45_1.5s_stand_2.0s_motion.npz",
+          "bytes": 2307198,
+          "sha256": "d8a8fed660c7469666d84489115d766e37cee2ba8d10e9a1bb1d4a51b7e58adb"
+        },
+        {
+          "path": "motions-locomotion/cfg0039_stand_2.0s_forward_2.4s_left_45_0.8s_forward_1.8s_right_45_1.3s_left_45_1.5s_stand_2.0s_terrain.npy",
+          "bytes": 4928,
+          "sha256": "717bdb483aa0451a84929e2296f2f6de05da00335dbf1f0958445e4973ced05c"
+        },
+        {
+          "path": "motions-locomotion/cfg0040_stand_2.0s_forward_2.8s_stand_2.0s_motion.npz",
+          "bytes": 1341934,
+          "sha256": "234ae735bbfa6cd7993129b4b96a8369149543ce13db2eadfef9a553ca42277f"
+        },
+        {
+          "path": "motions-locomotion/cfg0040_stand_2.0s_forward_2.8s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0041_stand_2.0s_run_forward_1.3s_left_45_2.9s_run_right_45_2.1s_right_45_1.2s_right_90_2.2s_run_left_90_2.5s_right_45_0.7s_run_right_45_1.2s_left_90_1.6s_run_right_90_1.4s_stand_2.0s_motion.npz",
+          "bytes": 4150694,
+          "sha256": "a14810f56249bc247a0ab9b71e0b0ae62f4706282fd263353191c13ae383be2b"
+        },
+        {
+          "path": "motions-locomotion/cfg0041_stand_2.0s_run_forward_1.3s_left_45_2.9s_run_right_45_2.1s_right_45_1.2s_right_90_2.2s_run_left_90_2.5s_right_45_0.7s_run_right_45_1.2s_left_90_1.6s_run_right_90_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 8128,
+          "sha256": "31322a30c2ce14e0dbb5ab696f418785bc4488a3b584601002ccb08e8a42da70"
+        },
+        {
+          "path": "motions-locomotion/cfg0042_stand_2.0s_run_right_90_1.2s_run_left_90_2.0s_stand_2.0s_motion.npz",
+          "bytes": 1436878,
+          "sha256": "fdcbfcb6ab7ccde0160179c2713c4672a95f19728f2253de55c6f705dad53d1c"
+        },
+        {
+          "path": "motions-locomotion/cfg0042_stand_2.0s_run_right_90_1.2s_run_left_90_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0043_stand_2.0s_right_45_0.7s_run_left_90_1.2s_run_left_45_2.3s_stand_2.0s_motion.npz",
+          "bytes": 1618854,
+          "sha256": "7bad6ed7e3fefd4e213c72c8ba2cbaef05e3ec8d0ef72e3d624cab0397034b75"
+        },
+        {
+          "path": "motions-locomotion/cfg0043_stand_2.0s_right_45_0.7s_run_left_90_1.2s_run_left_45_2.3s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "8ba4e7c6d349049e619d879c6a7904b4c2e4766581b3dd8fa00513f91939077a"
+        },
+        {
+          "path": "motions-locomotion/cfg0044_stand_2.0s_right_45_0.7s_left_45_1.4s_left_45_2.5s_run_left_45_3.0s_run_forward_1.4s_stand_2.0s_motion.npz",
+          "bytes": 2584118,
+          "sha256": "757b875b3d48063c4def4bef972df4378ea4820e98a45f3d7ef98646fb78a33d"
+        },
+        {
+          "path": "motions-locomotion/cfg0044_stand_2.0s_right_45_0.7s_left_45_1.4s_left_45_2.5s_run_left_45_3.0s_run_forward_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0045_stand_2.0s_run_left_45_2.4s_run_left_45_1.6s_run_left_90_1.2s_forward_0.5s_left_45_0.6s_stand_2.0s_motion.npz",
+          "bytes": 2050058,
+          "sha256": "7a25fa96078364d0f7e24662f34b061245903f9400da671cdb4a189e05fc4082"
+        },
+        {
+          "path": "motions-locomotion/cfg0045_stand_2.0s_run_left_45_2.4s_run_left_45_1.6s_run_left_90_1.2s_forward_0.5s_left_45_0.6s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "dbc377955b1341aa2b3cc20a379bd252a23f7dba34393c11ef45121aa867668a"
+        },
+        {
+          "path": "motions-locomotion/cfg0046_stand_2.0s_forward_0.8s_run_left_45_2.4s_run_forward_2.9s_left_45_1.2s_right_45_1.1s_right_45_0.5s_right_45_0.6s_run_right_45_1.8s_run_left_90_1.2s_left_90_2.9s_stand_2.0s_motion.npz",
+          "bytes": 3830258,
+          "sha256": "83a0628769449688868e0da5f2f3cd9f295730b3488577bb0fca652e24a18370"
+        },
+        {
+          "path": "motions-locomotion/cfg0046_stand_2.0s_forward_0.8s_run_left_45_2.4s_run_forward_2.9s_left_45_1.2s_right_45_1.1s_right_45_0.5s_right_45_0.6s_run_right_45_1.8s_run_left_90_1.2s_left_90_2.9s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0047_stand_2.0s_run_left_45_2.1s_left_90_1.6s_right_90_2.0s_run_left_90_1.2s_right_45_2.9s_left_45_1.6s_run_left_90_1.2s_run_right_45_1.7s_left_45_2.0s_stand_2.0s_motion.npz",
+          "bytes": 3992454,
+          "sha256": "557656d347ae3fe4c6e21f3544ca99a4a15a037fc96f1b07b49915291d0ad20c"
+        },
+        {
+          "path": "motions-locomotion/cfg0047_stand_2.0s_run_left_45_2.1s_left_90_1.6s_right_90_2.0s_run_left_90_1.2s_right_45_2.9s_left_45_1.6s_run_left_90_1.2s_run_right_45_1.7s_left_45_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "9a9d610883aa93fad2ad399563ea0bc47f43dfeefb78f749316db29af1825a4e"
+        },
+        {
+          "path": "motions-locomotion/cfg0048_stand_2.0s_forward_2.9s_run_right_45_2.2s_forward_1.3s_left_45_2.2s_right_45_2.8s_left_90_2.9s_run_left_45_2.0s_run_left_90_2.8s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 4815302,
+          "sha256": "03becab5af3b8380f40363cd41d4f97d9eddd7a5444fea6c022e34974bf9eb33"
+        },
+        {
+          "path": "motions-locomotion/cfg0048_stand_2.0s_forward_2.9s_run_right_45_2.2s_forward_1.3s_left_45_2.2s_right_45_2.8s_left_90_2.9s_run_left_45_2.0s_run_left_90_2.8s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0049_stand_2.0s_right_45_1.4s_run_left_45_3.0s_forward_2.0s_left_90_2.9s_run_left_45_2.6s_forward_1.5s_run_left_45_1.2s_right_90_2.5s_run_left_90_3.0s_right_90_2.4s_stand_2.0s_motion.npz",
+          "bytes": 5254418,
+          "sha256": "bdd082f4de7aab5004d8ab42a18d44c4cea4ec227867de8e2bfca94767870516"
+        },
+        {
+          "path": "motions-locomotion/cfg0049_stand_2.0s_right_45_1.4s_run_left_45_3.0s_forward_2.0s_left_90_2.9s_run_left_45_2.6s_forward_1.5s_run_left_45_1.2s_right_90_2.5s_run_left_90_3.0s_right_90_2.4s_stand_2.0s_terrain.npy",
+          "bytes": 11328,
+          "sha256": "d4f934283989bdf57bf49525c219076dea6a220536d1282e901451e51cd30ac9"
+        },
+        {
+          "path": "motions-locomotion/cfg0050_stand_2.0s_run_left_45_2.6s_run_right_45_1.6s_stand_2.0s_motion.npz",
+          "bytes": 1634678,
+          "sha256": "34e58256ecb0f6e5c2f33d3de29658554805952923015f265c1f231c22b372a9"
+        },
+        {
+          "path": "motions-locomotion/cfg0050_stand_2.0s_run_left_45_2.6s_run_right_45_1.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0051_stand_2.0s_run_left_90_2.9s_left_90_1.1s_right_45_2.0s_right_90_0.8s_right_45_1.8s_forward_1.8s_run_right_90_1.9s_run_right_45_2.7s_forward_0.8s_stand_2.0s_motion.npz",
+          "bytes": 3913334,
+          "sha256": "d14f3bb0e8e6de738dabec8c51bd64e804cab09c44f24b0533d48a988a769ba6"
+        },
+        {
+          "path": "motions-locomotion/cfg0051_stand_2.0s_run_left_90_2.9s_left_90_1.1s_right_45_2.0s_right_90_0.8s_right_45_1.8s_forward_1.8s_run_right_90_1.9s_run_right_45_2.7s_forward_0.8s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "e6b43473ae2fefa00d1123c6120376a935468066ee0a5aa8b2ea0b05e0673179"
+        },
+        {
+          "path": "motions-locomotion/cfg0052_stand_2.0s_run_forward_2.4s_forward_2.3s_forward_0.8s_stand_2.0s_motion.npz",
+          "bytes": 1879950,
+          "sha256": "fb69e3903434fb024544d3e08c3bc21b96cc6f5a436db1daff24453a3c3f3f08"
+        },
+        {
+          "path": "motions-locomotion/cfg0052_stand_2.0s_run_forward_2.4s_forward_2.3s_forward_0.8s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0053_stand_2.0s_run_right_90_1.4s_run_left_90_1.5s_run_right_45_2.8s_run_right_45_1.8s_left_90_1.5s_forward_2.7s_run_right_45_1.2s_left_45_1.7s_left_90_1.6s_left_45_1.7s_stand_2.0s_motion.npz",
+          "bytes": 4312890,
+          "sha256": "c46db78c115ee43927caf4d71d7193ed8f9fe2325bb3aab11c634a52a39b0395"
+        },
+        {
+          "path": "motions-locomotion/cfg0053_stand_2.0s_run_right_90_1.4s_run_left_90_1.5s_run_right_45_2.8s_run_right_45_1.8s_left_90_1.5s_forward_2.7s_run_right_45_1.2s_left_45_1.7s_left_90_1.6s_left_45_1.7s_stand_2.0s_terrain.npy",
+          "bytes": 10528,
+          "sha256": "9fd4dc2d092dfd50674525c5785ac21d196d943fcbcc2d1447ee37350bc40a47"
+        },
+        {
+          "path": "motions-locomotion/cfg0054_stand_2.0s_run_right_90_2.1s_left_45_0.7s_stand_2.0s_motion.npz",
+          "bytes": 1345890,
+          "sha256": "d09febfbfb0b974dd966b60c6600c543783b7ed2ac9acbcdf11fbba3470552e8"
+        },
+        {
+          "path": "motions-locomotion/cfg0054_stand_2.0s_run_right_90_2.1s_left_45_0.7s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0055_stand_2.0s_right_45_0.8s_run_left_45_1.2s_left_45_1.0s_run_right_90_2.7s_right_45_2.2s_run_right_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 2592030,
+          "sha256": "f0aa6ef7c78e8eceec87d78223116092dd0cf16196e32a540879b9262f7768eb"
+        },
+        {
+          "path": "motions-locomotion/cfg0055_stand_2.0s_right_45_0.8s_run_left_45_1.2s_left_45_1.0s_run_right_90_2.7s_right_45_2.2s_run_right_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 4928,
+          "sha256": "ac32720d59b35ff61cc3434b8d1419f978fbb854339603092809a1aa031ed354"
+        },
+        {
+          "path": "motions-locomotion/cfg0056_stand_2.0s_run_right_90_1.2s_forward_0.9s_stand_2.0s_motion.npz",
+          "bytes": 1219298,
+          "sha256": "99c528de01976456187726a36bd43f32f2f4600cebc657c44221d5bfbade2e87"
+        },
+        {
+          "path": "motions-locomotion/cfg0056_stand_2.0s_run_right_90_1.2s_forward_0.9s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0057_stand_2.0s_run_right_90_1.2s_left_45_1.0s_run_left_45_1.8s_run_right_90_1.2s_run_right_90_2.1s_stand_2.0s_motion.npz",
+          "bytes": 2224122,
+          "sha256": "901ca754f1da4186d1629b3c3b21629f9add3ef2cfdc8f768b5feddbbe0a1696"
+        },
+        {
+          "path": "motions-locomotion/cfg0057_stand_2.0s_run_right_90_1.2s_left_45_1.0s_run_left_45_1.8s_run_right_90_1.2s_run_right_90_2.1s_stand_2.0s_terrain.npy",
+          "bytes": 8128,
+          "sha256": "d43ec59e5cb4da8b458667ae468cbbdd0fac76acd48b8e47e3d166267b29fd8a"
+        },
+        {
+          "path": "motions-locomotion/cfg0058_stand_2.0s_run_right_45_2.7s_run_forward_1.2s_right_90_2.5s_right_45_1.0s_run_forward_1.4s_right_45_2.0s_right_90_1.7s_run_left_45_1.2s_left_90_2.3s_right_90_1.8s_stand_2.0s_motion.npz",
+          "bytes": 4297066,
+          "sha256": "cb37b3b040290be6a332c1351d53ae664dfed476eadb2d8f45bc7e85eee25265"
+        },
+        {
+          "path": "motions-locomotion/cfg0058_stand_2.0s_run_right_45_2.7s_run_forward_1.2s_right_90_2.5s_right_45_1.0s_run_forward_1.4s_right_45_2.0s_right_90_1.7s_run_left_45_1.2s_left_90_2.3s_right_90_1.8s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0059_stand_2.0s_run_left_90_1.2s_run_forward_1.8s_left_45_1.2s_forward_0.6s_run_left_90_1.2s_run_right_90_1.2s_run_right_90_2.0s_left_45_2.5s_left_45_0.7s_run_right_45_2.0s_stand_2.0s_motion.npz",
+          "bytes": 3620590,
+          "sha256": "ed53885799faea8e55b02412c8b624a57f3bf3f3d9924dce182eeb1dffc3b82e"
+        },
+        {
+          "path": "motions-locomotion/cfg0059_stand_2.0s_run_left_90_1.2s_run_forward_1.8s_left_45_1.2s_forward_0.6s_run_left_90_1.2s_run_right_90_1.2s_run_right_90_2.0s_left_45_2.5s_left_45_0.7s_run_right_45_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 8128,
+          "sha256": "66e2f33c108b788be4da8a3d96a09245f1793142757bd7a6d1c22dd932394128"
+        },
+        {
+          "path": "motions-locomotion/cfg0060_stand_2.0s_right_45_1.6s_stand_2.0s_motion.npz",
+          "bytes": 1108530,
+          "sha256": "c057fa3bdeef1d44970684b176d262e636e8c6280652455cc283e43e9fc9c761"
+        },
+        {
+          "path": "motions-locomotion/cfg0060_stand_2.0s_right_45_1.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0061_stand_2.0s_run_right_45_1.2s_right_90_2.1s_left_90_1.4s_run_forward_2.0s_left_45_0.8s_right_45_1.1s_run_forward_1.2s_right_90_0.9s_left_90_0.7s_run_left_90_1.5s_stand_2.0s_motion.npz",
+          "bytes": 3347626,
+          "sha256": "4716e60017d4ca4c9be285582aabf0a3e16e36df5d7544b51ccde51671fb1721"
+        },
+        {
+          "path": "motions-locomotion/cfg0061_stand_2.0s_run_right_45_1.2s_right_90_2.1s_left_90_1.4s_run_forward_2.0s_left_45_0.8s_right_45_1.1s_run_forward_1.2s_right_90_0.9s_left_90_0.7s_run_left_90_1.5s_stand_2.0s_terrain.npy",
+          "bytes": 4928,
+          "sha256": "e176c210987d885f40ce1ba736341ebcad95fdbc906930578ccd400e359b0b4d"
+        },
+        {
+          "path": "motions-locomotion/cfg0062_stand_2.0s_run_right_45_1.2s_right_90_2.9s_run_right_90_2.5s_run_right_45_1.2s_forward_2.8s_run_right_45_1.9s_right_90_2.4s_left_45_1.3s_left_90_1.8s_right_90_0.8s_stand_2.0s_motion.npz",
+          "bytes": 4526514,
+          "sha256": "64e57e89b56af5fe07c2324e0c1d40171ceb2193982924c2d9b1a4a121b8600c"
+        },
+        {
+          "path": "motions-locomotion/cfg0062_stand_2.0s_run_right_45_1.2s_right_90_2.9s_run_right_90_2.5s_run_right_45_1.2s_forward_2.8s_run_right_45_1.9s_right_90_2.4s_left_45_1.3s_left_90_1.8s_right_90_0.8s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0063_stand_2.0s_left_45_1.2s_left_45_0.9s_run_right_45_1.8s_stand_2.0s_motion.npz",
+          "bytes": 1571382,
+          "sha256": "eddbbf80806001aab9896208b68b50f5d3ba938931faeb30f380eea72b379108"
+        },
+        {
+          "path": "motions-locomotion/cfg0063_stand_2.0s_left_45_1.2s_left_45_0.9s_run_right_45_1.8s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "741fb3d81880de85ffb45f412e861a8392df4f6044dba0c392d6c1e61bb5ab43"
+        },
+        {
+          "path": "motions-locomotion/cfg0064_stand_2.0s_left_90_1.3s_stand_2.0s_motion.npz",
+          "bytes": 1061058,
+          "sha256": "ee2f3b80e8628bd2a64fca04e530feef9d18815b1f5bcabee76cd009400d9fc7"
+        },
+        {
+          "path": "motions-locomotion/cfg0064_stand_2.0s_left_90_1.3s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0065_stand_2.0s_right_90_0.7s_right_90_1.3s_run_right_90_1.2s_right_45_2.4s_run_forward_1.7s_right_45_1.4s_right_90_2.6s_run_right_45_1.2s_run_left_90_2.8s_right_90_0.7s_stand_2.0s_motion.npz",
+          "bytes": 3929158,
+          "sha256": "9a78ead73a07789a6bdb21174ff65c6c35aa3fcfbed2a083976b2927c4118040"
+        },
+        {
+          "path": "motions-locomotion/cfg0065_stand_2.0s_right_90_0.7s_right_90_1.3s_run_right_90_1.2s_right_45_2.4s_run_forward_1.7s_right_45_1.4s_right_90_2.6s_run_right_45_1.2s_run_left_90_2.8s_right_90_0.7s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "896c2788141f3bc1117b674fd467ea45fde05b50770237cb2e09965b26eae19e"
+        },
+        {
+          "path": "motions-locomotion/cfg0066_stand_2.0s_forward_1.9s_left_45_0.8s_run_left_45_1.2s_right_90_0.9s_forward_2.2s_forward_1.4s_run_forward_1.5s_left_90_1.6s_right_90_1.7s_left_90_2.4s_stand_2.0s_motion.npz",
+          "bytes": 3857950,
+          "sha256": "a358a493346d42c0c324117a23077943e9754f87887793e5faa9a7c9df486204"
+        },
+        {
+          "path": "motions-locomotion/cfg0066_stand_2.0s_forward_1.9s_left_45_0.8s_run_left_45_1.2s_right_90_0.9s_forward_2.2s_forward_1.4s_run_forward_1.5s_left_90_1.6s_right_90_1.7s_left_90_2.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0067_stand_2.0s_run_left_90_1.2s_run_right_45_1.5s_run_left_45_2.8s_run_right_45_1.2s_forward_2.1s_left_45_0.8s_left_45_2.1s_left_90_2.7s_run_right_45_1.2s_forward_1.1s_stand_2.0s_motion.npz",
+          "bytes": 4083442,
+          "sha256": "9a933f3e1080873f4a2dc46441c90181951b6c6f0f144815210dc120d0ad578e"
+        },
+        {
+          "path": "motions-locomotion/cfg0067_stand_2.0s_run_left_90_1.2s_run_right_45_1.5s_run_left_45_2.8s_run_right_45_1.2s_forward_2.1s_left_45_0.8s_left_45_2.1s_left_90_2.7s_run_right_45_1.2s_forward_1.1s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "4c3557f13d094183a81ee41e82018ce4d25bc6b432aa11feb5a88b739c4d942d"
+        },
+        {
+          "path": "motions-locomotion/cfg0068_stand_2.0s_run_forward_1.2s_run_right_90_2.4s_run_right_45_1.4s_left_90_0.8s_run_left_45_1.2s_left_90_2.5s_stand_2.0s_motion.npz",
+          "bytes": 2659282,
+          "sha256": "c2af8b596178d0e43b4b65072fdff025fa469518a3c4271c6aad72ffa5ce1490"
+        },
+        {
+          "path": "motions-locomotion/cfg0068_stand_2.0s_run_forward_1.2s_run_right_90_2.4s_run_right_45_1.4s_left_90_0.8s_run_left_45_1.2s_left_90_2.5s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0069_stand_2.0s_forward_1.1s_right_90_2.3s_run_forward_2.2s_forward_1.1s_run_forward_1.2s_right_45_2.0s_right_45_1.7s_left_45_0.9s_run_forward_1.8s_run_right_45_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3834214,
+          "sha256": "8a79873f5f3cb6fcb892010de06756b18dd52a46ad144abda9719d66b95e32ac"
+        },
+        {
+          "path": "motions-locomotion/cfg0069_stand_2.0s_forward_1.1s_right_90_2.3s_run_forward_2.2s_forward_1.1s_run_forward_1.2s_right_45_2.0s_right_45_1.7s_left_45_0.9s_run_forward_1.8s_run_right_45_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 11328,
+          "sha256": "04b1e41d3765b4a192c7ec762adce9575e3e944688d44961753433df08b1f6b7"
+        },
+        {
+          "path": "motions-locomotion/cfg0070_stand_2.0s_run_left_45_2.8s_run_right_90_2.2s_left_90_2.3s_right_45_1.9s_left_90_1.6s_left_90_2.8s_run_left_45_1.6s_stand_2.0s_motion.npz",
+          "bytes": 3814434,
+          "sha256": "b24f2ef7387456a79884e021b042b81fd17163e62110e6a209ad3e9cae034618"
+        },
+        {
+          "path": "motions-locomotion/cfg0070_stand_2.0s_run_left_45_2.8s_run_right_90_2.2s_left_90_2.3s_right_45_1.9s_left_90_1.6s_left_90_2.8s_run_left_45_1.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0071_stand_2.0s_forward_3.0s_left_90_0.8s_run_forward_2.7s_run_left_45_2.0s_right_45_0.6s_right_90_2.5s_stand_2.0s_motion.npz",
+          "bytes": 3074662,
+          "sha256": "003645a647db77427963198b194398d3f39a9aeef085e07e5431fa248fc3e690"
+        },
+        {
+          "path": "motions-locomotion/cfg0071_stand_2.0s_forward_3.0s_left_90_0.8s_run_forward_2.7s_run_left_45_2.0s_right_45_0.6s_right_90_2.5s_stand_2.0s_terrain.npy",
+          "bytes": 6528,
+          "sha256": "4553d3c93f3514f74150f1c109bcc84a673ad73efe3afbbce900940d0986c392"
+        },
+        {
+          "path": "motions-locomotion/cfg0072_stand_2.0s_left_90_1.3s_left_45_1.8s_run_left_45_1.4s_forward_2.3s_run_left_90_1.2s_right_45_0.9s_right_45_1.7s_run_left_90_2.8s_run_forward_2.0s_right_90_0.5s_stand_2.0s_motion.npz",
+          "bytes": 3941026,
+          "sha256": "7ef3b29e473f41e92afa665944761e1547c9e7837d029c55338131754f517a15"
+        },
+        {
+          "path": "motions-locomotion/cfg0072_stand_2.0s_left_90_1.3s_left_45_1.8s_run_left_45_1.4s_forward_2.3s_run_left_90_1.2s_right_45_0.9s_right_45_1.7s_run_left_90_2.8s_run_forward_2.0s_right_90_0.5s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0073_stand_2.0s_right_45_0.9s_right_45_0.9s_forward_0.7s_right_45_1.8s_run_left_45_1.2s_run_forward_1.2s_right_90_1.0s_left_45_0.6s_right_90_1.9s_stand_2.0s_motion.npz",
+          "bytes": 2801698,
+          "sha256": "a3608cdc0b4f69822d5eb9592614c15e400ddf814787b08b7f4141168939c790"
+        },
+        {
+          "path": "motions-locomotion/cfg0073_stand_2.0s_right_45_0.9s_right_45_0.9s_forward_0.7s_right_45_1.8s_run_left_45_1.2s_run_forward_1.2s_right_90_1.0s_left_45_0.6s_right_90_1.9s_stand_2.0s_terrain.npy",
+          "bytes": 4128,
+          "sha256": "f12d5e1b156959008fdf0034dc1d005e4885011d7d234a130cabcb740d5dcf7a"
+        },
+        {
+          "path": "motions-locomotion/cfg0074_stand_2.0s_run_forward_2.4s_run_right_45_1.8s_run_left_45_1.5s_run_right_45_1.2s_run_forward_2.7s_forward_1.4s_left_45_2.1s_right_90_0.6s_left_90_2.3s_run_right_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 4186298,
+          "sha256": "da218bdc1fa34636f9bfe536ffb268e420cb8e3b1694e8c7b1dc858d75660c09"
+        },
+        {
+          "path": "motions-locomotion/cfg0074_stand_2.0s_run_forward_2.4s_run_right_45_1.8s_run_left_45_1.5s_run_right_45_1.2s_run_forward_2.7s_forward_1.4s_left_45_2.1s_right_90_0.6s_left_90_2.3s_run_right_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0075_stand_2.0s_right_90_1.1s_forward_0.5s_stand_2.0s_motion.npz",
+          "bytes": 1116442,
+          "sha256": "ec9810359260fb97953517a6cc353a863fcaa77531a592646110ca0e06754203"
+        },
+        {
+          "path": "motions-locomotion/cfg0075_stand_2.0s_right_90_1.1s_forward_0.5s_stand_2.0s_terrain.npy",
+          "bytes": 7328,
+          "sha256": "533efa8786a1f4a022dbfc4e1db7dee5cdc8a762e6f41c489e066d043ecdbe91"
+        },
+        {
+          "path": "motions-locomotion/cfg0076_stand_2.0s_left_45_2.5s_run_right_90_2.1s_run_left_45_1.2s_run_forward_2.3s_run_forward_2.6s_run_left_45_2.2s_run_right_90_1.2s_run_right_45_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3814434,
+          "sha256": "ef7ebd87a98432517f41fe89313f2449bc566f906f6b84f34681aa754c15244d"
+        },
+        {
+          "path": "motions-locomotion/cfg0076_stand_2.0s_left_45_2.5s_run_right_90_2.1s_run_left_45_1.2s_run_forward_2.3s_run_forward_2.6s_run_left_45_2.2s_run_right_90_1.2s_run_right_45_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0077_stand_2.0s_left_45_1.0s_stand_2.0s_motion.npz",
+          "bytes": 997762,
+          "sha256": "5a5c5885c34bd8fc277dd67d907d476ef6b9ace6b0ba0a28812156678c5796fe"
+        },
+        {
+          "path": "motions-locomotion/cfg0077_stand_2.0s_left_45_1.0s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "eb1d00d86aa1d7abcafade6a639fd0af123e294aad955f3dc43c5ddd0454d07c"
+        },
+        {
+          "path": "motions-locomotion/cfg0078_stand_2.0s_run_left_45_1.2s_run_right_90_1.6s_right_45_2.5s_right_90_1.1s_forward_2.0s_run_left_45_2.1s_forward_1.9s_run_right_45_1.2s_run_right_45_2.4s_stand_2.0s_motion.npz",
+          "bytes": 3948938,
+          "sha256": "d7db77ac32789c5e7a6789edc288090fd2fb251676bf1a980b37847cd2cf0914"
+        },
+        {
+          "path": "motions-locomotion/cfg0078_stand_2.0s_run_left_45_1.2s_run_right_90_1.6s_right_45_2.5s_right_90_1.1s_forward_2.0s_run_left_45_2.1s_forward_1.9s_run_right_45_1.2s_run_right_45_2.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0079_stand_2.0s_right_45_2.7s_run_forward_2.7s_run_left_45_1.6s_stand_2.0s_motion.npz",
+          "bytes": 2172694,
+          "sha256": "ca38df1a01de83e0d65bdb254cb2b418effe7f92b561421b8db20bdcdca169a6"
+        },
+        {
+          "path": "motions-locomotion/cfg0079_stand_2.0s_right_45_2.7s_run_forward_2.7s_run_left_45_1.6s_stand_2.0s_terrain.npy",
+          "bytes": 7328,
+          "sha256": "0560c5e65832407e3785ea6a729ec22f2e154c37b0ac95f2f368cb53e3d47cab"
+        },
+        {
+          "path": "motions-locomotion/cfg0080_stand_2.0s_left_45_1.2s_run_forward_2.1s_run_right_90_1.2s_run_forward_3.0s_left_45_0.9s_right_90_0.5s_run_right_45_1.2s_right_90_1.2s_run_left_45_2.1s_run_forward_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3675974,
+          "sha256": "beb7cb942c718a7b7de2c59788bf748e8d97ea8c9bbf1eb60e3ea2b802993c1c"
+        },
+        {
+          "path": "motions-locomotion/cfg0080_stand_2.0s_left_45_1.2s_run_forward_2.1s_run_right_90_1.2s_run_forward_3.0s_left_45_0.9s_right_90_0.5s_run_right_45_1.2s_right_90_1.2s_run_left_45_2.1s_run_forward_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0081_stand_2.0s_run_left_45_1.2s_right_90_2.7s_run_right_45_2.0s_left_90_0.9s_right_45_1.5s_run_left_45_1.8s_stand_2.0s_motion.npz",
+          "bytes": 2801698,
+          "sha256": "db669c1b516641cdfb7994d8996ea343a98e963a205a8057354a3e1cfc140a28"
+        },
+        {
+          "path": "motions-locomotion/cfg0081_stand_2.0s_run_left_45_1.2s_right_90_2.7s_run_right_45_2.0s_left_90_0.9s_right_45_1.5s_run_left_45_1.8s_stand_2.0s_terrain.npy",
+          "bytes": 5728,
+          "sha256": "2dbb41b742809c1b4f7289e295c543363635f20057bc4f5008a420f1bb95e654"
+        },
+        {
+          "path": "motions-locomotion/cfg0082_stand_2.0s_run_left_45_1.2s_left_90_0.7s_run_right_90_1.2s_run_right_90_1.2s_right_90_2.3s_run_left_45_1.9s_run_right_45_2.2s_forward_2.3s_right_90_0.6s_right_90_2.0s_stand_2.0s_motion.npz",
+          "bytes": 3865862,
+          "sha256": "06c753a07e891ab1d263b341e77e65e5a67dc710b0e7ff221044b34030395cda"
+        },
+        {
+          "path": "motions-locomotion/cfg0082_stand_2.0s_run_left_45_1.2s_left_90_0.7s_run_right_90_1.2s_run_right_90_1.2s_right_90_2.3s_run_left_45_1.9s_run_right_45_2.2s_forward_2.3s_right_90_0.6s_right_90_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0083_stand_2.0s_right_45_1.7s_run_left_45_1.3s_run_right_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 1642590,
+          "sha256": "9b50d9a42786a157d538259389ad270d10a648f0e792e6d808a72deba351c947"
+        },
+        {
+          "path": "motions-locomotion/cfg0083_stand_2.0s_right_45_1.7s_run_left_45_1.3s_run_right_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 8128,
+          "sha256": "4dbf3be9d9fc87097f01af177da1845f9b78eb3eddeeaab3aef6d6d4a32855c5"
+        },
+        {
+          "path": "motions-locomotion/cfg0084_stand_2.0s_run_right_90_2.3s_run_forward_2.2s_run_left_90_1.2s_run_left_90_2.5s_run_left_90_1.2s_right_45_1.4s_stand_2.0s_motion.npz",
+          "bytes": 2936202,
+          "sha256": "51ac4869ae0d2a566d79ae0683ef5a4dd2b4b60cb37fe58882b1e2528766fad1"
+        },
+        {
+          "path": "motions-locomotion/cfg0084_stand_2.0s_run_right_90_2.3s_run_forward_2.2s_run_left_90_1.2s_run_left_90_2.5s_run_left_90_1.2s_right_45_1.4s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0085_stand_2.0s_run_right_45_2.8s_stand_2.0s_motion.npz",
+          "bytes": 1349846,
+          "sha256": "e720f53e47a4e0d3e4cc38e2061504731beb2ad46804c1f03926bf59d0f25af8"
+        },
+        {
+          "path": "motions-locomotion/cfg0085_stand_2.0s_run_right_45_2.8s_stand_2.0s_terrain.npy",
+          "bytes": 9728,
+          "sha256": "8b68cf528c0a420126809f517b0b1b658c9045f96b5344bae3e9b104a0169da2"
+        },
+        {
+          "path": "motions-locomotion/cfg0086_stand_2.0s_run_left_90_2.9s_left_90_1.0s_left_45_2.7s_right_90_2.5s_run_right_45_2.2s_run_right_90_1.2s_run_forward_1.2s_left_45_2.9s_stand_2.0s_motion.npz",
+          "bytes": 4051794,
+          "sha256": "a554f84e197e3948cd0e2c32114ac52fbf056949443f6c94e25cc2433e0800a1"
+        },
+        {
+          "path": "motions-locomotion/cfg0086_stand_2.0s_run_left_90_2.9s_left_90_1.0s_left_45_2.7s_right_90_2.5s_run_right_45_2.2s_run_right_90_1.2s_run_forward_1.2s_left_45_2.9s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0087_stand_2.0s_right_45_2.3s_right_90_1.0s_right_45_2.8s_stand_2.0s_motion.npz",
+          "bytes": 1982806,
+          "sha256": "baca0eceba819a7122b48a4875da8fd4b374e07297e7ae92357ff48ad83823de"
+        },
+        {
+          "path": "motions-locomotion/cfg0087_stand_2.0s_right_45_2.3s_right_90_1.0s_right_45_2.8s_stand_2.0s_terrain.npy",
+          "bytes": 12128,
+          "sha256": "c5fbb911135473b19d7f022285ecd750998c86e7ff7ac9cf60953403c6d636a3"
+        },
+        {
+          "path": "motions-locomotion/cfg0088_stand_2.0s_right_45_2.2s_left_90_2.8s_forward_2.9s_forward_2.7s_right_45_1.3s_run_left_90_1.2s_run_right_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 3608722,
+          "sha256": "f4d39335893896c0af8df6d6dd1781403f3f4deb67498db77256016d49be36c5"
+        },
+        {
+          "path": "motions-locomotion/cfg0088_stand_2.0s_right_45_2.2s_left_90_2.8s_forward_2.9s_forward_2.7s_right_45_1.3s_run_left_90_1.2s_run_right_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0089_stand_2.0s_left_45_0.7s_run_left_90_1.3s_run_left_45_1.2s_run_right_90_1.8s_right_45_1.3s_run_left_45_2.7s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 2821478,
+          "sha256": "92c0fd3eeaf273825e9c1fda20ef62f907b81a86a75f76b43d112de733d11361"
+        },
+        {
+          "path": "motions-locomotion/cfg0089_stand_2.0s_left_45_0.7s_run_left_90_1.3s_run_left_45_1.2s_run_right_90_1.8s_right_45_1.3s_run_left_45_2.7s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "5b70a56d2b5be93fd432066b4601ef1056bef0295343b6a9df00e30b0b4e7760"
+        },
+        {
+          "path": "motions-locomotion/cfg0090_stand_2.0s_run_left_45_2.7s_stand_2.0s_motion.npz",
+          "bytes": 1326110,
+          "sha256": "96bc8bc4716046071b0c10d8c09eeb7ae417977e8a9d2e28dd107fce84e8299d"
+        },
+        {
+          "path": "motions-locomotion/cfg0090_stand_2.0s_run_left_45_2.7s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0091_stand_2.0s_right_45_2.7s_left_90_2.8s_forward_3.0s_left_45_2.4s_run_left_45_1.7s_right_45_2.7s_left_90_2.4s_run_right_45_1.6s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 4842994,
+          "sha256": "d3229e2173dbea2b6362ef7e06d043b9a338045f2a47e8b492adff00549532c0"
+        },
+        {
+          "path": "motions-locomotion/cfg0091_stand_2.0s_right_45_2.7s_left_90_2.8s_forward_3.0s_left_45_2.4s_run_left_45_1.7s_right_45_2.7s_left_90_2.4s_run_right_45_1.6s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 8928,
+          "sha256": "7f9dff2d326fd891aa52ac733b1d9ba8bd3484636d160018b71302aada337e75"
+        },
+        {
+          "path": "motions-locomotion/cfg0092_stand_2.0s_forward_1.4s_run_right_45_1.2s_right_45_0.6s_stand_2.0s_motion.npz",
+          "bytes": 1432922,
+          "sha256": "b4625af9ae757bf8a32f77a6a20ef5a498f1315e140ca39134a78e559a48ae69"
+        },
+        {
+          "path": "motions-locomotion/cfg0092_stand_2.0s_forward_1.4s_run_right_45_1.2s_right_45_0.6s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0093_stand_2.0s_left_45_3.0s_run_left_90_1.5s_left_90_1.0s_run_left_90_2.5s_stand_2.0s_motion.npz",
+          "bytes": 2362582,
+          "sha256": "f05c89631fe9a5d33a4fc2f418bc2aab502ccd2fcc29b857cee619cd806f6047"
+        },
+        {
+          "path": "motions-locomotion/cfg0093_stand_2.0s_left_45_3.0s_run_left_90_1.5s_left_90_1.0s_run_left_90_2.5s_stand_2.0s_terrain.npy",
+          "bytes": 6528,
+          "sha256": "bef70804482e1d5a40d15fe47b3c88b6cc0d7efc95cb44adafc46b65894c309e"
+        },
+        {
+          "path": "motions-locomotion/cfg0094_stand_2.0s_run_right_45_1.5s_run_right_45_2.9s_run_right_90_2.0s_run_forward_3.0s_run_left_90_2.9s_run_right_90_2.0s_run_right_45_1.2s_run_left_45_1.2s_run_right_45_2.4s_run_left_90_1.2s_stand_2.0s_motion.npz",
+          "bytes": 4811346,
+          "sha256": "83f27aa3aeb1b3603300762066d61f341fcd52c547fa6c0b02b5dbed00a64d06"
+        },
+        {
+          "path": "motions-locomotion/cfg0094_stand_2.0s_run_right_45_1.5s_run_right_45_2.9s_run_right_90_2.0s_run_forward_3.0s_run_left_90_2.9s_run_right_90_2.0s_run_right_45_1.2s_run_left_45_1.2s_run_right_45_2.4s_run_left_90_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0095_stand_2.0s_left_90_2.7s_run_left_90_3.0s_run_left_90_1.5s_right_90_2.2s_right_45_2.5s_right_90_1.1s_run_right_45_2.0s_run_left_90_1.2s_right_45_1.2s_stand_2.0s_motion.npz",
+          "bytes": 4221902,
+          "sha256": "a3ee1f74de4427f39fafe9e84096c439446680f1dea064ac81819946f1fa8540"
+        },
+        {
+          "path": "motions-locomotion/cfg0095_stand_2.0s_left_90_2.7s_run_left_90_3.0s_run_left_90_1.5s_right_90_2.2s_right_45_2.5s_right_90_1.1s_run_right_45_2.0s_run_left_90_1.2s_right_45_1.2s_stand_2.0s_terrain.npy",
+          "bytes": 9728,
+          "sha256": "11ccca899c77b2178d1749140743e9aa01909f3dca7d96ce53c8197ccaa94ffa"
+        },
+        {
+          "path": "motions-locomotion/cfg0096_stand_2.0s_right_90_2.7s_run_left_90_2.7s_left_45_2.1s_right_90_0.7s_right_45_1.4s_right_90_2.3s_run_forward_1.2s_run_forward_2.2s_stand_2.0s_motion.npz",
+          "bytes": 3830258,
+          "sha256": "b4c7e58a53741442a9f498408e3fe01edd6aaf411a1a0fdc3339cd08a6216294"
+        },
+        {
+          "path": "motions-locomotion/cfg0096_stand_2.0s_right_90_2.7s_run_left_90_2.7s_left_45_2.1s_right_90_0.7s_right_45_1.4s_right_90_2.3s_run_forward_1.2s_run_forward_2.2s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0097_stand_2.0s_run_right_45_2.6s_left_45_1.7s_left_90_2.6s_left_90_2.2s_right_45_1.2s_run_left_45_2.5s_left_90_2.6s_right_45_2.3s_left_45_2.2s_run_left_45_2.0s_stand_2.0s_motion.npz",
+          "bytes": 5119914,
+          "sha256": "7a1d7e3c5c52533120cee38b7122f0bf41b9ccaa03f6db20a1f96fce6d96595d"
+        },
+        {
+          "path": "motions-locomotion/cfg0097_stand_2.0s_run_right_45_2.6s_left_45_1.7s_left_90_2.6s_left_90_2.2s_right_45_1.2s_run_left_45_2.5s_left_90_2.6s_right_45_2.3s_left_45_2.2s_run_left_45_2.0s_stand_2.0s_terrain.npy",
+          "bytes": 7328,
+          "sha256": "76ebecb9666b2090e0435dafeb2d5ecdc5f4877c717f1b98c7752fd131a18970"
+        },
+        {
+          "path": "motions-locomotion/cfg0098_stand_2.0s_run_left_45_1.2s_run_forward_2.7s_stand_2.0s_motion.npz",
+          "bytes": 1563470,
+          "sha256": "3d289f8770de58237fa35a815c576b80cd6011f7339fa6615aead5f0247015c1"
+        },
+        {
+          "path": "motions-locomotion/cfg0098_stand_2.0s_run_left_45_1.2s_run_forward_2.7s_stand_2.0s_terrain.npy",
+          "bytes": 128,
+          "sha256": "786cfc497279cf8f9e6108a1c9162192d99c11482dd43d35c75f65f7427a4492"
+        },
+        {
+          "path": "motions-locomotion/cfg0099_stand_2.0s_run_right_45_2.6s_stand_2.0s_motion.npz",
+          "bytes": 1302374,
+          "sha256": "52551287a01adfdc4a4836446b7fc010e92b2a64fc162d1c922256fef7c2769a"
+        },
+        {
+          "path": "motions-locomotion/cfg0099_stand_2.0s_run_right_45_2.6s_stand_2.0s_terrain.npy",
+          "bytes": 6528,
+          "sha256": "dec3cd8a183ce93defdc74caf64571dd52fd0b81dc2a90ff79b5210213bdf3b0"
+        }
+      ]
+    },
+    {
+      "name": "php-py311-public.tar.gz",
+      "bytes": 145719182,
+      "sha256": "07d5ef4da74a27133c2dd8f83db7fcaf01b32ec87de6e9143cb3868c5c08ea9a",
+      "parts": [
+        {
+          "index": 0,
+          "path": "php-py311-public.tar.gz.part000",
+          "bytes": 50331648,
+          "sha256": "b79b85faead2fe918ba5603ce4602c9194c36e13efc97a296128724757b1fabf"
+        },
+        {
+          "index": 1,
+          "path": "php-py311-public.tar.gz.part001",
+          "bytes": 50331648,
+          "sha256": "811d491953ca59f6ebe8fa534da0916d2e964d9236fee00e1a05c6df75861ce3"
+        },
+        {
+          "index": 2,
+          "path": "php-py311-public.tar.gz.part002",
+          "bytes": 45055886,
+          "sha256": "376ad3369dc3d8e63a9f17c7cd99b52d532a9a672e32824160c251cb278d8a5b"
+        }
+      ],
+      "extracted_files": [
+        {
+          "path": "php-offline/wheelhouse/absl_py-2.5.1-py3-none-any.whl",
+          "bytes": 137673,
+          "sha256": "721200f2f0e9960f2ca9dc3a2a706b201f5f75d812c158f059cbbe29eeafbdb8"
+        },
+        {
+          "path": "php-offline/wheelhouse/annotated_types-0.8.0-py3-none-any.whl",
+          "bytes": 13427,
+          "sha256": "f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"
+        },
+        {
+          "path": "php-offline/wheelhouse/antlr4_python3_runtime-4.9.3-py3-none-any.whl",
+          "bytes": 144591,
+          "sha256": "8243fe2de0d3c1e4d20ea4e8e687ff531478a36ef3758ab175263fa1e973b9e2"
+        },
+        {
+          "path": "php-offline/wheelhouse/boto3-1.43.118-py3-none-any.whl",
+          "bytes": 140045,
+          "sha256": "ab8f3d2c622ef039338b4f228d97ea55f1abd573d84bb9b9a5ee8cb6780c0ccd"
+        },
+        {
+          "path": "php-offline/wheelhouse/botocore-1.43.118-py3-none-any.whl",
+          "bytes": 16122016,
+          "sha256": "a45d7ae570674161e4a3542d8c68633bf7503f92d1de781ef7361b79488eda6f"
+        },
+        {
+          "path": "php-offline/wheelhouse/certifi-2026.10.23-py3-none-any.whl",
+          "bytes": 135082,
+          "sha256": "e9b54de76e530bb6cf0ccd036787103acb58fd42ba930ea8bf948ddbaa2f61d1"
+        },
+        {
+          "path": "php-offline/wheelhouse/charset_normalizer-3.5.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "bytes": 269972,
+          "sha256": "211d5a3eb6af8f513b8d4ca19a8c1b7accab1b5f0d3175f9826b03c1a920dc1f"
+        },
+        {
+          "path": "php-offline/wheelhouse/click-8.5.0-py3-none-any.whl",
+          "bytes": 125251,
+          "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"
+        },
+        {
+          "path": "php-offline/wheelhouse/cloudpickle-3.1.2-py3-none-any.whl",
+          "bytes": 22228,
+          "sha256": "9acb47f6afd73f60dc1df93bb801b472f05ff42fa6c84167d25cb206be1fbf4a"
+        },
+        {
+          "path": "php-offline/wheelhouse/coloredlogs-15.0.1-py2.py3-none-any.whl",
+          "bytes": 46018,
+          "sha256": "612ee75c546f53e92e70049c9dbfcc18c935a2b9a53b66085ce9ef6a6e5c0934"
+        },
+        {
+          "path": "php-offline/wheelhouse/contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+          "bytes": 355238,
+          "sha256": "51e79c1f7470158e838808d4a996fa9bac72c498e93d8ebe5119bc1e6becb0db"
+        },
+        {
+          "path": "php-offline/wheelhouse/cycler-0.12.1-py3-none-any.whl",
+          "bytes": 8321,
+          "sha256": "85cef7cff222d8644161529808465972e51340599459b8ac3ccbac5a854e0d30"
+        },
+        {
+          "path": "php-offline/wheelhouse/docstring_parser-0.18.0-py3-none-any.whl",
+          "bytes": 22484,
+          "sha256": "b3fcbed555c47d8479be0796ef7e19c2670d428d72e96da63f3a40122860374b"
+        },
+        {
+          "path": "php-offline/wheelhouse/easydict-1.13-py3-none-any.whl",
+          "bytes": 6804,
+          "sha256": "6b787daf4dcaf6377b4ad9403a5cee5a86adbc0ca9a5bcf5410e9902002aeac2"
+        },
+        {
+          "path": "php-offline/wheelhouse/flatbuffers-25.12.19-py2.py3-none-any.whl",
+          "bytes": 26661,
+          "sha256": "7634f50c427838bb021c2d66a3d1168e9d199b0607e6329399f04846d42e20b4"
+        },
+        {
+          "path": "php-offline/wheelhouse/fonttools-4.67.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "bytes": 5458613,
+          "sha256": "59f44309ce78851c9621ee88e3f667ca3fbcc89dc0e8641336be3f12ba06bfd4"
+        },
+        {
+          "path": "php-offline/wheelhouse/gitdb-4.0.12-py3-none-any.whl",
+          "bytes": 62794,
+          "sha256": "67073e15955400952c6565cc3e707c554a4eea2e428946f7a4c162fab9bd9bcf"
+        },
+        {
+          "path": "php-offline/wheelhouse/gitpython-3.2.1-py3-none-any.whl",
+          "bytes": 231548,
+          "sha256": "d66b0832aa8755c1a84892937282df0befb16c97e5a64aeebd68be9c5e323f53"
+        },
+        {
+          "path": "php-offline/wheelhouse/humanfriendly-10.0-py2.py3-none-any.whl",
+          "bytes": 86794,
+          "sha256": "1697e1a8a8f550fd43c2865cd84542fc175a61dcb779b6fee18cf6b6ccba1477"
+        },
+        {
+          "path": "php-offline/wheelhouse/idna-3.20-py3-none-any.whl",
+          "bytes": 69583,
+          "sha256": "ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c"
+        },
+        {
+          "path": "php-offline/wheelhouse/importlib_metadata-10.1.0-py3-none-any.whl",
+          "bytes": 32221,
+          "sha256": "cf45ce66a929c64e994185a809c04840d0501db17e663810d993d0f4829265c7"
+        },
+        {
+          "path": "php-offline/wheelhouse/jmespath-1.1.0-py3-none-any.whl",
+          "bytes": 20419,
+          "sha256": "a5663118de4908c91729bea0acadca56526eb2698e83de10cd116ae0f4e97c64"
+        },
+        {
+          "path": "php-offline/wheelhouse/joblib-1.6.0-py3-none-any.whl",
+          "bytes": 306115,
+          "sha256": "3dbbf9f6e4b592a2357b854608e980fe6390d131d7a82f011a377ef2ebef7aba"
+        },
+        {
+          "path": "php-offline/wheelhouse/kiwisolver-1.5.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "bytes": 1438206,
+          "sha256": "95a02752aa032eef4aed01cda6d9b687c669bd0396bf4519eef8bba22a286720"
+        },
+        {
+          "path": "php-offline/wheelhouse/loguru-0.7.3-py3-none-any.whl",
+          "bytes": 61595,
+          "sha256": "31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c"
+        },
+        {
+          "path": "php-offline/wheelhouse/markdown-3.11.2-py3-none-any.whl",
+          "bytes": 114266,
+          "sha256": "f80390747a2a0ff2ba54da074ce4f862f72a6685f608cd2637b646a6d83993f5"
+        },
+        {
+          "path": "php-offline/wheelhouse/markdown_it_py-4.2.0-py3-none-any.whl",
+          "bytes": 91687,
+          "sha256": "9f7ebbcd14fe59494226453aed97c1070d83f8d24b6fc3a3bcf9a38092641c4a"
+        },
+        {
+          "path": "php-offline/wheelhouse/markupsafe-3.0.4-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "bytes": 22961,
+          "sha256": "6da83a088f8ef93b2d483a8232a4dbf4d69d3d8496b568a03c56becac43e1808"
+        },
+        {
+          "path": "php-offline/wheelhouse/matplotlib-3.10.9-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "bytes": 8777092,
+          "sha256": "8e436d155fa8a3399dc62683f8f5d0e2e50d25d0144a73edd73f82eec8f4abfb"
+        },
+        {
+          "path": "php-offline/wheelhouse/mdurl-0.1.2-py3-none-any.whl",
+          "bytes": 9979,
+          "sha256": "84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8"
+        },
+        {
+          "path": "php-offline/wheelhouse/mpmath-1.3.0-py3-none-any.whl",
+          "bytes": 536198,
+          "sha256": "a0b2b9fe80bbcd81a6647ff13108738cfb482d481d826cc0e02f5b35e5c88d2c"
+        },
+        {
+          "path": "php-offline/wheelhouse/numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "bytes": 18252005,
+          "sha256": "666dbfb6ec68962c033a450943ded891bed2d54e6755e35e5835d63f4f6931d5"
+        },
+        {
+          "path": "php-offline/wheelhouse/omegaconf-2.3.0-py3-none-any.whl",
+          "bytes": 79500,
+          "sha256": "7b4df175cdb08ba400f45cae3bdcae7ba8365db4d165fc65fd04b050ab63b46b"
+        },
+        {
+          "path": "php-offline/wheelhouse/onnx-1.19.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "bytes": 18218092,
+          "sha256": "1839af08ab4a909e4af936b8149c27f8c64b96138981024e251906e0539d8bf9"
+        },
+        {
+          "path": "php-offline/wheelhouse/packaging-26.3-py3-none-any.whl",
+          "bytes": 129956,
+          "sha256": "d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c"
+        },
+        {
+          "path": "php-offline/wheelhouse/platformdirs-4.13.5-py3-none-any.whl",
+          "bytes": 32779,
+          "sha256": "53d3ec4280b815c1e0b02edad7f9ee8fda1ba9c0865dd9c2e6e63849ce82fc1e"
+        },
+        {
+          "path": "php-offline/wheelhouse/prettytable-3.18.0-py3-none-any.whl",
+          "bytes": 37357,
+          "sha256": "b3346e0e6f79180833aebaac088ae926340586cf6d7d991b9eb125b65f72313a"
+        },
+        {
+          "path": "php-offline/wheelhouse/protobuf-6.33.6-cp39-abi3-manylinux2014_x86_64.whl",
+          "bytes": 323436,
+          "sha256": "e9db7e292e0ab79dd108d7f1a94fe31601ce1ee3f7b79e0692043423020b0593"
+        },
+        {
+          "path": "php-offline/wheelhouse/pydantic-2.14.1-py3-none-any.whl",
+          "bytes": 488106,
+          "sha256": "9195d967ec791692a04438115466764fb8b9a27b31f14a760437694f40d6b454"
+        },
+        {
+          "path": "php-offline/wheelhouse/pydantic_core-2.50.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "bytes": 2157623,
+          "sha256": "8812592c85d0edf423f10eadcef42716d71e8219085ad9e85b775057b7306133"
+        },
+        {
+          "path": "php-offline/wheelhouse/pygments-2.21.0-py3-none-any.whl",
+          "bytes": 1250147,
+          "sha256": "2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9"
+        },
+        {
+          "path": "php-offline/wheelhouse/pyparsing-3.3.3-py3-none-any.whl",
+          "bytes": 126420,
+          "sha256": "ece8c00a69cf01b45d0b1dedabb469c90d8caf996d4fda40f147627a122849a4"
+        },
+        {
+          "path": "php-offline/wheelhouse/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",
+          "bytes": 229892,
+          "sha256": "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"
+        },
+        {
+          "path": "php-offline/wheelhouse/pyyaml-6.0.3-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+          "bytes": 806638,
+          "sha256": "b8bb0864c5a28024fac8a632c443c87c5aa6f215c0b126c449ae1a150412f31d"
+        },
+        {
+          "path": "php-offline/wheelhouse/requests-2.34.2-py3-none-any.whl",
+          "bytes": 73075,
+          "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+        },
+        {
+          "path": "php-offline/wheelhouse/rich-14.3.4-py3-none-any.whl",
+          "bytes": 310480,
+          "sha256": "07e7adb4690f68864777b1450859253bed81a99a31ac321ac1817b2313558952"
+        },
+        {
+          "path": "php-offline/wheelhouse/s3transfer-0.19.3-py3-none-any.whl",
+          "bytes": 90252,
+          "sha256": "24eb7535804306355e31c952a90022bf5b2f9d760f9a11062c7493a217c08553"
+        },
+        {
+          "path": "php-offline/wheelhouse/scipy-1.15.3-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "bytes": 37652622,
+          "sha256": "39cb9c62e471b1bb3750066ecc3a3f3052b37751c7c3dfd0fd7e48900ed52982"
+        },
+        {
+          "path": "php-offline/wheelhouse/sentry_sdk-2.73.0-py3-none-any.whl",
+          "bytes": 549011,
+          "sha256": "0bcfa6928ea5adbb89591858b514d27adac27c7a3cccc31b20ed10e0b09eda9e"
+        },
+        {
+          "path": "php-offline/wheelhouse/setuptools-84.2.1-py3-none-any.whl",
+          "bytes": 876263,
+          "sha256": "ca140b45d5325a9478f880e351484f62fef15f336462e449ca0c03c873d589c2"
+        },
+        {
+          "path": "php-offline/wheelhouse/six-1.17.0-py2.py3-none-any.whl",
+          "bytes": 11050,
+          "sha256": "4721f391ed90541fddacab5acf947aa0d3dc7d27b2e1e8eda2be8970586c3274"
+        },
+        {
+          "path": "php-offline/wheelhouse/smart_open-7.7.1-py3-none-any.whl",
+          "bytes": 65061,
+          "sha256": "cb62dc45f519bf39b612564d326d2a17556f3a6056e3c3a86a07215d670d45bc"
+        },
+        {
+          "path": "php-offline/wheelhouse/smmap-5.0.3-py3-none-any.whl",
+          "bytes": 24390,
+          "sha256": "c106e05d5a61449cf6ba9a1e650227ecfb141590d2a98412103ff35d89fc7b2f"
+        },
+        {
+          "path": "php-offline/wheelhouse/sympy-1.14.0-py3-none-any.whl",
+          "bytes": 6299353,
+          "sha256": "e091cc3e99d2141a0ba2847328f5479b05d94a6635cb96148ccb3f34671bd8f5"
+        },
+        {
+          "path": "php-offline/wheelhouse/tensorboard-2.20.0-py3-none-any.whl",
+          "bytes": 5525680,
+          "sha256": "9dc9f978cb84c0723acf9a345d96c184f0293d18f166bb8d59ee098e6cfaaba6"
+        },
+        {
+          "path": "php-offline/wheelhouse/tensorboard_data_server-0.7.2-py3-none-any.whl",
+          "bytes": 2356,
+          "sha256": "7e0610d205889588983836ec05dc098e80f97b7e7bbff7e994ebb78f578d0ddb"
+        },
+        {
+          "path": "php-offline/wheelhouse/tensordict-0.8.3-cp311-cp311-manylinux_2_28_x86_64.whl",
+          "bytes": 420670,
+          "sha256": "addff475df0573368c1aa2381cacb963bfdea8bf853655d9ea6167684dd76048"
+        },
+        {
+          "path": "php-offline/wheelhouse/termcolor-3.3.0-py3-none-any.whl",
+          "bytes": 7734,
+          "sha256": "cf642efadaf0a8ebbbf4bc7a31cec2f9b5f21a9f726f4ccbb08192c9c26f43a5"
+        },
+        {
+          "path": "php-offline/wheelhouse/tqdm-4.70.1-py3-none-any.whl",
+          "bytes": 80199,
+          "sha256": "c293e525e6fef9c20e8728fd4612df02a0aa31bb5fe91ecd93e123b1b7bffa73"
+        },
+        {
+          "path": "php-offline/wheelhouse/trimesh-4.7.4-py3-none-any.whl",
+          "bytes": 709841,
+          "sha256": "47af90235f7006316c37584b43d5f6c109a5069b252d7ab2bf8e6ed7c9fd953b"
+        },
+        {
+          "path": "php-offline/wheelhouse/typeguard-4.6.0-py3-none-any.whl",
+          "bytes": 36884,
+          "sha256": "79878165bb86f2cf5d41d159a0ff1792a796cf496882d2fe1b1c6c7049b9cdd7"
+        },
+        {
+          "path": "php-offline/wheelhouse/typing_extensions-4.16.0-py3-none-any.whl",
+          "bytes": 45571,
+          "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+        },
+        {
+          "path": "php-offline/wheelhouse/typing_inspection-0.4.4-py3-none-any.whl",
+          "bytes": 14750,
+          "sha256": "65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147"
+        },
+        {
+          "path": "php-offline/wheelhouse/tyro-1.0.16-py3-none-any.whl",
+          "bytes": 216925,
+          "sha256": "2f9087196113699647190459a12b6b4f2784dd0703c50ab1f7bf0f85a3a794ea"
+        },
+        {
+          "path": "php-offline/wheelhouse/urllib3-2.8.0-py3-none-any.whl",
+          "bytes": 135717,
+          "sha256": "0cf3cae568d36aa9576b28dfb35f11328f1cb974ca7647d9475ebb86c75ac6e3"
+        },
+        {
+          "path": "php-offline/wheelhouse/wandb-0.22.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+          "bytes": 19564075,
+          "sha256": "44da9a83301d89c008f608832b74237f9e0a0758b2bb6d69ba51652818fffb5e"
+        },
+        {
+          "path": "php-offline/wheelhouse/wcwidth-0.9.3-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+          "bytes": 770047,
+          "sha256": "9ab8bfee107e08de09e15f9f6afb9fe0f64c8d64fd296d0d8557bafe71ea3f93"
+        },
+        {
+          "path": "php-offline/wheelhouse/werkzeug-3.1.9-py3-none-any.whl",
+          "bytes": 228700,
+          "sha256": "6392e50c78460ba618e5b21f08a71f59c99ce99cdc6cf6e3dd7e6ccca8754fab"
+        },
+        {
+          "path": "php-offline/wheelhouse/wrapt-2.5.1-cp311-cp311-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl",
+          "bytes": 240110,
+          "sha256": "c25c594f58ecb676358d6d6b0ff068b8bbbc506dc831c6d17876460c66ce39c2"
+        },
+        {
+          "path": "php-offline/wheelhouse/zipp-4.1.2-py3-none-any.whl",
+          "bytes": 10581,
+          "sha256": "b30cb6cd253122169c47de245ca24a86bac2a5d3802ba15bf7ba6414eb9e144d"
+        },
+        {
+          "path": "php-offline/requirements-full.lock",
+          "bytes": 7615,
+          "sha256": "1da6802e841013ef0c11bd1e15839695a828f27fea449b4f49abd97230ecbd42"
+        },
+        {
+          "path": "php-offline/requirements-public.lock",
+          "bytes": 6769,
+          "sha256": "dc78355308c728dd834de144c8edaa423e361e73462311d066521c696dd618da"
+        },
+        {
+          "path": "php-offline/full-wheel-manifest.json",
+          "bytes": 55070,
+          "sha256": "b72055bbd5e659584f395957eb0e4e6f724a648a91da3c54254b454ccd1ee67d"
+        },
+        {
+          "path": "php-offline/notices/license-inventory.json",
+          "bytes": 64305,
+          "sha256": "3241f037751248c0db750b1d199447e4ab516948a2decbcff1b9adb5b3525934"
+        },
+        {
+          "path": "php-offline/notices/php/LICENSE",
+          "bytes": 10142,
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        },
+        {
+          "path": "php-offline/notices/php/NOTICE",
+          "bytes": 67,
+          "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+        },
+        {
+          "path": "php-offline/notices/php/DATASET_README.md",
+          "bytes": 1068,
+          "sha256": "34b62833e1e7435ab0bc788b004054f582935d1ce84b3b8b4429360854ecb81c"
+        },
+        {
+          "path": "php-offline/notices/supplemental/antlr4-python3-runtime.LICENSE.txt",
+          "bytes": 2699,
+          "sha256": "b1b379fcaf3219593a4c433feb1b35c780bed23fafaae440b1ae2771a9521e3a"
+        },
+        {
+          "path": "php-offline/notices/supplemental/flatbuffers.LICENSE.txt",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "php-offline/notices/supplemental/loguru.LICENSE.txt",
+          "bytes": 1056,
+          "sha256": "b35d026cc7aca9d5859a02eb87ddf7a386a24c986838651bd1f283f94e003327"
+        },
+        {
+          "path": "php-offline/notices/supplemental/tensorboard-data-server.LICENSE.txt",
+          "bytes": 11416,
+          "sha256": "d7c9068d896188264b60827b8cd1e25fdb9f5b5cad0b1589e90b96c87729c404"
+        },
+        {
+          "path": "php-offline/source-archives/certifi-2026.10.23.tar.gz",
+          "bytes": 136225,
+          "sha256": "a9895e6e2758b371e0545e321a3a8fd1fcfd9829ada8824a936dfb16aaaf36cd"
+        },
+        {
+          "path": "php-offline/source-archives/easydict-1.13.tar.gz",
+          "bytes": 6809,
+          "sha256": "b1135dedbc41c8010e2bc1f77ec9744c7faa42bce1a1c87416791449d6c87780"
+        },
+        {
+          "path": "php-offline/source-archives/antlr4-python3-runtime-4.9.3.tar.gz",
+          "bytes": 117034,
+          "sha256": "f224469b4168294902bb1efa80a8bf7855f24c99aef99cbefc1bcd3cce77881b"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/absl-py/absl_py-2.5.1.dist-info/licenses/LICENSE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/annotated-types/annotated_types-0.8.0.dist-info/licenses/LICENSE",
+          "bytes": 1083,
+          "sha256": "fe1049884b1a0d9342901e88e07f32925d24b3121d9972b6a6805fb9824b095d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/boto3/boto3-1.43.118.dist-info/LICENSE",
+          "bytes": 10174,
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/boto3/boto3-1.43.118.dist-info/NOTICE",
+          "bytes": 83,
+          "sha256": "04fb1e61484a7810f1ba09bb42bc01ca58c9af33927d7c5a21556e4c4d1c7fa4"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/botocore/botocore-1.43.118.dist-info/LICENSE.txt",
+          "bytes": 10174,
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/botocore/botocore-1.43.118.dist-info/NOTICE",
+          "bytes": 2467,
+          "sha256": "1d1c5a6f3d68cb11f4fad1afa86a7450d0286f15c176ef0ea048f255b46d95b0"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/certifi/certifi-2026.10.23.dist-info/licenses/LICENSE",
+          "bytes": 989,
+          "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/charset-normalizer/charset_normalizer-3.5.2.dist-info/licenses/LICENSE",
+          "bytes": 1071,
+          "sha256": "6d0d41bfe170ac6c7dc248c9a63e254d0fb45a60d50a8257d0af92c6e249b887"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/click/click-8.5.0.dist-info/licenses/LICENSE.txt",
+          "bytes": 1475,
+          "sha256": "9a8ad106a394e853bfe21f42f4e72d592819a22805d991b5f3275029292b658d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/cloudpickle/cloudpickle-3.1.2.dist-info/licenses/LICENSE",
+          "bytes": 1754,
+          "sha256": "3029ea34173e9fdc233ad315dc6b100bd1ea71f529b1c1af97664a272fdc55f5"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/coloredlogs/coloredlogs-15.0.1.dist-info/LICENSE.txt",
+          "bytes": 1056,
+          "sha256": "0bef4ffb1855b65570304f2018c6d44e4bab97bd5df8716ecd7800014d717267"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/contourpy/contourpy-1.3.3.dist-info/LICENSE",
+          "bytes": 1534,
+          "sha256": "34170979fc64f4f5e6dfa66ef27dec314ffffc5852000c60f4836ec1dfbf156e"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/cycler/cycler-0.12.1.dist-info/LICENSE",
+          "bytes": 1497,
+          "sha256": "f1218143d766da3fea66f13396b7f15df46a83303f29bf96ba6e98eb4d42f408"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/docstring-parser/docstring_parser-0.18.0.dist-info/licenses/LICENSE.md",
+          "bytes": 1084,
+          "sha256": "dfe514a337ae8417abd31a8af707bbd6172b03e5430bb083e145899ea97a3eea"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/easydict/easydict-1.13.dist-info/LICENSE",
+          "bytes": 7651,
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/fonttools/fonttools-4.67.0.dist-info/licenses/LICENSE",
+          "bytes": 1072,
+          "sha256": "6787208f83f659ccbc2223b2fde952ffa6f7e8aca62f1a8a2bf5bc51bb1b2383"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/fonttools/fonttools-4.67.0.dist-info/licenses/LICENSE.external",
+          "bytes": 20022,
+          "sha256": "94a83aaee0729a0f302d34acc4acecbd9d58366f262429075fe557e4a54b2e69"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/gitdb/gitdb-4.0.12.dist-info/LICENSE",
+          "bytes": 1984,
+          "sha256": "efd29f596a08e8857e68e7694a50bcda72839792da7c3f041bcbff5f18009239"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/gitpython/gitpython-3.2.1.dist-info/licenses/LICENSE",
+          "bytes": 1503,
+          "sha256": "86fc94c321a9afbc11514713511bafded225f25100dcc0f7350e82bc231b8beb"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/humanfriendly/humanfriendly-10.0.dist-info/LICENSE.txt",
+          "bytes": 1056,
+          "sha256": "4ac48f4117809f2734066150450f120b3bb110ac1d3b32170795e0560dbbc1f5"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/idna/idna-3.20.dist-info/licenses/LICENSE.md",
+          "bytes": 1541,
+          "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/importlib-metadata/importlib_metadata-10.1.0.dist-info/licenses/LICENSE",
+          "bytes": 10278,
+          "sha256": "e2f7bb0557e7a381499f15baa7c1d776d83d6616599179d71d3109b8e39f7b25"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/jmespath/jmespath-1.1.0.dist-info/LICENSE",
+          "bytes": 1113,
+          "sha256": "6eefacfa4d71b82d08408c751470ac8d9854538da2142cb27be0287fb13d0ab9"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/joblib/joblib-1.6.0.dist-info/licenses/LICENSE.txt",
+          "bytes": 1527,
+          "sha256": "42612911c1872c5e4b43f6ae0e8ee59467cd350332241cf72ce90640264fae6a"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/kiwisolver/kiwisolver-1.5.1.dist-info/licenses/LICENSE",
+          "bytes": 3289,
+          "sha256": "529c40e5f67f2f88904657a9f7879ae2f8dc76bc9bfef9cb10d988b48804ed61"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/markdown/markdown-3.11.2.dist-info/licenses/LICENSE.md",
+          "bytes": 1650,
+          "sha256": "7ba4eb6d10b32b2d11dce13821340351cdbbb30ba8ccc67841db2ffd86e79aca"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/markdown-it-py/markdown_it_py-4.2.0.dist-info/licenses/LICENSE",
+          "bytes": 1078,
+          "sha256": "4a2260d6e2cd0f5a151a1e86dbfe7d3ed552b1e2beabf9941c1ba5c49cbce484"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/markdown-it-py/markdown_it_py-4.2.0.dist-info/licenses/LICENSE.markdown-it",
+          "bytes": 1073,
+          "sha256": "792c48c5a849a15fdf9e37e8bcf9e6d1dd13b32b46c642a748a0a46a9919d473"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/markupsafe/markupsafe-3.0.4.dist-info/licenses/LICENSE.txt",
+          "bytes": 1475,
+          "sha256": "489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/matplotlib/matplotlib/mpl-data/fonts/ttf/LICENSE_DEJAVU",
+          "bytes": 4816,
+          "sha256": "d75938dec098f06f0ac3c00853065d94f020be1c3c62ef1dc2975ba15b4d9b0e"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/matplotlib/matplotlib/mpl-data/fonts/ttf/LICENSE_STIX",
+          "bytes": 5476,
+          "sha256": "bab3d31dfef07f483624f2f65f2711e76065b8e7273278b1c071ede1041c9959"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/matplotlib/matplotlib-3.10.9.dist-info/LICENSE",
+          "bytes": 40129,
+          "sha256": "dbb9ad7495a83b0f2f48c94b06e23020587d82f8d1492dcb717fb1ebc2f86c18"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/mdurl/mdurl-0.1.2.dist-info/LICENSE",
+          "bytes": 2338,
+          "sha256": "7c605df6e28667a9603118e98274f64a49ce3eed0d26fccce9534a345e0ef955"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/mpmath/mpmath-1.3.0.dist-info/LICENSE",
+          "bytes": 1537,
+          "sha256": "c26cae81da4508e5e249985777a33821f183223ebb74d7f8cfbf90fe7eef2fb7"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/numpy/numpy/random/LICENSE.md",
+          "bytes": 3511,
+          "sha256": "103166b62b80443afb9eb3488e052ea06be0cff566b908f199e561fde49af19f"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/numpy/numpy/core/include/numpy/random/LICENSE.txt",
+          "bytes": 1018,
+          "sha256": "fbc539f47d0cf83bc61378080fb873d5c14630126cacbfe754035c3926daa5ec"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/numpy/numpy/ma/LICENSE",
+          "bytes": 1593,
+          "sha256": "05f3b88351988ecfad10abe92c0c50e5875c6452d5009a0084cc291551ffcca6"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/numpy/numpy-1.26.4.dist-info/LICENSE.txt",
+          "bytes": 47721,
+          "sha256": "1107b0c831e918d4f1dbc28a33190c77215ef278d4a4c4009572088770d4334a"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/omegaconf/omegaconf-2.3.0.dist-info/LICENSE",
+          "bytes": 1518,
+          "sha256": "b31375ed5d5cbe7ec2d0c4c14df8afa7a8e5501bbe25f70b6cbc461685f4b91a"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/onnx/onnx-1.19.1.dist-info/licenses/LICENSE",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/packaging/packaging-26.3.dist-info/licenses/LICENSE",
+          "bytes": 197,
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/packaging/packaging-26.3.dist-info/licenses/LICENSE.APACHE",
+          "bytes": 10174,
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/packaging/packaging-26.3.dist-info/licenses/LICENSE.BSD",
+          "bytes": 1344,
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/platformdirs/platformdirs-4.13.5.dist-info/licenses/LICENSE",
+          "bytes": 1089,
+          "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/prettytable/prettytable-3.18.0.dist-info/licenses/LICENSE",
+          "bytes": 1612,
+          "sha256": "0c8adcc204c8af6cdfdf7887dfd1f99c29901f6c1d505a78bba96efa4fb2cb05"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/protobuf/protobuf-6.33.6.dist-info/LICENSE",
+          "bytes": 1732,
+          "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/pydantic/pydantic-2.14.1.dist-info/licenses/LICENSE",
+          "bytes": 1129,
+          "sha256": "a9e186f3ca16b5eef84318e7a701721351a00cb7b8ae3a4394b67b49e3529ef3"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/pydantic-core/pydantic_core-2.50.1.dist-info/licenses/LICENSE",
+          "bytes": 1080,
+          "sha256": "2afdd30d54b4d62b6f488a6bcc1546e84ec5061f13f4209c03d012348783795a"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/pygments/pygments-2.21.0.dist-info/licenses/LICENSE",
+          "bytes": 1331,
+          "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/pyparsing/pyparsing-3.3.3.dist-info/licenses/LICENSE",
+          "bytes": 1062,
+          "sha256": "a5425f9dc14ac74d4c5f0b679e941f2442e32cca7452a4418d5b1a49893ebe4e"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/python-dateutil/python_dateutil-2.9.0.post0.dist-info/LICENSE",
+          "bytes": 2889,
+          "sha256": "ba00f51a0d92823b5a1cde27d8b5b9d2321e67ed8da9bc163eff96d5e17e577e"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/pyyaml/pyyaml-6.0.3.dist-info/licenses/LICENSE",
+          "bytes": 1101,
+          "sha256": "8d3928f9dc4490fd635707cb88eb26bd764102a7282954307d3e5167a577e8a4"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/requests/requests-2.34.2.dist-info/licenses/LICENSE",
+          "bytes": 10142,
+          "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/requests/requests-2.34.2.dist-info/licenses/NOTICE",
+          "bytes": 38,
+          "sha256": "f5110972dedad2b4e9d314518daf3b7d72d6e02e499acd802181de6f74571dcc"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/rich/rich-14.3.4.dist-info/licenses/LICENSE",
+          "bytes": 1056,
+          "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/s3transfer/s3transfer-0.19.3.dist-info/LICENSE.txt",
+          "bytes": 11358,
+          "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/s3transfer/s3transfer-0.19.3.dist-info/NOTICE.txt",
+          "bytes": 83,
+          "sha256": "d8354e0fa7fb762da7bc054a8a6774a0b310dfbbc78006393ee573a0e57612b5"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/scipy/scipy-1.15.3.dist-info/LICENSE.txt",
+          "bytes": 46845,
+          "sha256": "828cb9a7369c0a9f633ce7c10023f8d822f0f76b54ce25c723361d45b088879a"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/scipy/scipy/_lib/_uarray/LICENSE",
+          "bytes": 1514,
+          "sha256": "c80c39b5fce06ba4897e14e0b0a88b54458334d951eb1361402ffad2cfb863b4"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/scipy/scipy/sparse/linalg/_eigen/arpack/COPYING",
+          "bytes": 1892,
+          "sha256": "0926566f9f406178d1214f8cc796e166b1213dd7c05e0c5b461a8b8ac9e50bbe"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/scipy/scipy/fft/_pocketfft/LICENSE.md",
+          "bytes": 1498,
+          "sha256": "c254b2b5fd30ae3c89d36ba061730563b9760fca04f1b746a1b2c3157da2c789"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/scipy/scipy/spatial/qhull_src/COPYING.txt",
+          "bytes": 1635,
+          "sha256": "34db0c0c4f931861d720555c9cd7a2e228d1290ba29af0f2ee80c41bb2038afb"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/sentry-sdk/sentry_sdk-2.73.0.dist-info/licenses/LICENSE",
+          "bytes": 1093,
+          "sha256": "2a140d660f462812fa290bc740d04633126c5ec45d84b79b569e127b0eeddd0b"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE",
+          "bytes": 10278,
+          "sha256": "458502e12d97bbf64438606a20044aa85eb05fb0a8a807bb35dbec253fd1fc04"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE",
+          "bytes": 1076,
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE",
+          "bytes": 1076,
+          "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE",
+          "bytes": 1053,
+          "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE",
+          "bytes": 197,
+          "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE.APACHE",
+          "bytes": 10174,
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/packaging-26.3.dist-info/licenses/LICENSE.BSD",
+          "bytes": 1344,
+          "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE",
+          "bytes": 1089,
+          "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE",
+          "bytes": 1072,
+          "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+          "bytes": 1107,
+          "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE",
+          "bytes": 1076,
+          "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/config/NOTICE",
+          "bytes": 493,
+          "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/config/_validate_pyproject/NOTICE",
+          "bytes": 18737,
+          "sha256": "09c9bcea95ca086f8bc5bed174e40bc835b297d40fb5f86bbbb570fe0a5581a7"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools-84.2.1.dist-info/licenses/LICENSE",
+          "bytes": 1023,
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+          "bytes": 7634,
+          "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+          "bytes": 1023,
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/setuptools/setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE",
+          "bytes": 1023,
+          "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/six/six-1.17.0.dist-info/LICENSE",
+          "bytes": 1066,
+          "sha256": "4375ba20e2b9c6c4e7cad2940a628fd90e95cc3d50ee92aae755715d8ba1fbd0"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/smart-open/smart_open-7.7.1.dist-info/licenses/LICENSE",
+          "bytes": 1084,
+          "sha256": "cbedcdbba694f5aad9e5f65875bcf7137bc7e6307e1d11a8d52bba9943d82f98"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/smmap/smmap-5.0.3.dist-info/licenses/LICENSE",
+          "bytes": 1519,
+          "sha256": "88e9d93f708d110b328a834302dd1d5c6afbda530e7721d15d80b3511d86f235"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/sympy/sympy/parsing/latex/LICENSE.txt",
+          "bytes": 1075,
+          "sha256": "007bc30a58fa40a996e772047120de4eaf31f5110e4f9c3b5f93fcdfbe2eaca1"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/sympy/sympy-1.14.0.dist-info/licenses/LICENSE",
+          "bytes": 7885,
+          "sha256": "07a5e9819f727b4986ad2829c7a29a6320d42575f720eb24d71b7fef573a0286"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/tensorboard/tensorboard-2.20.0.dist-info/licenses/LICENSE",
+          "bytes": 28082,
+          "sha256": "3cdf6d3c9843007d564c8886a89ed4a05fc351440c1d4b9fadb98e9a5c203939"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/tensordict/tensordict-0.8.3.dist-info/licenses/LICENSE",
+          "bytes": 1098,
+          "sha256": "c5d8d2e3fc64f88c272ee2050af4d84e5f58f1a5d17a3aa99a47b77466a6fe72"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/termcolor/termcolor-3.3.0.dist-info/licenses/COPYING.txt",
+          "bytes": 1072,
+          "sha256": "e79b6bd82962c1330caaa7c42278567b08667777673f8e2371a624d5715d4c0e"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/tqdm/tqdm-4.70.1.dist-info/licenses/LICENCE",
+          "bytes": 1985,
+          "sha256": "fcff87c3a47ce8028a8512aa182d4fcf0ad1c90544ee75cf9b343684cac194de"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/trimesh/trimesh-4.7.4.dist-info/licenses/LICENSE.md",
+          "bytes": 1090,
+          "sha256": "fe27b5ef8710676cc85255da28a32f394e2ef3f4ce47075a1c732a9ea1d7bd03"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/typeguard/typeguard-4.6.0.dist-info/licenses/LICENSE",
+          "bytes": 1130,
+          "sha256": "6163f7987dfb38d6bc320ce2b70b2f02b862bc41126516d552ef1cd43247e758"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/typing-extensions/typing_extensions-4.16.0.dist-info/licenses/LICENSE",
+          "bytes": 13936,
+          "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/typing-inspection/typing_inspection-0.4.4.dist-info/licenses/LICENSE",
+          "bytes": 1090,
+          "sha256": "804b59b25f2c31bd278f9202a19ae49a3945aa2664387e2d0a128c7cacc61ec3"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/tyro/tyro-1.0.16.dist-info/licenses/LICENSE",
+          "bytes": 1065,
+          "sha256": "1470480384dd9bcd98241f67ca5ef49f4c546ea9e9ac4dedf1cc27eec466c093"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/urllib3/urllib3-2.8.0.dist-info/licenses/LICENSE.txt",
+          "bytes": 1093,
+          "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/wandb/wandb-0.22.0.dist-info/licenses/LICENSE",
+          "bytes": 1081,
+          "sha256": "8b338a449a463b1d4fac988638a4741ec35d941e49747d9dd19e0fedaeecb137"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/wcwidth/wcwidth-0.9.3.dist-info/licenses/LICENSE",
+          "bytes": 1322,
+          "sha256": "70b98a95a2144eb70af8017fa8c6d95ce247e40867436e8bc649e137fe13d21a"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/werkzeug/werkzeug/debug/shared/ICON_LICENSE.md",
+          "bytes": 222,
+          "sha256": "0e103a6358149792707e0d0d14df518f8556213b7cb54c7422f7467f4bb1f7eb"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/werkzeug/werkzeug-3.1.9.dist-info/licenses/LICENSE.txt",
+          "bytes": 1475,
+          "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/wrapt/wrapt-2.5.1.dist-info/licenses/LICENSE",
+          "bytes": 1304,
+          "sha256": "d4f66854a24dda2f2a5282912aedebe6b18186b86284510a433d78fadcd88e5d"
+        },
+        {
+          "path": "php-offline/notices/wheel-notices/zipp/zipp-4.1.2.dist-info/licenses/LICENSE",
+          "bytes": 1076,
+          "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+        }
+      ]
+    }
+  ]
+}

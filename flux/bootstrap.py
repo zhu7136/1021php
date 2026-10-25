@@ -1,7 +1,9 @@
 """Flux gm-run entry: no GPU work without an explicit approval file.
 
 Check only: python flux/bootstrap.py --check
-Run after approval: gm-run php_parkour/flux/bootstrap.py --approval-file <path>
+If Flux clones as 1021php, use gm-run 1021php/flux/bootstrap.py.
+Running also requires explicit --approval-file, --data and --output arguments.
+Prepare input shards separately; see flux/offline-inputs/README_ZH.md.
 """
 from __future__ import annotations
 

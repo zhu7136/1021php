@@ -1,3 +1,16 @@
+# 4096 教师长训：单个一小时训练段
+
+`run_longtrain4096.py` 使用 task045 已验证的4096环境配方，从其最终原生
+checkpoint（索引2279，模型、优化器、归一化一并加载）继续训练。
+一次任务、1x4090D24GB、自动重试0、worker总上限3600秒；平台启动、克隆、
+释放可能另计费。20000为本段额外更新的上限，不保证一小时内跑完。
+原生24步rollout、5epochs、4minibatches及物理、奖励、数据不变，每500次更新保存。
+预留准备、软停止、最终保存/重载及结果上传时间；限时到达在完整更新边界停止。
+`resources.json` 记录显存边界采样，不宣称连续峰值或教师收敛。
+结果包保留最终及最近两个周期checkpoint、配置和原生W&B离线记录；其余
+周期checkpoint留在worker，不自动删除。W&B控制记录结束不代表远端训练结束。
+此段代码独立于原128环境及4096容量测试入口，旧安全边界不修改。
+
 # PHP locomotion teacher on Flux — preparation, not a running experiment
 
 Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).

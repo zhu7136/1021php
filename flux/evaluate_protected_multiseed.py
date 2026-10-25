@@ -51,6 +51,8 @@ def fetch_inputs(url):
     emit('paired_eval_inputs_verified',**result)
 
 def worker(arm,run_path,synchronized_diagnostics=False):
+    from runtime_import_boundary import activate
+    emit('paired_eval_import_boundary_verified',arm=arm,**activate(ROOT))
     if arm not in dict(ARMS):raise ValueError('Undeclared evaluation arm')
     label,seed_text=arm.split('-seed');seed=int(seed_text)
     out=OUT/arm;out.mkdir(exist_ok=False)

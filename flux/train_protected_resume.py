@@ -84,6 +84,8 @@ def setup(arm,run_path):
     return algo,base.resolve_motion_command(env)
 
 def train_worker(run_path):
+    from runtime_import_boundary import activate
+    emit('resume_import_boundary_verified',arm='training',**activate(ROOT))
     import torch,numpy as np,random
     from low_noise_tools import EnvironmentStats,train
     from train_fresh_pilot import TrackingCapture
@@ -115,6 +117,8 @@ def train_worker(run_path):
     base.save(out/'summary.json',result);emit('resume_training_complete',**result)
 
 def eval_worker(arm,run_path):
+    from runtime_import_boundary import activate
+    emit('resume_import_boundary_verified',arm=arm,**activate(ROOT))
     import torch
     from low_noise_tools import EnvironmentStats,evaluate
     from paired_evaluation_tools import FirstEpisodeCapture

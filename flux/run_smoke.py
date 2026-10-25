@@ -13,6 +13,7 @@ import signal
 import subprocess
 import sys
 import time
+import traceback
 import urllib.parse
 import urllib.request
 import zipfile
@@ -92,15 +93,19 @@ def stop_child():
         CHILD = None
 
 
-def run(command, env, timeout):
+def run(command, env, timeout, log_path):
     global CHILD
-    CHILD = subprocess.Popen(command, cwd=ROOT, env=env, start_new_session=True)
-    try:
-        code = CHILD.wait(timeout=timeout)
-        if code:
-            raise RuntimeError('Child exited with code ' + str(code))
-    finally:
-        stop_child()
+    # Child argv never includes scoped upload URLs or account credentials.
+    # Persist stderr with stdout: the platform console can truncate scan noise.
+    with log_path.open('xb') as log:
+        CHILD = subprocess.Popen(command, cwd=ROOT, env=env, start_new_session=True,
+                                 stdout=log, stderr=subprocess.STDOUT)
+        try:
+            code = CHILD.wait(timeout=timeout)
+            if code:
+                raise RuntimeError('Child exited with code ' + str(code) + '; see ' + log_path.name)
+        finally:
+            stop_child()
 
 
 def main():
@@ -135,6 +140,12 @@ def main():
         actual = subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'], text=True).strip()
         if actual != args.expected_commit:
             raise ValueError('Worker commit does not match authorized commit')
+        sys.path.insert(0, str(ROOT))
+        from flux.preflight import static_checks
+        checks = static_checks(expected_commit=args.expected_commit)
+        (OUT/'source-preflight.json').write_text(json.dumps(checks, indent=2))
+        emit('source_preflight_passed', verification=checks['source_verification'],
+             shallow_checkout=checks['shallow_checkout'])
         python = launcher()
         probe = OUT / 'worker-upload-probe.json'
         probe.write_text(json.dumps({'task_id': args.task_id, 'commit': actual, 'gpu_training_started': False}))
@@ -172,7 +183,7 @@ def main():
         env.update(PYTHONUNBUFFERED='1', WANDB_MODE='offline', CUDA_VISIBLE_DEVICES='0', PHP_SMOKE_OUTER_GROUP='1')
         inputs = OUT / 'inputs'
         run([str(python), str(ROOT/'flux/prepare_inputs.py'), '--output', str(inputs), '--install',
-             '--python', str(python), '--withheld-wheel-dir', str(private)], env, 240)
+             '--python', str(python), '--withheld-wheel-dir', str(private)], env, 240, OUT/'prepare.log')
         env['PYTHONPATH'] = os.pathsep.join([str(inputs/'.flux-deps'), str(ROOT),
             str(ROOT/'thirdparty/holosoma/src/holosoma'), env.get('PYTHONPATH','')])
         emit('data_and_dependencies_installed')
@@ -189,7 +200,7 @@ def main():
         approval.write_text(json.dumps(scope, indent=2))
         stage = 'simulation_and_updates'
         run([str(python), str(ROOT/'flux/bootstrap.py'), '--approval-file', str(approval),
-             '--data', str(inputs/'motions-locomotion'), '--output', str(OUT/'training')], env, remaining)
+             '--data', str(inputs/'motions-locomotion'), '--output', str(OUT/'training')], env, remaining, OUT/'bootstrap.log')
         completion = json.loads((OUT/'training/completion.json').read_text())
         reload_result = json.loads((OUT/'training/native_reload.json').read_text())
         if not completion['pipeline_completed'] or completion['completed_updates'] != 20 or not reload_result['native_load_passed']:
@@ -199,7 +210,9 @@ def main():
     except BaseException as exc:
         # Do not render exceptions/arguments containing scoped signed URLs.
         (OUT/'failure.json').write_text(json.dumps({'stage':stage,'exception_type':type(exc).__name__,
-            'elapsed_seconds':round(time.monotonic()-started,2),'automatic_retries':0}))
+            'elapsed_seconds':round(time.monotonic()-started,2),'automatic_retries':0,
+            'frames':[{'file':Path(frame.filename).name,'line':frame.lineno,'function':frame.name}
+                      for frame in traceback.extract_tb(exc.__traceback__)]}))
         emit('smoke_failed', stage=stage, exception_type=type(exc).__name__)
     finally:
         stop_child()

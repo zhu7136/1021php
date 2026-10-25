@@ -4,6 +4,38 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Latest correction — 2026-10-25 shallow-clone preflight
+
+This section supersedes historical preparation status below. Two separately
+authorized smoke attempts terminated before teacher/simulator startup. The
+second task (`TASK_20261025_020`) failed because Flux clones with `--depth 1`
+and the old ancestor check required an absent historical commit object.
+No further GPU launch is authorized by this correction.
+
+The corrected source preflight runs BEFORE input download/installation:
+
+- Exact approved worker HEAD is required for a shallow checkout.
+- The committed tree outside the added `flux/` directory must match the official
+  PHP base byte-for-byte at the Git path/mode/blob-ID/gitlink level. All 156
+  entries are covered. Canonical NUL-delimited tree SHA-256:
+  `80aac341646b1a5f5016334ac0530d98ebd309694e97b1a76082da1364f5642e`.
+- Preparation checks real full-history ancestry to PHP base
+  `c7c9ce3fc75a8754a7e403c58de3b6933254d01b`; a full-history worker continues
+  checking ancestry. Shallow workers verify pinned contents instead of fetching
+  history or suppressing an error. Unapproved HEAD or tracked source changes fail.
+- Holosoma gitlink and runtime checkout checks remain in place.
+- `prepare.log` and `bootstrap.log` preserve child stdout AND stderr and are
+  included in the existing result ZIP/manifest, even on nonzero child exit.
+- `failure.json` records stack locations without exception values or arguments
+  that could expose scoped upload URLs.
+
+CPU tests cover the original exit-128 reproduction, approved shallow checkout,
+full-history ancestry, dirty/changed/extra source rejection, gitlink changes,
+early failure before downloads, and child traceback retention. These tests do
+not establish IsaacSim, CUDA, native checkpoint reload or training compatibility.
+No physics, motion coverage, terrain variants, environment count, update target,
+runtime image or GPU budget was changed by this fix.
+
 - CPU tests: six tests passed, including seven rejection cases in one test.
 - Simulator/GPU initialization: NOT tested.
 - Learning updates and real checkpoint reload: NOT tested.

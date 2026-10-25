@@ -63,13 +63,14 @@ def main() -> int:
     parser.add_argument('--data', type=Path)
     parser.add_argument('--output', type=Path)
     args = parser.parse_args()
-    checks = static_checks()
     if args.check:
+        checks = static_checks()
         print(json.dumps({'static_checks': checks, 'gpu_started': False}, indent=2))
         return 0
     if not args.approval_file or not args.data or not args.output:
         parser.error('--approval-file, --data and --output are required to run')
     scope = load_approval(args.approval_file)
+    checks = static_checks(expected_commit=scope['code_commit'])
     if checks['php_commit'] != scope['code_commit']:
         raise ValueError('Worker commit does not match approved commit')
     output = args.output.resolve()

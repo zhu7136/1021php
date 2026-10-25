@@ -4,6 +4,28 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Task029 evidence and no_grad transition correction (2026-10-25)
+
+Task029 passed actual checkpoint-state restoration and32headless replay steps
+on128GPU environments (4096envsteps); actor/critic/optimizers/scalars/source
+checkpoint unchanged. It then failed BEFORE the first PPO update: replay's
+inference_mode left persistent simulator tensors that native reset_all mutated
+outside inference mode. Requested2updates,completed0. Results were retrieved and
+all20manifest member sizes/SHA256 verified. No automatic paid retry was issued.
+
+Minimal integration-only correction uses no_grad for preliminary replay, NOT
+inference_mode. The shared simulator's tensor identities are NOT manually
+replaced; native PPO rollout/training/physics/rewards/data are unchanged.
+CPU fixture now exercises native-style reset before learning and persistent
+joint-state tensors; regressions reproduce the old failure and pass the fixed
+replay-to-reset-to-two-optimizer-updates flow. These are NOT simulator proof.
+
+User explicitly requested one fresh GPU validation at2026-10-25T03:23:59Z:
+1x4090D24GB,128env,32replaysteps,2resumedPPOupdates,worker<=1200s,retries0;
+platform startup/release overhead may be billed separately. Only these three
+integration/docs/test files are published to the existing preparation branch.
+This is NOT authorization for long training, formal evaluation or extra trials.
+
 ### Task028 result and local-only correction
 
 The separately authorized replay/continuation attempt TASK_20261025_028 FAILED

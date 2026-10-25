@@ -49,10 +49,12 @@ class ResumeInputTests(unittest.TestCase):
             resume_input.NoRedirect().redirect_request(None, None, 302, '', {}, 'https://example.com')
 
 
-def fixture(output, *, nonfinite=False, update=True):
+def fixture(output, *, nonfinite=False, update=True, persistent_state=False):
     base = algorithm()
     def native_learn(self):
         self._train_mode()
+        # Native PPO resets the same environment BEFORE its rollout context.
+        self.env.reset_all()
         for index in range(self.current_learning_iteration, self.current_learning_iteration + 2):
             self.current_learning_iteration = index
             if update:
@@ -92,10 +94,21 @@ def fixture(output, *, nonfinite=False, update=True):
     class Environment:
         num_envs = 128
         calls = 0
+        modes = None
         def reset_all(self):
+            if persistent_state:
+                if self.modes is None:
+                    self.modes = []
+                self.modes.append((torch.is_grad_enabled(),torch.is_inference_mode_enabled()))
+                if not hasattr(self,'dof_pos'):
+                    self.dof_pos = torch.ones(128,2)
+                # Reproduces native reset's in-place persistent-tensor update.
+                self.dof_pos[0] = 0
             return {'a': torch.ones(128,2)}
         def step(self, state):
             self.calls += 1
+            if persistent_state:
+                self.dof_pos = torch.ones(128,2) * 2
             obs = self.reset_all()
             if nonfinite:
                 obs['a'][0,0] = float('nan')
@@ -138,6 +151,28 @@ class ResumeAlgorithmTests(unittest.TestCase):
         torch.save(saved, source)
         module.CHECKPOINT_SHA256 = resume_input.digest(source)
         return saved
+
+    def test_shared_simulator_reset_after_no_grad_replay_then_updates(self):
+        algo, module, source = fixture(self.output,persistent_state=True)
+        self.disable_normalizers_as_native(algo,module,source)
+        self.run_with_source(algo,source)
+        self.assertEqual(algo.env.calls,32)
+        self.assertEqual(algo.env.modes[:33],[(False,False)] * 33)
+        self.assertEqual(algo.env.modes[33],(True,False))
+        self.assertFalse(torch.is_inference(algo.env.dof_pos))
+        self.assertTrue(json.loads((self.output/'resume_validation.json').read_text())['passed'])
+
+    def test_old_inference_mode_reproduces_reset_failure_before_update(self):
+        algo, module, source = fixture(self.output,persistent_state=True)
+        self.disable_normalizers_as_native(algo,module,source)
+        old_inference_mode = torch.inference_mode
+        with patch.object(module.torch,'no_grad',old_inference_mode):
+            with self.assertRaisesRegex(RuntimeError,'inference tensor'):
+                self.run_with_source(algo,source)
+        self.assertEqual(algo.env.calls,32)
+        self.assertTrue((self.output/'replay_validation.json').exists())
+        self.assertFalse((self.output/'resume_validation.json').exists())
+        self.assertFalse((self.output/'progress.json').exists())
 
     def test_native_disabled_normalizers_none_identity_passes_full_cpu_flow(self):
         algo, module, source = fixture(self.output)

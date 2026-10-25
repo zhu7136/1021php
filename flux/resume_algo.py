@@ -106,7 +106,11 @@ class ReplayResumePPO(BoundedPPO):
         self._eval_mode()
         policy = self.get_inference_policy()
         done_count = 0
-        with torch.inference_mode():
+        # Replay shares the simulator with native training. inference_mode can
+        # leave persistent inference tensors that reset_all later mutates outside
+        # that mode. no_grad keeps replay gradient-free but tensors ordinary;
+        # do not alter native PPO's own rollout or clone/replace simulator state.
+        with torch.no_grad():
             obs = self.env.reset_all()
             for step in range(32):
                 finite(obs)
@@ -128,6 +132,7 @@ class ReplayResumePPO(BoundedPPO):
             'all_observations_actions_rewards_finite': True,
             'model_normalizers_optimizer_scalars_unchanged': True, 'source_checkpoint_unchanged': True,
             'headless': True, 'video_recorded': False, 'formal_eval_protocol': False,
+            'replay_autograd_mode': 'no_grad',
             'environment_mode': 'unchanged training terrain/commands; inference network mode'}))
         print(json.dumps({'event': 'checkpoint_replay_passed', 'steps': 32, 'num_envs': self.env.num_envs}), flush=True)
         # Native PPO.learn switches back to train mode and resets environments.

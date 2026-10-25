@@ -4,6 +4,49 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Latest local correction — 2026-10-25 final checkpoint directory (CPU-only)
+
+Task `TASK_20261025_023`, at published commit
+`88703e5953b48fb1b250e58be214e80b25489b4b`, passed version/source preflight and
+completed all 20 requested PPO updates. Five distinct iteration checkpoints
+were retrieved with verified hashes. The last checkpoint passed a safe CPU
+`torch.load(weights_only=True)` and finite-tensor inspection. The smoke still
+FAILED: the added adapter tried to save `training/model_smoke_final.pt` outside
+Holosoma's timestamped run log directory, and the native logger rejected it.
+The native reload call was never reached. RabbitMQ errors were not the final
+exception, and the worker did not reach its hard timeout.
+
+This local-only repair changes final checkpoint placement to
+`Path(self.log_dir) / 'model_smoke_final.pt'`. The control report remains at
+`PHP_FLUX_OUTPUT/native_reload.json`; its `path` is relative to that outer
+output directory and now includes the real nested run directory. Paths outside
+the outer output (including symlink escapes), missing/empty checkpoint files,
+save/load failures and state mismatches fail without a success report.
+
+The adapter invokes the unchanged native save/load methods, compares actor,
+critic and enabled observation-normalizer states exactly, and also checks
+optimizer buffers/parameter groups when `config.load_optimizer` is enabled,
+plus the iteration and learning-rate scalars. It does NOT force optimizer
+loading or alter the training configuration, physics, rewards, input data,
+image, GPU count, environment count, update budget or runtime budget.
+
+`test_checkpoint_roundtrip.py` uses a CPU contract fixture with real small
+Torch modules and optimizer buffers, but NOT Holosoma's real PPO or IsaacSim.
+It reproduces task023's old failure before the repair and exercises nested
+logging, soft-stop boundaries, state corruption and failure propagation.
+Passing these unit tests does NOT establish real-worker native reload,
+simulator replay, successful smoke acceptance or trained policy quality.
+
+Run the local CPU suite with:
+
+```bash
+python -m unittest discover -s flux -p 'test_*.py'
+```
+
+This repair has not been published, and authorizes no GPU start or retry.
+The older status sections below are historical; task023 supersedes their
+claims that version recognition, simulator startup or PPO updates are untested.
+
 ### Latest local correction — 2026-10-25 runtime version identity (CPU-only)
 
 Task `TASK_20261025_021` passed the shallow-source check, then failed because

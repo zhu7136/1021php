@@ -4,6 +4,41 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Task031 passed; one user-selected 30-minute continuation (2026-10-25)
+
+Task031 completed32headless replay steps on128environments, then2native PPO
+updates, final save and strict native reload. Returned26files passed size/SHA256
+checks. Independent weights-only CPU loads confirmed finite model/optimizer
+state, changed actor/critic parameters and every optimizer step advanced40.
+This proves bounded training plumbing, NOT policy quality or teacher convergence.
+
+At2026-10-25T03:37:07Z the user selected ONE30-minute worker continuation:
+1x4090D24GB,128env,source task031 final checkpoint,automatic retries0. The worker
+timer includes worker setup, training, stop/save and upload, but platform clone,
+startup and release may be billed separately. The existing preparation branch
+is updated; main and all previous source checkpoints remain unchanged.
+
+Independent formal entry: flux/run_formal.py,formal_bootstrap.py,formal_teacher.py,
+formal_algo.py,formal_input.py,formal_contract.py. Original smoke budget guards
+are unchanged. Formal continuation uses the same pinned source, simulator,
+dependencies, full locomotion dataset,64terrain layouts,physics,rewards and
+128environments. No4096environment capacity or exact simulator/RNG resume claim.
+
+Native PPO ceiling10000ADDITIONAL updates is only a safety ceiling,not a claim
+that10000will finish in30minutes. Worker alarm1680s reserves sealing/upload
+time; final deadline1798s. Child receives1650minus elapsed setup seconds;
+soft stop120s before its cap,hard termination30s before. Stop is at an update
+boundary,final native checkpoint saved/reloaded. Periodic native save every50
+updates. Archive returns final plus two latest periodic checkpoints,scalar
+JSONL,offline W&B history and diagnostic reports; older worker files are NOT
+deleted. Failure and timeout are never reported as teacher convergence.
+
+The returned archive retains the existing transport filename php-smoke-result.zip
+for compatibility; manifest/reports/controller scope identify the formal stage.
+This authorization covers only this single30-minute attempt,not automatic retries
+or any follow-on training. CPU contracts test the actual boundary-stop/save/
+reload path and supervisor soft/hard deadline rules before publication.
+
 ### Task029 evidence and no_grad transition correction (2026-10-25)
 
 Task029 passed actual checkpoint-state restoration and32headless replay steps

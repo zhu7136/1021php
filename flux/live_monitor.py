@@ -12,6 +12,15 @@ import time
 ENTITY = 'zhul136-university-of-science-and-technology-of-china'
 PROJECT = 'HuD04_WBT'
 
+def offline_environment(env):
+    """Explicit user-selected offline mode; no account credentials reach child."""
+    result = dict(env)
+    for name in ('WANDB_API_KEY', 'OPENAI_API_KEY', 'FLUX_API_KEY', 'GITHUB_TOKEN', 'github', 'key', 'WANDB_RUN_ID'):
+        result.pop(name, None)
+    result.update(WANDB_MODE='offline', WANDB_ENTITY=ENTITY, WANDB_PROJECT=PROJECT,
+                  WANDB_RESUME='never', PYTHONUNBUFFERED='1')
+    return result
+
 def online_environment(env):
     result = dict(env)
     if not result.get('WANDB_API_KEY'):

@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "gpu_start_authorized": false,
+  "archive_bytes": 17305073,
+  "archive_sha256": "79df4443fe607a46d993f20896f189290e81271116310d30267e4b8b71fd3136",
+  "files": [
+    {
+      "path": "input/asset/meshes/HU_D04_01/base_link.STL",
+      "bytes": 1277634,
+      "sha256": "3523159f55ef13b00b2a0457f98a94e7cc80664cbd541cdbad822d27287fbeb8"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_ankle_pitch_link.STL",
+      "bytes": 60784,
+      "sha256": "56330a050041b7c7c1c12a34dce06e93be4c684f68c85668413ce65ff4b24f51"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_ankle_roll_link.STL",
+      "bytes": 1225384,
+      "sha256": "d1c9a577c09018a8ba5bf06ae1af58f6692cb0a022c2b847348de4e7a0e1441c"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_elbow_link.STL",
+      "bytes": 152884,
+      "sha256": "2888dc889477702b12e2f3815b379fe8ff499d3c57fc91e3d66a8246c32062c2"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_hip_pitch_link.STL",
+      "bytes": 254884,
+      "sha256": "95fe180a51d8eda2259163f90293f6d46119af90d6441f6877086e37cd5f6a7f"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_hip_roll_link.STL",
+      "bytes": 491484,
+      "sha256": "534adfa9f0397b15aadeb387f8feba52e9b06a1bf17ce79398b4d93c77b4418e"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_hip_yaw_link.STL",
+      "bytes": 554284,
+      "sha256": "f7211294866649906978641362fd25ae4cbff905e6f56713f6533c54529a833e"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_knee_link.STL",
+      "bytes": 1394184,
+      "sha256": "6eddc5871da1b6a5eec838580e85fa5ed4fb675df681f1494ee9984f1db4ea09"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_shoulder_pitch_link.STL",
+      "bytes": 413784,
+      "sha256": "f1c2c27e2c08d1d2d1bc2ca7ba85076104d5a4f89ccee3914c6bd66b0f344f01"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_shoulder_roll_link.STL",
+      "bytes": 453234,
+      "sha256": "642539bb3c6653ecd711da9f7032b87f52f9dc205f12f5f5719b1dc2ba3c9c98"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_shoulder_yaw_link.STL",
+      "bytes": 321034,
+      "sha256": "1d6336e6ef5f162b6f8d7dd52e02435aeaca3b9e16c8a8cb7430a494c4c1f421"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_wrist_pitch_link.STL",
+      "bytes": 89284,
+      "sha256": "76b99c5f53059abb1d07b77e3e076f200bfc1f91f1cf54f9258bb63785d74c7c"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_wrist_roll_link.STL",
+      "bytes": 239684,
+      "sha256": "5aa0af4ccdaf46d498267b0fae247b8d547d8d72dd8db4f7691fe42b567eb5d6"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/left_wrist_yaw_link.STL",
+      "bytes": 81984,
+      "sha256": "8403519d27e46a72426b2239d83cbaf48962c09bbf5a2e2283128f213ff70118"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/neck_pitch_link.STL",
+      "bytes": 500384,
+      "sha256": "c2408c7e5650a38b2ec76ef5995003d830b02b2054d623e574cded2d63351266"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/neck_yaw_link.STL",
+      "bytes": 573634,
+      "sha256": "09639025d46dcdeb1ef83a30655b96d94ef2cb0c2d7583d7663bac0c08a228cf"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_ankle_pitch_link.STL",
+      "bytes": 60734,
+      "sha256": "7b1ea8a1c2233bf1ba6102246a5ff403ad6364406a8ba93dad04c1604d6618db"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_ankle_roll_link.STL",
+      "bytes": 1225384,
+      "sha256": "dfaa9ae9dbe0c8d2073c8ff10428e5b29ec02bf05d50e82d26b5a2e01b524c14"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_elbow_link.STL",
+      "bytes": 182184,
+      "sha256": "9c7d4b1382573a7408633872062d0cf073e5118f7b4ed183910adf32e090a067"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_hip_pitch_link.STL",
+      "bytes": 254884,
+      "sha256": "9c1cdaf2bf1f8ee15f44de7e7c9efa23ac7254f4a766890321dd9b1f7d6501eb"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_hip_roll_link.STL",
+      "bytes": 491434,
+      "sha256": "4014b22c9100fbd518c8317c2dff79324e0ec109766a684decfa17e66aa8c00c"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_hip_yaw_link.STL",
+      "bytes": 554234,
+      "sha256": "071945e528f3d73313f9ab46f93baa35598b96249670d4b5d837b39b005f2bb4"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_knee_link.STL",
+      "bytes": 1393934,
+      "sha256": "679022f3f654b11a74ab6205e14e9cf8506e09372adbd8ce0e18ae5ab572de72"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_shoulder_pitch_link.STL",
+      "bytes": 413784,
+      "sha256": "78f244f2858b016a08a30bd3c68aa0b7814cfd499cb12aa5230227fac423dbc3"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_shoulder_roll_link.STL",
+      "bytes": 454534,
+      "sha256": "1cdc18995bf2bc4a448e3d60155397fe02aff91a9cc4252f4e3dcb9029d5a77a"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_shoulder_yaw_link.STL",
+      "bytes": 320534,
+      "sha256": "b7711c02409d50853d6c14431fce5f99b933d6e4e4bb877c7adaf12a2904444c"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_wrist_pitch_link.STL",
+      "bytes": 89234,
+      "sha256": "3c87d40c9f28e287328333b3342ea6292bbd20447b149a1986393789bd7e8b92"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_wrist_roll_link.STL",
+      "bytes": 239534,
+      "sha256": "e4804755e9991f05ad5389340e1e83ee1ef687a403896c21c0f785c28ff871fc"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/right_wrist_yaw_link.STL",
+      "bytes": 82484,
+      "sha256": "e4600c0e88c5b9cf1f1a79a583c9398c64e391395692a3003a070b2a1a4d17bc"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/waist_pitch_link.STL",
+      "bytes": 3298784,
+      "sha256": "781928e56f59717870778f2dd1384ca21a258bd10580fe9563f363b1f5ef56f5"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/waist_roll_link.STL",
+      "bytes": 192084,
+      "sha256": "4fd1dde80e42f1d8fced3debe4ef1dd308628105c359b58a9ed48e11d81258a8"
+    },
+    {
+      "path": "input/asset/meshes/HU_D04_01/waist_yaw_link.STL",
+      "bytes": 629834,
+      "sha256": "66aac6232157cb5d5689e2fbecd211fe3dcffc41485f59340b1e7810eeb76bbb"
+    },
+    {
+      "path": "input/asset/urdf/HU_D04_01.srdf",
+      "bytes": 2938,
+      "sha256": "6815e2421b58ff43d85a04bcede461a73110edca42c671188454042142025c1a"
+    },
+    {
+      "path": "input/asset/urdf/HU_D04_01.urdf",
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
+    },
+    {
+      "path": "input/asset/usd/HU_D04_01.usd",
+      "bytes": 1458,
+      "sha256": "9cd8cf50aa56e09a8aea8bb9a3fdec15af2a4dad622882c1d6f39fd3e967baa0"
+    },
+    {
+      "path": "input/asset/usd/configuration/HU_D04_01_base.usd",
+      "bytes": 25891259,
+      "sha256": "b37fba22a4cc13be0bb31df3a63352ee2679abfa0fa179c69576f2c585a5ae1f"
+    },
+    {
+      "path": "input/asset/usd/configuration/HU_D04_01_physics.usd",
+      "bytes": 13081,
+      "sha256": "12cd775e74c234772b66c4bea2b63824d86016fd75d64e67222b77b8bd2ee177"
+    },
+    {
+      "path": "input/asset/usd/configuration/HU_D04_01_robot.usd",
+      "bytes": 3057,
+      "sha256": "9f070eca577f6dbe8802af4171de7f719f6c541217f0d992ac201841df095e76"
+    },
+    {
+      "path": "input/asset/usd/configuration/HU_D04_01_sensor.usd",
+      "bytes": 649,
+      "sha256": "5a6260f8e2da58d2ef3794e3b7e3f55f96cc1ecbcfb9c313f400698d7c314095"
+    },
+    {
+      "path": "input/motion.npz",
+      "bytes": 2131479,
+      "sha256": "7bd8d13c74fc83a9930bbca587a72ba3271847450f6dd12ffb66e6cfe8746bba"
+    },
+    {
+      "path": "overlay/flux/hud04_validate_child.py",
+      "bytes": 7543,
+      "sha256": "9f0ae1c7bf5627301eeba93354fa429e5b666fd0c24058e7df59412c47d070cb"
+    },
+    {
+      "path": "overlay/wbt_training/config_values/hud04_experiment.py",
+      "bytes": 10116,
+      "sha256": "498cad6569d1b61535b6327f28116e6c7982cb13138562b86bc6f405c684e6a0"
+    },
+    {
+      "path": "overlay/wbt_training/config_values/hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_action.py",
+      "bytes": 3471,
+      "sha256": "3ccc241412496c55ec7a93603ca7a571e403ff31731387dd13146f4a5fadfacd"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_command_core.py",
+      "bytes": 2182,
+      "sha256": "66cf534b1f96474afd6d6d051fef28577740ede5a93691858f444022024d6115"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_env_core.py",
+      "bytes": 1840,
+      "sha256": "ad44ce38de2bcaffd4562b431c8458ef08585d0cab679e0241458f99fb74baf4"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_holosoma_action.py",
+      "bytes": 533,
+      "sha256": "d2c2c4b510bce57b3a932f8267ef030b3755b938866627366f23c6a04caefc86"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_holosoma_command.py",
+      "bytes": 368,
+      "sha256": "a50ebbdf742678bbe1d06ba00a912d2fba015db5ed23328d4915b81e9e4b8e20"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_holosoma_env.py",
+      "bytes": 299,
+      "sha256": "f8ab304a61515711c4b877afaa3fa6a5489a27b04a95f7261b268f43fa5ec32b"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_motion.py",
+      "bytes": 3111,
+      "sha256": "1986740b673637b2bdf76023bbc7dddeb3c14e0dd5e65c7907589efe16bc6811"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_state.py",
+      "bytes": 4956,
+      "sha256": "c63711052e7b3123725056826a7d9d9fc5d60bdd42e17c19dc9fb2f910bbc186"
+    },
+    {
+      "path": "overlay/wbt_training/hud04_usd.py",
+      "bytes": 1832,
+      "sha256": "4bd233b903c4c6f5332d6292c090d5f977794285c06172570df196e4ec369384"
+    }
+  ],
+  "unresolved_external_dependencies": [
+    "OmniPBR.mdl"
+  ],
+  "gpu_validated": false,
+  "motion_physics_validated": false
+}

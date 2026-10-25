@@ -1,5 +1,29 @@
 ## One-update GPU delivery smoke (2026-10-25)
 
+### Shell-safe transport repair and separately authorized verification
+
+TASK_20261025_030 terminated before the custom entrypoint: raw signed URL
+query ampersands escaped the platform's nested shell quoting and START_SCRIPT
+became empty. No PPO update or output checkpoint was observed. At
+2026-10-25T03:24:08Z the user authorized publishing this repair and ONE new
+verification with the same bounds,zero evaluations,and no automatic task retry.
+
+Use `launch_envelope.start_script` to build the new controller payload. It
+passes one URL-safe base64 token containing freshly minted signed capabilities.
+The whole command has no quotes,ampersands,dollar signs,semicolons,or newlines.
+The worker decodes directly into Python argv;no decoded data enters a shell.
+Encoding is NOT encryption: the token remains confidential,expires,may appear
+in platform logs,and must never be committed or displayed in shared output.
+Neither W&B nor Flux nor GitHub API credentials are included in the envelope.
+
+477 CPU tests pass,including9 new nested-shell transport tests. Single and
+double quoted START_SCRIPT assignment and multiple shell passes preserve every
+synthetic signed URL byte. This is CPU evidence,not proof of Flux execution,
+remote network connectivity,or a new checkpoint. New GPU validation must use
+a new W&B bookkeeping run/task/state;never replay TASK030 capabilities.
+
+### Original single-update contract (unchanged)
+
 The user authorized starting this single bounded verification directly at
 2026-10-25T03:07:28Z. This is not authorization for 200-update continuation.
 

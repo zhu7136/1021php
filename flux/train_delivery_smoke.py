@@ -1,6 +1,7 @@
 """One GPU plumbing check: iter200 ->201,32env,no evaluation,1800s worker,no task retry."""
 from pathlib import Path
 import json
+import sys
 import train_protected_resume as resume
 
 def summarize():
@@ -26,6 +27,13 @@ def configure():
     resume.summarize=summarize
 
 def main():
+    if '--launch-envelope' in sys.argv:
+        from launch_envelope import arguments
+        if sys.argv.count('--launch-envelope')!=1:raise ValueError('Duplicate launch envelope')
+        index=sys.argv.index('--launch-envelope')
+        if index+1>=len(sys.argv):raise ValueError('Missing launch envelope')
+        expanded=arguments(sys.argv[index+1])
+        sys.argv[index:index+2]=expanded
     configure()
     # Re-enter this same bounded wrapper in the Isaac child, NEVER the 200-update entrypoint.
     resume.main(child_entrypoint=Path(__file__))

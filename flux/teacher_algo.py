@@ -14,11 +14,21 @@ class _StopAfterUpdate(BaseException):
 
 
 def _require_same_state(expected, actual, name):
-    """Exact recursive comparison, including optimizer buffers and scalars."""
+    """Compare exact values on detached CPU views/copies, never move live state."""
     message = f'Native checkpoint roundtrip changed state: {name}'
     if torch.is_tensor(expected):
         if (not torch.is_tensor(actual) or expected.shape != actual.shape
-                or expected.dtype != actual.dtype or not torch.equal(expected, actual)):
+                or expected.dtype != actual.dtype):
+            raise ValueError(message)
+        # Native load(map_location=self.device) can change an optimizer tensor's
+        # storage device. That alone is not value corruption. Keep dtype/shape
+        # exact and compare detached copies on one device; do NOT move or replace
+        # live optimizer buffers or force their placement for future training.
+        expected_cpu = expected.detach().cpu()
+        actual_cpu = actual.detach().cpu()
+        if (not torch.isfinite(expected_cpu).all().item()
+                or not torch.isfinite(actual_cpu).all().item()
+                or not torch.equal(expected_cpu, actual_cpu)):
             raise ValueError(message)
     elif isinstance(expected, dict):
         if not isinstance(actual, dict) or expected.keys() != actual.keys():

@@ -4,6 +4,42 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Latest local correction — 2026-10-25 cross-device comparison (CPU-only)
+
+Task `TASK_20261025_026` at published commit
+`42f3c51a6ef46a5e5bf0dd3091734f7589eff6e7` completed 20 updates, saved the
+final checkpoint inside the real log directory, and returned from upstream
+`PPO.load` (including optimizer restoration). It still FAILED acceptance:
+the adapter's subsequent optimizer-state comparison called `torch.equal`
+across CPU and CUDA storage. No complete `native_reload.json` was produced.
+The exact offending optimizer key was not recorded, so it is not established.
+
+This local repair compares tensors using detached CPU views/copies. It retains
+exact tensor shape, dtype, finite-value and value checks, along with the
+recursive key, sequence, scalar, optimizer and iteration checks. It does not
+move or replace live optimizer buffers, change their device-placement policy,
+cast dtype, introduce approximate tolerances, skip optimizer verification, or
+change native save/load and training parameters. Transfer errors still fail.
+
+New CPU tests use CPU storage with explicit MOCK device labels and an equal
+operation that reproduces the original cross-device error. They check both
+directions, nested optimizer buffers, corruption and nonfinite rejection,
+unchanged source state/gradients, and copy failures without success markers.
+An integrated CPU fixture includes mixed-label optimizer state after load.
+These are NOT real CUDA tensors or tests of live CUDA transfer/continuation.
+The original worker acceptance remains failed until a real-runtime test proves
+the full roundtrip. Neither CPU success nor native load returning alone proves
+that a subsequent optimizer update or simulator replay is valid.
+
+CPU regression: 91/91 tests passed on Python 3.13/Torch CPU, including 12 new
+comparison tests; Python 3.11 pure-Python subset 47/47 plus syntax passed.
+Python 3.11 has no Torch locally, so this is not target CUDA verification.
+At 2026-10-25T02:34:19Z the user authorized publishing this three-file repair
+and ONE bounded Flux validation: 1x4090D24GB,128env,20updates,worker<=1200s,
+automatic retries=0. This note is authorization, NOT evidence of submission or
+success. No formal training or further paid retries are covered.
+Earlier sections below describe historical preparation.
+
 ### Latest local correction — 2026-10-25 final checkpoint directory (CPU-only)
 
 Task `TASK_20261025_023`, at published commit

@@ -245,5 +245,176 @@ class CheckpointRoundtripTests(unittest.TestCase):
         self.assert_no_success()
 
 
+class _DeviceTaggedCPUFixture:
+    """CPU storage with mocked device labels; this is NOT a CUDA tensor."""
+    def __init__(self, tensor, device, *, transfer_error=False):
+        self.tensor = tensor
+        self.device = torch.device(device)
+        self.shape = tensor.shape
+        self.dtype = tensor.dtype
+        self.transfer_error = transfer_error
+        self.detached = False
+        self.cpu_calls = 0
+
+    def detach(self):
+        self.detached = True
+        return self
+
+    def cpu(self):
+        if not self.detached:
+            raise AssertionError('Comparison must detach its input')
+        self.cpu_calls += 1
+        if self.transfer_error:
+            raise RuntimeError('fixture CPU copy failed')
+        return self.tensor.detach().clone()
+
+
+class CrossDeviceComparisonTests(unittest.TestCase):
+    def setUp(self):
+        self.compare = algorithm().learn.__globals__['_require_same_state']
+        self.real_is_tensor = torch.is_tensor
+        self.real_equal = torch.equal
+        self.equal_calls = []
+        self.is_tensor_patch = patch.object(torch, 'is_tensor', side_effect=self.is_tensor)
+        self.equal_patch = patch.object(torch, 'equal', side_effect=self.equal)
+        self.is_tensor_patch.start()
+        self.equal_patch.start()
+        self.addCleanup(self.is_tensor_patch.stop)
+        self.addCleanup(self.equal_patch.stop)
+
+    def is_tensor(self, value):
+        return isinstance(value, _DeviceTaggedCPUFixture) or self.real_is_tensor(value)
+
+    def equal(self, left, right):
+        # Make the original code reproduce task026 even without a GPU.
+        if left.device != right.device:
+            raise RuntimeError('Expected all tensors to be on the same device, cpu and cuda:0')
+        self.equal_calls.append((left, right))
+        if isinstance(left, _DeviceTaggedCPUFixture):
+            left = left.tensor
+        if isinstance(right, _DeviceTaggedCPUFixture):
+            right = right.tensor
+        return self.real_equal(left, right)
+
+    def tagged(self, value, device='cuda:0'):
+        return _DeviceTaggedCPUFixture(torch.tensor(value), device)
+
+    def assert_cpu_comparisons(self):
+        self.assertTrue(self.equal_calls)
+        for left, right in self.equal_calls:
+            self.assertNotIsInstance(left, _DeviceTaggedCPUFixture)
+            self.assertNotIsInstance(right, _DeviceTaggedCPUFixture)
+            self.assertEqual(left.device.type, 'cpu')
+            self.assertEqual(right.device.type, 'cpu')
+            self.assertFalse(left.requires_grad)
+            self.assertFalse(right.requires_grad)
+
+    def test_cpu_cuda_label_equal_values_compare_on_cpu(self):
+        expected = self.tagged(20., 'cpu')
+        actual = self.tagged(20., 'cuda:0')
+        self.compare(expected, actual, 'actor_optimizer.state.0.step')
+        self.assert_cpu_comparisons()
+        self.assertEqual(expected.cpu_calls, 1)
+        self.assertEqual(actual.cpu_calls, 1)
+        self.assertEqual(actual.device.type, 'cuda')
+
+    def test_cuda_cpu_label_equal_values(self):
+        self.compare(self.tagged([1., 2.]), self.tagged([1., 2.], 'cpu'), 'optimizer.buffer')
+        self.assert_cpu_comparisons()
+
+    def test_same_cuda_labels_still_compare_cpu_copies(self):
+        self.compare(self.tagged([1., 2.]), self.tagged([1., 2.]), 'optimizer.buffer')
+        self.assert_cpu_comparisons()
+
+    def test_cross_device_value_mismatch_not_hidden(self):
+        with self.assertRaisesRegex(ValueError, r'actor_optimizer.state.0.step'):
+            self.compare(self.tagged(19., 'cpu'), self.tagged(20.), 'actor_optimizer.state.0.step')
+        self.assert_cpu_comparisons()
+
+    def test_dtype_and_shape_remain_exact(self):
+        for left, right in ((torch.tensor([1.], dtype=torch.float32), torch.tensor([1.], dtype=torch.float64)),
+                            (torch.tensor([1.]), torch.tensor([[1.]]))):
+            with self.subTest(shape=tuple(right.shape), dtype=right.dtype):
+                with self.assertRaises(ValueError):
+                    self.compare(left, right, 'state')
+        self.assertEqual(self.equal_calls, [])
+
+    def test_nested_mixed_optimizer_state_and_parameter_groups(self):
+        expected = {'state': {0: {'step': self.tagged(20., 'cpu'), 'exp_avg': self.tagged([.1, .2])}},
+                    'param_groups': [{'lr': 1e-5, 'params': [0], 'betas': (.9, .999)}]}
+        actual = {'state': {0: {'step': self.tagged(20.), 'exp_avg': self.tagged([.1, .2])}},
+                  'param_groups': [{'lr': 1e-5, 'params': [0], 'betas': (.9, .999)}]}
+        self.compare(expected, actual, 'optimizer')
+        self.assert_cpu_comparisons()
+        actual['param_groups'][0]['lr'] = 2e-5
+        with self.assertRaisesRegex(ValueError, r'param_groups\[0\].lr'):
+            self.compare(expected, actual, 'optimizer')
+
+    def test_real_cpu_inputs_unchanged_and_gradients_detached(self):
+        left = torch.tensor([1., 2.], requires_grad=True)
+        right = torch.tensor([1., 2.], requires_grad=True)
+        left.grad = torch.tensor([3., 4.])
+        self.compare(left, right, 'actor')
+        self.assert_cpu_comparisons()
+        self.assertTrue(left.requires_grad and right.requires_grad)
+        self.assertTrue(self.real_equal(left.grad, torch.tensor([3., 4.])))
+        self.assertTrue(self.real_equal(left.detach(), torch.tensor([1., 2.])))
+        self.assertEqual(left.device.type, 'cpu')
+
+    def test_nonfinite_values_are_not_accepted(self):
+        for value in (float('nan'), float('inf'), -float('inf')):
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):
+                    self.compare(self.tagged(value, 'cpu'), self.tagged(value), 'optimizer.state')
+
+    def test_transfer_failure_propagates(self):
+        actual = _DeviceTaggedCPUFixture(torch.tensor(1.), 'cuda:0', transfer_error=True)
+        with self.assertRaisesRegex(RuntimeError, 'CPU copy failed'):
+            self.compare(torch.tensor(1.), actual, 'optimizer.step')
+
+    def run_roundtrip(self, *, transfer_error=False, corrupt=False):
+        directory = Path(tempfile.mkdtemp(prefix='php-mixed-device-', dir='/workspace'))
+        algo = algorithm()(directory)
+        native_load = algo.load
+        moved = []
+        def load_with_tagged_optimizer(path):
+            result = native_load(path)
+            for opt in (algo.actor_optimizer, algo.critic_optimizer):
+                state = next(iter(opt.state.values()))
+                value = state['step'].clone()
+                if corrupt:
+                    value.add_(1)
+                wrapped = _DeviceTaggedCPUFixture(value, 'cuda:0', transfer_error=transfer_error)
+                state['step'] = wrapped
+                moved.append((state, wrapped))
+            return result
+        algo.load = load_with_tagged_optimizer
+        with patch.dict(os.environ, {'PHP_FLUX_OUTPUT': str(directory)}):
+            if transfer_error or corrupt:
+                error = RuntimeError if transfer_error else ValueError
+                with self.assertRaises(error):
+                    algo.learn()
+                self.assertFalse((directory / 'native_reload.json').exists())
+            else:
+                algo.learn()
+                report = json.loads((directory / 'native_reload.json').read_text())
+                self.assertTrue(report['native_load_passed'])
+                self.assertEqual(report['checked_optimizers'], ['actor_optimizer', 'critic_optimizer'])
+        self.assertEqual(len(moved), 2)
+        for state, wrapped in moved:
+            self.assertIs(state['step'], wrapped)
+            self.assertEqual(wrapped.device.type, 'cuda')
+
+    def test_full_fixture_roundtrip_preserves_live_tagged_optimizer(self):
+        self.run_roundtrip()
+        self.assert_cpu_comparisons()
+
+    def test_full_fixture_copy_failure_never_marks_success(self):
+        self.run_roundtrip(transfer_error=True)
+
+    def test_full_fixture_corruption_never_marks_success(self):
+        self.run_roundtrip(corrupt=True)
+
+
 if __name__ == '__main__':
     unittest.main()

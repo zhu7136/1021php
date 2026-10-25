@@ -194,7 +194,7 @@ def main():
     parser.add_argument('--control-b64',required=True)
     args=parser.parse_args()
     control=support.decode_control(args.control_b64)
-    assert control['worker_seconds']==900 and control['attempt'] in (1,2,3,4)
+    assert control['worker_seconds']==900 and control['attempt'] in (1,2,3,4,5)
     out=support.task_output(control['task_id'])
     out.mkdir(parents=True,exist_ok=False)
     env=os.environ.copy()

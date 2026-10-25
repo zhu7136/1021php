@@ -4,6 +4,31 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Replay/continuation validation authorized 2026-10-25T02:57:08Z
+
+Task027 completed and passed its 128env/20update GPU smoke. Its final source
+checkpoint is pinned by SHA256 in `resume_input.py`; no checkpoint is published
+to Git. A scoped signed GCS read delivers the verified result archive privately
+to the next worker; archive/member size and SHA256 must match before loading.
+
+This NEW validation keeps 1x4090D24GB,128env,64 terrain layouts and original
+physics/rewards/data. It performs 32 HEADLESS inference environment steps with
+the loaded actor, on the unchanged TRAINING environment/commands (not the
+repository's separate formal-evaluation protocol). It records finite values,
+episode-end events and exact unchanged model/normalizer/optimizer/scalar state.
+No video is recorded. It then uses unchanged native PPO to do TWO updates,
+requires actor AND critic parameter changes and ALL restored Adam step counters
+to advance, and saves/reloads the resulting native checkpoint. Native indexing
+starts at source iter19 and two updates finish at index20; no index is forced.
+Source checkpoint bytes must remain unchanged throughout. A reinitialized
+environment is used; exact environment/RNG restoration is NOT claimed.
+
+One separately authorized GPU attempt,worker<=1200s,total reserve unchanged,
+automatic retries0. CPU contract tests are NOT real simulator/CUDA evidence.
+Only the six Flux integration/documentation/test files are being published;
+upstream code, physics, asset and dependency pins are unchanged. No formal
+training budget or additional paid retry is authorized by this test.
+
 ### Latest local correction — 2026-10-25 cross-device comparison (CPU-only)
 
 Task `TASK_20261025_026` at published commit

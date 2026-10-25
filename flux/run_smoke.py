@@ -19,6 +19,7 @@ import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
 OUT = None
 CHILD = None
 
@@ -118,10 +119,16 @@ def main():
     parser.add_argument('--probe-url', required=True)
     parser.add_argument('--upload-headers-b64', default='e30=')
     parser.add_argument('--aria-provenance-b64', default='e30=')
+    parser.add_argument('--resume-input-b64')
     args = parser.parse_args()
     # Parse control tokens BEFORE any setup/download subprocess or simulator.
     headers = decode_control(args.upload_headers_b64)
     provenance = decode_control(args.aria_provenance_b64)
+    resume_input = decode_control(args.resume_input_b64) if args.resume_input_b64 else None
+    if resume_input is not None:
+        from flux.resume_input import validate_control
+        validate_control(resume_input)
+    updates = 2 if resume_input is not None else 20
     if not set(provenance).issubset({'thread_id','turn_id'}) or not all(isinstance(v,str) for v in provenance.values()):
         raise ValueError('Invalid provenance fields')
     OUT = task_output(args.task_id)
@@ -134,7 +141,7 @@ def main():
     signal.alarm(1140)  # Total worker cap1200s, reserve up to60s for sealing.
     success = False
     stage = 'source_preflight'
-    emit('smoke_begin', num_envs=128, updates=20, worker_seconds=1200,
+    emit('smoke_begin', num_envs=128, updates=updates, worker_seconds=1200,
          automatic_retries=0, terrain_variants=64, onnx_export=False)
     try:
         actual = subprocess.check_output(['git', '-C', str(ROOT), 'rev-parse', 'HEAD'], text=True).strip()
@@ -156,6 +163,13 @@ def main():
         for name in ('WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY','GITHUB_TOKEN','github','key'):
             env.pop(name, None)
         env.update(PYTHONUNBUFFERED='1', WANDB_MODE='offline', CUDA_VISIBLE_DEVICES='0', PHP_SMOKE_OUTER_GROUP='1')
+        env.pop('PHP_FLUX_RESUME_CHECKPOINT', None)
+        if resume_input is not None:
+            stage = 'resume_input_delivery'
+            from flux.resume_input import fetch_checkpoint
+            source = fetch_checkpoint(resume_input, OUT / 'resume-input')
+            env['PHP_FLUX_RESUME_CHECKPOINT'] = str(source)
+            emit('resume_source_delivered_and_hash_verified', source_task='TASK_20261025_027')
         # Use the actual image interpreter before any wheel download/install.
         # This stdlib-only probe never imports a native simulator or Torch.
         run([str(python), str(ROOT/'flux/runtime_versions.py')], env, 30, OUT/'runtime-versions.log')
@@ -196,7 +210,7 @@ def main():
         if remaining < 180:
             raise TimeoutError('Insufficient remaining budget for simulator and updates')
         scope = {'gpu_start_authorized': True, 'trial_count': 1, 'automatic_retries': 0,
-                 'gpu': '1x4090D-24G', 'worker_seconds': remaining, 'num_envs':128,'updates':20,
+                 'gpu': '1x4090D-24G', 'worker_seconds': remaining, 'num_envs':128,'updates':updates,
                  'billing_unit_waived_by_user': True,
                  'billing_acceptance':'User authorized exactly one bounded smoke and waived currency/unit as a gate',
                  'code_commit': actual, 'output_upload_probe_passed': True,
@@ -208,10 +222,16 @@ def main():
              '--data', str(inputs/'motions-locomotion'), '--output', str(OUT/'training')], env, remaining, OUT/'bootstrap.log')
         completion = json.loads((OUT/'training/completion.json').read_text())
         reload_result = json.loads((OUT/'training/native_reload.json').read_text())
-        if not completion['pipeline_completed'] or completion['completed_updates'] != 20 or not reload_result['native_load_passed']:
+        if not completion['pipeline_completed'] or completion['completed_updates'] != updates or not reload_result['native_load_passed']:
             raise ValueError('Smoke acceptance failed')
+        if resume_input is not None:
+            replay = json.loads((OUT/'training/replay_validation.json').read_text())
+            resumed = json.loads((OUT/'training/resume_validation.json').read_text())
+            if replay.get('passed') is not True or replay.get('steps') != 32 or resumed.get('passed') is not True:
+                raise ValueError('Replay/continuation acceptance failed')
         success = True
-        emit('smoke_worker_passed', completed_updates=20, native_reload=True)
+        emit('smoke_worker_passed', completed_updates=updates, native_reload=True,
+             replay_and_continuation=resume_input is not None)
     except BaseException as exc:
         # Do not render exceptions/arguments containing scoped signed URLs.
         (OUT/'failure.json').write_text(json.dumps({'stage':stage,'exception_type':type(exc).__name__,
@@ -224,7 +244,7 @@ def main():
         signal.alarm(max(1, int(1198-(time.monotonic()-started))))
         manifest = []
         for path in sorted(OUT.rglob('*')):
-            if path.is_file() and path.suffix in ('.json','.pt','.yaml','.yml','.log') and 'inputs' not in path.relative_to(OUT).parts:
+            if path.is_file() and path.suffix in ('.json','.pt','.yaml','.yml','.log') and not {'inputs','resume-input'}.intersection(path.relative_to(OUT).parts):
                 manifest.append({'path':str(path.relative_to(OUT)),'bytes':path.stat().st_size,'sha256':digest(path)})
         (OUT/'result-manifest.json').write_text(json.dumps({'worker_passed':success,'files':manifest},indent=2))
         bundle = OUT / 'php-smoke-result.zip'

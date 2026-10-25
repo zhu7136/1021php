@@ -29,15 +29,19 @@ def main() -> None:
     from holosoma.utils.sim_utils import setup_simulator_imports
     from holosoma.train_agent import train
     cfg = g1_wbt_terrain_ref_noscale
+    resume_checkpoint = os.environ.get('PHP_FLUX_RESUME_CHECKPOINT')
+    target = 'flux.resume_algo.ReplayResumePPO' if resume_checkpoint else 'flux.teacher_algo.BoundedPPO'
+    if resume_checkpoint and args.updates != 2:
+        raise ValueError('Resume validation requires exactly two updates')
     cfg = replace(cfg,
         training=replace(cfg.training, headless=True, num_envs=args.num_envs,
-                         checkpoint=None, teacher_checkpoint=None, wandb_path=None,
+                         checkpoint=resume_checkpoint, teacher_checkpoint=None, wandb_path=None,
                          registry_name=args.data.resolve().as_uri(),
                          project='HuD04_WBT', name='php-locomotion-teacher-smoke'),
         logger=replace(cfg.logger, mode='offline', base_dir=str(args.output),
                        project='HuD04_WBT', entity='zhul136-university-of-science-and-technology-of-china',
                        name='php-locomotion-teacher-smoke', video=replace(cfg.logger.video, enabled=False)),
-        algo=replace(cfg.algo, _target_='flux.teacher_algo.BoundedPPO',
+        algo=replace(cfg.algo, _target_=target,
                      config=replace(cfg.algo.config, num_learning_iterations=args.updates, save_interval=5)))
     os.environ['PHP_FLUX_OUTPUT'] = str(args.output)
     os.environ['WANDB_MODE'] = 'offline'

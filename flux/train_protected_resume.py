@@ -174,13 +174,18 @@ def summarize():
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--input-url');p.add_argument('--upload-url');p.add_argument('--upload-headers',default='{}')
+    p.add_argument('--delivery-manifest-json',help='Method-scoped signed PUT/GET capabilities; never an API key')
     p.add_argument('--wandb-run-path',required=True);p.add_argument('--runtime-child',choices=list(dict(ARMS)))
     args=p.parse_args()
     if args.runtime_child:
         if args.runtime_child=='training':train_worker(args.wandb_run_path)
         else:eval_worker(args.runtime_child,args.wandb_run_path)
         return
-    if OUT.exists() or not args.input_url or not args.upload_url:raise ValueError('Fresh output and scoped capabilities required')
+    if OUT.exists() or not args.input_url or not args.delivery_manifest_json:
+        raise ValueError('Fresh output and verified-delivery manifest required; legacy upload-only mode is disabled')
+    from reliable_delivery import Delivery,error_details
+    delivery=Delivery(json.loads(args.delivery_manifest_json),OUT,emit)
+    if delivery.run_path!=args.wandb_run_path:raise ValueError('Delivery manifest belongs to another run')
     OUT.mkdir(parents=True);started=time.monotonic();child=None
     base.OUT=OUT;base.ARMS=ARMS;base.BUNDLE_NAME='protected_resume_bundle.zip';frozen.OUT=OUT
     def deadline(signum,frame):
@@ -193,6 +198,8 @@ def main():
         training_seconds_cap=300,worker_seconds_cap=1800,automatic_retries=0)
     success=False
     try:
+        # Fail before dependency installation, dataset expansion, simulation or PPO if output egress is broken.
+        delivery.preflight()
         base.bootstrap();frozen.fetch_inputs(args.input_url)
         from runtime_preflight import resolve_isaac_launcher
         from startup_diagnostics import wait_for_child
@@ -207,16 +214,20 @@ def main():
             except subprocess.TimeoutExpired:os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=5);code=124
             required=OUT/arm/('summary.json' if arm=='training' else 'evaluation.json')
             if code!=0 or not required.is_file():raise RuntimeError('Continuation stage failed; no retry: '+arm)
+            delivery.stage_complete(arm,OUT/arm)
         summarize();success=True
     except BaseException as exc:
-        base.save(OUT/'failure.json',dict(exception_type=type(exc).__name__,worker_seconds=time.monotonic()-started))
-        emit('resume_failure',exception_type=type(exc).__name__)
+        details=error_details(exc)
+        base.save(OUT/'failure.json',dict(**details,worker_seconds=time.monotonic()-started))
+        emit('resume_failure',**details)
     finally:
         if child is not None and child.poll() is None:os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=5)
-        try:base.seal(args.upload_url,json.loads(args.upload_headers))
-        except Exception as exc:success=False;emit('resume_upload_failure',exception_type=type(exc).__name__)
+        try:delivery.finish()
+        except Exception as exc:success=False;emit('resume_upload_failure',**error_details(exc))
         signal.alarm(0)
     if not success:raise RuntimeError('Continuation incomplete; no retry')
-    emit('resume_entrypoint_complete',worker_seconds=time.monotonic()-started)
+    emit('resume_entrypoint_complete',worker_seconds=time.monotonic()-started,
+        controller_checkpoint_download_validation_required=True,
+        checkpoint_download_verified=any(r['output']=='checkpoint' and r['download_sha256_verified'] for r in delivery.receipts))
 
 if __name__=='__main__':main()

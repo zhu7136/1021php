@@ -1,17 +1,17 @@
 {
   "archives": [
     {
-      "bytes": 17305073,
+      "bytes": 17305440,
       "name": "input.zip",
       "parts": [
         {
-          "bytes": 17305073,
+          "bytes": 17305440,
           "index": 0,
           "path": "input.zip",
-          "sha256": "79df4443fe607a46d993f20896f189290e81271116310d30267e4b8b71fd3136"
+          "sha256": "7227ce88220fb2781c4780ef90d580d0e81c954920a476304550cde6c1316f7c"
         }
       ],
-      "sha256": "79df4443fe607a46d993f20896f189290e81271116310d30267e4b8b71fd3136"
+      "sha256": "7227ce88220fb2781c4780ef90d580d0e81c954920a476304550cde6c1316f7c"
     }
   ],
   "delivery": "ordinary-git",

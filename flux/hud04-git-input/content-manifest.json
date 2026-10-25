@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "gpu_start_authorized": false,
-  "archive_bytes": 17305073,
-  "archive_sha256": "79df4443fe607a46d993f20896f189290e81271116310d30267e4b8b71fd3136",
+  "archive_bytes": 17305440,
+  "archive_sha256": "7227ce88220fb2781c4780ef90d580d0e81c954920a476304550cde6c1316f7c",
   "files": [
     {
       "path": "input/asset/meshes/HU_D04_01/base_link.STL",
@@ -206,8 +206,8 @@
     },
     {
       "path": "overlay/flux/hud04_validate_child.py",
-      "bytes": 7543,
-      "sha256": "9f0ae1c7bf5627301eeba93354fa429e5b666fd0c24058e7df59412c47d070cb"
+      "bytes": 8434,
+      "sha256": "0e57447b3085e3c4c9544c11f94926deda5e7a47ffbfb4c6a339617e853b29a5"
     },
     {
       "path": "overlay/wbt_training/config_values/hud04_experiment.py",
@@ -269,5 +269,8 @@
     "OmniPBR.mdl"
   ],
   "gpu_validated": false,
-  "motion_physics_validated": false
+  "motion_physics_validated": false,
+  "only_capsule_member_changed": "overlay/flux/hud04_validate_child.py",
+  "shutdown_strategy": "pinned_holosoma_headless_workaround",
+  "native_stage_cleanup_verified": false
 }

@@ -4,6 +4,33 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Directly authorized4096GPU capacity verification (2026-10-25T05:45:04Z)
+
+User requested direct GPU validation without another approval prompt. One
+1x4090D24GB4096env20PPO-update trial,worker<=1800s,retries0. Separate entry
+`gm-run 1021php/flux/run_capacity4096.py` uses latest independently verified
+task044 checkpoint iteration2260; immutable source pins in capacity_input.py.
+It changes environment count,validation update cap and save interval only;
+same64terrain layouts,data,physics,rewards,PPO epochs/minibatches and image.
+Original128env contracts and previous tasks are unchanged; main not modified.
+
+Passing requires exactly20complete4096env24step PPO updates,finite parameters,
+native final checkpoint reload,verified source and optimizer advancement,plus
+capacity.json reporting effective4096env,98304samples/update,CUDA Torch peaks,
+and device-memory boundary observations. Device observations are NOT continuous
+peak VRAM; Torch peaks exclude non-Torch simulator allocations. A Running task
+or successful environment creation is NOT capacity acceptance. No silent
+fallback to128/2048,OOM retry,automatic GPU upgrade or following long training.
+
+`fullscale_teacher.py` separately prepares the native4096env20000update teacher
+recipe with500update checkpoint interval and original PPO target. Fresh is
+default; supplied checkpoint resumes native optimizer state and means20000
+ADDITIONAL updates. It is NOT the20updatecapacity entry. Long-run Flux walltime,
+supervisor/output retrieval must be configured before a full-scale dispatch.
+That long run has NOT been submitted by this capacity authorization.
+Both paths retain original offline W&B records for later verified sync;
+Flux chart API can expose actual scalar progress during execution.
+
 ### Continue verified task033 final checkpoint (2026-10-25T05:04:26Z)
 
 The user explicitly requested immediate formal training. Conservatively retain

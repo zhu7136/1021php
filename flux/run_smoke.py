@@ -8,6 +8,7 @@ import http.client
 import json
 import os
 from pathlib import Path
+import re
 import signal
 import subprocess
 import sys
@@ -17,7 +18,7 @@ import urllib.request
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'outputs/php-smoke-TASK_20261025_018'
+OUT = None
 CHILD = None
 
 
@@ -42,6 +43,12 @@ def decode_control(value):
     if not isinstance(result, dict):
         raise ValueError('Control parameter must be an object')
     return result
+
+
+def task_output(task_id):
+    if not re.fullmatch(r'TASK_\d{8}_\d+', task_id):
+        raise ValueError('Invalid task identifier')
+    return ROOT / 'outputs' / ('php-smoke-' + task_id)
 
 
 def upload(url, headers, path):
@@ -97,8 +104,10 @@ def run(command, env, timeout):
 
 
 def main():
+    global OUT
     started = time.monotonic()
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--task-id', required=True)
     parser.add_argument('--expected-commit', required=True)
     parser.add_argument('--upload-url', required=True)
     parser.add_argument('--probe-url', required=True)
@@ -110,6 +119,7 @@ def main():
     provenance = decode_control(args.aria_provenance_b64)
     if not set(provenance).issubset({'thread_id','turn_id'}) or not all(isinstance(v,str) for v in provenance.values()):
         raise ValueError('Invalid provenance fields')
+    OUT = task_output(args.task_id)
     # Claim once before any preparation; no automatic reuse or resume.
     OUT.mkdir(parents=True, exist_ok=False)
     def deadline(_signum, _frame):
@@ -127,7 +137,7 @@ def main():
             raise ValueError('Worker commit does not match authorized commit')
         python = launcher()
         probe = OUT / 'worker-upload-probe.json'
-        probe.write_text(json.dumps({'task_id': 'TASK_20261025_018', 'commit': actual, 'gpu_training_started': False}))
+        probe.write_text(json.dumps({'task_id': args.task_id, 'commit': actual, 'gpu_training_started': False}))
         upload(args.probe_url, headers, probe)
         emit('scoped_upload_probe_passed')
         stage = 'pinned_upstream_wheels'

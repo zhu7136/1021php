@@ -91,7 +91,7 @@ class EnvironmentStats:
                     reward_terms={k:v/max(self.n,1) for k,v in self.rewards.items()},termination_flags=self.terminations.copy())
 
 @torch.no_grad()
-def evaluate(algo,motion,stats,seed=1402):
+def evaluate(algo,motion,stats,seed=1402,*,continuous_segments=False):
     """First episode per env, right-censored at128steps; matched seed, uniform reference frames."""
     import dataclasses,random
     import numpy as np
@@ -102,6 +102,7 @@ def evaluate(algo,motion,stats,seed=1402):
     old_evaluating=env.is_evaluating
     env.is_evaluating=False  # Native eval flag forces frame zero, NOT uniform training frames.
     stats.active=False
+    segment_capture=None
     try:
         env.reset_all()
         env.step({'actions':torch.zeros((32,29),device=algo.device)})
@@ -110,6 +111,9 @@ def evaluate(algo,motion,stats,seed=1402):
         survival=torch.full((32,),128,dtype=torch.long,device=algo.device)
         initial_q=env.simulator.dof_pos.detach().clone().cpu().tolist()
         initial_frames=motion.time_steps.detach().clone().cpu().tolist()
+        if continuous_segments:
+            from continuous_segments import ContinuousSegmentCapture
+            segment_capture=ContinuousSegmentCapture(env,motion,horizon=128)
         stats.clear();stats.active=True
         for step in range(1,129):
             stats.mask=alive.clone()
@@ -117,15 +121,19 @@ def evaluate(algo,motion,stats,seed=1402):
             finite(raw)
             action=algo.actor.act_inference({'actor_obs':algo._normalize_actor_obs(raw,update=False)})
             finite(action)
+            if segment_capture is not None:segment_capture.begin_step(step)
             obs,reward,done,info=env.step({'actions':action})
+            if segment_capture is not None:segment_capture.end_step(done)
             newly_done=alive&done.bool();survival[newly_done]=step;alive&=~done.bool()
         result=dict(seed=seed,horizon_steps=128,dt=float(env.dt),reset_sampler='uniform_training_frames',
                     first_episode_steps=survival.cpu().tolist(),survivors_at_horizon=int(alive.sum()),
                     restricted_mean_survival_seconds=float(survival.float().mean())*float(env.dt),
                     initial_joint_positions=initial_q,initial_motion_frames=initial_frames,**stats.summary())
         result['tracking_positive_mean_reward']=sum(v for k,v in result['reward_terms'].items() if env.reward_manager.cfg.terms[k].weight>0)
+        if segment_capture is not None:result['continuous_segments']=segment_capture.finish()
         return result
     finally:
+        if segment_capture is not None:segment_capture.close()
         stats.active=False;stats.mask=None;motion.motion_cfg=old_cfg;env.is_evaluating=old_evaluating
 
 class TrialStop(Exception):pass

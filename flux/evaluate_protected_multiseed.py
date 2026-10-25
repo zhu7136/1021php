@@ -110,7 +110,7 @@ def worker(arm,run_path,synchronized_diagnostics=False):
     emit('paired_eval_arm_begin',arm=arm,seed=seed,source_iteration=expected_iteration,
          checkpoint_sha256=base.digest(checkpoint),optimizer_loaded=False,training_updates=0)
     try:
-        result=evaluate(algo,motion,stats,seed=seed)
+        result=evaluate(algo,motion,stats,seed=seed,continuous_segments=True)
         diagnostics=capture.finish(result)
         if synchronized is not None:
             result['synchronized_diagnostics']=synchronized.finish()
@@ -125,6 +125,7 @@ def worker(arm,run_path,synchronized_diagnostics=False):
         independent_simulator_process=True)
     base.save(out/'initial_state.json',capture.initial)
     base.save(out/'first_failures.json',diagnostics)
+    base.save(out/'continuous_segments.json',result['continuous_segments'])
     base.save(out/'evaluation.json',result)
     emit('paired_eval_arm_complete',arm=arm,seed=seed,training_updates=0,
         restricted_mean_survival_seconds=result['restricted_mean_survival_seconds'],
@@ -148,13 +149,18 @@ def summarize():
             improved=sum(x>y for x,y in zip(a,b)),unchanged=sum(x==y for x,y in zip(a,b)),
             worse=sum(x<y for x,y in zip(a,b)),before_survivors=ev['initial']['survivors_at_horizon'],
             after_survivors=ev['trained']['survivors_at_horizon']))
+        continuous={k:ev[k]['continuous_segments'] for k in paths}
+        pairs[-1]['continuous_first_segment']={k:{field:continuous[k][field] for field in [
+            'first_segment_mean_observed_seconds','first_segment_native_terminations',
+            'first_segment_internal_reset_censored','first_segment_horizon_survivors']} for k in paths}
     result=dict(evaluation_only=True,training_updates=0,automatic_retries=0,
         seeds=list(SEEDS),num_envs=32,horizon_steps=128,paired_evaluations=3,model_evaluations=6,
         independent_simulator_per_model_seed=True,initial_state_exact=True,pairs=pairs,
         input_checkpoint_sha256=INPUT_HASHES,source_task='TASK_20261024_097',
         before_mean_seconds=sum(p['before_seconds'] for p in pairs)/3,
         after_mean_seconds=sum(p['after_seconds'] for p in pairs)/3,
-        limitation='Short 2.56s horizon; 3 seeds are not convergence or deployment success proof')
+        limitation='Short 2.56s horizon; 3 seeds are not convergence or deployment success proof',
+        continuous_segment_caveat='Internal resets are censoring, not success; first-segment mean is observed duration, not unbiased survival; original episode metrics retained')
     for key in ['improved','unchanged','worse','before_survivors','after_survivors']:
         result[key]=sum(p[key] for p in pairs)
     base.save(OUT/'summary.json',result);emit('paired_eval_complete',**result)

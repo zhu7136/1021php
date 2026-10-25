@@ -72,6 +72,7 @@ def fixture(output, *, nonfinite=False, update=True):
     with patch.dict(sys.modules, {'flux.teacher_algo': teacher}):
         spec.loader.exec_module(module)
     algo = module.ReplayResumePPO(output)
+    algo.empirical_normalization = True
     algo.config.num_learning_iterations = 2
     algo.current_learning_iteration = 19
     source = output/'source.pt'
@@ -126,6 +127,62 @@ class ResumeAlgorithmTests(unittest.TestCase):
         self.assertEqual(source.read_bytes(),original)
         self.assertTrue(all(report['parameters_changed'].values()))
         self.assertTrue(all(r['min_step_increment']==2 for r in report['optimizer_step_advancement'].values()))
+
+    def disable_normalizers_as_native(self, algo, module, source):
+        algo.empirical_normalization = False
+        algo.actor_obs_normalizer = torch.nn.Identity()
+        algo.critic_obs_normalizer = torch.nn.Identity()
+        saved = torch.load(source, weights_only=True, map_location='cpu')
+        for name in ('actor_obs_normalizer', 'critic_obs_normalizer'):
+            saved[module.SOURCE_KEYS[name]] = None
+        torch.save(saved, source)
+        module.CHECKPOINT_SHA256 = resume_input.digest(source)
+        return saved
+
+    def test_native_disabled_normalizers_none_identity_passes_full_cpu_flow(self):
+        algo, module, source = fixture(self.output)
+        self.disable_normalizers_as_native(algo, module, source)
+        self.run_with_source(algo, source)
+        report = json.loads((self.output/'resume_loaded.json').read_text())
+        self.assertTrue(report['disabled_normalizers_verified_as_native_none_and_stateless_identity'])
+        self.assertFalse(report['empirical_normalization'])
+        self.assertEqual(algo.env.calls,32)
+        self.assertTrue(json.loads((self.output/'resume_validation.json').read_text())['passed'])
+
+    def test_enabled_normalizer_none_is_not_silently_accepted(self):
+        algo, module, source = fixture(self.output)
+        self.disable_normalizers_as_native(algo, module, source)
+        algo.empirical_normalization = True
+        with self.assertRaisesRegex(ValueError, 'Missing enabled native normalizer'):
+            self.run_with_source(algo, source)
+        self.assertEqual(algo.env.calls,0)
+
+    def test_disabled_normalizer_cannot_hide_a_checkpoint_state(self):
+        algo, module, source = fixture(self.output)
+        self.disable_normalizers_as_native(algo, module, source)
+        saved = torch.load(source, weights_only=True, map_location='cpu')
+        saved['actor_obs_normalizer_state_dict'] = {'unexpected':torch.ones(1)}
+        torch.save(saved,source)
+        module.CHECKPOINT_SHA256 = resume_input.digest(source)
+        with self.assertRaisesRegex(ValueError, 'Invalid disabled native normalizer'):
+            self.run_with_source(algo, source)
+        self.assertEqual(algo.env.calls,0)
+
+    def test_disabled_none_rejects_nonidentity_runtime_module(self):
+        algo, module, source = fixture(self.output)
+        self.disable_normalizers_as_native(algo, module, source)
+        algo.actor_obs_normalizer = torch.nn.Linear(2,2)
+        with self.assertRaisesRegex(ValueError, 'Invalid disabled native normalizer'):
+            self.run_with_source(algo, source)
+        self.assertEqual(algo.env.calls,0)
+
+    def test_disabled_identity_with_unexpected_buffer_rejected(self):
+        algo, module, source = fixture(self.output)
+        self.disable_normalizers_as_native(algo, module, source)
+        algo.actor_obs_normalizer.register_buffer('unexpected',torch.ones(1))
+        with self.assertRaisesRegex(ValueError, 'Invalid disabled native normalizer'):
+            self.run_with_source(algo, source)
+        self.assertEqual(algo.env.calls,0)
 
     def test_hash_mismatch_fails_before_replay(self):
         algo, module, source = fixture(self.output)

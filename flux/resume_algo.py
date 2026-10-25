@@ -37,6 +37,25 @@ def finite(value):
             finite(child)
 
 
+def require_loaded_state(algo, saved, before):
+    """Honor native save/load's disabled-normalizer None/Identity contract.
+
+    Do NOT enable normalization, fill checkpoint fields or relax tensor checks.
+    A None is legitimate only for disabled, stateless native Identity modules.
+    """
+    for name, key in SOURCE_KEYS.items():
+        if name in ('actor_obs_normalizer', 'critic_obs_normalizer'):
+            enabled = getattr(algo, 'empirical_normalization', None)
+            if enabled is False:
+                if (saved[key] is not None or not isinstance(getattr(algo, name), torch.nn.Identity)
+                        or before[name]):
+                    raise ValueError('Invalid disabled native normalizer: ' + name)
+                continue
+            if enabled is not True or saved[key] is None:
+                raise ValueError('Missing enabled native normalizer: ' + name)
+        _require_same_state(saved[key], before[name], 'loaded.' + name)
+
+
 def require_updated(before, after):
     changes = {}
     steps = {}
@@ -72,8 +91,7 @@ class ReplayResumePPO(BoundedPPO):
             raise ValueError('Native checkpoint was not fully loaded before learn')
         saved = torch.load(source, weights_only=True, map_location='cpu')
         before = snapshot(self)
-        for name, key in SOURCE_KEYS.items():
-            _require_same_state(saved[key], before[name], 'loaded.' + name)
+        require_loaded_state(self, saved, before)
         for name, optimizer in (('actor_learning_rate', 'actor_optimizer_state_dict'),
                                 ('critic_learning_rate', 'critic_optimizer_state_dict')):
             _require_same_state(saved[optimizer]['param_groups'][0]['lr'], before[name], name)
@@ -81,7 +99,10 @@ class ReplayResumePPO(BoundedPPO):
         finite(before)
         (output / 'resume_loaded.json').write_text(json.dumps({
             'native_loaded_state_matches_source': True, 'source_sha256': CHECKPOINT_SHA256,
-            'source_iteration': 19, 'checked_modules': list(MODULES), 'checked_optimizers': list(OPTIMIZERS)}))
+            'source_iteration': 19, 'checked_modules': list(MODULES), 'checked_optimizers': list(OPTIMIZERS),
+            'empirical_normalization': self.empirical_normalization,
+            'disabled_normalizers_verified_as_native_none_and_stateless_identity':
+                not self.empirical_normalization}))
         self._eval_mode()
         policy = self.get_inference_policy()
         done_count = 0

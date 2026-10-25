@@ -4,6 +4,22 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Task028 result and local-only correction
+
+The separately authorized replay/continuation attempt TASK_20261025_028 FAILED
+before any rollout/update. Simulator and source load initialized, but new check
+incorrectly compared disabled normalizers serialized as None with native runtime
+Identity empty state dictionaries. No source corruption is evidenced. Worker
+reported0/2updates;32-step replay did NOT run. Its18-file result bundle was
+retrieved and all file sizes/SHA256 verified. No GPU retry was issued.
+
+Local-only correction honors native semantics: only when empirical normalization
+is explicitly false, require saved None AND stateless torch.nn.Identity; enabled
+normalizers retain exact-state checks. Never enable normalization or synthesize
+normalizer state to bypass the check. Five new CPU regressions cover success and
+invalid combinations; total108/108 CPU tests passed. This correction has NOT
+been published or tested on GPU; another paid attempt needs fresh authorization.
+
 ### Replay/continuation validation authorized 2026-10-25T02:57:08Z
 
 Task027 completed and passed its 128env/20update GPU smoke. Its final source

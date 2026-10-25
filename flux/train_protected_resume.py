@@ -102,7 +102,7 @@ def train_worker(run_path):
     torch.manual_seed(1403);torch.cuda.manual_seed_all(1403);np.random.seed(1403);random.seed(1403)
     stats=EnvironmentStats(algo.env);capture=TrackingCapture(algo.env,motion,out/'tracking.jsonl',actor=algo.actor)
     capture.set_phase('training');atexit.register(capture.close)
-    emit('resume_training_begin',initial_iteration=201,completed_updates_before=200,max_new_updates=MAX_UPDATES,
+    emit('resume_training_begin',initial_iteration=SOURCE_ITERATION+1,completed_updates_before=SOURCE_ITERATION,max_new_updates=MAX_UPDATES,
         training_seconds_cap=TRAIN_SECONDS,actor_lr=algo.actor_learning_rate,critic_lr=algo.critic_learning_rate)
     def deadline(signum,frame):raise TimeoutError('Strict 300s training cap; no partial-update final checkpoint')
     signal.signal(signal.SIGALRM,deadline);signal.setitimer(signal.ITIMER_REAL,TRAIN_SECONDS)
@@ -112,7 +112,7 @@ def train_worker(run_path):
     if algo.current_learning_iteration!=SOURCE_ITERATION+trained['completed_updates']:raise ValueError('Iteration accounting mismatch')
     final=roundtrip(algo,out/'model_final.pt')
     if base.digest(source)!=SOURCE_SHA:raise ValueError('Source modified')
-    result=dict(from_scratch=False,source_iteration=200,source_sha256=SOURCE_SHA,restore=restored,
+    result=dict(from_scratch=False,source_iteration=SOURCE_ITERATION,source_sha256=SOURCE_SHA,restore=restored,
         preflight=preflight,final_checkpoint=final,automatic_retries=0,**trained)
     base.save(out/'summary.json',result);emit('resume_training_complete',**result)
 
@@ -194,7 +194,7 @@ def main(child_entrypoint=None):
             except ProcessLookupError:pass
         os._exit(124)
     signal.signal(signal.SIGALRM,deadline);signal.alarm(WORKER_SECONDS)
-    emit('resume_entrypoint_begin',source_iteration=200,num_envs=32,max_new_updates=MAX_UPDATES,
+    emit('resume_entrypoint_begin',source_iteration=SOURCE_ITERATION,num_envs=32,max_new_updates=MAX_UPDATES,
         training_seconds_cap=TRAIN_SECONDS,worker_seconds_cap=WORKER_SECONDS,automatic_retries=0)
     success=False
     try:

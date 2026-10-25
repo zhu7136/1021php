@@ -17,9 +17,10 @@ def validate(data):
     url=data['input_url']
     if not isinstance(url,str) or len(url)>8192:raise ValueError('Invalid source capability')
     p=urlsplit(url);q=parse_qs(p.query)
-    expected='/wandb-production.appspot.com/'+path.rsplit('/',1)[0]+'/94728bf7/protected_pilot_bundle.zip'
+    prefix='/wandb-production.appspot.com/'+path.rsplit('/',1)[0]
+    allowed={prefix+'/94728bf7/protected_pilot_bundle.zip',prefix+'/323f06da/resume_trained_checkpoint.pt'}
     if (p.scheme!='https' or p.hostname!='storage.googleapis.com' or p.port not in (None,443)
-        or p.username or p.password or p.fragment or p.path!=expected
+        or p.username or p.password or p.fragment or p.path not in allowed
         or not (q.get('X-Goog-Signature') or q.get('Signature'))):
         raise ValueError('Source capability outside declared source bundle')
     return data

@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import hashlib
-import importlib.metadata as metadata
 import importlib.util
 import json
 from pathlib import Path
@@ -72,14 +71,8 @@ def static_checks(expected_commit: str | None = None) -> dict:
 
 
 def runtime_checks(data: Path) -> dict:
-    if sys.version_info[:2] != (3, 11):
-        raise ValueError('Training interpreter must be Python 3.11')
-    versions = {}
-    for package, expected in [('torch', '2.7.0'), ('isaacsim', '5.1.0'), ('isaaclab', '2.3.1')]:
-        actual = metadata.version(package)
-        if actual.split('+')[0] != expected:
-            raise ValueError(f'{package}: expected {expected}, got {actual}')
-        versions[package] = actual
+    from flux.runtime_versions import check_runtime_versions
+    version_check = check_runtime_versions()
     # Do not import IsaacSim/IsaacLab before the application launcher.
     for module in ('tyro', 'wandb', 'onnx', 'tensorboard', 'trimesh', 'scipy', 'holosoma'):
         if importlib.util.find_spec(module) is None:
@@ -102,7 +95,7 @@ def runtime_checks(data: Path) -> dict:
         raise ValueError('; '.join(failures[:5]))
     from wbt_training.utils.registry import validate_bundle
     validate_bundle(data)
-    return {'python': sys.version.split()[0], 'packages': versions, 'data_verified': True}
+    return {'python': sys.version.split()[0], **version_check, 'data_verified': True}
 
 
 if __name__ == '__main__':

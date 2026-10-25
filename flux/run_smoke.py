@@ -151,6 +151,15 @@ def main():
         probe.write_text(json.dumps({'task_id': args.task_id, 'commit': actual, 'gpu_training_started': False}))
         upload(args.probe_url, headers, probe)
         emit('scoped_upload_probe_passed')
+        stage = 'runtime_version_preflight'
+        env = os.environ.copy()
+        for name in ('WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY','GITHUB_TOKEN','github','key'):
+            env.pop(name, None)
+        env.update(PYTHONUNBUFFERED='1', WANDB_MODE='offline', CUDA_VISIBLE_DEVICES='0', PHP_SMOKE_OUTER_GROUP='1')
+        # Use the actual image interpreter before any wheel download/install.
+        # This stdlib-only probe never imports a native simulator or Torch.
+        run([str(python), str(ROOT/'flux/runtime_versions.py')], env, 30, OUT/'runtime-versions.log')
+        emit('runtime_version_preflight_passed')
         stage = 'pinned_upstream_wheels'
         private = OUT / 'upstream-wheels'
         private.mkdir()
@@ -177,10 +186,6 @@ def main():
             list(executor.map(download, rows))
         emit('upstream_wheels_verified', count=8)
         stage = 'reconstruct_and_install'
-        env = os.environ.copy()
-        for name in ('WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY','GITHUB_TOKEN','github','key'):
-            env.pop(name, None)
-        env.update(PYTHONUNBUFFERED='1', WANDB_MODE='offline', CUDA_VISIBLE_DEVICES='0', PHP_SMOKE_OUTER_GROUP='1')
         inputs = OUT / 'inputs'
         run([str(python), str(ROOT/'flux/prepare_inputs.py'), '--output', str(inputs), '--install',
              '--python', str(python), '--withheld-wheel-dir', str(private)], env, 240, OUT/'prepare.log')

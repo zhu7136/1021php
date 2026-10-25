@@ -4,6 +4,40 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Latest local correction — 2026-10-25 runtime version identity (CPU-only)
+
+Task `TASK_20261025_021` passed the shallow-source check, then failed because
+`metadata.version('isaacsim')` is unavailable in the standalone installation.
+The old check also incorrectly compared IsaacLab's extension version with its
+product release. This local correction does not authorize another GPU start.
+
+- New stdlib-only `runtime_versions.py` resolves evidence from the actual
+  interpreter/module locations, without importing Torch, IsaacSim or IsaacLab.
+- IsaacSim requires 5.1.0 evidence: importable pip distribution or standalone
+  `VERSION` anchored to the interpreter/import and a `python.sh` + `kit` layout.
+  Missing files, shadowed imports and contradictory pip/file evidence fail.
+  Official IsaacSim tag `v5.1.0` stores `5.1.0-rc.19` in `VERSION`; that exact
+  marker is explicitly recognized, not arbitrary prereleases. Build suffixes
+  are retained in raw evidence. No version override or silent skip exists.
+- IsaacLab requires the resolved editable source root's `VERSION=2.3.1` and
+  `source/isaaclab/config/extension.toml` package version `0.48.0` together.
+  If distribution metadata exists it must match the extension, not the release.
+  Other layouts are rejected until independently supported; cwd is not searched.
+- The worker probes versions using the real image Python BEFORE wheel downloads
+  and installation. `runtime-versions.log` is sealed into the existing result
+  ZIP, including the traceback on failure. Teacher preflight checks again after
+  dependency preparation, so an introduced conflicting/shadowing package fails.
+- No upstream code, physics, data, image, training scope or budget was changed.
+  CPU fixtures establish detection/rejection behavior only. The real worker's
+  VERSION contents, CUDA/simulator startup, updates and reload remain unverified.
+
+Authoritative fixed-tag references (read during this correction):
+
+- https://github.com/isaac-sim/IsaacSim/blob/v5.1.0/VERSION
+- https://github.com/isaac-sim/IsaacLab/blob/v2.3.1/VERSION
+- https://github.com/isaac-sim/IsaacLab/blob/v2.3.1/source/isaaclab/config/extension.toml
+- https://github.com/isaac-sim/IsaacLab/blob/v2.3.1/source/isaaclab/isaaclab/app/app_launcher.py
+
 ### Latest correction — 2026-10-25 shallow-clone preflight
 
 This section supersedes historical preparation status below. Two separately

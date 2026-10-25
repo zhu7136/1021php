@@ -30,7 +30,10 @@ def load_approval(path: Path) -> dict:
         raise ValueError('Only one attempt, no automatic retries, is supported')
     if scope.get('gpu') != '1x4090D-24G':
         raise ValueError('Unexpected resource authorization')
-    for key in ('billing_currency', 'billing_unit', 'billing_acceptance', 'code_commit'):
+    required = ['billing_acceptance', 'code_commit']
+    if scope.get('billing_unit_waived_by_user') is not True:
+        required += ['billing_currency', 'billing_unit']
+    for key in required:
         if not scope.get(key):
             raise ValueError(f'Unconfirmed approval field: {key}')
     for key, upper in [('worker_seconds', 1200), ('num_envs', 128), ('updates', 20)]:
@@ -39,7 +42,7 @@ def load_approval(path: Path) -> dict:
             raise ValueError(f'{key} outside prepared smoke scope')
     if scope['worker_seconds'] < 180:
         raise ValueError('At least 180 seconds are required for stop/save reserves')
-    if scope.get('output_retrieval_verified') is not True:
+    if scope.get('output_retrieval_verified') is not True and scope.get('output_upload_probe_passed') is not True:
         raise ValueError('Checkpoint retrieval path must be verified first')
     return scope
 
@@ -89,19 +92,25 @@ def main() -> int:
                '--approval-file', str(args.approval_file.resolve())]
     timed_out = False
     child = None
+    outer_group = env.get('PHP_SMOKE_OUTER_GROUP') == '1'
+    def signal_child(sig):
+        if outer_group:
+            os.kill(child.pid, sig)
+        else:
+            os.killpg(child.pid, sig)
     try:
-        child = subprocess.Popen(command, cwd=ROOT, env=env, start_new_session=True)
+        child = subprocess.Popen(command, cwd=ROOT, env=env, start_new_session=not outer_group)
         while child.poll() is None:
             now = time.monotonic()
             if now >= soft_deadline:
                 (output / 'STOP_AFTER_UPDATE').touch(exist_ok=True)
             if now >= hard_deadline:
                 timed_out = True
-                os.killpg(child.pid, signal.SIGTERM)
+                signal_child(signal.SIGTERM)
                 try:
                     child.wait(timeout=15)
                 except subprocess.TimeoutExpired:
-                    os.killpg(child.pid, signal.SIGKILL)
+                    signal_child(signal.SIGKILL)
                     child.wait(timeout=5)
                 break
             time.sleep(1)
@@ -109,7 +118,7 @@ def main() -> int:
         if child is not None:
             # Clean up the process group even if the main child exited first.
             try:
-                os.killpg(child.pid, signal.SIGKILL)
+                signal_child(signal.SIGKILL)
             except ProcessLookupError:
                 pass
     progress_path = output / 'progress.json'

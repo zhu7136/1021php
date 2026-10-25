@@ -31,6 +31,7 @@ def main() -> None:
     cfg = g1_wbt_terrain_ref_noscale
     cfg = replace(cfg,
         training=replace(cfg.training, headless=True, num_envs=args.num_envs,
+                         checkpoint=None, teacher_checkpoint=None, wandb_path=None,
                          registry_name=args.data.resolve().as_uri(),
                          project='HuD04_WBT', name='php-locomotion-teacher-smoke'),
         logger=replace(cfg.logger, mode='offline', base_dir=str(args.output),
@@ -52,6 +53,7 @@ def main() -> None:
         return original_init(*a, **kw)
     wandb.init = init_with_provenance
     cfg = use_php_isaacsim(cfg)
+    sys.argv = [sys.argv[0]]
     setup_simulator_imports(cfg)
     train(cfg)
 

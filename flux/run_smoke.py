@@ -1,6 +1,7 @@
 """Exactly one authorized 128env/20update Flux smoke; no account credentials."""
 from __future__ import annotations
 import argparse
+import base64
 from concurrent.futures import ThreadPoolExecutor
 import hashlib
 import http.client
@@ -30,6 +31,17 @@ def digest(path):
         for block in iter(lambda: stream.read(1024*1024), b''):
             result.update(block)
     return result.hexdigest()
+
+
+def decode_control(value):
+    """A whitespace-free CLI token survives gm-run's command forwarding."""
+    decoded = base64.b64decode(value, validate=True)
+    if len(decoded) > 8192:
+        raise ValueError('Oversized control parameter')
+    result = json.loads(decoded)
+    if not isinstance(result, dict):
+        raise ValueError('Control parameter must be an object')
+    return result
 
 
 def upload(url, headers, path):
@@ -90,9 +102,14 @@ def main():
     parser.add_argument('--expected-commit', required=True)
     parser.add_argument('--upload-url', required=True)
     parser.add_argument('--probe-url', required=True)
-    parser.add_argument('--upload-headers', default='{}')
-    parser.add_argument('--aria-provenance', default='{}')
+    parser.add_argument('--upload-headers-b64', default='e30=')
+    parser.add_argument('--aria-provenance-b64', default='e30=')
     args = parser.parse_args()
+    # Parse control tokens BEFORE any setup/download subprocess or simulator.
+    headers = decode_control(args.upload_headers_b64)
+    provenance = decode_control(args.aria_provenance_b64)
+    if not set(provenance).issubset({'thread_id','turn_id'}) or not all(isinstance(v,str) for v in provenance.values()):
+        raise ValueError('Invalid provenance fields')
     # Claim once before any preparation; no automatic reuse or resume.
     OUT.mkdir(parents=True, exist_ok=False)
     def deadline(_signum, _frame):
@@ -109,7 +126,6 @@ def main():
         if actual != args.expected_commit:
             raise ValueError('Worker commit does not match authorized commit')
         python = launcher()
-        headers = json.loads(args.upload_headers)
         probe = OUT / 'worker-upload-probe.json'
         probe.write_text(json.dumps({'task_id': 'TASK_20261025_018', 'commit': actual, 'gpu_training_started': False}))
         upload(args.probe_url, headers, probe)
@@ -158,7 +174,7 @@ def main():
                  'billing_unit_waived_by_user': True,
                  'billing_acceptance':'User authorized exactly one bounded smoke and waived currency/unit as a gate',
                  'code_commit': actual, 'output_upload_probe_passed': True,
-                 'output_retrieval_verified': False, 'aria_provenance':json.loads(args.aria_provenance)}
+                 'output_retrieval_verified': False, 'aria_provenance':provenance}
         approval = OUT / 'approval.json'
         approval.write_text(json.dumps(scope, indent=2))
         stage = 'simulation_and_updates'
@@ -189,7 +205,7 @@ def main():
             for row in manifest:
                 archive.write(OUT/row['path'], row['path'])
         try:
-            upload(args.upload_url, json.loads(args.upload_headers), bundle)
+            upload(args.upload_url, headers, bundle)
             emit('smoke_result_uploaded', bytes=bundle.stat().st_size, sha256=digest(bundle))
         except BaseException as exc:
             success = False

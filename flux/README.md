@@ -4,6 +4,30 @@ Prepared on 2026-10-24 for `HuD04_WBT` (`PRO_20261023_011`).
 
 ## Status
 
+### Continue verified task033 final checkpoint (2026-10-25T05:04:26Z)
+
+The user explicitly requested immediate formal training. Conservatively retain
+the last selected budget: ONE1x4090D24GB,128env,worker<=1800s,retries0. No unlimited
+execution or automatic follow-on trials. Platform clone/start/release billing
+can be outside the worker timer. Main stays unchanged; only this preparation
+branch changes. Native physics, rewards, dataset, PPO and timing guards unchanged.
+
+Task033 completed936updates from source index20,final index955,soft budget stop,
+exit0,native reload and independent safe CPU loads passed. Actor and critic
+optimizers advanced18720steps each. The new immutable source is task033 final,
+10346235bytes,SHA2566b1bab179456d475af5c6cd223c36fc5e5c45f4abb13a7db31e7865ae2082bc9.
+Do not confuse task031/task033 earlier artifacts or mutable file names with this
+exact source. As with native semantics, index955 is the first resumed update.
+
+Task033 original W&B training record is i0rze2wz with936verified history rows and
+console/files,controller2spnnw1j is NOT the curve page. The worker still uses
+offline W&B; this source-only change does not claim a live W&B writer. Preserve
+native offline records and logs for verified import after completion. No account
+credential is placed on the worker. Any new controller is explicitly labelled
+dispatch-only,not a native training curve or proof of completed execution.
+
+This stage continues training, not a policy evaluation or convergence claim.
+
 ### Task031 passed; one user-selected 30-minute continuation (2026-10-25)
 
 Task031 completed32headless replay steps on128environments, then2native PPO

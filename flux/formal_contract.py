@@ -67,12 +67,12 @@ def bootstrap_source(root):
 def worker_source(root):
     source=(Path(root)/'run_smoke.py').read_text()
     changes=[
-      ("updates = 2 if resume_input is not None else 20", "if resume_input is None:\n        raise ValueError('Formal run requires immutable task031 source')\n    updates = 10000"),
+      ("updates = 2 if resume_input is not None else 20", "if resume_input is None:\n        raise ValueError('Formal run requires immutable verified source')\n    updates = 10000"),
       ('signal.alarm(1140)','signal.alarm(1680)'),
       ('int(1198-(time.monotonic()-started))','int(1798-(time.monotonic()-started))'),
       ("'php-smoke-' + task_id","'php-formal-' + task_id"),
       ('worker_seconds=1200','worker_seconds=1800'),
-      ("source_task='TASK_20261025_027'","source_task='TASK_20261025_031'"),
+      ("source_task='TASK_20261025_027'","source_task='TASK_20261025_033'"),
       ('remaining = min(1050, int(1110-(time.monotonic()-started)))',
        'remaining = min(1650, int(1650-(time.monotonic()-started)))'),
       ("'gpu': '1x4090D-24G', 'worker_seconds': remaining, 'num_envs':128,'updates':updates,",

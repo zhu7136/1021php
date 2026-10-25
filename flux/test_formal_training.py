@@ -49,7 +49,7 @@ def formal_fixture(output, *, stop_after=3, update=True, corrupt=False):
     algo.actor_obs_normalizer=torch.nn.Identity()
     algo.critic_obs_normalizer=torch.nn.Identity()
     algo.config.num_learning_iterations=10000
-    algo.current_learning_iteration=20
+    algo.current_learning_iteration=formal_input.SOURCE_ITERATION
     source=Path(algo.log_dir)/'source.pt'
     algo.save(str(source))
     saved=torch.load(source,weights_only=True,map_location='cpu')
@@ -86,7 +86,7 @@ class FormalTests(unittest.TestCase):
         report=json.loads((self.output/'resume_validation.json').read_text())
         self.assertTrue(report['passed'])
         self.assertEqual(report['completed_updates'],3)
-        self.assertEqual(report['native_final_iteration'],22)
+        self.assertEqual(report['native_final_iteration'],formal_input.SOURCE_ITERATION+2)
         self.assertEqual(report['termination_reason'],'worker_time_budget')
         self.assertTrue(all(report['parameters_changed'].values()))
         self.assertTrue(all(x['min_step_increment']==3 for x in report['optimizer_step_advancement'].values()))

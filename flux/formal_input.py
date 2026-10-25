@@ -1,17 +1,17 @@
-"""Immutable task031 source for the single authorized 30-minute continuation."""
+"""Immutable verified task033 source for one bounded continuation."""
 import hashlib
 from pathlib import Path
 import urllib.request
 import zipfile
 from flux.resume_input import NoRedirect, digest, validate_control as original_validate
 
-ARCHIVE_BYTES = 37909738
-ARCHIVE_SHA256 = '548481a604a245ffee6b5011c4cda8b46dd655e10f691948bf20f1b748029de1'
+ARCHIVE_BYTES = 30751697
+ARCHIVE_SHA256 = 'b5ff326aad43ae9c654d419e07f3e9af55d5ad88267e3513b5833f752e735dc7'
 CHECKPOINT_BYTES = 10346235
-CHECKPOINT_SHA256 = 'b46bac428458245c8df035972fde8741072917b2b75f9ac3520f9c5f56d38356'
-MEMBER = 'training/HuD04_WBT/20261025_032739-php-locomotion-teacher-smoke-locomotion/model_smoke_final.pt'
-SOURCE_TASK = 'TASK_20261025_031'
-SOURCE_ITERATION = 20
+CHECKPOINT_SHA256 = '6b1bab179456d475af5c6cd223c36fc5e5c45f4abb13a7db31e7865ae2082bc9'
+MEMBER = 'training/HuD04_WBT/20261025_034855-php-locomotion-teacher-formal-30m-locomotion/model_smoke_final.pt'
+SOURCE_TASK = 'TASK_20261025_033'
+SOURCE_ITERATION = 955
 MAX_UPDATES = 10000
 
 

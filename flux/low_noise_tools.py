@@ -138,10 +138,11 @@ def evaluate(algo,motion,stats,seed=1402,*,continuous_segments=False):
 
 class TrialStop(Exception):pass
 
-def train(algo,stats,out,emit,clock=None):
+def train(algo,stats,out,emit,clock=None,*,max_updates=200):
     """Wrap native PPO; do not reimplement loss, rollout, Adam, LR schedule or save."""
     import json,time
     from pathlib import Path
+    if not isinstance(max_updates,int) or not 1<=max_updates<=200:raise ValueError('Update cap outside allowed bound')
     if clock is None:clock=time.monotonic
     out=Path(out);original_loss=algo._compute_ppo_loss;original_post=algo._post_epoch_logging
     updates=0;batch=0;start=clock()
@@ -172,7 +173,7 @@ def train(algo,stats,out,emit,clock=None):
                  **stats.summary())
         progress_file.write(json.dumps(row,allow_nan=False)+'\n');progress_file.flush();metrics_file.flush()
         emit(**row);stats.clear()
-        reason=stop_reason(updates,clock()-start)
+        reason='iteration_budget' if updates>=max_updates else stop_reason(updates,clock()-start)
         if reason:raise TrialStop(reason)
     original_steps=[]
     for opt in (algo.actor_optimizer,algo.critic_optimizer):

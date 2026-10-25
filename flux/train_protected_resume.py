@@ -106,7 +106,7 @@ def train_worker(run_path):
         training_seconds_cap=TRAIN_SECONDS,actor_lr=algo.actor_learning_rate,critic_lr=algo.critic_learning_rate)
     def deadline(signum,frame):raise TimeoutError('Strict 300s training cap; no partial-update final checkpoint')
     signal.signal(signal.SIGALRM,deadline);signal.setitimer(signal.ITIMER_REAL,TRAIN_SECONDS)
-    try:trained=train(algo,stats,out,emit)
+    try:trained=train(algo,stats,out,emit,max_updates=MAX_UPDATES)
     finally:signal.setitimer(signal.ITIMER_REAL,0);capture.close()
     if not 1<=trained['completed_updates']<=MAX_UPDATES:raise ValueError('Update bound violated')
     if algo.current_learning_iteration!=SOURCE_ITERATION+trained['completed_updates']:raise ValueError('Iteration accounting mismatch')
@@ -171,7 +171,7 @@ def summarize():
         limitation='Short continuation and 2.56s evaluations; no convergence/deployment success claim. Internal resets are censored, not successful survival.')
     base.save(OUT/'summary.json',result);emit('resume_pilot_complete',completed_updates=result['completed_updates'],initial_state_exact=True)
 
-def main():
+def main(child_entrypoint=None):
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--input-url');p.add_argument('--upload-url');p.add_argument('--upload-headers',default='{}')
     p.add_argument('--delivery-manifest-json',help='Method-scoped signed PUT/GET capabilities; never an API key')
@@ -194,8 +194,8 @@ def main():
             except ProcessLookupError:pass
         os._exit(124)
     signal.signal(signal.SIGALRM,deadline);signal.alarm(WORKER_SECONDS)
-    emit('resume_entrypoint_begin',source_iteration=200,num_envs=32,max_new_updates=200,
-        training_seconds_cap=300,worker_seconds_cap=1800,automatic_retries=0)
+    emit('resume_entrypoint_begin',source_iteration=200,num_envs=32,max_new_updates=MAX_UPDATES,
+        training_seconds_cap=TRAIN_SECONDS,worker_seconds_cap=WORKER_SECONDS,automatic_retries=0)
     success=False
     try:
         # Fail before dependency installation, dataset expansion, simulation or PPO if output egress is broken.
@@ -208,7 +208,7 @@ def main():
             if remaining<60:raise TimeoutError('Insufficient worker budget')
             env=dict(os.environ,PYTHONUNBUFFERED='1',CUDA_VISIBLE_DEVICES='0')
             for name in ['key','github','WANDB_API_KEY','OPENAI_API_KEY','FLUX_API_KEY']:env.pop(name,None)
-            child=subprocess.Popen([str(resolve_isaac_launcher()),str(Path(__file__).resolve()),
+            child=subprocess.Popen([str(resolve_isaac_launcher()),str(Path(child_entrypoint or __file__).resolve()),
                 '--runtime-child',arm,'--wandb-run-path',args.wandb_run_path],env=env,start_new_session=True)
             try:code=wait_for_child(child,ROOT,remaining)
             except subprocess.TimeoutExpired:os.killpg(child.pid,signal.SIGKILL);child.wait(timeout=5);code=124

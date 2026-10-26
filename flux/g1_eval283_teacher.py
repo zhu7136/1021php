@@ -183,11 +183,13 @@ def main():
                 obs,_,_,_=env.step({'actions':actions})
                 policy_action_batches+=1
                 if step%100==0:save_progress()
-        if recorder is not None:recorder.stop_recording()
         for i,r in enumerate(block):
             for key,values in samples[i].items():
                 if values:r[key+'_mean']=float(np.mean(values));r[key+'_p95']=float(np.percentile(values,95))
         save_progress()
+        # Persist complete round evidence BEFORE encoding; codec errors must not
+        # leave only the stale every-100-step snapshot behind.
+        if recorder is not None:recorder.stop_recording()
     after=snapshot(algo);_require_same_state(before,after,'frozen_evaluation_state')
     unchanged=digest(a.checkpoint)==CHECKPOINT_SHA256
     if not unchanged:raise ValueError('Source checkpoint mutated')
@@ -203,4 +205,6 @@ def main():
     # The supervisor cleans up the simulation group after evidence has been flushed.
     sys.stdout.flush();os._exit(0)
 
-if __name__=='__main__':main()
+if __name__=='__main__':
+    from flux.video_preflight import fail_closed_entrypoint
+    fail_closed_entrypoint(main)

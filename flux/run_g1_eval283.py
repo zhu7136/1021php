@@ -59,6 +59,10 @@ def main():
         run([str(python),str(ROOT/'flux/prepare_inputs.py'),'--output',str(inputs),'--install',
              '--python',str(python),'--withheld-wheel-dir',str(private)],240,'dependencies.log')
         env['PYTHONPATH']=os.pathsep.join([str(inputs/'.flux-deps'),str(ROOT),str(ROOT/'thirdparty/holosoma/src/holosoma'),env.get('PYTHONPATH','')])
+        stage='encoder_preflight'
+        run([str(python),'-m','flux.video_preflight','--output',str(out/'encoder-preflight')],40,'encoder-preflight.log')
+        env['PATH']=str(out/'encoder-preflight/bin')+os.pathsep+env.get('PATH','')
+        stage='input_verification'
         lowstep=fetch_data(decode_control(a.lowstep_input_b64),out/'lowstep-data')
         source=fetch_checkpoint(source_control,out/'checkpoint-input')
         emit('eval283_inputs_verified',checkpoint_sha256=CHECKPOINT_SHA256,pairs=56)

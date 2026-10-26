@@ -91,10 +91,18 @@ def main():
     cmd.motion=SegmentedMotion()
     namespace=dict(vars(wbt))
     source=Path(wbt.__file__).read_text();exec(compile(scheduled_reset_source(source),'scheduled_native_reset','exec'),namespace)
+    exec(compile(relative_refresh_source(source),'native_relative_refresh','exec'),namespace)
+    refresh_relative=namespace['refresh_relative_targets']
     cmd.reset=types.MethodType(namespace['reset'],cmd)
     cmd.eval_motion_ids=torch.arange(56,device=device,dtype=torch.long)
     observed={};original=env._check_termination
     def capture():
+        # Native reset changes motion/root poses but relative-body caches are refreshed
+        # only AFTER termination. Recompute the native derived poses at the SAME frame
+        # before checking, including zero-action warmup. No thresholds/resets are skipped.
+        frame_before=cmd.time_steps.clone()
+        refresh_relative(cmd)
+        if not torch.equal(frame_before,cmd.time_steps):raise ValueError('Relative refresh advanced reference')
         original()
         observed['failed']=env.termination_manager.terminated.clone()
         observed['timeout']=env.termination_manager.time_outs.clone()
@@ -111,7 +119,7 @@ def main():
         observed['reasons']=reasons
     env._check_termination=capture
     rows=[{'clip_index':i,'motion':names[i],'seed':seed,'variant_index':j,'status':'not_tested',
-           'steps':0,'progress':0.0,'failure_reasons':[]} for j,seed in enumerate(SEEDS) for i in range(56)]
+           'steps':0,'policy_action_steps':0,'progress':0.0,'failure_reasons':[]} for j,seed in enumerate(SEEDS) for i in range(56)]
     protocol={'source_run':SOURCE_RUN,'source_sha256':CHECKPOINT_SHA256,'pairs':56,'repeats':3,
               'seeds':list(SEEDS),'terrain_seed':42,'terrain_variants':64,'selected_variants':[0,1,2],
               'seed_scope':'global Python/NumPy/Torch rollout seeds; native stateless DR episode counters retained',
@@ -119,6 +127,7 @@ def main():
               'clip_mapping_validated_against_all_original_frame_lengths':True,
               'evaluation_overrides':['56env','explicit clip assignment','disable adaptive sampling',
                   'disable clip-end resampling until exclusive end','fixed terrain seed42','video','base PPO inference only',
+                  'refresh native relative-body targets at current frame before every termination check, including warmup',
                   'episode timeout10s->12s to cover longest10.76s clip; failure thresholds unchanged'],
               'initialization':'native reset_all performs one zero-action simulation step at frame0; included in trial statistics',
               'failure_thresholds_preserved':True,'episode_timeout_seconds':12.0,
@@ -130,6 +139,7 @@ def main():
         (out/'summary.json').write_text(json.dumps(summary,indent=2))
         print(json.dumps({'event':'eval283_progress',**summary}),flush=True)
     save_progress()
+    policy_action_batches=0;warmup_checks=[]
     for j,seed in enumerate(SEEDS):
         if time.monotonic()>=a.soft_deadline:break
         random.seed(seed);np.random.seed(seed);torch.manual_seed(seed);torch.cuda.manual_seed_all(seed)
@@ -141,6 +151,12 @@ def main():
         if recorder is not None:recorder.stop_recording()
         with torch.inference_mode():
             obs=env.reset_all()
+            warmup={'seed':seed,'failed':int(observed['failed'].sum().item()),
+                    'ref_pos_max_m':float(max(observed['ref_pos'])),'body_pos_max_m':float(max(observed['body_pos']))}
+            warmup_checks.append(warmup)
+            (out/'warmup_checks.json').write_text(json.dumps(warmup_checks,indent=2))
+            if not np.isfinite(observed['body_pos']).all() or warmup['body_pos_max_m']>10:
+                raise ValueError('Invalid reset geometry: do not report policy performance')
             if recorder is not None:recorder.start_recording(j+1)
             for step in range(max(lengths)+2):
                 # Consume captured pre-reset outcome of native reset warmup or previous policy step.
@@ -149,6 +165,7 @@ def main():
                 frames=observed['frame'].cpu().numpy()
                 for i in np.flatnonzero(active):
                     r=block[i];r['steps']+=1
+                    r['policy_action_steps']=max(0,r['steps']-1)
                     r['progress']=min(1.0,max(0.0,(int(frames[i])-int(starts[56*j+i])+1)/lengths[i]))
                     for key in samples[i]:samples[i][key].append(float(observed[key][i]))
                     if int(frames[i])<int(starts[56*j+i]) or int(frames[i])>=int(ends[56*j+i]):
@@ -164,6 +181,7 @@ def main():
                 actions=policy({'actor_obs':actor_obs})
                 if not torch.isfinite(actions).all():raise ValueError('Nonfinite evaluation actions')
                 obs,_,_,_=env.step({'actions':actions})
+                policy_action_batches+=1
                 if step%100==0:save_progress()
         if recorder is not None:recorder.stop_recording()
         for i,r in enumerate(block):
@@ -173,7 +191,11 @@ def main():
     after=snapshot(algo);_require_same_state(before,after,'frozen_evaluation_state')
     unchanged=digest(a.checkpoint)==CHECKPOINT_SHA256
     if not unchanged:raise ValueError('Source checkpoint mutated')
+    if policy_action_batches==0:raise ValueError('No policy actions: invalid performance evaluation')
     result={**summarize(rows),'pipeline_passed':True,'frozen_model_and_optimizer_verified':True,
+            'protocol_revision':2,'policy_action_batches':policy_action_batches,
+            'policy_controlled_trials':sum(r['policy_action_steps']>0 for r in rows),
+            'warmup_failure_trials':sum(r['status']=='failed' and r['policy_action_steps']==0 for r in rows),
             'source_checkpoint_unchanged':True,'iteration_unchanged':SOURCE_ITERATION,
             'source_sha256':CHECKPOINT_SHA256,'video_files':[str(p.relative_to(out)) for p in out.rglob('*.mp4')]}
     (out/'evaluation_result.json').write_text(json.dumps(result,indent=2))

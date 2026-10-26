@@ -48,6 +48,28 @@ def classify(failed,timeout,completed):
     if completed:return 'completed'
     return None
 
+def relative_refresh_source(source):
+    """Reuse the pinned native relative-target equations WITHOUT advancing time/resetting."""
+    tree=ast.parse(source)
+    cls=next(x for x in tree.body if isinstance(x,ast.ClassDef) and x.name=='MotionCommand')
+    fn=next(x for x in cls.body if isinstance(x,ast.FunctionDef) and x.name=='step')
+    def assigns(node,name):
+        return isinstance(node,ast.Assign) and any(
+            isinstance(t,ast.Name) and t.id==name or
+            isinstance(t,ast.Attribute) and isinstance(t.value,ast.Name) and t.value.id=='self' and t.attr==name
+            for t in node.targets)
+    first=next(i for i,n in enumerate(fn.body) if assigns(n,'use_root'))
+    last=next(i for i,n in enumerate(fn.body) if assigns(n,'body_pos_relative_w'))
+    body=fn.body[first:last+1]
+    if len(body)!=13:raise ValueError('Native relative-target formula changed')
+    # These statements are derived-pose calculations only, never sampling/stepping.
+    if any(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr in ('step','reset','rand','randn')
+           for statement in body for n in ast.walk(statement)):
+        raise ValueError('Unexpected stateful relative-target calculation')
+    result=ast.FunctionDef(name='refresh_relative_targets',args=ast.arguments(posonlyargs=[],args=[ast.arg(arg='self')],
+        kwonlyargs=[],kw_defaults=[],defaults=[]),body=body,decorator_list=[])
+    return ast.unparse(ast.fix_missing_locations(result))
+
 def summarize(rows):
     if len(rows)!=168 or len({(r['clip_index'],r['seed']) for r in rows})!=168:
         raise ValueError('Expected unique56x3 results including untested')

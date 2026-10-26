@@ -12,7 +12,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from flux.bootstrap import load_approval
-from flux.preflight import static_checks
+from flux.preflight import static_checks, git
 
 
 def scope():
@@ -69,7 +69,7 @@ class PreparationTests(unittest.TestCase):
         self.assertEqual(load_approval(path)['updates'], 20)
 
     def test_static_checks(self):
-        checks = static_checks()
+        checks = static_checks(expected_commit=git('rev-parse', 'HEAD'))
         self.assertEqual(checks['holosoma'], '4a0bf04cde5930af5ed59da797568d32be972525')
         self.assertGreater(checks['declared_dataset_files'], 0)
 

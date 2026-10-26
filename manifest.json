@@ -1,0 +1,69 @@
+{
+  "files": [
+    {
+      "path": "robot_probe.py",
+      "bytes": 17845,
+      "sha256": "26a92a05e8b9ead0e9db1ffbf66a7bde618c0ab9c437017ab4557dd684885aae"
+    },
+    {
+      "path": "hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "runtime_versions.py",
+      "bytes": 5128,
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61"
+    },
+    {
+      "path": "test_robot_probe.py",
+      "bytes": 10683,
+      "sha256": "f3fc2cff81c046026e2cb881554ec4492af5f20fdb2899a707c9cd1d643f98cb"
+    },
+    {
+      "path": "stop_guard_candidate.py",
+      "bytes": 2914,
+      "sha256": "ca3cf66ac8ad266f7062cd4436e063b35de23fb1fb3db003ef1d094928504817"
+    },
+    {
+      "path": "README.md",
+      "bytes": 3761,
+      "sha256": "cb9eca9f0557563d1218031d087b1d3b3e1a56d62e4343853b3eb88cb96c66a7"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    },
+    {
+      "path": "input-manifest.json",
+      "bytes": 7332,
+      "sha256": "831211783309a670131cc28f880e4e7bdb98f2a91ef0f5d09a3e9cab14820891"
+    },
+    {
+      "path": "input.zip",
+      "bytes": 17305621,
+      "sha256": "ee5aeac12664ba16e7a5298642c88aeb9e544246331f3524f57d73f88d52c433"
+    }
+  ],
+  "kind": "current31_native_robot_physics_NOT_PPO",
+  "worker_seconds": 360,
+  "cleanup_close_shared_seconds": 30,
+  "physics_steps": 64,
+  "dt": 0.005,
+  "head_threshold_rad": 0.05,
+  "expected_physical_joints": 31,
+  "expected_policy_joints": 29,
+  "automatic_retries": 0,
+  "dependency_installs": 0,
+  "diagnostic_gpu": "1x4090-family 23..25GiB CC8.9",
+  "catalog_gpu_label": "4090D",
+  "catalog_label_discrepancy_resolved": false,
+  "immutable_existing_input_blob": "dfb868fc60267117c953ebf47223f4344bf65a35",
+  "old_input_source_commit": "0da8a7f6024918073c8d37c9fa5e3e536d5e3054"
+}

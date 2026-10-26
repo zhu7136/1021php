@@ -1,0 +1,41 @@
+{
+  "files": [
+    {
+      "path": "runtime_probe.py",
+      "sha256": "a6ef2371d010f532ca10ab7070771072f486666c8e04c10dddd60df09546fc18",
+      "bytes": 8916
+    },
+    {
+      "path": "runtime_versions.py",
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61",
+      "bytes": 5128
+    },
+    {
+      "path": "test_runtime_probe.py",
+      "sha256": "b2801a9da38b53ec71eec1ae4a6764b24c79227bf70fb9f2beb0c6f4f5c51e03",
+      "bytes": 2139
+    },
+    {
+      "path": "README.md",
+      "sha256": "a93d3bd79fa9dbab114bf505fa8e5efe958c9b7293db8826620a92d291dc0c27",
+      "bytes": 2399
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b",
+      "bytes": 10142
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287",
+      "bytes": 67
+    }
+  ],
+  "kind": "empty_app_runtime_diagnostic_not_training",
+  "worker_seconds": 360,
+  "close_seconds": 30,
+  "automatic_retries": 0,
+  "gpu": "1x4090D24GB",
+  "image_id": "BJX00000170",
+  "image_version": "V000212"
+}

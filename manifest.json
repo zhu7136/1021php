@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "path": "runtime_probe.py",
+      "sha256": "34955f1f4d5c0a34b09eca8cd5b3ceeabfaba1c5e4f7f4695e21efd6faad5175",
+      "bytes": 11092
+    },
+    {
+      "path": "runtime_versions.py",
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61",
+      "bytes": 5128
+    },
+    {
+      "path": "test_runtime_probe.py",
+      "sha256": "3ffca0f02075f0c71fdee2aacf884503a24b91042983221d4d2efb6e91420ce4",
+      "bytes": 3552
+    },
+    {
+      "path": "README.md",
+      "sha256": "37d54efc09877990a1bd43424f9d7b9b27677c459c8386f2b1e1fdd4b4df5626",
+      "bytes": 1414
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b",
+      "bytes": 10142
+    },
+    {
+      "path": "NOTICE",
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287",
+      "bytes": 67
+    },
+    {
+      "path": "target-packages.json",
+      "sha256": "66451147f230aec22905c56494877f1c025176e195aace116b266539785ed5e0",
+      "bytes": 2706
+    }
+  ],
+  "kind": "image_inventory_empty_app_diagnostic_NOT_training",
+  "worker_seconds": 360,
+  "close_seconds": 30,
+  "automatic_retries": 0,
+  "catalog_gpu": "1x4090D24GB",
+  "resource_name_contract_unchanged": true,
+  "target_lock_sha256": "7e7701cf0b2abc7d0d62a70016c4902dea5992c809e6a297b57d548ffa95491b"
+}

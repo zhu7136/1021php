@@ -43,6 +43,9 @@ def main():
         private=out/'upstream-wheels';private.mkdir()
         wheels=json.loads((ROOT/'flux/smoke-upstream-wheels.json').read_text())
         if len(wheels)!=8:raise ValueError('Unexpected wheel manifest')
+        encoder=json.loads((ROOT/'flux/eval-encoder-wheel.json').read_text())
+        if encoder['name']!='imageio-ffmpeg' or encoder['version']!='0.6.0':
+            raise ValueError('Unexpected encoder dependency')
         def download(row):
             if not row['url'].startswith('https://files.pythonhosted.org/packages/') or Path(row['file']).name!=row['file']:
                 raise ValueError('Invalid dependency source')
@@ -55,9 +58,14 @@ def main():
                 if incoming.read(1):raise ValueError('Oversized wheel')
             if digest(path)!=row['sha256']:raise ValueError('Wheel hash mismatch')
         with ThreadPoolExecutor(max_workers=4) as executor:list(executor.map(download,wheels))
+        download(encoder)
         inputs=out/'inputs'
         run([str(python),str(ROOT/'flux/prepare_inputs.py'),'--output',str(inputs),'--install',
              '--python',str(python),'--withheld-wheel-dir',str(private)],240,'dependencies.log')
+        # The exact wheel bytes were hash-verified above; pip cannot resolve or
+        # download anything from a package index during installation.
+        run([str(python),'-m','pip','--isolated','install','--no-index','--no-deps',
+             '--target',str(inputs/'.flux-deps'),str(private/encoder['file'])],60,'encoder-install.log')
         env['PYTHONPATH']=os.pathsep.join([str(inputs/'.flux-deps'),str(ROOT),str(ROOT/'thirdparty/holosoma/src/holosoma'),env.get('PYTHONPATH','')])
         stage='encoder_preflight'
         run([str(python),'-m','flux.video_preflight','--output',str(out/'encoder-preflight')],40,'encoder-preflight.log')

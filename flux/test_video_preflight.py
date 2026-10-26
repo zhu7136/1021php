@@ -59,6 +59,19 @@ class EncoderRepairTests(unittest.TestCase):
         self.assertLess(source.index("stage='encoder_preflight'"), source.index("stage='frozen_policy_evaluation'"))
         ast.parse(source)
 
+    def test_encoder_dependency_is_pinned(self):
+        row = json.loads((Path(__file__).parent/'eval-encoder-wheel.json').read_text())
+        self.assertEqual(row['version'], '0.6.0')
+        self.assertEqual(row['file'], 'imageio_ffmpeg-0.6.0-py3-none-manylinux2014_x86_64.whl')
+        self.assertEqual(row['bytes'], 29498237)
+        self.assertEqual(row['sha256'], 'c7e46fcec401dd990405049d2e2f475e2b397779df2519b544b8aab515195282')
+        self.assertTrue(row['url'].startswith('https://files.pythonhosted.org/packages/'))
+
+    def test_encoder_download_verified_before_offline_install(self):
+        source = (Path(__file__).parent/'run_g1_eval283.py').read_text()
+        self.assertLess(source.index('        download(encoder)'), source.index("str(private/encoder['file'])"))
+        self.assertIn("'--isolated','install','--no-index','--no-deps'", source)
+
 
 if __name__ == '__main__':
     unittest.main()

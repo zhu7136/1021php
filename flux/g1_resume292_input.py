@@ -7,3 +7,11 @@ for old,new in [('224','292'),('r1f8gw5h','00vxykeq'),('SOURCE_ITERATION=841','S
     assert old in source
     source=source.replace(old,new)
 exec(compile(source,__file__,'exec'),globals())
+
+def fetch_checkpoint(control,destination):
+    """Same pinned292 checkpoint, with bounded verified transfer handling."""
+    from flux.verified_download import download
+    validate_control(control)
+    destination=Path(destination);destination.mkdir(parents=True,exist_ok=False)
+    return download(control['url'],destination/'source292_final.pt',CHECKPOINT_BYTES,
+                    CHECKPOINT_SHA256,destination.parent/'checkpoint-download.json')

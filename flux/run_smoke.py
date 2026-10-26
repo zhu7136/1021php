@@ -38,13 +38,8 @@ def digest(path):
 
 def decode_control(value):
     """A whitespace-free CLI token survives gm-run's command forwarding."""
-    decoded = base64.b64decode(value, validate=True)
-    if len(decoded) > 8192:
-        raise ValueError('Oversized control parameter')
-    result = json.loads(decoded)
-    if not isinstance(result, dict):
-        raise ValueError('Control parameter must be an object')
-    return result
+    from flux.control_codec import decode_control as decode_json_control
+    return decode_json_control(value)
 
 
 def task_output(task_id):

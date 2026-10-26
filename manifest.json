@@ -1,0 +1,64 @@
+{
+  "files": [
+    {
+      "path": "robot_probe.py",
+      "bytes": 16173,
+      "sha256": "6c3368af829e2567b3698b61a12cec8e2766d89f68192c337af8a173b6ba526c"
+    },
+    {
+      "path": "hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "runtime_versions.py",
+      "bytes": 5128,
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61"
+    },
+    {
+      "path": "test_robot_probe.py",
+      "bytes": 6581,
+      "sha256": "3352257cb20743897cb2120aca40c5a7af75ebca4c4a3837bf766d1bab56127f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2533,
+      "sha256": "36ec7f8c6ceda28db5f612829deaa745bcb8dc7215d4d5fe72773ed5b767587b"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    },
+    {
+      "path": "input-manifest.json",
+      "bytes": 7332,
+      "sha256": "831211783309a670131cc28f880e4e7bdb98f2a91ef0f5d09a3e9cab14820891"
+    },
+    {
+      "path": "input.zip",
+      "bytes": 17305621,
+      "sha256": "ee5aeac12664ba16e7a5298642c88aeb9e544246331f3524f57d73f88d52c433"
+    }
+  ],
+  "kind": "current31_native_robot_physics_NOT_PPO",
+  "worker_seconds": 360,
+  "close_seconds": 30,
+  "physics_steps": 64,
+  "dt": 0.005,
+  "head_threshold_rad": 0.05,
+  "expected_physical_joints": 31,
+  "expected_policy_joints": 29,
+  "automatic_retries": 0,
+  "dependency_installs": 0,
+  "diagnostic_gpu": "1x4090-family 23..25GiB CC8.9",
+  "catalog_gpu_label": "4090D",
+  "catalog_label_discrepancy_resolved": false,
+  "immutable_existing_input_blob": "dfb868fc60267117c953ebf47223f4344bf65a35",
+  "old_input_source_commit": "0da8a7f6024918073c8d37c9fa5e3e536d5e3054"
+}

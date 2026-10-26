@@ -1,0 +1,35 @@
+{
+  "kind": "bootstrap_only_private_inputs_NOT_public",
+  "files": [
+    {
+      "path": "bootstrap.py",
+      "bytes": 11395,
+      "sha256": "65c0ddeaf345c8c619b3d70edde85736722ca37e72ede6df0db056c4e5183d89"
+    },
+    {
+      "path": "worker_wrapper.py",
+      "bytes": 619,
+      "sha256": "c30a1700018c4e94c822854a4b7be84f92d7b0e3781ffc03b26f4ed16aa81c02"
+    },
+    {
+      "path": "scoped_transport.py",
+      "bytes": 8923,
+      "sha256": "a1f54bd671939e2bc0c58b2661783ca792db5ce1cbfe01b8479a798bfde06dd0"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    }
+  ],
+  "worker_seconds": 900,
+  "num_envs": 2,
+  "ppo_updates": 2,
+  "automatic_retries": 0,
+  "delta_from_r18": "Explicit dependency-site precedence in preflight; secret-free stage heartbeat events."
+}

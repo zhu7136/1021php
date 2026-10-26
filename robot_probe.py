@@ -1,0 +1,224 @@
+"""One bounded context+ground/no-robot control; no policy/training/install."""
+import argparse
+import faulthandler
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import signal
+import subprocess
+import sys
+import time
+import traceback
+
+PREFIX = 'HUD04_R13_EVENT '
+STEPS = 64
+DT = .005
+
+def event(event_name, **fields):
+    print(PREFIX + json.dumps({'event': event_name, **fields}, sort_keys=True), flush=True)
+
+def safe_member(name):
+    p = PurePosixPath(name)
+    if p.is_absolute() or '..' in p.parts or '\\' in name or not p.parts:
+        raise ValueError('Unsafe input path')
+    return p
+
+def resource_ok(device):
+    # This is a NEW diagnostic-family contract, not a retroactive r7 pass or a
+    # resolution of the catalog's different model label. No training authorization.
+    return (device['count'] == 1 and device['name'] in
+            ('NVIDIA GeForce RTX 4090', 'NVIDIA GeForce RTX 4090 D', 'NVIDIA GeForce RTX 4090D')
+            and 23 * 2**30 <= device['total_memory_bytes'] <= 25 * 2**30
+            and (device['major'], device['minor']) == (8, 9))
+
+def child():
+    from runtime_versions import check_runtime_versions
+    event('versions_verified', evidence=check_runtime_versions(), python=sys.version.split()[0])
+    from isaaclab.app import AppLauncher
+    parser = argparse.ArgumentParser()
+    AppLauncher.add_app_launcher_args(parser)
+    args = parser.parse_args([])
+    args.headless = True
+    args.device = 'cuda:0'
+    args.enable_cameras = False
+    app = None
+    try:
+        event('app_launch_started')
+        app = AppLauncher(args).app
+        event('app_launch_returned')
+        import carb.settings
+        settings = carb.settings.get_settings()
+        settings.set_bool('/app/fastShutdown', False)
+        if settings.get('/app/fastShutdown') is not False:
+            raise ValueError('fastShutdown readback failed')
+        event('fast_shutdown_verified', value=False)
+        import torch
+        p = torch.cuda.get_device_properties(0)
+        device = dict(name=p.name, total_memory_bytes=p.total_memory,
+                      major=p.major, minor=p.minor, count=torch.cuda.device_count())
+        event('resource_contract', **device, passed=resource_ok(device),
+              kind='4090_family_24GB_diagnostic_only', catalog_name='4090D',
+              catalog_exact_name_match='4090D' in p.name.replace(' ', ''),
+              catalog_label_discrepancy_resolved=False)
+        if not resource_ok(device):
+            raise ValueError('Diagnostic GPU capacity/family contract failed')
+        from runtime_sources import verify_runtime_sources
+        verify_runtime_sources(event)
+        from context_physics import run_physics, observe_scope
+        observe_scope(lambda:run_physics(event,DT,STEPS),event)
+    except BaseException as error:
+        event('child_failure', error_type=type(error).__name__, error_message=str(error))
+        traceback.print_exc(file=sys.stdout)
+        sys.stdout.flush()
+        raise
+    finally:
+        if app is not None:
+            event('close_started')
+            faulthandler.enable()
+            faulthandler.dump_traceback_later(5, repeat=True)
+            try:
+                import carb.settings
+                carb.settings.get_settings().set_bool('/app/fastShutdown', False)
+                app.close(wait_for_replicator=False)
+                event('close_returned')
+            finally:
+                faulthandler.cancel_dump_traceback_later()
+    event('child_body_returned')
+
+def accepted(events, returncode, reason):
+    rows = {r['event']: r for r in events}
+    required = ['versions_verified', 'app_launch_returned', 'fast_shutdown_verified',
+                'resource_contract','runtime_sources_verified', 'physics_context_created', 'context_control_initialized',
+                'physics_steps_completed', 'physics_cleanup_started', 'physics_stop_started',
+                'stop_guard_source_verified', 'stop_interactive_wait_disabled', 'guarded_stop_returned',
+                'stop_interactive_wait_guard_restored', 'physics_stop_returned', 'physics_callbacks_clear_started', 'physics_callbacks_clear_returned',
+                'physics_instance_clear_started', 'physics_instance_clear_returned','singleton_cleared_observed',
+                'physics_cleanup_returned', 'physics_scope_returned', 'physics_gc_started',
+                'physics_gc_returned', 'close_started', 'close_returned','child_body_returned']
+    if reason != 'child_exited' or returncode != 0 or 'child_failure' in rows or any(n not in rows for n in required):
+        return False
+    r, s = rows['context_control_initialized'], rows['physics_steps_completed']
+    names = [r['event'] for r in events]
+    return (rows['resource_contract'].get('passed') is True and
+            rows['fast_shutdown_verified'].get('value') is False and
+            r.get('robot_loaded') is False and r.get('external_assets_loaded') is False and
+            r.get('ground_created') is True and s.get('steps') == STEPS and
+            s.get('sim_time_finite') is True and s.get('no_robot') is True and
+            rows['runtime_sources_verified'].get('passed') is True and
+            rows['singleton_cleared_observed'].get('is_none') is True and
+            rows['stop_guard_source_verified'].get('source_sha256') ==
+            '340450726276d321c48b57de35f846c5a231c30a358b4922b5b7dbb8d42ec80e' and
+            rows['stop_guard_source_verified'].get('source_pin_verified') is True and
+            rows['stop_interactive_wait_disabled'].get('value') is True and
+            rows['stop_interactive_wait_guard_restored'].get('value') is False and
+            all(names.index(a) < names.index(b) for a,b in zip(required, required[1:])))
+
+def supervise(command, cwd, env, out, seconds, cleanup_seconds=30):
+    out.mkdir(exist_ok=False)
+    end = time.monotonic() + seconds
+    start = time.monotonic()
+    events, offset, pending, close_end = [], 0, b'', None
+    code, reason, proc = None, 'not_started', None
+    def scan():
+        nonlocal offset, pending, close_end
+        with (out / 'child.log').open('rb') as stream:
+            stream.seek(offset)
+            chunk = stream.read(1024 * 1024)
+            offset += len(chunk)
+        pending += chunk
+        lines = pending.split(b'\n')
+        pending = lines.pop()
+        if len(pending) > 2 * 1024 * 1024:
+            raise ValueError('Oversized owned log line')
+        for line in lines:
+            if line.startswith(PREFIX.encode()):
+                row = json.loads(line[len(PREFIX):])
+                events.append(row)
+                if len(events) > 80:
+                    raise ValueError('Event limit')
+                print(PREFIX + json.dumps(row, sort_keys=True), flush=True)
+                # One shared cleanup/close deadline: reaching close does NOT reset it.
+                if row.get('event') in ('physics_cleanup_started', 'close_started') and close_end is None:
+                    close_end = min(end - 5, time.monotonic() + cleanup_seconds)
+    def interrupted(*_):
+        raise InterruptedError('Parent termination')
+    previous = signal.signal(signal.SIGTERM, interrupted)
+    try:
+        with (out / 'child.log').open('xb') as log:
+            proc = subprocess.Popen(command, cwd=cwd, env=env, stdout=log,
+                                    stderr=subprocess.STDOUT, start_new_session=True)
+            while True:
+                scan()
+                if (out / 'child.log').stat().st_size > 32 * 1024 * 1024:
+                    reason = 'log_limit'; break
+                code = proc.poll()
+                if code is not None:
+                    reason = 'child_exited'; scan(); break
+                if time.monotonic() >= min(end - 5, close_end or end - 5):
+                    reason = ('cleanup_close_timeout' if any(r['event']=='physics_cleanup_started' for r in events)
+                              else 'close_timeout') if close_end else 'total_timeout'; break
+                time.sleep(.1)
+    except BaseException as error:
+        reason = type(error).__name__
+    finally:
+        if proc is not None:
+            for sig in (signal.SIGTERM, signal.SIGKILL):
+                if proc.poll() is not None: break
+                try: os.killpg(proc.pid, sig)
+                except ProcessLookupError: pass
+                try: proc.wait(timeout=2)
+                except subprocess.TimeoutExpired: pass
+            code = proc.poll()
+        signal.signal(signal.SIGTERM, previous)
+    native_crash=b'Segmentation fault' in (out/'child.log').read_bytes()
+    result = dict(passed=accepted(events, code, reason) and not native_crash, reason=reason, returncode=code,
+                  native_crash_observed=native_crash,
+                  events=events, elapsed_seconds=round(time.monotonic() - start, 3), ppo_updates=0,
+                  verified_current31_checkpoint=False)
+    if not result['passed']:
+        with (out / 'child.log').open('rb') as f:
+            f.seek(max(0, (out / 'child.log').stat().st_size - 16000))
+            print('HUD04_R13_OWNED_LOG_TAIL\n' + f.read(16000).decode(errors='replace'), flush=True)
+    (out / 'result.json').write_text(json.dumps(result, indent=2) + '\n')
+    event('parent_result', **{k: v for k, v in result.items() if k != 'events'})
+    return result
+
+def main():
+    started = time.monotonic()
+    p = argparse.ArgumentParser()
+    p.add_argument('--child', action='store_true')
+    p.add_argument('--execute', action='store_true')
+    for name in ('commit', 'task-id', 'thread-id', 'turn-id'): p.add_argument('--' + name)
+    args = p.parse_args()
+    if args.child: return child()
+    if not args.execute:
+        event('read_only', execution_requested=False, gpu_started=False); return
+    if not all([args.commit, args.task_id, args.thread_id, args.turn_id]) or args.task_id == 'PENDING':
+        raise ValueError('Task/provenance binding required')
+    root = Path(__file__).resolve().parent
+    if subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True, timeout=5).strip() != args.commit:
+        raise ValueError('Source commit mismatch')
+    for row in json.loads((root / 'manifest.json').read_text())['files']:
+        f = root / safe_member(row['path'])
+        if f.is_symlink() or f.stat().st_size != row['bytes'] or hashlib.sha256(f.read_bytes()).hexdigest() != row['sha256']:
+            raise ValueError('Immutable input/source mismatch')
+    event('no_external_assets',robot_loaded=False,external_assets_loaded=False,no_motion_loaded=True)
+    python = next((f for f in [Path('/isaac-sim/python.sh'), Path('/workspace/isaaclab/_isaac_sim/python.sh')]
+                   if f.is_file() and os.access(f, os.X_OK) and (f.parent / 'kit/python/bin/python3').is_file()), None)
+    if python is None: raise ValueError('Vendor Python unavailable')
+    keep = {'PATH', 'LD_LIBRARY_PATH', 'PYTHONPATH', 'PYTHONHOME', 'ISAAC_PATH', 'ISAACSIM_PATH', 'ISAACLAB_PATH',
+            'CARB_APP_PATH', 'EXP_PATH', 'HOME', 'USER', 'TMPDIR', 'DISPLAY', 'LANG', 'ACCEPT_EULA', 'PRIVACY_CONSENT'}
+    env = {k: v for k, v in os.environ.items() if k in keep}
+    env.update(PYTHONUNBUFFERED='1', PYTHONHASHSEED='42', WANDB_MODE='disabled', CUDA_VISIBLE_DEVICES='0',
+               OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1', HUD04_OWNED_TASK=args.task_id)
+    event('parent_started', task_id=args.task_id, commit=args.commit, worker_seconds=360,
+          automatic_retries=0, physics_steps_planned=STEPS, ppo_updates=0,
+          provenance={'thread_id': args.thread_id, 'turn_id': args.turn_id})
+    remaining = 360 - (time.monotonic() - started)
+    if remaining < 40: raise TimeoutError('Insufficient physics diagnostic budget')
+    result = supervise([str(python), str(Path(__file__).resolve()), '--child'],
+                       root, env, root / ('diagnostic-' + args.task_id), remaining)
+    if not result['passed']: raise SystemExit(1)
+
+if __name__ == '__main__': main()

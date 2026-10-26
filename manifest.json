@@ -1,0 +1,56 @@
+{
+  "files": [
+    {
+      "path": "robot_probe.py",
+      "bytes": 11959,
+      "sha256": "b1c1fcd4a87eb52ed26f64680c19104450fad794aed805c58745d3c3d3fbfc8c"
+    },
+    {
+      "path": "context_physics.py",
+      "bytes": 2478,
+      "sha256": "62ad76784c953a24782f2c9861474c8b52e7db25cee8b84d339c88b46cc7a436"
+    },
+    {
+      "path": "runtime_sources.py",
+      "bytes": 2026,
+      "sha256": "14fb9720420e85e4f334163f9743966a272bba3cd2acaa0e1dedd0a23801fe50"
+    },
+    {
+      "path": "runtime_versions.py",
+      "bytes": 5128,
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61"
+    },
+    {
+      "path": "stop_guard_candidate.py",
+      "bytes": 2914,
+      "sha256": "ca3cf66ac8ad266f7062cd4436e063b35de23fb1fb3db003ef1d094928504817"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2697,
+      "sha256": "99f73a69584f528657f9af6257f14d599ebc3aec141636120d9b5995c80b55e8"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    }
+  ],
+  "kind": "native_context_ground_NO_ROBOT_NOT_PPO",
+  "worker_seconds": 360,
+  "cleanup_close_shared_seconds": 30,
+  "physics_steps": 64,
+  "dt": 0.005,
+  "automatic_retries": 0,
+  "dependency_installs": 0,
+  "robot_assets_shipped": 0,
+  "diagnostic_gpu": "1x4090-family 23..25GiB CC8.9",
+  "catalog_gpu_label": "4090D",
+  "catalog_label_discrepancy_resolved": false,
+  "predecessor_commit": "2610d6ef90db30827e8676ca8bb0ac8a62f263b9"
+}

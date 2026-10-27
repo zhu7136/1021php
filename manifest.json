@@ -1,0 +1,55 @@
+{
+  "kind": "empty_app_close_only_no_training",
+  "files": [
+    {
+      "path": "runtime_probe.py",
+      "bytes": 8882,
+      "sha256": "8b8772e24d817aab51930038c2f3442a275176c10cca7fda721e805b0aad9732"
+    },
+    {
+      "path": "supervisor_base.py",
+      "bytes": 8916,
+      "sha256": "a6ef2371d010f532ca10ab7070771072f486666c8e04c10dddd60df09546fc18"
+    },
+    {
+      "path": "runtime_versions.py",
+      "bytes": 5128,
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61"
+    },
+    {
+      "path": "close_observer.py",
+      "bytes": 2566,
+      "sha256": "0bf9e52c15ad88cb9f94525f27026b1a68070db87638310218bb644a2f7618be"
+    },
+    {
+      "path": "close_profile.py",
+      "bytes": 2409,
+      "sha256": "d102cbaa5fbb07beacc8d90144b314a9423f2f2ae2dbaf8ae05fda4ea2fddedc"
+    },
+    {
+      "path": "pinned_close_helper.py",
+      "bytes": 2946,
+      "sha256": "253d7cf698e4c39084fb318d5dc9314694878efa3627303658de465228a40d3c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1981,
+      "sha256": "081a5f7db916bbc3909d8f92cd11481da028a261d03eefbf056bdbd86ba914eb"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    }
+  ],
+  "worker_seconds": 360,
+  "close_seconds": 30,
+  "automatic_retries": 0,
+  "robot_loaded": false,
+  "ppo_updates": 0
+}

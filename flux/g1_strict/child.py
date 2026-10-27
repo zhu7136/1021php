@@ -1,6 +1,5 @@
-"""G1 counterpart to r31:real USD close,false fastShutdown,no Python profiler,0PPO."""
+"""G1 strict-close control with an import-only check of the exact execution configuration."""
 import argparse,faulthandler,json,sys,time,traceback
-from dataclasses import replace
 from pathlib import Path
 
 def record(out,name,**data):
@@ -84,17 +83,27 @@ def lifecycle(config,out,provenance):
    if app is not None:native_close(app,train,out,event)
  record(out,'lifecycle-returned.json',returned=True,ppo_updates=0,_wb_agent=provenance)
  return 0
+def make_config(repo,data):
+ sys.path.insert(0,str(repo))
+ from wbt_training.config_values.experiment import g1_wbt_terrain_ref_noscale
+ from wbt_training.utils.isaacsim_clock import use_php_isaacsim
+ from probe_config import build_probe_config
+ return use_php_isaacsim(build_probe_config(g1_wbt_terrain_ref_noscale,data.resolve().as_uri()))
 def main():
  p=argparse.ArgumentParser()
  for name in ['repo','data','output']:p.add_argument('--'+name,type=Path,required=True)
  for name in ['thread-id','turn-id']:p.add_argument('--'+name,required=True)
+ p.add_argument('--config-check-only',action='store_true')
  a=p.parse_args();repo=a.repo.resolve();sys.path.insert(0,str(repo))
+ cfg=make_config(repo,a.data)
+ if a.config_check_only:
+  assert cfg.logger.type=='disabled' and cfg.training.num_envs==2 and cfg.training.wandb_path is None
+  assert cfg.training.checkpoint is None and cfg.training.teacher_checkpoint is None and not cfg.logger.video.enabled
+  assert cfg.simulator._target_=='wbt_training.simulators.isaacsim.IsaacSim'
+  print(json.dumps(dict(config_check_passed=True,preset='g1_wbt_terrain_ref_noscale',logger_type=cfg.logger.type,simulator_target=cfg.simulator._target_,num_envs=cfg.training.num_envs,preprocess_hook=cfg.training.preprocess_hook,simulator_started=False,ppo_updates=0,output_created=a.output.exists())),flush=True)
+  return 0
  from flux.preflight import runtime_checks
  record(a.output,'runtime.json',**runtime_checks(a.data))
- from wbt_training.config_values.experiment import g1_wbt_terrain_ref_noscale
- from wbt_training.utils.isaacsim_clock import use_php_isaacsim
- cfg=g1_wbt_terrain_ref_noscale
- cfg=replace(cfg,training=replace(cfg.training,headless=True,num_envs=2,checkpoint=None,teacher_checkpoint=None,wandb_path=None,registry_name=a.data.resolve().as_uri(),export_onnx=False),logger=replace(cfg.logger,mode='disabled',video=replace(cfg.logger.video,enabled=False)))
- cfg=use_php_isaacsim(cfg);sys.argv=[sys.argv[0]]
+ sys.argv=[sys.argv[0]]
  return lifecycle(cfg,a.output,dict(thread_id=a.thread_id,turn_id=a.turn_id))
 if __name__=='__main__':sys.exit(main())

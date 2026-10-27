@@ -33,6 +33,15 @@ class ClimbEvalTests(unittest.TestCase):
   self.assertNotIn('g1_eval283_teacher.py',t)
  def test_checkpoint_identity(self):
   p=self.protocol();self.assertEqual((p['SOURCE_RUN'],p['SOURCE_ITERATION'],p['CHECKPOINT_SHA256']),c.SOURCES[c.kind()][1:])
+ def test_parallel_transport_is_eval_only_and_checkpoint_validated(self):
+  t=c.worker_source();self.assertIn('from flux.g1_climb_eval_data import static_checks,fetch_data',t)
+  t=c.input_source();ast.parse(t)
+  self.assertIn('validate_control(control)',t);self.assertIn('from flux.parallel_download import download',t)
+  self.assertIn("download(control['url'],path,CHECKPOINT_BYTES,CHECKPOINT_SHA256",t)
+  data=(c.ROOT/'g1_climb_eval_data.py').read_text()
+  self.assertIn("text.count(old)!=1",data)
+  # Shared training source still uses the original sequential verified transport.
+  self.assertIn('from flux.verified_download import download',(c.ROOT/'g1_climb_contract.py').read_text())
  def test_missing_kind_rejected(self):
   os.environ.pop('PHP_G1_CLIMB_KIND')
   with self.assertRaises(ValueError):c.kind()

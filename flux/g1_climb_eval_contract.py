@@ -24,7 +24,17 @@ def input_source():
  text=(ROOT/'g1_resume276_input.py').read_text()
  start=text.index("SOURCE_TASK=");end=text.index('\ndef digest',start)
  text=text[:start]+'from flux.g1_climb_eval_protocol import SOURCE_TASK,SOURCE_RUN,SOURCE_ITERATION,CHECKPOINT_BYTES,CHECKPOINT_SHA256\n'+text[end:]
- return text.replace('source276_final','source_climb_final')
+ text=text.replace('source276_final','source_climb_final')
+ start=text.index('def fetch_checkpoint(')
+ text=text[:start]+'''def fetch_checkpoint(control,destination):
+    validate_control(control)
+    destination=Path(destination);destination.mkdir(parents=True,exist_ok=False)
+    path=destination/'source_climb_final.pt'
+    from flux.parallel_download import download
+    download(control['url'],path,CHECKPOINT_BYTES,CHECKPOINT_SHA256,destination.parent/'checkpoint-download.json')
+    return path
+'''
+ return text
 def teacher_source():
  text=(ROOT/'g1_eval283_teacher.py').read_text()
  text=replace(text,'from flux.g1_eval283_protocol import *','from flux.g1_climb_eval_protocol import *')
@@ -40,4 +50,5 @@ def worker_source():
  text=(ROOT/'run_g1_eval283.py').read_text()
  for old,new in [('g1_eval283_protocol','g1_climb_eval_protocol'),('g1_eval283_input','g1_climb_eval_input'),('g1_lowstep_input','g1_climb_input'),('g1_eval283_teacher.py','g1_climb_eval_teacher.py'),('lowstep-input-b64','climb-input-b64'),('a.lowstep_input_b64','a.climb_input_b64'),('motions-low-step','motions-'+kind()+'-climb-76')]:text=replace(text,old,new)
  text=numbers(text,{1800:600,1680:540,1640:540,1795:595,1200:360,1500:480,56:40,168:120})
+ text=replace(text,'from flux.g1_climb_input import static_checks,fetch_data','from flux.g1_climb_eval_data import static_checks,fetch_data')
  return text.replace('eval283','climb_eval')

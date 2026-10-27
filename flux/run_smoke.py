@@ -49,23 +49,8 @@ def task_output(task_id):
 
 
 def upload(url, headers, path):
-    parsed = urllib.parse.urlsplit(url)
-    if parsed.scheme != 'https' or parsed.hostname != 'storage.googleapis.com':
-        raise ValueError('Only the approved scoped W&B object store upload is accepted')
-    clean = dict(headers)
-    if any(key.lower() in ('authorization', 'cookie') for key in clean):
-        raise ValueError('No account-level upload credentials allowed')
-    clean['Content-Length'] = str(path.stat().st_size)
-    connection = http.client.HTTPSConnection(parsed.hostname, timeout=40)
-    try:
-        with path.open('rb') as stream:
-            connection.request('PUT', parsed.path + '?' + parsed.query, body=stream, headers=clean)
-            response = connection.getresponse()
-            if not 200 <= response.status < 300:
-                raise RuntimeError('Scoped object upload returned HTTP ' + str(response.status))
-            response.read(1024)
-    finally:
-        connection.close()
+    from flux.verified_upload import upload as bounded_upload
+    return bounded_upload(url, headers, path, on_event=emit)
 
 
 def launcher():

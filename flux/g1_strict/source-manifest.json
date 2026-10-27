@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "base_commit": "9a905ae45f1aa0e68b2d54634885c2a125c2eb4f",
+  "files": [
+    {
+      "path": "README_ZH.md",
+      "bytes": 806,
+      "sha256": "6e1f3160a54fd4da7738b1439ac588761c77b8ec5225593971f57d8e43c88489"
+    },
+    {
+      "path": "audit_receipt.py",
+      "bytes": 1442,
+      "sha256": "625d54bc141333cd6e3e41ea8e40a152722f287944f33434668bec6271c7c86e"
+    },
+    {
+      "path": "bootstrap.py",
+      "bytes": 6411,
+      "sha256": "799a53afb2a46d25d9a57b7c0b0852884baefbce9f65f5159ed680cb1192852b"
+    },
+    {
+      "path": "child.py",
+      "bytes": 6062,
+      "sha256": "46c546103560a80f6ede7817ed4a2ecc3add7ac2b8a53f4902c251357aa12b9c"
+    },
+    {
+      "path": "dependency_install.py",
+      "bytes": 7515,
+      "sha256": "cd45929d60c78692b16285d8fc3df383123f001b06103007176c13c0d32d7e6b"
+    },
+    {
+      "path": "fetch_official_wheels.py",
+      "bytes": 5577,
+      "sha256": "086d81f8bb699a1b52338477cf1a469ea0dd6c613d4543f613183564ab48662c"
+    },
+    {
+      "path": "helper_variant.py",
+      "bytes": 1575,
+      "sha256": "6d40c0375450a44daf708cfb053b7d7fcab28384ea22033621e59e3d11b252ba"
+    },
+    {
+      "path": "import_check.py",
+      "bytes": 3384,
+      "sha256": "3c4454ef61b13d39999563fe42d7698fc33e9e7daaba15d91429d477a475ecfa"
+    },
+    {
+      "path": "official-wheel-manifest.json",
+      "bytes": 14048,
+      "sha256": "6d0833e158ccb8a0fb3ac4776a467a1ac2a45ef72c99caa7e59da5ad38c96049"
+    },
+    {
+      "path": "probe_common.py",
+      "bytes": 4674,
+      "sha256": "72e6a2c183e013a1d8e9ce1c5c42c3bbecf2c410a912725393bb373690ad6aff"
+    }
+  ]
+}

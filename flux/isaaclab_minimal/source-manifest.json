@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "path": "README_ZH.md",
+      "bytes": 449,
+      "sha256": "970ad282acbadb8be84202cda69ad12a5e25e44001bbc8a7e9f2c5f0f1dd735a"
+    },
+    {
+      "path": "bootstrap.py",
+      "bytes": 5272,
+      "sha256": "20c82ad7466ce00d88d8156fdb5adbdcc624a0206579c6d8d68280fcd8633687"
+    },
+    {
+      "path": "child.py",
+      "bytes": 4889,
+      "sha256": "a78a1d262cba362f42a353d94827e0def9946227154bb69eb3ee58e5987c95aa"
+    },
+    {
+      "path": "official-reference.json",
+      "bytes": 1210,
+      "sha256": "dcb6c1fda469e6cbc3bf803907daef60a6652b67be4294e4554d7e2c4c3d5307"
+    }
+  ]
+}

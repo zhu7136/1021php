@@ -1,0 +1,1 @@
+r54仅做同一镜像原生依赖的空场景8步/关闭基线，不加载机器人/动作/训练框架，不安装overlay。参考IsaacLab v2.3.1 create_empty.py并保留引用哈希；非官方原样脚本，保留r53 fastShutdown=false/STOP-disable=true/真实USD关闭设置，直接app.close(wait_for_replicator=False)。450秒worker/30秒close/零重试。通过不等于HuD04修复；失败不等于镜像缺陷已定位。默认不执行。

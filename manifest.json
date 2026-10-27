@@ -1,0 +1,48 @@
+{
+  "kind": "bootstrap_only_private_inputs_NOT_public",
+  "files": [
+    {
+      "path": "bootstrap.py",
+      "bytes": 1506,
+      "sha256": "5e367acc8f389f66faac98b004fdc429c0fa53bbe2c464534296827d991d4fc6"
+    },
+    {
+      "path": "worker_wrapper.py",
+      "bytes": 619,
+      "sha256": "c30a1700018c4e94c822854a4b7be84f92d7b0e3781ffc03b26f4ed16aa81c02"
+    },
+    {
+      "path": "scoped_transport.py",
+      "bytes": 8923,
+      "sha256": "a1f54bd671939e2bc0c58b2661783ca792db5ce1cbfe01b8479a798bfde06dd0"
+    },
+    {
+      "path": "bootstrap_base.py",
+      "bytes": 13205,
+      "sha256": "a57943fc272257e9c317a6f55688826e4733e8aa28aadff979ad2ded30b55534"
+    },
+    {
+      "path": "download_progress.py",
+      "bytes": 1695,
+      "sha256": "c847eceee51e07f374f55dc17cdf5034457612788163bad506ad4d3256215fde"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    }
+  ],
+  "worker_seconds": 900,
+  "num_envs": 2,
+  "additional_ppo_updates": 0,
+  "explicit_control_steps": 8,
+  "automatic_retries": 0,
+  "physics_cleanup_budget_seconds": 30,
+  "native_close_budget_seconds": 30,
+  "scope": "R33 private frozen robot lifecycle with fail-closed per-check physics diagnostics and bounded mismatched source snapshot; no learner or checkpoint load; cleanup30s and actual close30s. No private inputs published."
+}

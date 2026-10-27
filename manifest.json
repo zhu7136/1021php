@@ -1,0 +1,51 @@
+{
+  "kind": "bootstrap_only_private_inputs_NOT_public",
+  "files": [
+    {
+      "path": "bootstrap.py",
+      "bytes": 1506,
+      "sha256": "5e367acc8f389f66faac98b004fdc429c0fa53bbe2c464534296827d991d4fc6"
+    },
+    {
+      "path": "worker_wrapper.py",
+      "bytes": 619,
+      "sha256": "c30a1700018c4e94c822854a4b7be84f92d7b0e3781ffc03b26f4ed16aa81c02"
+    },
+    {
+      "path": "scoped_transport.py",
+      "bytes": 8923,
+      "sha256": "a1f54bd671939e2bc0c58b2661783ca792db5ce1cbfe01b8479a798bfde06dd0"
+    },
+    {
+      "path": "bootstrap_base.py",
+      "bytes": 13269,
+      "sha256": "a32486b6a73274d2c37898f4485391fcc98210fb4656d830d577fc4b25f05586"
+    },
+    {
+      "path": "download_progress.py",
+      "bytes": 1695,
+      "sha256": "c847eceee51e07f374f55dc17cdf5034457612788163bad506ad4d3256215fde"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    }
+  ],
+  "worker_seconds": 900,
+  "num_envs": 2,
+  "additional_ppo_updates": 0,
+  "explicit_control_steps": 8,
+  "automatic_retries": 0,
+  "physics_cleanup_budget_seconds": 30,
+  "native_close_budget_seconds": 30,
+  "reviewed_native_source_manifest_sha256": "6fc3d9a549aa3d189eef0e27079fde51b4d692a9f56c8de4334b097e19b6cccd",
+  "gpu_authorization_not_embedded": true,
+  "requires_fresh_separate_authorization": true,
+  "scope": "R34 joint-headless evidence candidate. Bootstrap-only delivery; no private assets, dependencies, tickets, learner, checkpoint load or GPU authorization."
+}

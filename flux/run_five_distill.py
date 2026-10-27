@@ -6,6 +6,7 @@ ROOT=Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT))
 from flux.five_distill_contract import *
 from flux.run_smoke import launcher,upload,decode_control
 from flux.live_monitor import run_live,offline_environment
+from flux.distill_diagnostics import monitored_download
 
 def emit(event,**kw):print(json.dumps({'event':event,**kw}),flush=True)
 
@@ -61,10 +62,11 @@ def main():
   run([str(python),str(ROOT/'flux/prepare_inputs.py'),'--output',str(inputs),'--install','--python',str(python),'--withheld-wheel-dir',str(private)],250,'dependencies.log')
   env['PYTHONPATH']=os.pathsep.join([str(inputs/'.flux-deps'),str(ROOT),str(ROOT/'thirdparty/holosoma/src/holosoma'),env.get('PYTHONPATH','')])
   stage='pinned_inputs';source_dir=out/'private-inputs';source_dir.mkdir()
+  emit('five_distill_stage_begin',stage=stage)
   from flux.parallel_download import download
   jobs=[('teacher-'+str(i)+'.pt',c) for i,c in enumerate(controls['teachers'])]+[('dataset-'+str(i)+'.tar.gz',c) for i,c in enumerate(controls['datasets'])]
   def get(row):
-   name,c=row;return download(c['url'],source_dir/name,c['bytes'],c['sha256'],source_dir/(name+'.json'))
+   name,c=row;return monitored_download(name,c,source_dir,out/'input-diagnostics',download,emit)
   with ThreadPoolExecutor(max_workers=3) as pool:paths=list(pool.map(get,jobs))
   components=json.loads((ROOT/'release-assets.json').read_text())['components']
   datasets=[inputs/'motions-locomotion']

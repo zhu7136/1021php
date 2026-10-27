@@ -1,0 +1,53 @@
+{
+  "files": [
+    {
+      "path": "bootstrap.py",
+      "bytes": 7221,
+      "sha256": "950639f1558f64380e2d4a52e525bd6e3a4083723c7afbd62a7e7996f1fc5c94"
+    },
+    {
+      "path": "import_check.py",
+      "bytes": 3384,
+      "sha256": "3c4454ef61b13d39999563fe42d7698fc33e9e7daaba15d91429d477a475ecfa"
+    },
+    {
+      "path": "incremental.py",
+      "bytes": 4970,
+      "sha256": "ce6ee5873a24d79643a653aa92fdb2d04f9ec55276ce0127520158eca109f6ea"
+    },
+    {
+      "path": "probe_common.py",
+      "bytes": 4674,
+      "sha256": "72e6a2c183e013a1d8e9ce1c5c42c3bbecf2c410a912725393bb373690ad6aff"
+    },
+    {
+      "path": "fetch_official_wheels.py",
+      "bytes": 5577,
+      "sha256": "086d81f8bb699a1b52338477cf1a469ea0dd6c613d4543f613183564ab48662c"
+    },
+    {
+      "path": "official-wheel-manifest.json",
+      "bytes": 14048,
+      "sha256": "6d0833e158ccb8a0fb3ac4776a467a1ac2a45ef72c99caa7e59da5ad38c96049"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    }
+  ],
+  "worker_seconds_max": 420,
+  "download_seconds_max": 210,
+  "files_requested": 33,
+  "automatic_retries": 0,
+  "installation_scope": "fresh isolated directory only",
+  "simulator_started": false,
+  "ppo_updates": 0,
+  "private_assets_included": false,
+  "wheels_included": false
+}

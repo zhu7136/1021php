@@ -1,6 +1,7 @@
 """Four-skill validation: approved Git base and approved Git overlay, zero PPO.
 
-User authorized publication of this exact overlay on 2026-10-28T13:46:11Z.
+Reuse the exact overlay authorized 2026-10-28T13:46:11Z; code-only repair
+continued by user 2026-10-28T14:06:28Z. No additional motion data publication.
 600s worker wall clock; Git clone happens before it; no automatic retry.
 """
 import argparse,base64,json,os,re,signal,subprocess,sys,threading,time,zipfile,shutil
@@ -12,6 +13,13 @@ INPUT_BYTES=116980683
 INPUT_SHA256='9eb6f16d5f5630f263d67d6d0e084724d7a2d3ac4836ce7b448c658c6d435e4f'
 VENDOR='/isaac-sim/python.sh';ACTIVE=set()
 ALLOWED_OVERLAY={'bundle/terrain/validation-four.obj','bundle/reference/validation-four.npz','validation-code/config.json','validation-code/cases.json','validation-code/validation_child.py'}
+CHILD_SHA256='2aa0d59f5177275d4811ecbfdbc084cf6bc12c91c6029d476059a4c94708b129'
+def install_child_override(root,payload):
+ p=root/'validation_child_proxy_fix.py'
+ if p.is_symlink() or not p.is_file() or digest(p)!=CHILD_SHA256:raise ValueError('Code-only child override integrity mismatch')
+ shutil.copyfile(p,payload/'validation-code/validation_child.py')
+ if digest(payload/'validation-code/validation_child.py')!=CHILD_SHA256:raise ValueError('Installed child hash mismatch')
+ return CHILD_SHA256
 def local_overlay(root,expected_bytes,expected_sha256):
  p=root/'git-input/hud04-current-four-skills/overlay.zip'
  if p.is_symlink() or not p.is_file() or p.stat().st_size!=expected_bytes or digest(p)!=expected_sha256:raise ValueError('Git overlay integrity mismatch')
@@ -74,6 +82,7 @@ def main(argv=None):
    print(json.dumps({'event':'stage','stage':'git_overlay'}),flush=True)
    archive=local_overlay(root,a.overlay_bytes,a.overlay_sha256)
    expected=install_overlay(archive,work/'overlay',payload);state['overlay_hash_verified']=True
+   state['child_sha256']=install_child_override(root,payload)
   state['stage']='install';print(json.dumps({'event':'stage','stage':'install'}),flush=True);site=work/'dependency-site'
   if not Path(VENDOR).is_file():raise ValueError('Vendor Python missing')
   if stage([VENDOR,'-m','pip','install','--isolated','--disable-pip-version-check','--no-index','--no-cache-dir','--no-deps','--only-binary=:all:','--require-hashes','--find-links',str(payload/'deps/wheels'),'--target',str(site),'-r',str(payload/'deps/overlay.lock')],work/'install.log',env,start+210):raise ValueError('Offline installation failed')
@@ -85,6 +94,13 @@ def main(argv=None):
   state.update(native_exit_code=rc,native_simulator_started=result.get('native_environment_loaded',False),native_validation_completed=result.get('native_validation_completed',False),worker_passed=bool(rc==0 and result.get('load_reset_short_physics_passed') and result.get('simulator_close_returned') and result.get('probe_count')==expected and len(result.get('cases',[]))==4),stage='complete')
  except Exception as e:
   state['error_type']=type(e).__name__;print(json.dumps({'event':'stage_failure','stage':state['stage'],'error_type':type(e).__name__}),flush=True)
+  partial=work/'native-output/validation-report.json'
+  if partial.is_file():
+   try:
+    result=json.loads(partial.read_text())
+    if result.get('task_id')==a.task_id:
+     state.update(native_simulator_started=result.get('native_environment_loaded',False),native_probe_count=result.get('probe_count',0),native_child_error_type=result.get('error_type'),simulator_close_returned=result.get('simulator_close_returned',False))
+   except (ValueError,OSError):pass
  state['elapsed_before_upload_seconds']=round(time.monotonic()-start,3);(work/'bootstrap-status.json').write_text(json.dumps(state,indent=2));files=[]
  for f in sorted(work.rglob('*')):
   if f.is_symlink() or not f.is_file() or f.relative_to(work).parts[0] in {'payload','dependency-site','overlay'} or f.suffix not in {'.json','.jsonl','.log'}:continue
@@ -92,7 +108,7 @@ def main(argv=None):
  if sum(f['bytes'] for f in files)>=30*1024**2:raise ValueError('Result size limit')
  result=work/'flux-result.zip'
  with zipfile.ZipFile(result,'x',zipfile.ZIP_DEFLATED,compresslevel=1) as z:
-  z.writestr('result-manifest.json',json.dumps({'task_id':a.task_id,'source_commit':a.commit,'files':files,'ppo_updates':0,'worker_seconds_max':600,'automatic_retries':0,'input_transport':'git-base+approved-git-overlay','input_sha256':INPUT_SHA256,'overlay_sha256':a.overlay_sha256}))
+  z.writestr('result-manifest.json',json.dumps({'task_id':a.task_id,'source_commit':a.commit,'files':files,'ppo_updates':0,'worker_seconds_max':600,'automatic_retries':0,'input_transport':'git-base+approved-git-overlay','input_sha256':INPUT_SHA256,'overlay_sha256':a.overlay_sha256,'child_sha256':CHILD_SHA256}))
   for f in files:z.write(work/f['path'],f['path'])
  receipt=transfer(co,result,method='PUT',size=result.stat().st_size,sha256=digest(result),absolute_deadline=start+590)
  print(json.dumps({'event':'result_uploaded','task_id':a.task_id,'bytes':receipt['bytes'],'sha256':receipt['sha256'],'worker_passed':state['worker_passed'],'elapsed_seconds':round(time.monotonic()-start,3)}),flush=True)

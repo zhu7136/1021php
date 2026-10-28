@@ -10,9 +10,14 @@ CODES=frozenset(('invalid_download_contract','download_path_already_exists','dow
 def safe_code(value):
  return value if isinstance(value,str) and (value in CODES or re.fullmatch(r'http_[1-5][0-9]{2}',value)) else 'unclassified'
 
+def validate_input_name(name):
+ if not isinstance(name,str) or not re.fullmatch(r'(teacher-[0-4]\.pt|dataset-[0-3]\.tar\.gz|source-student\.pt)',name):
+  raise ValueError('Invalid input name')
+ return name
+
 def transfer_evidence(name,source,destination):
  """Copy only a bounded, type-checked subset, never arbitrary exception text."""
- if not re.fullmatch(r'(teacher-[0-4]\.pt|dataset-[0-3]\.tar\.gz)',name):raise ValueError('Invalid input name')
+ validate_input_name(name)
  row={'name':name,'diagnostics_available':False}
  p=Path(source)
  if p.is_file() and not p.is_symlink() and p.stat().st_size<=128*1024:
@@ -29,6 +34,7 @@ def transfer_evidence(name,source,destination):
  out.write_text(json.dumps(row,indent=2));return row
 
 def monitored_download(name,control,source_dir,evidence_dir,download,emit):
+ validate_input_name(name)
  started=time.monotonic();root=Path(source_dir);diag=root/(name+'.json')
  emit('five_distill_input_begin',name=name,expected_bytes=control['bytes'])
  try:

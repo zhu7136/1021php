@@ -18,6 +18,7 @@ def main():
  datasets=decode_control(a.datasets_b64)['datasets'];student=decode_control(a.student_b64);assert len(datasets)==4
  for c,r in zip(datasets,DATA):assert set(c)=={'url','bytes','sha256'} and (c['bytes'],c['sha256'])==(r[2],r[3])
  assert set(student)=={'url','bytes','sha256'} and (student['bytes'],student['sha256'])==(SOURCE_BYTES,SOURCE_SHA)
+ jobs=input_jobs(datasets,student)  # Validate every transfer name BEFORE any worker setup/download.
  out=ROOT/'outputs'/('student-videos-'+a.task_id);out.mkdir(parents=True,exist_ok=False)
  def hard_exit():time.sleep(max(0,598-(time.monotonic()-started)));os._exit(124)
  threading.Thread(target=hard_exit,daemon=True).start()
@@ -54,7 +55,6 @@ def main():
   env['PYTHONPATH']=os.pathsep.join([str(inputs/'.flux-deps'),str(ROOT),str(ROOT/'thirdparty/holosoma/src/holosoma'),env.get('PYTHONPATH','')])
   stage='pinned_inputs';source_dir=out/'private-inputs';source_dir.mkdir()
   from flux.parallel_download import download
-  jobs=[('dataset-'+str(i)+'.tar.gz',c) for i,c in enumerate(datasets)]+[('source-student.pt',student)]
   def get(row):return monitored_download(row[0],row[1],source_dir,out/'input-diagnostics',download,emit)
   with ThreadPoolExecutor(max_workers=3) as pool:paths=list(pool.map(get,jobs))
   components=json.loads((ROOT/'release-assets.json').read_text())['components'];data_paths=[inputs/'motions-locomotion']

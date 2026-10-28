@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "skill": "high-step",
+  "archives": {
+    "base": {
+      "bytes": 123410856,
+      "sha256": "490d7d1b8b927f42303816c1a40f440c05ef5393aec950724ab897fad45c643f",
+      "parts": [
+        {
+          "index": 0,
+          "path": "git-inputs/base/part-000.bin",
+          "bytes": 33554432,
+          "sha256": "435c07895409a07faec27e79678fcccb0651c874ab20de3d201cbdc73a3672b2"
+        },
+        {
+          "index": 1,
+          "path": "git-inputs/base/part-001.bin",
+          "bytes": 33554432,
+          "sha256": "6b45e284215a04209b442732f279ced473e8a28cc583a7bf9c7ef6b0241a00ae"
+        },
+        {
+          "index": 2,
+          "path": "git-inputs/base/part-002.bin",
+          "bytes": 33554432,
+          "sha256": "04336aa0740341627a1bd2ca48c120279258fbb8ed2068a36a7976e97e523b79"
+        },
+        {
+          "index": 3,
+          "path": "git-inputs/base/part-003.bin",
+          "bytes": 22747560,
+          "sha256": "bb21af4dc3eb7e8fd35271d0b6aa06eaf6b9dc37b6e0df3b62eae757850c5b0b"
+        }
+      ]
+    },
+    "skill": {
+      "bytes": 95515648,
+      "sha256": "e82f62132d302b8f8c03e636e376e47844382a030eb4086c45314f21cbf51ac2",
+      "parts": [
+        {
+          "index": 0,
+          "path": "git-inputs/high-step/part-000.bin",
+          "bytes": 33554432,
+          "sha256": "e6aabb72bb3e64e047e3774aeb7872f29386a6367f756513dec25ec06771b5b0"
+        },
+        {
+          "index": 1,
+          "path": "git-inputs/high-step/part-001.bin",
+          "bytes": 33554432,
+          "sha256": "403a351643ab03830edb4a438d2c678e01c376599de23fe7c34d492a19532ae5"
+        },
+        {
+          "index": 2,
+          "path": "git-inputs/high-step/part-002.bin",
+          "bytes": 28406784,
+          "sha256": "c878595ac57a9365eb8ff0bd2dc4a190bc1da5f1a1882697bc2ff3ba710495b5"
+        }
+      ]
+    }
+  }
+}

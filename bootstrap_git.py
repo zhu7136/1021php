@@ -1,9 +1,4 @@
-"""Four-skill validation: approved Git base and approved Git overlay, zero PPO.
-
-Reuse the exact overlay authorized 2026-10-28T13:46:11Z; code-only repair
-continued by user 2026-10-28T14:06:28Z. No additional motion data publication.
-600s worker wall clock; Git clone happens before it; no automatic retry.
-"""
+"""Bounded zero-PPO four-skill diagnostic; unchanged approved inputs."""
 import argparse,base64,json,os,re,signal,subprocess,sys,threading,time,zipfile,shutil
 from pathlib import Path
 from bootstrap_base import safe_extract,clean_env,SafeParser
@@ -13,7 +8,7 @@ INPUT_BYTES=116980683
 INPUT_SHA256='9eb6f16d5f5630f263d67d6d0e084724d7a2d3ac4836ce7b448c658c6d435e4f'
 VENDOR='/isaac-sim/python.sh';ACTIVE=set()
 ALLOWED_OVERLAY={'bundle/terrain/validation-four.obj','bundle/reference/validation-four.npz','validation-code/config.json','validation-code/cases.json','validation-code/validation_child.py'}
-CHILD_SHA256='2aa0d59f5177275d4811ecbfdbc084cf6bc12c91c6029d476059a4c94708b129'
+CHILD_SHA256='bb09b105b2faed0a04db473d46038862fe5d80d2aa2dd17ab7ce07195652677d'
 def install_child_override(root,payload):
  p=root/'validation_child_proxy_fix.py'
  if p.is_symlink() or not p.is_file() or digest(p)!=CHILD_SHA256:raise ValueError('Code-only child override integrity mismatch')
@@ -91,15 +86,14 @@ def main(argv=None):
   rc=stage([VENDOR,str(payload/'validation-code/validation_child.py'),'--payload',str(payload),'--output',str(out),'--site',str(site),'--thread-id',a.thread_id,'--turn-id',a.turn_id],out/'native.log',env,start+515)
   result=json.loads((out/'validation-report.json').read_text())
   if result['task_id']!=a.task_id or result['ppo_updates']!=0 or result['learner_constructed'] is not False:raise ValueError('Native result scope/binding mismatch')
-  state.update(native_exit_code=rc,native_simulator_started=result.get('native_environment_loaded',False),native_validation_completed=result.get('native_validation_completed',False),worker_passed=bool(rc==0 and result.get('load_reset_short_physics_passed') and result.get('simulator_close_returned') and result.get('probe_count')==expected and len(result.get('cases',[]))==4),stage='complete')
+  state.update(native_exit_code=rc,native_simulator_started=result.get('native_environment_loaded',False),native_validation_completed=result.get('native_validation_completed',False),worker_passed=bool(rc==0 and result.get('load_reset_short_physics_passed') and result.get('simulator_close_returned') and result.get('probe_count')==expected and len(result.get('cases',[]))==4 and result.get('fast_shutdown_disabled_verified') is True and result.get('fast_shutdown_at_close') is False),stage='complete')
  except Exception as e:
   state['error_type']=type(e).__name__;print(json.dumps({'event':'stage_failure','stage':state['stage'],'error_type':type(e).__name__}),flush=True)
   partial=work/'native-output/validation-report.json'
   if partial.is_file():
    try:
     result=json.loads(partial.read_text())
-    if result.get('task_id')==a.task_id:
-     state.update(native_simulator_started=result.get('native_environment_loaded',False),native_probe_count=result.get('probe_count',0),native_child_error_type=result.get('error_type'),simulator_close_returned=result.get('simulator_close_returned',False))
+    if result.get('task_id')==a.task_id:state.update(native_simulator_started=result.get('native_environment_loaded',False),native_probe_count=result.get('probe_count',0),native_child_error_type=result.get('error_type'),simulator_close_returned=result.get('simulator_close_returned',False))
    except (ValueError,OSError):pass
  state['elapsed_before_upload_seconds']=round(time.monotonic()-start,3);(work/'bootstrap-status.json').write_text(json.dumps(state,indent=2));files=[]
  for f in sorted(work.rglob('*')):

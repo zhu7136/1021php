@@ -1,23 +1,37 @@
-"""Actual IsaacSim load/reset and short implicit-PD probes; no learner exists."""
-import argparse,json,os,sys,time,traceback
+"""Four-skill zero-PPO diagnostic; real teardown, no motion/limit changes."""
+import argparse,hashlib,inspect,json,os,sys,time,traceback
 from pathlib import Path
 from dataclasses import replace
 
 def write_root_state_via_proxy(sim,ids,root_state):
- """Pinned IsaacSim expects RootStatesProxy, not a raw [N,13] tensor.
-
- MotionLoader and proxy indexing both expose xyzw; the proxy converts to
- IsaacSim wxyz. Preserve all position, orientation and velocity components.
- """
  import torch
  if root_state.ndim!=2 or tuple(root_state.shape)!=(ids.numel(),13):raise ValueError('Expected selected root states [len(ids),13]')
  if not bool(torch.isfinite(root_state).all()):raise ValueError('Nonfinite root state')
  sim.robot_root_states[ids]=root_state
  sim.set_actor_root_state_tensor_robots(ids,sim.robot_root_states)
 
+def save_report(out,report):
+ p=out/'validation-report.pending.json';p.write_text(json.dumps(report,indent=2));p.replace(out/'validation-report.json')
+
+def audit_native_close(app,out,report):
+ """Record the installed SDK implementation privately and disable fast exit."""
+ import carb.settings
+ source=inspect.getsource(type(app).close)
+ (out/'installed-close-source.json').write_text(json.dumps({'module':type(app).__module__,'qualname':type(app).__qualname__,'signature':str(inspect.signature(type(app).close)),'source':source},indent=2))
+ settings=carb.settings.get_settings()
+ report['fast_shutdown_before']=settings.get('/app/fastShutdown')
+ report['close_source_sha256']=hashlib.sha256(source.encode()).hexdigest()
+ report['close_config_fast_shutdown']=getattr(app,'config',{}).get('fast_shutdown')
+ app.set_setting('/app/fastShutdown',False)
+ report['fast_shutdown_after']=settings.get('/app/fastShutdown')
+ if report['fast_shutdown_after'] is not False:raise RuntimeError('Could not disable SDK fast shutdown')
+ report['fast_shutdown_disabled_verified']=True
+ save_report(out,report)
+
 def close_native_app(app,out,report):
- """Disable the pinned IsaacLab stop-event render loop; do not stub teardown."""
+ """Keep the real USD/extension cleanup and require actual normal return."""
  from isaaclab.sim import SimulationContext
+ import carb.settings
  context=SimulationContext.instance()
  report['simulator_close_started']=True
  report['usd_close_stage_unmodified']=True
@@ -25,11 +39,25 @@ def close_native_app(app,out,report):
  if report['stop_render_wait_guard_available']:
   context._disable_app_control_on_stop_handle=True
   report['stop_render_wait_guard_enabled']=True
- (out/'validation-report.json').write_text(json.dumps(report,indent=2))
- print(json.dumps({'event':'stage','stage':'simulator_close','stop_render_wait_guard_enabled':report.get('stop_render_wait_guard_enabled',False)}),flush=True)
- app.close(wait_for_replicator=False)
+ report['fast_shutdown_at_close']=carb.settings.get_settings().get('/app/fastShutdown')
+ if report['fast_shutdown_at_close'] is not False:raise RuntimeError('Fast shutdown unexpectedly enabled')
+ report['close_started_monotonic']=time.monotonic()
+ save_report(out,report)
+ print(json.dumps({'event':'stage','stage':'simulator_close','fast_shutdown':False}),flush=True)
+ app.close(wait_for_replicator=False,skip_cleanup=False)
  report['simulator_close_returned']=True
- (out/'validation-report.json').write_text(json.dumps(report,indent=2))
+ report['close_elapsed_seconds']=time.monotonic()-report['close_started_monotonic']
+ save_report(out,report)
+
+def step_diagnostics(sim,target,limits,joint_names,footids):
+ import torch
+ error=(sim.dof_pos-target).abs()[0]
+ torque=sim._robot.data.applied_torque[:,sim.dof_ids][0]
+ ratios=torque.abs()/limits
+ finite=bool(torch.isfinite(sim.dof_pos).all() and torch.isfinite(sim.dof_vel).all() and torch.isfinite(sim._rigid_body_pos).all() and torch.isfinite(torque).all())
+ wi=int(error.argmax());ti=int(ratios.argmax())
+ velocity_targets=sim._robot.data.joint_vel_target[:,sim.dof_ids][0]
+ return {'finite':finite,'tracking_joint_max_error_rad':float(error.max()),'worst_tracking_joint':joint_names[wi],'torque_limit_ratio_max':float(ratios.max()),'worst_torque_joint':joint_names[ti],'foot_contact_force_N_max':float(torch.linalg.vector_norm(sim.contact_forces[:,footids],dim=-1).max()),'all_contact_force_N_max':float(torch.linalg.vector_norm(sim.contact_forces,dim=-1).max()),'root_height_m':float(sim.robot_root_states[:,2].min()),'joint_error_abs_rad':error.tolist(),'joint_applied_torque_Nm':torque.tolist(),'joint_torque_limit_ratio':ratios.tolist(),'joint_velocity_target_rad_s':velocity_targets.tolist()}
 
 def main():
  p=argparse.ArgumentParser()
@@ -50,38 +78,41 @@ def main():
  sys.argv=[sys.argv[0]]
  from holosoma.utils.sim_utils import setup_simulator_imports
  from holosoma.utils.eval_utils import init_sim_imports
- setup_simulator_imports(cfg);app=None;report={'task_id':os.environ['PHP_FLUX_TASK_ID'],'ppo_updates':0,'learner_constructed':False,'teacher_converged':False,'probe_count':0,'all240_physics_certified':False}
+ setup_simulator_imports(cfg);app=None;report={'task_id':os.environ['PHP_FLUX_TASK_ID'],'ppo_updates':0,'learner_constructed':False,'teacher_converged':False,'probe_count':0,'all240_physics_certified':False,'motion_dynamic_quality_certified':False}
  try:
   app=init_sim_imports(cfg)
+  audit_native_close(app,out,report)
   import torch,numpy as np
   from holosoma.config_types.env import get_tyro_env_config
   from holosoma.utils.helpers import get_class
   env=get_class(cfg.env_class)(get_tyro_env_config(cfg),device='cuda:0');sim=env.simulator
   assert tuple(sim.dof_names)==tuple(cfg.robot.dof_names) and len(sim._body_list)==42
   report.update(native_environment_loaded=True,physical_joints=31,reference_bodies=42,cases=[])
-  (out/'validation-report.json').write_text(json.dumps(report,indent=2))
+  save_report(out,report)
   command=env.command_manager.get_state('motion_command')
   assert command is not None and hasattr(command,'motion') and hasattr(command,'time_steps')
   motion=command.motion
   assert sim.simulator_config.sim.fps==200 and sim.simulator_config.sim.control_decimation_steps==4
   cases=json.loads((payload/'validation-code/cases.json').read_text());assert len(cases)==4
-  report.update(native_environment_loaded=True,physical_joints=31,reference_bodies=42,cases=[])
   ids=torch.tensor([0],device='cuda:0');origin=sim.scene.env_origins
   expected_bodies=list(np.load(root/'reference/validation-four.npz',allow_pickle=False)['body_names'])
   body_idx=[expected_bodies.index(n) for n in sim._body_list]
-  limits=torch.tensor(cfg.robot.dof_effort_limit_list,device='cuda:0');footids=[sim._body_list.index(n) for n in ['left_ankle_roll_link','right_ankle_roll_link']]
+  limits=torch.tensor(cfg.robot.dof_effort_limit_list,device='cuda:0');joint_names=list(sim.dof_names)
+  footids=[sim._body_list.index(n) for n in ['left_ankle_roll_link','right_ankle_roll_link']]
+  report.update(joint_names=joint_names,declared_joint_effort_limits_Nm=limits.tolist(),control_mode=cfg.robot.control.control_mode,reference_velocity_feedforward_enabled=False)
+  actual_limits=sim._robot.data.joint_effort_limits[:,sim.dof_ids][0]
+  report['runtime_joint_effort_limits_Nm']=actual_limits.tolist()
+  report['declared_runtime_effort_limits_equal']=bool(torch.allclose(actual_limits,limits,rtol=1e-5,atol=1e-5))
   for case in cases:
    cr={'dataset':case['dataset'],'clip':case['clip'],'probes':[]}
    for local in case['probe_frames']:
-    report['active_probe']={'dataset':case['dataset'],'source_frame':local,'stage':'reset'}
-    (out/'validation-report.json').write_text(json.dumps(report,indent=2))
+    report['active_probe']={'dataset':case['dataset'],'source_frame':local,'stage':'reset'};save_report(out,report)
     t=case['start_frame']+local;ix=torch.tensor([t],device='cuda:0');q=motion.get_joint_pos(ix);v=motion.get_joint_vel(ix)
     root_state=torch.cat([motion.get_body_pos_w(ix)[:,0]+origin,motion.get_body_quat_w(ix)[:,0],motion.get_body_lin_vel_w(ix)[:,0],motion.get_body_ang_vel_w(ix)[:,0]],-1)
     write_root_state_via_proxy(sim,ids,root_state)
     sim.set_dof_state_tensor_robots(ids,torch.stack([q,v],-1));sim.apply_position_targets_at_dof(q)
     sim.scene.write_data_to_sim();sim.sim.forward();sim.scene.update(dt=0.0);sim.refresh_sim_tensors()
-    pose_error=float(torch.linalg.vector_norm(sim._rigid_body_pos-(motion._body_pos_w[ix][:,body_idx]+origin[:,None,:]),dim=-1).max())
-    qerror=float((sim.dof_pos-q).abs().max())
+    pose_error=float(torch.linalg.vector_norm(sim._rigid_body_pos-(motion._body_pos_w[ix][:,body_idx]+origin[:,None,:]),dim=-1).max());qerror=float((sim.dof_pos-q).abs().max())
     probe={'source_frame':local,'reset_joint_max_error_rad':qerror,'reset_body_fk_max_error_m':pose_error,'reset_mapping_passed':qerror<=1e-5 and pose_error<=.005,'steps':[]}
     report['active_probe']['stage']='short_physics'
     for k in range(min(25,case['frames']-local-1)):
@@ -89,23 +120,20 @@ def main():
      sim.apply_position_targets_at_dof(target)
      for _ in range(4):sim.simulate_at_each_physics_step()
      sim.refresh_sim_tensors()
-     finite=bool(torch.isfinite(sim.dof_pos).all() and torch.isfinite(sim.dof_vel).all() and torch.isfinite(sim._rigid_body_pos).all())
-     torque=sim._robot.data.applied_torque[:,sim.dof_ids]
-     step={'frame':local+k+1,'finite':finite,'tracking_joint_max_error_rad':float((sim.dof_pos-target).abs().max()),'torque_limit_ratio_max':float((torque.abs()/limits).max()),'foot_contact_force_N_max':float(torch.linalg.vector_norm(sim.contact_forces[:,footids],dim=-1).max()),'all_contact_force_N_max':float(torch.linalg.vector_norm(sim.contact_forces,dim=-1).max()),'root_height_m':float(sim.robot_root_states[:,2].min())}
+     step=step_diagnostics(sim,target,limits,joint_names,footids);step['frame']=local+k+1
      probe['steps'].append(step)
-     if not finite:break
+     if not step['finite']:break
     probe['short_physics_completed']=len(probe['steps'])==min(25,case['frames']-local-1) and all(x['finite'] for x in probe['steps'])
     cr['probes'].append(probe);report['probe_count']+=1
-    (out/'validation-report.json').write_text(json.dumps(report|{'current_case':cr},indent=2))
+    save_report(out,report|{'current_case':cr})
    cr['load_reset_short_physics_passed']=all(p['reset_mapping_passed'] and p['short_physics_completed'] for p in cr['probes']);report['cases'].append(cr)
-   (out/'validation-report.json').write_text(json.dumps(report,indent=2));print(json.dumps({'event':'case_complete','dataset':case['dataset'],'passed':cr['load_reset_short_physics_passed']}),flush=True)
+   save_report(out,report);print(json.dumps({'event':'case_complete','dataset':case['dataset'],'passed':cr['load_reset_short_physics_passed']}),flush=True)
   report['native_validation_completed']=True;report['load_reset_short_physics_passed']=all(x['load_reset_short_physics_passed'] for x in report['cases'])
   report['contact_torque_recorded_not_certified']=True;report['collision_com_support_certified']=False
  except Exception as e:
   report.update(error_type=type(e).__name__,error_message=str(e)[:1500]);traceback.print_exc()
  finally:
-  (out/'validation-report.json').write_text(json.dumps(report,indent=2))
-  if app is not None:
-   close_native_app(app,out,report)
+  save_report(out,report)
+  if app is not None:close_native_app(app,out,report)
  return 0 if report.get('load_reset_short_physics_passed') else 1
 if __name__=='__main__':sys.exit(main())

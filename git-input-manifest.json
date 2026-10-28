@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "skill": "locomotion",
+  "archives": {
+    "base": {
+      "bytes": 123410856,
+      "sha256": "490d7d1b8b927f42303816c1a40f440c05ef5393aec950724ab897fad45c643f",
+      "parts": [
+        {
+          "index": 0,
+          "path": "git-inputs/base/part-000.bin",
+          "bytes": 33554432,
+          "sha256": "435c07895409a07faec27e79678fcccb0651c874ab20de3d201cbdc73a3672b2"
+        },
+        {
+          "index": 1,
+          "path": "git-inputs/base/part-001.bin",
+          "bytes": 33554432,
+          "sha256": "6b45e284215a04209b442732f279ced473e8a28cc583a7bf9c7ef6b0241a00ae"
+        },
+        {
+          "index": 2,
+          "path": "git-inputs/base/part-002.bin",
+          "bytes": 33554432,
+          "sha256": "04336aa0740341627a1bd2ca48c120279258fbb8ed2068a36a7976e97e523b79"
+        },
+        {
+          "index": 3,
+          "path": "git-inputs/base/part-003.bin",
+          "bytes": 22747560,
+          "sha256": "bb21af4dc3eb7e8fd35271d0b6aa06eaf6b9dc37b6e0df3b62eae757850c5b0b"
+        }
+      ]
+    },
+    "skill": {
+      "bytes": 252062415,
+      "sha256": "104842f89cd12fba38facd2cad58d87f61a5aa808e7272455ee8bc169f2c7756",
+      "parts": [
+        {
+          "index": 0,
+          "path": "git-inputs/locomotion/part-000.bin",
+          "bytes": 33554432,
+          "sha256": "2cb011f6222e9f99fb0abaf868e9a9fa255e8bdbc6ca61aa15ba311bfb10d5d9"
+        },
+        {
+          "index": 1,
+          "path": "git-inputs/locomotion/part-001.bin",
+          "bytes": 33554432,
+          "sha256": "fb3f90f4f80657f4ccd818abf20aef2ec6d6ce0b2347e72a7a8894b8f0920f97"
+        },
+        {
+          "index": 2,
+          "path": "git-inputs/locomotion/part-002.bin",
+          "bytes": 33554432,
+          "sha256": "7f5f2fae8d90737ffe914350821c0c020f55253d7095117444f00b2b421e4aa4"
+        },
+        {
+          "index": 3,
+          "path": "git-inputs/locomotion/part-003.bin",
+          "bytes": 33554432,
+          "sha256": "e8748a0400b2a7db5855a4ca6f2aa4ce56047fef89ae6eafb871e8a784e77ca6"
+        },
+        {
+          "index": 4,
+          "path": "git-inputs/locomotion/part-004.bin",
+          "bytes": 33554432,
+          "sha256": "b025ca8b8cc8ad2d08c57ae208016695a9f5f83f14cf3873f1299ebb92e9125f"
+        },
+        {
+          "index": 5,
+          "path": "git-inputs/locomotion/part-005.bin",
+          "bytes": 33554432,
+          "sha256": "0ac89046da321f4ab80a961c5a21ea41658f21b418bd35ad67027a79ac2d973f"
+        },
+        {
+          "index": 6,
+          "path": "git-inputs/locomotion/part-006.bin",
+          "bytes": 33554432,
+          "sha256": "5b1ceaeb62dbf55a680d08a464dbb6795cb766089d1ebc8cee4c649de80fb41f"
+        },
+        {
+          "index": 7,
+          "path": "git-inputs/locomotion/part-007.bin",
+          "bytes": 17181391,
+          "sha256": "7fe62d668badb9874a460cf130481a759f4d156e8acda4f164414934e834ea9c"
+        }
+      ]
+    }
+  }
+}

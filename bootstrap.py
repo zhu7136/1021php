@@ -13,6 +13,7 @@ import time
 import zipfile
 from bootstrap_base import safe_extract,clean_env
 from scoped_transport import transfer,digest,validate_capability
+from transfer_diagnostics import download
 
 ACTIVE=set()
 
@@ -84,7 +85,9 @@ def main():
     try:
         print(json.dumps({'event':'stage','stage':'input','task_id':a.task_id}),flush=True)
         archive=work/'input.zip'
-        transfer(capin,archive,method='GET',size=int(a.input_size),sha256=a.input_sha256,absolute_deadline=start+120)
+        state['input_transfer']={}
+        download(capin,archive,size=int(a.input_size),sha256=a.input_sha256,
+            absolute_deadline=start+120,progress=state['input_transfer'])
         manifest=safe_extract(archive,work/'payload');payload=work/'payload'
         assert manifest['scope']['worker_seconds_max']==600 and manifest['scope']['num_envs']==128
         state['input_verified']=True;state['stage']='install'

@@ -101,6 +101,7 @@ def main():
         if stage([vendor,'-c',probe],work/'gpu-preflight.log',env,start+250):raise ValueError('GPU contract failed')
         if time.monotonic()>start+330:raise TimeoutError('Too little training budget')
         out=work/'native-output';out.mkdir()
+        env['PHP_FLUX_TASK_ID']=a.task_id
         state['stage']='native_training';state['native_training_started']=True
         print(json.dumps({'event':'stage','stage':'native_training'}),flush=True)
         cmd=[vendor,str(payload/'trial-code/trial_child.py'),'--payload',str(payload),'--output',str(out),
@@ -108,14 +109,14 @@ def main():
         rc=stage(cmd,out/'native.log',env,start+515,stop_file=out/'STOP_AFTER_UPDATE',soft=start+455)
         state['native_exit_code']=rc
         if rc:raise ValueError('Native child did not exit cleanly')
-        learning=json.loads((out/'learning_state.json').read_text());reload=json.loads((out/'native_reload.json').read_text())
-        checkpoint=out/reload['path']
-        assert checkpoint.resolve().is_relative_to(out.resolve()) and not checkpoint.is_symlink()
-        assert digest(checkpoint)==learning['checkpoint_sha256']
-        assert 1<=learning['completed_updates']<=128 and reload['completed_updates']==learning['completed_updates']
-        assert reload['native_load_passed'] and (out/'train-returned.json').is_file()
-        assert all(learning[k] for k in ['actor_changed','critic_changed','parameters_finite','actor_optimizer_steps_increased','critic_optimizer_steps_increased'])
-        state.update(worker_passed=True,completed_updates=learning['completed_updates'],stage='complete')
+        state['stage']='result_validation'
+        sys.path.insert(0,str(payload/'trial-code'))
+        from closure_evidence import validate_worker_result
+        evidence=validate_worker_result(out,rc,a.task_id)
+        state.update(evidence)
+        # worker_passed means bounded learning evidence+zero native exit;
+        # simulator-close return remains an independent explicit result field.
+        state.update(worker_passed=True,completed_updates=evidence['completed_updates'],stage='complete')
     except Exception as e:
         state['error_type']=type(e).__name__
         print(json.dumps({'event':'stage_failure','stage':state['stage'],'error_type':type(e).__name__}),flush=True)

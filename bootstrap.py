@@ -3,6 +3,7 @@ import argparse,base64,json,os,signal,subprocess,sys,threading,time,zipfile
 from pathlib import Path
 from bootstrap_base import safe_extract,clean_env
 from scoped_transport import transfer,digest,validate_capability
+from transfer_diagnostics import download
 ACTIVE=set()
 def stage(cmd,log,env,end):
  if time.monotonic()>=end:raise TimeoutError('Stage budget exhausted')
@@ -37,7 +38,8 @@ def main():
  state={'task_id':a.task_id,'bootstrap_commit':a.commit,'worker_seconds_max':600,'automatic_retries':0,'ppo_updates':0,'worker_passed':False,'stage':'input','teacher_converged':False}
  try:
   print(json.dumps({'event':'stage','stage':'input','task_id':a.task_id}),flush=True)
-  transfer(ci,work/'input.zip',method='GET',size=int(a.input_size),sha256=a.input_sha256,absolute_deadline=start+120)
+  state['input_transfer']={}
+  download(ci,work/'input.zip',size=int(a.input_size),sha256=a.input_sha256,absolute_deadline=start+120,progress=state['input_transfer'])
   m=safe_extract(work/'input.zip',work/'payload');payload=work/'payload';assert m['scope']['training_update_cap']==0 and m['scope']['worker_seconds_max']==600
   state['stage']='install';print(json.dumps({'event':'stage','stage':'install'}),flush=True)
   vendor='/isaac-sim/python.sh';site=work/'dependency-site'

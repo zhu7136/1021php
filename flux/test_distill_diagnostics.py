@@ -69,6 +69,22 @@ class DiagnosticsTests(unittest.TestCase):
    row=transfer_evidence(name,self.src/'absent.json',self.out/(name+'.json'))
    self.assertFalse(row['diagnostics_available'])
   with self.assertRaises(ValueError):input_jobs([self.control]*5,self.control)
+ def test_classified_chunk_evidence_survives_sanitizing(self):
+  p=self.src/'diag.json';p.write_text(json.dumps({'failure':'socket_timeout','failure_stage':'range_read',
+   'url':self.control['url'],'chunks':[{'index':2,'start':16,'end':23,'bytes_received':3,
+   'outcome':'failed','failure':'socket_timeout','stage':'range_read','url':self.control['url']}]}))
+  row=transfer_evidence('source-student.pt',p,self.out/'safe.json')
+  self.assertEqual(row['failure_code'],'socket_timeout');self.assertEqual(row['failure_stage'],'range_read')
+  self.assertEqual(row['failed_chunks'][0]['bytes_received'],3)
+  self.assertNotIn('DO_NOT_PERSIST',json.dumps(row))
+ def test_untrusted_chunk_fields_are_bounded_and_redacted(self):
+  p=self.src/'diag.json';p.write_text(json.dumps({'failure':self.control['url'],'failure_stage':self.control['url'],
+   'chunks':[{'index':True,'start':-1,'bytes_received':10**20,'end':self.control['url'],
+   'outcome':'failed','failure':self.control['url'],'stage':self.control['url']}]*100}))
+  row=transfer_evidence('source-student.pt',p,self.out/'safe.json')
+  self.assertNotIn('failure_stage',row);self.assertEqual(len(row['failed_chunks']),8)
+  self.assertTrue(all(c=={'failure_code':'unclassified'} for c in row['failed_chunks']))
+  self.assertNotIn('DO_NOT_PERSIST',json.dumps(row))
  def test_invalid_name_rejected(self):
   with self.assertRaises(ValueError):transfer_evidence('../secret',self.src/'anything',self.root/'out.json')
  def test_unknown_failure_text_never_retained(self):

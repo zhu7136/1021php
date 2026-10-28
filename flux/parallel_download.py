@@ -3,7 +3,7 @@
 Only scoped GCS URLs are accepted. Every response must prove its exact byte
 range and object ETag. Errors, partials and timeouts never publish an input.
 """
-import hashlib,json,os,re,threading,time,urllib.error,urllib.request,uuid
+import errno,hashlib,http.client,json,os,re,socket,ssl,threading,time,urllib.error,urllib.request,uuid
 from concurrent.futures import ThreadPoolExecutor,as_completed
 from pathlib import Path
 from flux.verified_download import check_url,_ScopedRedirect,DownloadError
@@ -12,6 +12,32 @@ WORKERS=4
 CHUNK_BYTES=2*1024**2
 DEADLINE_SECONDS=180
 SOCKET_SECONDS=5
+FAILURE_CODES=frozenset(('socket_timeout','tls_error','dns_error','connection_error','incomplete_read',
+ 'network_url_error','local_no_space','local_permission_denied','local_fd_limit','local_read_only',
+ 'local_cross_device','local_io_error','unexpected_error'))
+STAGES=frozenset(('range_probe','range_open','range_read','part_open','part_write','assembly','publication'))
+CONTRACT_CODES=frozenset(('invalid_download_contract','download_path_already_exists','download_cancelled',
+ 'download_deadline_exceeded','range_response_required','wrong_content_range','wrong_content_length',
+ 'encoded_range_rejected','strong_etag_required','object_changed','truncated_range','oversized_range',
+ 'invalid_range_probe','assembled_size_mismatch','input_hash_mismatch','untrusted_download_host'))
+
+def error_code(exc):
+ """Finite codes ONLY; exception messages, URLs, paths and arbitrary names never leave memory."""
+ if isinstance(exc,urllib.error.HTTPError):return 'http_'+str(exc.code) if 100<=exc.code<=599 else 'network_url_error'
+ if isinstance(exc,DownloadError):
+  code=str(exc)
+  return code if code in CONTRACT_CODES or code in FAILURE_CODES else 'unexpected_error'
+ if isinstance(exc,urllib.error.URLError):
+  return error_code(exc.reason) if isinstance(exc.reason,BaseException) else 'network_url_error'
+ if isinstance(exc,(TimeoutError,socket.timeout)):return 'socket_timeout'
+ if isinstance(exc,ssl.SSLError):return 'tls_error'
+ if isinstance(exc,socket.gaierror):return 'dns_error'
+ if isinstance(exc,(ConnectionError,http.client.RemoteDisconnected)):return 'connection_error'
+ if isinstance(exc,http.client.IncompleteRead):return 'incomplete_read'
+ if isinstance(exc,OSError):return {errno.ENOSPC:'local_no_space',errno.EACCES:'local_permission_denied',
+  errno.EPERM:'local_permission_denied',errno.EMFILE:'local_fd_limit',errno.ENFILE:'local_fd_limit',
+  errno.EROFS:'local_read_only',errno.EXDEV:'local_cross_device'}.get(exc.errno,'local_io_error')
+ return 'unexpected_error'
 
 def open_range(url,start,end,timeout,etag=None):
  headers={'Accept-Encoding':'identity','Range':f'bytes={start}-{end}'}
@@ -27,7 +53,12 @@ def download(url,destination,expected_bytes,expected_sha256,diagnostics):
  destination=Path(destination);diagnostics=Path(diagnostics)
  if destination.exists() or diagnostics.exists():raise DownloadError('download_path_already_exists')
  started=time.monotonic();deadline=started+DEADLINE_SECONDS
- stop=threading.Event();lock=threading.Lock();rows=[];published=False;failure=None
+ stop=threading.Event();lock=threading.Lock();rows=[];published=False;failure=None;primary=[];stage='range_probe'
+ def record_error(exc,where):
+  code=error_code(exc)
+  with lock:
+   if not primary and code!='download_cancelled':primary.append({'failure':code,'stage':where})
+  return code
  token=uuid.uuid4().hex[:10]
  def remaining():
   if stop.is_set():raise DownloadError('download_cancelled')
@@ -56,19 +87,23 @@ def download(url,destination,expected_bytes,expected_sha256,diagnostics):
   row={'index':index,'start':start,'end':end,'bytes_received':0,'outcome':'started'}
   with lock:rows.append(row)
   part=destination.with_name(destination.name+f'.range-{token}-{index}.part')
+  where='range_open'
   try:
    with open_range(url,start,end,min(SOCKET_SECONDS,remaining()),etag) as response:
     checked(response,start,end,etag)
+    where='part_open'
     with part.open('xb') as target:
      while row['bytes_received']<end-start+1:
+      where='range_read'
       block=read(response,min(65536,end-start+1-row['bytes_received']))
       if not block:raise DownloadError('truncated_range')
       if len(block)>end-start+1-row['bytes_received']:raise DownloadError('oversized_range')
-      target.write(block);row['bytes_received']+=len(block)
+      where='part_write';target.write(block);row['bytes_received']+=len(block)
+     where='range_read'
      if read(response,1):raise DownloadError('oversized_range')
    row['outcome']='received';return index,part
-  except BaseException:
-   row['outcome']='failed';stop.set();raise
+  except BaseException as exc:
+   row.update(outcome='failed',failure=record_error(exc,where),stage=where);stop.set();raise
  try:
   # Probe byte-range support and bind all parallel reads to one object version.
   with open_range(url,0,0,min(SOCKET_SECONDS,remaining())) as response:
@@ -85,7 +120,7 @@ def download(url,destination,expected_bytes,expected_sha256,diagnostics):
     stop.set()
     for future in futures:future.cancel()
     raise
-  remaining();assembled=destination.with_name(destination.name+'.assembled-'+token+'.part')
+  stage='assembly';remaining();assembled=destination.with_name(destination.name+'.assembled-'+token+'.part')
   h=hashlib.sha256();count=0
   with assembled.open('xb') as target:
    for index,_,_ in ranges:
@@ -97,18 +132,17 @@ def download(url,destination,expected_bytes,expected_sha256,diagnostics):
    target.flush();os.fsync(target.fileno())
   if count!=expected_bytes:raise DownloadError('assembled_size_mismatch')
   if h.hexdigest()!=expected_sha256:raise DownloadError('input_hash_mismatch')
-  remaining();os.link(assembled,destination);published=True
+  stage='publication';remaining();os.link(assembled,destination);published=True
   return destination
- except urllib.error.HTTPError as exc:
-  failure='http_'+str(exc.code);raise DownloadError(failure) from None
- except DownloadError as exc:
-  failure=str(exc);raise
- except BaseException:
-  failure='transfer_or_local_error';raise DownloadError(failure) from None
+ except BaseException as exc:
+  record_error(exc,stage)
+  failure=primary[0]['failure'] if primary else error_code(exc)
+  raise DownloadError(failure) from None
  finally:
   stop.set()
   diagnostics.write_text(json.dumps({'mode':'parallel_range','workers':WORKERS,'chunk_bytes':CHUNK_BYTES,
    'deadline_seconds':DEADLINE_SECONDS,'socket_timeout_seconds':SOCKET_SECONDS,
    'elapsed_seconds':round(time.monotonic()-started,3),'expected_bytes':expected_bytes,
    'expected_sha256':expected_sha256,'task_retries':0,'transfer_retries':0,
-   'published_verified':published,'failure':failure,'chunks':sorted(rows,key=lambda x:x['index'])},indent=2))
+   'published_verified':published,'failure':failure,'failure_stage':primary[0]['stage'] if primary else None,
+   'chunks':sorted(rows,key=lambda x:x['index'])},indent=2))

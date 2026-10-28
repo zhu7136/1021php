@@ -1,11 +1,12 @@
 """Allowlisted transport evidence only: never retain scoped URLs or argv."""
 import json,re,time
 from pathlib import Path
+from flux.parallel_download import FAILURE_CODES,STAGES
 
 CODES=frozenset(('invalid_download_contract','download_path_already_exists','download_cancelled',
  'download_deadline_exceeded','range_response_required','wrong_content_range','wrong_content_length',
  'encoded_range_rejected','strong_etag_required','object_changed','truncated_range','oversized_range',
- 'invalid_range_probe','assembled_size_mismatch','input_hash_mismatch','transfer_or_local_error'))
+ 'invalid_range_probe','assembled_size_mismatch','input_hash_mismatch','transfer_or_local_error')) | FAILURE_CODES
 
 def safe_code(value):
  return value if isinstance(value,str) and (value in CODES or re.fullmatch(r'http_[1-5][0-9]{2}',value)) else 'unclassified'
@@ -30,6 +31,17 @@ def transfer_evidence(name,source,destination):
    if type(v.get('elapsed_seconds')) in (int,float) and 0<=v['elapsed_seconds']<=1800:row['elapsed_seconds']=v['elapsed_seconds']
    row['published_verified']=v.get('published_verified') is True
    row['failure_code']=None if v.get('failure') is None else safe_code(v['failure'])
+   if isinstance(v.get('failure_stage'),str) and v['failure_stage'] in STAGES:row['failure_stage']=v['failure_stage']
+   chunks=v.get('chunks')
+   if isinstance(chunks,list):
+    row['failed_chunks']=[]
+    for chunk in chunks[:64]:
+     if not isinstance(chunk,dict) or chunk.get('outcome')!='failed':continue
+     safe={'failure_code':safe_code(chunk.get('failure'))}
+     if isinstance(chunk.get('stage'),str) and chunk['stage'] in STAGES:safe['stage']=chunk['stage']
+     for key in ('index','start','end','bytes_received'):
+      if type(chunk.get(key)) is int and 0<=chunk[key]<=100*1024**2:safe[key]=chunk[key]
+     if len(row['failed_chunks'])<8:row['failed_chunks'].append(safe)
  out=Path(destination);out.parent.mkdir(parents=True,exist_ok=True)
  out.write_text(json.dumps(row,indent=2));return row
 

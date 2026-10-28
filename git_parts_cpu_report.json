@@ -1,0 +1,30 @@
+{
+  "cpu_only": true,
+  "gpu_tasks_started": 0,
+  "remote_upload_performed": false,
+  "parts_verified": 3,
+  "archive_bytes": 116980683,
+  "archive_sha256": "9eb6f16d5f5630f263d67d6d0e084724d7a2d3ac4836ce7b448c658c6d435e4f",
+  "parts": [
+    {
+      "path": "input.part000",
+      "bytes": 50331648,
+      "sha256": "68f188c0af0417857d7cfead7b9f8cbcaa8e193604bcb8c2f5b6d1a435050e3b"
+    },
+    {
+      "path": "input.part001",
+      "bytes": 50331648,
+      "sha256": "1c52eab536d96e9a34b518f55e8fa448a4cbaeeecc8450fb57c670fed0ac6a5a"
+    },
+    {
+      "path": "input.part002",
+      "bytes": 16317387,
+      "sha256": "e8bf7f41dd61a4aef7cb0ba8cc50d169bec327d93c6fce309c5e6e4f93220fb4"
+    }
+  ],
+  "payload_files_hash_verified": 601,
+  "regression_cases_passed": 11,
+  "training_update_cap": 0,
+  "worker_git_clone_verified": false,
+  "publication_permission_required": true
+}

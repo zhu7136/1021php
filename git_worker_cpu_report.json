@@ -1,0 +1,30 @@
+{
+  "cpu_only": true,
+  "gpu_tasks_started": 0,
+  "tests_passed": 14,
+  "tests": [
+    "dry_run_no_execution",
+    "unsafe_task_rejected",
+    "old_input_capability_flag_rejected",
+    "actual_public_clone_assemble_extract_601_file_hashes",
+    "mock_success",
+    "normal_close_not_returned",
+    "incomplete_probe_count",
+    "offline_install_failure",
+    "corrupt_input_rejected",
+    "nonzero_ppo_receipt_rejected",
+    "wrong_task_receipt_rejected",
+    "upload_failure_no_retry",
+    "source_pin_mismatch",
+    "static_zero_training_direct_close_bounds"
+  ],
+  "actual_public_sparse_git_clone_verified": true,
+  "clone_commit": "56281d28be680ec3494d6bc318c2d778c1ba41b0",
+  "parts_verified": 3,
+  "payload_files_hash_verified": 601,
+  "archive_sha256": "9eb6f16d5f5630f263d67d6d0e084724d7a2d3ac4836ce7b448c658c6d435e4f",
+  "worker_entrypoint_sha256": "9551eadd7226799df9997a537f2de1fe07496b8409d75189f0c368732bca67b6",
+  "native_stages_mocked": true,
+  "native_physics_validated": false,
+  "new_gpu_authorization_required": true
+}

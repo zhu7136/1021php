@@ -1,0 +1,117 @@
+{
+  "chunk_bytes": 50331648,
+  "files": [
+    {
+      "bytes": 162011457,
+      "name": "core.zip",
+      "sha256": "4597140a1b797d4c743b9bd86fecaf7bafd1862557d4dfbcf9f8a759e73721cc",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f00-p00000.bin",
+          "sha256": "398da7221cea9a50c12308c1f0529f29ee2556efbbc8122b6eee1797bae93174"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f00-p00001.bin",
+          "sha256": "b02968f2fd7f5e9644c932d8e683b30d8a718afc04b5861eb51ff89177c3c691"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f00-p00002.bin",
+          "sha256": "a8840ef35b36df60ebfc544bf54a010a3e2fe01a75cdfcdcdd750f4efa58b715"
+        },
+        {
+          "bytes": 11016513,
+          "path": "f00-p00003.bin",
+          "sha256": "e1d3cfeb2fba1849b4830ebe9656dd011b6dbc3cb7435469eab80c19a50658e8"
+        }
+      ]
+    },
+    {
+      "bytes": 488882835,
+      "name": "train-motion.npz",
+      "sha256": "6926d2e80b7e676b696a310591962246148ec1bf88297cf3ee95734746b3def9",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f01-p00000.bin",
+          "sha256": "f6e0eee14bfcf560012f8e6fbe3959c538468ef01e596a767119424b1005db73"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00001.bin",
+          "sha256": "4673cb8f394b05ce21331102bb1d3a06cc654048c2e6584ae9ab3e5d89a9b0e3"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00002.bin",
+          "sha256": "babab36485e6e1071953df6ca16db3602a85de6d3df510e04e370c7a5d237c00"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00003.bin",
+          "sha256": "23ffccb8585b2ddeacc476d106bc6707e69783d67eb2e9d5fbdb3fd624f94704"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00004.bin",
+          "sha256": "507b8a99a2da26f79bbf189a692b4cf8e943c29e3896cee038a0aac82147a53f"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00005.bin",
+          "sha256": "337bac1a4d38ad4f60c624436162aa39f9a2d0125a9c3d5bc17fee6aabd8b629"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00006.bin",
+          "sha256": "ae4ae8e19933a66cd871a14c59e0a4cebf18d5ef51744f020f3d92bfc5ae4eb4"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00007.bin",
+          "sha256": "d74b0ebf7263a62376c22f88a1ce80b53cf256a66428728fc91893e5e7d32d7d"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00008.bin",
+          "sha256": "6bc29ee36f285856a4d37d4c0b56937352053f5f41a8e1148ddd817addf8f06c"
+        },
+        {
+          "bytes": 35898003,
+          "path": "f01-p00009.bin",
+          "sha256": "f786f36b9974a241c3557089e278c6159dc848f37fb06f404aeb1516d57070af"
+        }
+      ]
+    },
+    {
+      "bytes": 159626767,
+      "name": "eval-motion.npz",
+      "sha256": "0cabac26654281a461b14ba0c55403cb1b6e40b116c52ba852e453cb350d4f7d",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f02-p00000.bin",
+          "sha256": "e0d699d5f8ec62a5ca9c7b9c16747bb69edadc5556f79a9fc50027a4d50622ca"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f02-p00001.bin",
+          "sha256": "409b84746ba7a318f4317563e0326d135d06303f8636e48d7493fe7c8e1874c1"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f02-p00002.bin",
+          "sha256": "071f4c132e51f441b1224a30e22c239aaa6ec5cc18d356d50a578c7830e4f550"
+        },
+        {
+          "bytes": 8631823,
+          "path": "f02-p00003.bin",
+          "sha256": "acfa488a0deaf84cbdf624575562f32d38dc713fe44fac09feeee3406b3e25e6"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

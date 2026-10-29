@@ -1,0 +1,49 @@
+{
+  "checks": {
+    "full_cpu_roundtrip": true,
+    "registered_credentials_and_common_signed_url_scan_passed": true,
+    "scope_regression_tests": 12,
+    "shard_tests": 23
+  },
+  "gpu_started": false,
+  "inputs": [
+    {
+      "bytes": 162011457,
+      "kind": "core",
+      "sha256": "4597140a1b797d4c743b9bd86fecaf7bafd1862557d4dfbcf9f8a759e73721cc"
+    },
+    {
+      "bytes": 488882835,
+      "kind": "train_motion",
+      "sha256": "6926d2e80b7e676b696a310591962246148ec1bf88297cf3ee95734746b3def9"
+    },
+    {
+      "bytes": 159626767,
+      "kind": "eval_motion",
+      "sha256": "0cabac26654281a461b14ba0c55403cb1b6e40b116c52ba852e453cb350d4f7d"
+    }
+  ],
+  "new_task_binding_required": true,
+  "non_execution_members_preserved": 689,
+  "original_core_sha256": "69275e6cae8d8fec9aaa7008c1612fc8eb02334f3ac4cfc1acecc476581026f0",
+  "public_core_repacked_to_remove_old_approval_and_provenance": true,
+  "public_inputs_authorized": true,
+  "publication_authorized_at_utc": "2026-10-29T13:05:51Z",
+  "scope": {
+    "automatic_retries": 0,
+    "fresh_student": true,
+    "max_tasks": 1,
+    "max_training_processes": 1,
+    "num_envs": 10,
+    "save_interval": 25,
+    "training_updates": 100,
+    "worker_seconds_max": 1800
+  },
+  "summary": {
+    "files": 3,
+    "manifest_sha256": "5ab4bf8fc9b532e94f762a67c2968c26efa40f3a9f90bb6e9c378a9646101192",
+    "shards": 18,
+    "total_bytes": 810521059
+  },
+  "training_authorized": false
+}

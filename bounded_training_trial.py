@@ -40,8 +40,15 @@ def main():
  p=Parser();p.add_argument('--commit',required=True);p.add_argument('--output-cap',required=True)
  source=p.add_mutually_exclusive_group(required=True);source.add_argument('--inputs');source.add_argument('--shard-dir')
  p.add_argument('--shard-manifest-sha256')
+ p.add_argument('--execution');p.add_argument('--task-id')
  a=p.parse_args();inputs=[];output=json.loads(base64.urlsafe_b64decode(a.output_cap))
  if bool(a.shard_dir)!=bool(a.shard_manifest_sha256):raise ValueError('Local shard mode requires manifest pin')
+ if bool(a.execution)!=bool(a.task_id) or (a.execution and not a.shard_dir):raise ValueError('Private execution binding requires Git shards and task identity')
+ binding=None
+ if a.execution:
+  binding=json.loads(base64.urlsafe_b64decode(a.execution))
+  if set(binding)!={'bytes','sha256','cap'} or type(binding['bytes']) is not int or not 0<binding['bytes']<=16384:raise ValueError('Small execution binding required')
+  validate_capability(binding['cap'],'GET')
  if a.inputs:
   inputs=json.loads(base64.urlsafe_b64decode(a.inputs))
   if len(inputs)!=3 or [r['kind'] for r in inputs]!=['core','train_motion','eval_motion']:raise ValueError('Exactly three scoped inputs')
@@ -58,7 +65,9 @@ def main():
   payload=work/'payload';emit('trial_stage',stage='inputs',worker_seconds_max=1800)
   if a.shard_dir:
    from local_trial_inputs import materialize
-   state['input_pins']=materialize(a.shard_dir,work,manifest_sha256=a.shard_manifest_sha256,
+   shard_dir=Path(a.shard_dir)
+   if not shard_dir.is_absolute():shard_dir=root/shard_dir
+   state['input_pins']=materialize(shard_dir,work,manifest_sha256=a.shard_manifest_sha256,
       absolute_deadline=started+600,unpack_archive=unpack)
    emit('trial_local_inputs_verified',files=len(state['input_pins']))
   else:
@@ -71,6 +80,14 @@ def main():
     if index==0:
      with deadline(started+600):unpack(path,payload)
   execution=json.loads((payload/'execution.json').read_text())
+  if binding is not None:
+   from execution_binding import bind_execution
+   fresh=work/'execution-binding.json'
+   transfer(binding['cap'],fresh,method='GET',size=binding['bytes'],sha256=binding['sha256'],absolute_deadline=started+600)
+   execution=bind_execution(execution,json.loads(fresh.read_text()),a.task_id,SCOPE)
+   (payload/'execution.json').write_text(json.dumps(execution,sort_keys=True))
+   state.update(task_id=a.task_id,execution_binding_sha256=binding['sha256'])
+   emit('trial_execution_binding_verified',task_id=a.task_id)
   if (execution.get('plan',{}).get('execution_approved') is not True or
       execution.get('approval',{}).get('confirmed_by_user') is not True or
       not isinstance(execution.get('task_id'),str) or not execution['task_id'].startswith('TASK_')):

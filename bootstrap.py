@@ -3,10 +3,6 @@ import argparse,base64,json,os,shutil,subprocess,sys,threading,time
 from pathlib import Path
 from bootstrap_base import safe_extract,clean_env
 from scoped_transport import transfer,digest,validate_capability
-from qq_input import validate_capability as qq_validate
-import transfer_diagnostics
-transfer_diagnostics.validate_capability=qq_validate
-from transfer_diagnostics import download as base_download
 from range_input import download as private_download
 from formal_bootstrap import stage,pack,watchdog,emit
 BASE_BYTES=123410856
@@ -25,7 +21,7 @@ def main(argv=None):
  start=time.monotonic();a=parse(argv)
  if not a.execute:emit('execution_not_requested',worker_seconds_max=1800,automatic_retries=0);return 0
  caps={n:json.loads(base64.urlsafe_b64decode(getattr(a,n+'_cap'))) for n in ['base','input','output']}
- qq_validate(caps['base'],'GET');validate_capability(caps['input'],'GET');validate_capability(caps['output'],'PUT')
+ validate_capability(caps['base'],'GET');validate_capability(caps['input'],'GET');validate_capability(caps['output'],'PUT')
  root=Path(__file__).resolve().parent;env=clean_env()
  if subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,env=env,text=True,timeout=10).strip()!=a.commit:raise ValueError('Source commit mismatch')
  threading.Thread(target=watchdog,args=(start,),daemon=True).start()
@@ -41,8 +37,8 @@ def main(argv=None):
   if len(cases)!=expected or sum(c['frames'] for c in cases)!=scope['frame_count']:raise ValueError('Full dataset coverage mismatch')
   state.update(clip_count=expected,frame_count=scope['frame_count'],private_input_verified=True,stage='base_runtime')
   emit('stage',stage=state['stage'],private_input_verified=True,clip_count=expected,frame_count=scope['frame_count'])
-  state['base_transfer']={}
-  base_download(caps['base'],work/'input.zip',size=BASE_BYTES,sha256=BASE_SHA,absolute_deadline=min(start+360,time.monotonic()+120),progress=state['base_transfer'])
+  state['base_transfer']=private_download(caps['base'],work/'input.zip',size=BASE_BYTES,sha256=BASE_SHA,absolute_deadline=min(start+360,time.monotonic()+120))
+  emit('base_runtime_verified',bytes=state['base_transfer']['bytes'],elapsed_seconds=state['base_transfer']['elapsed_seconds'],input_verified=True)
   payload=work/'payload';base=safe_extract(work/'input.zip',payload)
   if base['scope']['num_envs']!=128 or base['scope']['worker_seconds_max']!=600:raise ValueError('Base source mismatch')
   # Only named full-reference, full-terrain and new teacher-code paths added;

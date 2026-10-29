@@ -19,7 +19,7 @@ def parse(argv=None):
  p.add_argument('--input-bytes',type=int);a=p.parse_args(argv)
  if a.execute:
   import re
-  if not all(vars(a).values()) or a.skill not in ['locomotion','high-step'] or not re.fullmatch(r'TASK_\d{8}_\d+',a.task_id) or not re.fullmatch('[0-9a-f]{40}',a.commit) or not re.fullmatch('[0-9a-f]{64}',a.input_sha256) or not 0<a.input_bytes<512*1024**2:raise ValueError('Missing or invalid execution binding')
+  if not all(vars(a).values()) or a.skill not in ['high-climb','low-climb'] or not re.fullmatch(r'TASK_\d{8}_\d+',a.task_id) or not re.fullmatch('[0-9a-f]{40}',a.commit) or not re.fullmatch('[0-9a-f]{64}',a.input_sha256) or not 0<a.input_bytes<512*1024**2:raise ValueError('Missing or invalid execution binding')
  return a
 def main(argv=None):
  start=time.monotonic();a=parse(argv)
@@ -35,7 +35,7 @@ def main(argv=None):
   emit('stage',stage=state['stage'],task_id=a.task_id)
   state['private_input_transfer']=private_download(caps['input'],work/'full-input.zip',size=a.input_bytes,sha256=a.input_sha256,absolute_deadline=start+240)
   overlay=work/'overlay';manifest=safe_extract(work/'full-input.zip',overlay);scope=manifest['scope']
-  expected=100 if a.skill=='locomotion' else 60
+  expected=40
   if {r['path'] for r in manifest['files']}!=ALLOWED or scope['skill']!=a.skill or scope['clip_count']!=expected or scope['num_envs']!=4096 or scope['worker_seconds_max']!=1800 or scope['automatic_retries']!=0 or not scope['fresh_training']:raise ValueError('Full input scope mismatch')
   cases=json.loads((overlay/'teacher-code/cases.json').read_text())
   if len(cases)!=expected or sum(c['frames'] for c in cases)!=scope['frame_count']:raise ValueError('Full dataset coverage mismatch')

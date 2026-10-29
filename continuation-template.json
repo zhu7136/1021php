@@ -7,18 +7,10 @@
     "purpose": "formal_pilot",
     "worker_seconds_max": 1800
   },
-  "continuation_validation": {
-    "max_additional_updates": 1000,
-    "purpose": "authorized_bounded_optimizer_continuation",
-    "shutdown_fault_accepted_not_hidden": true,
-    "source_checkpoint_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15",
-    "start_completed_updates": 100,
-    "trajectory_exact_resume": false
-  },
   "engineering_validation": {
-    "long_training_authorized": true,
+    "long_training_authorized": false,
     "purpose": "measure_unresolved_training_pipeline",
-    "resume_authorized": true,
+    "resume_authorized": false,
     "unresolved_gates": [
       "native_shutdown_exit_zero_unresolved",
       "native_cross_process_resume_unverified",
@@ -69,17 +61,25 @@
     "worker_seconds_max": 1800
   },
   "publication_only": true,
-  "resume_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15",
   "scope": {
-    "automatic_retries": 0,
-    "fresh_student": false,
     "max_tasks": 1,
     "max_training_processes": 1,
     "num_envs": 10,
-    "resume_completed_updates": 100,
-    "save_interval": 250,
     "training_updates": 1000,
-    "worker_seconds_max": 1800
+    "save_interval": 250,
+    "worker_seconds_max": 1800,
+    "automatic_retries": 0,
+    "fresh_student": false,
+    "resume_completed_updates": 100
   },
-  "task_id": null
+  "task_id": null,
+  "continuation_validation": {
+    "purpose": "authorized_bounded_optimizer_continuation",
+    "max_additional_updates": 1000,
+    "start_completed_updates": 100,
+    "source_checkpoint_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15",
+    "shutdown_fault_accepted_not_hidden": true,
+    "trajectory_exact_resume": false
+  },
+  "resume_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15"
 }

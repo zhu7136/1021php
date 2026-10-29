@@ -18,8 +18,8 @@ RANGE_BYTES=2*1024**2
 STREAMS=4
 IO_TIMEOUT=10.0
 
-def download(cap,path,*,size,sha256,absolute_deadline,progress=None,on_progress=None):
-    u,expiry=validate_capability(cap,'GET')
+def download(cap,path,*,size,sha256,absolute_deadline,progress=None,on_progress=None,cap_validator=validate_capability):
+    u,expiry=cap_validator(cap,'GET')
     path=Path(path)
     if (type(size) is not int or not 0<size<512*1024**2 or not isinstance(sha256,str)
         or re.fullmatch('[0-9a-f]{64}',sha256) is None or not math.isfinite(absolute_deadline)

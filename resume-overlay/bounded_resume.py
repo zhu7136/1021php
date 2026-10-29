@@ -20,7 +20,9 @@ def make_template(base):
     value['scope']=deepcopy(SCOPE)
     value['plan'].update(additional_updates=1000,save_interval=250,resume_policy='strict optimizer continuation from verified 100-update checkpoint; trajectory reset, not exact replay')
     value['approval'].update(additional_updates=1000)
-    value['engineering_validation'].update(long_training_authorized=True,resume_authorized=True)
+    # A prepared template is not compute authorization. These switches become
+    # true only in a separately approved, task-specific binding.
+    value['engineering_validation'].update(long_training_authorized=False,resume_authorized=False)
     value['continuation_validation']=deepcopy(VALIDATION)
     value['resume_sha256']=CHECKPOINT_SHA256
     return value
@@ -35,6 +37,7 @@ def bind(template,requested,task):
     expected=deepcopy(template);expected.update(task_id=task,publication_only=False)
     expected['plan'].update(execution_approved=True,_wb_agent=agent)
     expected['approval'].update(confirmed_by_user=True,max_tasks=1)
+    expected['engineering_validation'].update(long_training_authorized=True,resume_authorized=True)
     gate='compute_budget_requires_fresh_user_approval'
     if expected['plan']['execution_gates'].count(gate)!=1:raise ValueError('Fresh approval gate')
     expected['plan']['execution_gates'].remove(gate)

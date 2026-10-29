@@ -42,15 +42,21 @@ def main():
  p.add_argument('--shard-manifest-sha256')
  p.add_argument('--execution');p.add_argument('--task-id')
  p.add_argument('--resume-cap')
+ p.add_argument('--resume-source',choices=['gcs','flux_oss'],default='gcs')
  a=p.parse_args();inputs=[];output=json.loads(base64.urlsafe_b64decode(a.output_cap))
  scope=SCOPE
+ resume_validator=validate_capability
+ if a.resume_source=='flux_oss':
+  if not a.resume_cap:raise ValueError('Explicit checkpoint capability required')
+  from checkpoint_source import validate_flux_checkpoint
+  resume_validator=validate_flux_checkpoint
  resume_input=None
  if a.resume_cap:
   if not a.execution or not a.shard_dir:raise ValueError('Continuation requires bound Git inputs')
   from resume_support import SCOPE as RESUME_SCOPE,CHECKPOINT_SHA256,CHECKPOINT_BYTES
   scope=RESUME_SCOPE;resume_input=json.loads(base64.urlsafe_b64decode(a.resume_cap))
   if set(resume_input)!={'bytes','sha256','cap'} or resume_input['bytes']!=CHECKPOINT_BYTES or resume_input['sha256']!=CHECKPOINT_SHA256:raise ValueError('Exact verified source checkpoint required')
-  validate_capability(resume_input['cap'],'GET')
+  resume_validator(resume_input['cap'],'GET')
  if bool(a.shard_dir)!=bool(a.shard_manifest_sha256):raise ValueError('Local shard mode requires manifest pin')
  if bool(a.execution)!=bool(a.task_id) or (a.execution and not a.shard_dir):raise ValueError('Private execution binding requires Git shards and task identity')
  binding=None
@@ -106,9 +112,24 @@ def main():
    state.update(task_id=a.task_id,execution_binding_sha256=binding['sha256'])
    emit('trial_execution_binding_verified',task_id=a.task_id)
   if resume_input is not None:
-   transfer(resume_input['cap'],payload/'resume.pt',method='GET',size=resume_input['bytes'],sha256=resume_input['sha256'],absolute_deadline=started+600)
+   state['stage']='resume_download'
+   # A small binding GET does not validate large-checkpoint throughput. Four
+   # bounded range streams, 10s I/O deadlines, heartbeat, exact whole-file hash;
+   # no automatic retries, partial-file reuse or extension of the worker clock.
+   emit('trial_resume_download_started',expected_bytes=resume_input['bytes'],source_completed_updates=100)
+   progress={}
+   try:
+    receipt=download(resume_input['cap'],payload/'resume.pt',size=resume_input['bytes'],sha256=resume_input['sha256'],
+     absolute_deadline=min(started+600,time.monotonic()+120),progress=progress,
+     on_progress=lambda row:emit('trial_resume_download_progress',**row),cap_validator=resume_validator)
+    state['resume_download']=receipt
+   except Exception:
+    state['resume_download']=dict(progress)
+    raise
    overlay={'formal_worker.py':'student_adapter/formal_worker.py','formal_algo.py':'student_adapter/formal_algo.py',
-            'bounded_resume.py':'student_adapter/bounded_resume.py','engineering_worker.py':'engineering_worker.py'}
+            'bounded_resume.py':'student_adapter/bounded_resume.py','engineering_worker.py':'engineering_worker.py',
+            'training_telemetry.py':'student_adapter/training_telemetry.py',
+            'lifecycle_probe_parent.py':'student_adapter/lifecycle_probe_parent.py'}
    for source_name,target_name in overlay.items():
     source=root/'resume-overlay'/source_name;target=payload/target_name
     if source.is_symlink() or not source.is_file() or target.is_symlink():raise ValueError('Invalid pinned resume overlay')

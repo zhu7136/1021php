@@ -1,4 +1,4 @@
-"""One user-authorized fresh Hu-D04 high-climb teacher; <=1800s; no retries."""
+"""One authorized fresh Hu-D04 low-step teacher;1800s total worker;no retries."""
 import base64,json,os,shutil,subprocess,sys,threading,time
 from pathlib import Path
 from bootstrap_base import safe_extract,clean_env
@@ -14,8 +14,17 @@ def parse(argv=None):
     p=SafeParser();p.add_argument('--execute',action='store_true')
     for n in ['task-id','commit','base-cap','input-cap','output-cap','input-sha256','thread-id','turn-id','skill']:p.add_argument('--'+n)
     p.add_argument('--input-bytes',type=int);a=p.parse_args(argv)
-    if a.execute and (not all(vars(a).values()) or a.skill!='high-climb' or not re.fullmatch(r'TASK_\d{8}_\d+',a.task_id) or not re.fullmatch('[0-9a-f]{40}',a.commit) or not re.fullmatch('[0-9a-f]{64}',a.input_sha256) or not 0<a.input_bytes<512*1024**2):raise ValueError('Missing or invalid execution binding')
+    if a.execute and (not all(vars(a).values()) or a.skill!='low-step' or not re.fullmatch(r'TASK_\d{8}_\d+',a.task_id) or not re.fullmatch('[0-9a-f]{40}',a.commit) or not re.fullmatch('[0-9a-f]{64}',a.input_sha256) or not 0<a.input_bytes<512*1024**2):raise ValueError('Missing or invalid execution binding')
     return a
+def validate_overlay(overlay,manifest):
+    scope=manifest['scope']
+    if {r['path'] for r in manifest['files']}!=ALLOWED or scope['skill']!='low-step' or scope['clip_count']!=56 or scope['frame_count']!=25676 or scope['num_envs']!=4096 or scope['worker_seconds_max']!=1800 or scope['automatic_retries']!=0 or not scope['fresh_training']:raise ValueError('Full input scope mismatch')
+    cases=json.loads((overlay/'teacher-code/cases.json').read_text())
+    cfg=json.loads((overlay/'teacher-code/config.json').read_text())
+    if len(cases)!=56 or sum(c['frames'] for c in cases)!=25676:raise ValueError('Full dataset coverage mismatch')
+    if cfg['robot']['asset']['robot_type']!='hud04' or not cfg['robot']['asset']['urdf_file'].endswith('HU_D04_01.urdf') or len(cfg['robot']['dof_names'])!=31 or cfg['robot']['actions_dim']!=29:raise ValueError('Wrong robot embodiment')
+    if cfg['training']['num_envs']!=4096 or any(cfg['training'][k] is not None for k in ['checkpoint','teacher_checkpoint','registry_name','preprocess_hook']):raise ValueError('Fresh training contract failed')
+    return scope
 def main(argv=None):
     start=time.monotonic();a=parse(argv)
     if not a.execute:emit('execution_not_requested',worker_seconds_max=1800,automatic_retries=0);return 0
@@ -25,10 +34,9 @@ def main(argv=None):
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,env=env,text=True,timeout=10).strip()!=a.commit:raise ValueError('Source commit mismatch')
     threading.Thread(target=watchdog,args=(start,),daemon=True).start()
     work=root/('private-'+a.task_id);work.mkdir(exist_ok=False)
-    state={'task_id':a.task_id,'bootstrap_commit':a.commit,'worker_seconds_max':1800,'automatic_retries':0,'requested_num_envs':4096,'skill':a.skill,'fresh_training':True,'teacher_converged':False,'worker_passed':False,'stage':'private_full_input','input_verified':False,'native_training_started':False}
+    state={'task_id':a.task_id,'bootstrap_commit':a.commit,'worker_seconds_max':1800,'automatic_retries':0,'requested_num_envs':4096,'skill':'low-step','robot':'Hu-D04','fresh_training':True,'teacher_converged':False,'worker_passed':False,'stage':'private_full_input','input_verified':False,'native_training_started':False}
     def report(label):
         def callback(p):
-            # No URLs, headers, capabilities or credentials enter this report.
             (work/(label+'-transfer-progress.json')).write_text(json.dumps(p,indent=2))
             emit('input_transfer_progress',input_kind=label,**p)
         return callback
@@ -36,17 +44,15 @@ def main(argv=None):
         emit('stage',stage=state['stage'],task_id=a.task_id)
         state['private_input_transfer']={}
         private_download(caps['input'],work/'full-input.zip',size=a.input_bytes,sha256=a.input_sha256,absolute_deadline=start+240,progress=state['private_input_transfer'],on_progress=report('motion'))
-        overlay=work/'overlay';manifest=safe_extract(work/'full-input.zip',overlay);scope=manifest['scope'];expected=40
-        if {r['path'] for r in manifest['files']}!=ALLOWED or scope['skill']!=a.skill or scope['clip_count']!=expected or scope['num_envs']!=4096 or scope['worker_seconds_max']!=1800 or scope['automatic_retries']!=0 or not scope['fresh_training']:raise ValueError('Full input scope mismatch')
-        cases=json.loads((overlay/'teacher-code/cases.json').read_text())
-        if len(cases)!=expected or sum(c['frames'] for c in cases)!=25191 or scope['frame_count']!=25191:raise ValueError('Full dataset coverage mismatch')
-        state.update(clip_count=expected,frame_count=scope['frame_count'],private_input_verified=True,stage='base_runtime')
-        emit('stage',stage='base_runtime',private_input_verified=True,clip_count=expected,frame_count=scope['frame_count'])
+        overlay=work/'overlay';manifest=safe_extract(work/'full-input.zip',overlay);scope=validate_overlay(overlay,manifest)
+        state.update(clip_count=56,frame_count=25676,private_input_verified=True,stage='base_runtime')
+        emit('stage',stage='base_runtime',private_input_verified=True,clip_count=56,frame_count=25676)
         state['base_transfer']={}
         private_download(caps['base'],work/'input.zip',size=BASE_BYTES,sha256=BASE_SHA,absolute_deadline=min(start+360,time.monotonic()+120),progress=state['base_transfer'],on_progress=report('base'))
         emit('base_runtime_verified',bytes=state['base_transfer']['bytes'],elapsed_seconds=state['base_transfer']['elapsed_seconds'],input_verified=True)
         payload=work/'payload';base=safe_extract(work/'input.zip',payload)
         if base['scope']['num_envs']!=128 or base['scope']['worker_seconds_max']!=600:raise ValueError('Base source mismatch')
+        # Only the fresh entrypoint below runs. No inherited checkpoint or resume entrypoint is loaded.
         for row in manifest['files']:
             target=payload/row['path'];target.parent.mkdir(parents=True,exist_ok=True)
             if target.exists():raise ValueError('Refuse to overwrite inherited input')
@@ -62,7 +68,7 @@ def main(argv=None):
         if stage([vendor,'-c',probe],work/'gpu-preflight.log',env,start+540):raise ValueError('GPU contract failed')
         if time.monotonic()>start+650:raise TimeoutError('Insufficient training budget')
         out=work/'native-output';out.mkdir();state.update(stage='native_training',native_training_started=True)
-        emit('stage',stage='native_training',requested_num_envs=4096,clip_count=expected)
+        emit('stage',stage='native_training',requested_num_envs=4096,clip_count=56)
         cmd=[vendor,str(payload/'teacher-code/teacher_child.py'),'--payload',str(payload),'--output',str(out),'--site',str(site),'--thread-id',a.thread_id,'--turn-id',a.turn_id]
         rc=stage(cmd,out/'native.log',env,start+1710,stop_file=out/'STOP_AFTER_UPDATE',soft=start+1650);state['native_exit_code']=rc;state['stage']='result_validation'
         learn=json.loads((out/'learning_state.json').read_text());life=json.loads((out/'lifecycle.json').read_text())

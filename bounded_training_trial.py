@@ -41,7 +41,16 @@ def main():
  source=p.add_mutually_exclusive_group(required=True);source.add_argument('--inputs');source.add_argument('--shard-dir')
  p.add_argument('--shard-manifest-sha256')
  p.add_argument('--execution');p.add_argument('--task-id')
+ p.add_argument('--resume-cap')
  a=p.parse_args();inputs=[];output=json.loads(base64.urlsafe_b64decode(a.output_cap))
+ scope=SCOPE
+ resume_input=None
+ if a.resume_cap:
+  if not a.execution or not a.shard_dir:raise ValueError('Continuation requires bound Git inputs')
+  from resume_support import SCOPE as RESUME_SCOPE,CHECKPOINT_SHA256,CHECKPOINT_BYTES
+  scope=RESUME_SCOPE;resume_input=json.loads(base64.urlsafe_b64decode(a.resume_cap))
+  if set(resume_input)!={'bytes','sha256','cap'} or resume_input['bytes']!=CHECKPOINT_BYTES or resume_input['sha256']!=CHECKPOINT_SHA256:raise ValueError('Exact verified source checkpoint required')
+  validate_capability(resume_input['cap'],'GET')
  if bool(a.shard_dir)!=bool(a.shard_manifest_sha256):raise ValueError('Local shard mode requires manifest pin')
  if bool(a.execution)!=bool(a.task_id) or (a.execution and not a.shard_dir):raise ValueError('Private execution binding requires Git shards and task identity')
  binding=None
@@ -57,7 +66,7 @@ def main():
  root=Path(__file__).resolve().parent
  if subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True,timeout=5).strip()!=a.commit:raise ValueError('Generic code pin')
  work=root/'private-trial';work.mkdir(exist_ok=False);out=work/'output';out.mkdir()
- state={'worker_passed':False,'pipeline_passed':False,'scope':SCOPE,'code_commit':a.commit,'stage':'inputs',
+ state={'worker_passed':False,'pipeline_passed':False,'scope':scope,'code_commit':a.commit,'stage':'inputs',
         'input_pins':[{k:r[k] for k in ('kind','bytes','sha256')} for r in inputs],
         'input_mode':'local_git_shards' if a.shard_dir else 'scoped_https',
         'shard_manifest_sha256':a.shard_manifest_sha256}
@@ -80,14 +89,32 @@ def main():
     if index==0:
      with deadline(started+600):unpack(path,payload)
   execution=json.loads((payload/'execution.json').read_text())
+  if resume_input is not None:
+   from resume_support import make_template
+   template=json.loads((root/'continuation-template.json').read_text())
+   if template!=make_template(execution):raise ValueError('Continuation template differs from the unchanged base')
+   execution=template
   if binding is not None:
    from execution_binding import bind_execution
    fresh=work/'execution-binding.json'
    transfer(binding['cap'],fresh,method='GET',size=binding['bytes'],sha256=binding['sha256'],absolute_deadline=started+600)
-   execution=bind_execution(execution,json.loads(fresh.read_text()),a.task_id,SCOPE)
+   if resume_input is None:execution=bind_execution(execution,json.loads(fresh.read_text()),a.task_id,SCOPE)
+   else:
+    from resume_support import bind
+    execution=bind(execution,json.loads(fresh.read_text()),a.task_id)
    (payload/'execution.json').write_text(json.dumps(execution,sort_keys=True))
    state.update(task_id=a.task_id,execution_binding_sha256=binding['sha256'])
    emit('trial_execution_binding_verified',task_id=a.task_id)
+  if resume_input is not None:
+   transfer(resume_input['cap'],payload/'resume.pt',method='GET',size=resume_input['bytes'],sha256=resume_input['sha256'],absolute_deadline=started+600)
+   overlay={'formal_worker.py':'student_adapter/formal_worker.py','formal_algo.py':'student_adapter/formal_algo.py',
+            'bounded_resume.py':'student_adapter/bounded_resume.py','engineering_worker.py':'engineering_worker.py'}
+   for source_name,target_name in overlay.items():
+    source=root/'resume-overlay'/source_name;target=payload/target_name
+    if source.is_symlink() or not source.is_file() or target.is_symlink():raise ValueError('Invalid pinned resume overlay')
+    target.write_bytes(source.read_bytes())
+   state['resume_checkpoint_sha256']=resume_input['sha256']
+   emit('trial_resume_inputs_verified',source_completed_updates=100,max_additional_updates=1000)
   if (execution.get('plan',{}).get('execution_approved') is not True or
       execution.get('approval',{}).get('confirmed_by_user') is not True or
       not isinstance(execution.get('task_id'),str) or not execution['task_id'].startswith('TASK_')):
@@ -108,7 +135,7 @@ def main():
    if path.is_symlink():raise ValueError('Result symlink')
    if path.is_file():files.append({'path':str(path.relative_to(out)),'bytes':path.stat().st_size,'sha256':digest(path)})
   if sum(r['bytes'] for r in files)>500*1024**2:raise ValueError('Result bounds')
-  (out/'result-manifest.json').write_text(json.dumps({'scope':SCOPE,'files':files},sort_keys=True))
+  (out/'result-manifest.json').write_text(json.dumps({'scope':scope,'files':files},sort_keys=True))
   archive=work/'trial-result.zip'
   with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED,compresslevel=1) as z:
    for path in sorted(out.rglob('*')):

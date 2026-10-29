@@ -1,0 +1,85 @@
+{
+  "approval": {
+    "additional_updates": 1000,
+    "confirmed_by_user": false,
+    "max_tasks": 0,
+    "num_envs": 10,
+    "purpose": "formal_pilot",
+    "worker_seconds_max": 1800
+  },
+  "continuation_validation": {
+    "max_additional_updates": 1000,
+    "purpose": "authorized_bounded_optimizer_continuation",
+    "shutdown_fault_accepted_not_hidden": true,
+    "source_checkpoint_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15",
+    "start_completed_updates": 100,
+    "trajectory_exact_resume": false
+  },
+  "engineering_validation": {
+    "long_training_authorized": true,
+    "purpose": "measure_unresolved_training_pipeline",
+    "resume_authorized": true,
+    "unresolved_gates": [
+      "native_shutdown_exit_zero_unresolved",
+      "native_cross_process_resume_unverified",
+      "formal_worker_and_collector_native_gpu_unverified"
+    ]
+  },
+  "plan": {
+    "_wb_agent": {},
+    "acceptance_thresholds_confirmed": false,
+    "additional_updates": 1000,
+    "automatic_retries": 0,
+    "evaluation_seeds": [
+      1001,
+      1002,
+      1003,
+      1004,
+      1005
+    ],
+    "execution_approved": false,
+    "execution_gates": [
+      "compute_budget_requires_fresh_user_approval",
+      "formal_worker_and_collector_native_gpu_unverified",
+      "native_cross_process_resume_unverified",
+      "native_shutdown_exit_zero_unresolved"
+    ],
+    "input_sha256": "8e0f3ef89479ddf39e66b4697389ea5d42305a501f9116d52f909652e3161f8e",
+    "learning_rate": 0.0003,
+    "multigpu": false,
+    "num_envs": 10,
+    "resume_policy": "strict optimizer continuation from verified 100-update checkpoint; trajectory reset, not exact replay",
+    "save_interval": 250,
+    "schema": "hud04-formal-draft-v1",
+    "seed": 42,
+    "skills": [
+      "locomotion",
+      "low-step",
+      "high-step",
+      "low-climb",
+      "high-climb"
+    ],
+    "teacher_sha256": [
+      "75b3c06421cf0f9cd3abdb79c6591be33a79a7dc0f294bae683b40ff6acb86fe",
+      "7fc623a03fabd6920c122d844ceaa91e1a5fab29a263e4bb9312d5851e623164",
+      "d8aac2800e777c3a10bb20f8e30ff8d5c8fda83d2d2517cbb20aae716ac8cc07",
+      "9a0b61cdb689886c1171f77eb725ff85f4910573d7fa6376fdf4594415e45711",
+      "5002073080d1af5f4e00b1f6b35377f37ab72d85ff0ccf315d42fe9a5d8bf030"
+    ],
+    "worker_seconds_max": 1800
+  },
+  "publication_only": true,
+  "resume_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15",
+  "scope": {
+    "automatic_retries": 0,
+    "fresh_student": false,
+    "max_tasks": 1,
+    "max_training_processes": 1,
+    "num_envs": 10,
+    "resume_completed_updates": 100,
+    "save_interval": 250,
+    "training_updates": 1000,
+    "worker_seconds_max": 1800
+  },
+  "task_id": null
+}

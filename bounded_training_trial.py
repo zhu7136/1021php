@@ -40,7 +40,8 @@ def main():
  p=Parser();p.add_argument('--commit',required=True);p.add_argument('--output-cap',required=True)
  source=p.add_mutually_exclusive_group(required=True);source.add_argument('--inputs');source.add_argument('--shard-dir')
  p.add_argument('--shard-manifest-sha256')
- p.add_argument('--execution');p.add_argument('--task-id')
+ bindings=p.add_mutually_exclusive_group();bindings.add_argument('--execution');bindings.add_argument('--execution-inline')
+ p.add_argument('--execution-sha256');p.add_argument('--task-id')
  p.add_argument('--resume-cap')
  p.add_argument('--resume-source',choices=['gcs','flux_oss'],default='gcs')
  a=p.parse_args();inputs=[];output=json.loads(base64.urlsafe_b64decode(a.output_cap))
@@ -52,14 +53,21 @@ def main():
   resume_validator=validate_flux_checkpoint
  resume_input=None
  if a.resume_cap:
-  if not a.execution or not a.shard_dir:raise ValueError('Continuation requires bound Git inputs')
+  if not (a.execution or a.execution_inline) or not a.shard_dir:raise ValueError('Continuation requires bound Git inputs')
   from resume_support import SCOPE as RESUME_SCOPE,CHECKPOINT_SHA256,CHECKPOINT_BYTES
   scope=RESUME_SCOPE;resume_input=json.loads(base64.urlsafe_b64decode(a.resume_cap))
   if set(resume_input)!={'bytes','sha256','cap'} or resume_input['bytes']!=CHECKPOINT_BYTES or resume_input['sha256']!=CHECKPOINT_SHA256:raise ValueError('Exact verified source checkpoint required')
   resume_validator(resume_input['cap'],'GET')
  if bool(a.shard_dir)!=bool(a.shard_manifest_sha256):raise ValueError('Local shard mode requires manifest pin')
- if bool(a.execution)!=bool(a.task_id) or (a.execution and not a.shard_dir):raise ValueError('Private execution binding requires Git shards and task identity')
+ has_binding=bool(a.execution or a.execution_inline)
+ if has_binding!=bool(a.task_id) or (has_binding and not a.shard_dir):raise ValueError('Private execution binding requires Git shards and task identity')
+ if bool(a.execution_inline)!=bool(a.execution_sha256):raise ValueError('Inline configuration requires exact hash')
  binding=None
+ inline_raw=None
+ if a.execution_inline:
+  from inline_execution import decode_inline
+  inline_raw,_=decode_inline(a.execution_inline,a.execution_sha256)
+  binding={'bytes':len(inline_raw),'sha256':a.execution_sha256}
  if a.execution:
   binding=json.loads(base64.urlsafe_b64decode(a.execution))
   if set(binding)!={'bytes','sha256','cap'} or type(binding['bytes']) is not int or not 0<binding['bytes']<=16384:raise ValueError('Small execution binding required')
@@ -103,14 +111,16 @@ def main():
   if binding is not None:
    from execution_binding import bind_execution
    fresh=work/'execution-binding.json'
-   transfer(binding['cap'],fresh,method='GET',size=binding['bytes'],sha256=binding['sha256'],absolute_deadline=started+600)
+   if inline_raw is not None:
+    with fresh.open('xb') as stream:stream.write(inline_raw)
+   else:transfer(binding['cap'],fresh,method='GET',size=binding['bytes'],sha256=binding['sha256'],absolute_deadline=started+600)
    if resume_input is None:execution=bind_execution(execution,json.loads(fresh.read_text()),a.task_id,SCOPE)
    else:
     from resume_support import bind
     execution=bind(execution,json.loads(fresh.read_text()),a.task_id)
    (payload/'execution.json').write_text(json.dumps(execution,sort_keys=True))
    state.update(task_id=a.task_id,execution_binding_sha256=binding['sha256'])
-   emit('trial_execution_binding_verified',task_id=a.task_id)
+   emit('trial_execution_binding_verified',task_id=a.task_id,source='inline_private_task_parameter' if inline_raw is not None else 'signed_gcs_get')
   if resume_input is not None:
    state['stage']='resume_download'
    # A small binding GET does not validate large-checkpoint throughput. Four

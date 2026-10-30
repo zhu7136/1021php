@@ -1,4 +1,4 @@
-"""One bounded GPU task, exactly two distinct climbing previews, no retries."""
+"""One bounded GPU task, only explicitly scoped climbing previews, no retries."""
 import argparse,json,os,signal,subprocess,sys,threading,time,zipfile
 from pathlib import Path
 from scoped_transport import digest,deadline,transfer,validate_capability
@@ -50,6 +50,8 @@ def main():
             out/'install.log',env,started+300)
         if code:raise RuntimeError('Dependency install failed')
         rows=isolate(payload/'formal_data',work/'isolated-clips')
+        if [r['skill'] for r in rows]!=SCOPE['skills'] or len(rows)!=SCOPE['max_clips']:
+            raise ValueError('Isolated cases exceed approved scope')
         sys.path.insert(0,str(payload))
         from student_adapter.worker_budget import isolated_child_env
         paths=[str(root),str(payload),str(payload/'dependency-site'),str(bundle/'overlay'),str(bundle/'runtime/php'),
@@ -76,7 +78,7 @@ def main():
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}
             state['cases'].append(record)
             print(json.dumps({'event':'obstacle_case_completed',**record}),flush=True)
-        state['worker_passed']=len(state['cases'])==2 and all(r['native_returncode']==0 and r['video_evidence_present'] for r in state['cases'])
+        state['worker_passed']=len(state['cases'])==SCOPE['max_clips'] and all(r['native_returncode']==0 and r['video_evidence_present'] for r in state['cases'])
         stage('complete' if state['worker_passed'] else 'completed_with_native_failures')
     except Exception as e:
         state['error_type']=type(e).__name__

@@ -6,6 +6,10 @@ import offline_video_child as original
 base_configuration=original.configuration
 
 def configuration(req):
+    # Required before resolving any observation term: the overlay and upstream
+    # config_values directories are separate portions of the same package.
+    from student_adapter.runtime_imports import verify_overlay_resolution
+    verify_overlay_resolution(req['bundle'])
     # Build the original, fully hash-checked formal data configuration first.
     from student_adapter.formal_entry import build_formal_config
     from student_adapter.native_child import hydrate

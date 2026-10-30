@@ -87,3 +87,29 @@ python -m unittest -v test_hud04_episode_probe test_hud04_single_episode_algo
 - worker native exit 非零：保留原始退出失败，不能被有效诊断 JSON 覆盖成 pipeline 成功。
 
 下一关才是增加几何任务目标与成功规则、配对 teacher 对照和多案例统计。
+
+## 分项观测补丁：2026-10-30
+
+首轮原生诊断 TASK_20261030_152 在初始化零动作预热时触发
+`bad_tracking`，学生策略执行 0 步，随后原生退出仍发生段错误。
+这是初始化无效结果，不是学生策略摔倒、障碍通关或收敛的证据。
+
+新模块 `hud04_tracking_details.py` 在每次原生 BadTracking 调用期间
+暂时包装其已有分项方法，记录原有方法返回值，每个原生分项仍只执行一次。
+调用结束或异常后恢复方法；不刷新目标缓存、不推进参考帧、不改动作、阈值或返回值。
+另外记录原生位置/朝向输入、双踝双腕目标与实际位置、位置误差及当前参考帧。
+若额外输入读取失败，将保存 observation_error_type，不能视为诊断信息齐全。
+
+CPU 检查发现 reset() 不更新 body_pos_relative_w，IsaacSim 的终止检查早于
+command.step() 的目标缓存更新。合成数据能复现旧缓存导致位置分项终止的风险。
+这不是首轮故障根因证明：首轮没有记录分项结果或缓存，仍需原生采样核对。
+
+CPU 回归：
+
+```bash
+python -m unittest -v test_hud04_episode_probe test_hud04_single_episode_algo test_hud04_tracking_details
+```
+
+32 项通过，其中新增 8 项覆盖分项单次调用、原返回 tensor 对象不变、
+方法恢复、异常传播、输入不变和状态 reset 转发。本补丁尚未经过原生 GPU 验证。
+发布代码不等于批准新的收费任务；后续任务仍需明确的单次 GPU 范围授权。

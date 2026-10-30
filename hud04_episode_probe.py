@@ -5,6 +5,7 @@ Does not redefine termination, alter actions, or classify obstacle success.
 """
 import json
 from pathlib import Path
+from hud04_tracking_details import TrackingProxy
 
 
 def plain(value):
@@ -45,6 +46,7 @@ class EpisodeProbe:
         self.check_count = 0
         self.events = []
         self.term_values = {}
+        self.tracking_details = {}
         self.original_check = None
         self.original_funcs = None
         self.original_instances = None
@@ -57,6 +59,9 @@ class EpisodeProbe:
         self.original_funcs = m._term_funcs
         self.original_instances = m._term_instances
         def wrap(name, term):
+            if name == 'bad_tracking':
+                return TrackingProxy(term, lambda value: self.term_values.__setitem__(name, value),
+                    lambda detail: self.tracking_details.__setitem__(name, detail))
             return TermProxy(term, lambda value: self.term_values.__setitem__(name, value))
         m._term_funcs = {n: wrap(n, t) for n, t in m._term_funcs.items()}
         m._term_instances = {n: wrap(n, t) for n, t in m._term_instances.items()}
@@ -72,6 +77,7 @@ class EpisodeProbe:
 
     def check(self):
         self.term_values = {}
+        self.tracking_details = {}
         result = self.original_check()
         reset, timeout = result
         command = self.env.command_manager.get_state('motion_command')
@@ -84,6 +90,7 @@ class EpisodeProbe:
             'terminated': bool(plain(reset)[0]),
             'timeout': bool(plain(timeout)[0]),
             'terms': values,
+            'tracking_details': dict(self.tracking_details),
             'triggered_terms': [n for n, v in values.items() if bool(v[0])],
             'timeout_terms': [n for n, c in zip(self.manager._term_names, self.manager._term_cfgs) if c.is_timeout],
             'root_state_before_reset': plain(self.env.simulator.robot_root_states[0]),

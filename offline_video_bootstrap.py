@@ -11,6 +11,12 @@ from inline_execution import decode_inline
 SCOPE={'max_tasks':1,'gpu_num':1,'worker_seconds_max':900,'automatic_retries':0,
        'training_updates':0,'preview_seconds':20,'max_policy_steps':2000,'num_envs':10}
 
+def validate_task_binding(config,task_id):
+    # gm-run consumes --task_id for its SDK; it does not guarantee a
+    # PHP_FLUX_TASK_ID environment variable for the Python entrypoint.
+    if not isinstance(task_id,str) or not task_id.startswith('TASK_'):raise ValueError('Explicit task identity required')
+    if config.get('scope')!=SCOPE or config.get('task_id')!=task_id:raise ValueError('Task scope binding')
+
 def main():
     started=time.monotonic();active=[None]
     def guard():
@@ -21,9 +27,10 @@ def main():
         os._exit(124)
     threading.Thread(target=guard,daemon=True).start()
     p=argparse.ArgumentParser();p.add_argument('--config',required=True);p.add_argument('--sha256',required=True)
+    p.add_argument('--task-id',required=True)
     a=p.parse_args();raw,_=decode_inline(a.config,a.sha256);c=json.loads(raw)
     root=Path(__file__).resolve().parent
-    if c['scope']!=SCOPE or c['task_id']!=os.environ['PHP_FLUX_TASK_ID']:raise ValueError('Task scope binding')
+    validate_task_binding(c,a.task_id)
     if subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True,timeout=5).strip()!=c['code_commit']:raise ValueError('Code pin')
     validate_capability(c['output_cap'],'PUT');validate_flux_checkpoint(c['checkpoint']['cap'],'GET')
     work=root/'private-video';work.mkdir(exist_ok=False);out=work/'output';out.mkdir()

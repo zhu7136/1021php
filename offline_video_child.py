@@ -15,7 +15,7 @@ def configuration(req):
     raw['algo']['config']['num_learning_iterations']=1
     raw['logger']={'type':'disabled','base_dir':req['output'],'headless_recording':True,
        'video':{'enabled':True,'interval':1000000,'width':640,'height':360,'playback_rate':1.,
-         'output_format':'h264','save_dir':str(Path(req['output'])/'videos'),
+         'output_format':'mp4','save_dir':str(Path(req['output'])/'videos'),
          'upload_to_wandb':False,'show_command_overlay':False,'record_env_id':0,'use_recording_thread':False}}
     raw['training']['headless']=True
     from student_adapter.native_child import hydrate

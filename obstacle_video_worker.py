@@ -37,17 +37,17 @@ def main():
                 if child.poll() is None:os.killpg(child.pid,signal.SIGKILL);child.wait()
                 active[0]=None
     try:
-        materialize(root/'inputs',work,manifest_sha256=c['shard_manifest_sha256'],absolute_deadline=started+180,unpack_archive=unpack)
+        materialize(root/'inputs',work,manifest_sha256=c['shard_manifest_sha256'],absolute_deadline=started+min(180,SCOPE['worker_seconds_max']*.35),unpack_archive=unpack)
         payload=work/'payload';bundle=payload/'bundle';checkpoint=work/'source-final.pt'
         stage('checkpoint')
         download(c['checkpoint']['cap'],checkpoint,size=c['checkpoint']['bytes'],sha256=c['checkpoint']['sha256'],
-            absolute_deadline=started+240,cap_validator=validate_flux_checkpoint)
+            absolute_deadline=started+min(240,SCOPE['worker_seconds_max']*.5),cap_validator=validate_flux_checkpoint)
         stage('dependencies')
         env=dict(os.environ);env.pop('PYTHONPATH',None)
         code=child_run(['/isaac-sim/python.sh','-m','pip','install','--isolated','--disable-pip-version-check',
             '--no-index','--no-cache-dir','--no-deps','--only-binary=:all:','--require-hashes',
             '--find-links',str(payload/'deps/wheels'),'--target',str(payload/'dependency-site'),'-r',str(payload/'deps/overlay.lock')],
-            out/'install.log',env,started+300)
+            out/'install.log',env,started+min(300,SCOPE['worker_seconds_max']*.6))
         if code:raise RuntimeError('Dependency install failed')
         rows=isolate(payload/'formal_data',work/'isolated-clips')
         if [r['skill'] for r in rows]!=SCOPE['skills'] or len(rows)!=SCOPE['max_clips']:
@@ -67,7 +67,7 @@ def main():
             reqpath=work/(row['skill']+'-request.json');reqpath.write_text(json.dumps(req))
             planpath=work/'source-plan.json'
             if not planpath.exists():planpath.write_text(json.dumps(c['source_plan']))
-            case_limit=min(started+760,time.monotonic()+280)
+            case_limit=min(started+SCOPE['worker_seconds_max']-45,time.monotonic()+225)
             child_env=isolated_child_env(os.environ,pythonpath=os.pathsep.join(paths),output=caseout,
                 asset_root=bundle/'asset',train_deadline=case_limit-35,task_id=c['task_id'])
             child_env.update(HUD04_VIDEO_REQUEST=str(reqpath),HUD04_FORMAL_PLAN=str(planpath),HUD04_VIDEO_DEADLINE=str(case_limit-35))
@@ -85,7 +85,7 @@ def main():
         print(json.dumps({'event':'obstacle_video_failure','stage':state['stage'],'error_type':type(e).__name__}),flush=True)
     state['elapsed_seconds']=time.monotonic()-started
     (out/'bootstrap-result.json').write_text(json.dumps(state,indent=2))
-    with deadline(started+820):
+    with deadline(started+SCOPE['worker_seconds_max']-20):
         files=[{'path':str(f.relative_to(out)),'bytes':f.stat().st_size,'sha256':digest(f)} for f in sorted(out.rglob('*')) if f.is_file()]
         if sum(f['bytes'] for f in files)>450*1024**2:raise ValueError('Result size bound')
         (out/'result-manifest.json').write_text(json.dumps({'scope':SCOPE,'files':files},indent=2))
@@ -93,7 +93,7 @@ def main():
         with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED,compresslevel=1) as z:
             for f in sorted(out.rglob('*')):
                 if f.is_file():z.write(f,f.relative_to(out))
-    receipt=transfer(c['output_cap'],archive,method='PUT',size=archive.stat().st_size,sha256=digest(archive),absolute_deadline=started+890)
+    receipt=transfer(c['output_cap'],archive,method='PUT',size=archive.stat().st_size,sha256=digest(archive),absolute_deadline=started+SCOPE['worker_seconds_max']-10)
     print(json.dumps({'event':'obstacle_video_result_uploaded',**receipt,'worker_passed':state['worker_passed']}),flush=True)
     return 0 if state['worker_passed'] else 1
 

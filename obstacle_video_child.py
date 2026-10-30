@@ -24,7 +24,7 @@ def configuration(req):
     raw['algo']['config']['num_learning_iterations']=1
     raw['training'].update(num_envs=1,headless=True,name='hud04-fixed-'+row['skill']+'-preview')
     for group in ['setup_terms','reset_terms','step_terms']:
-        raw['command'][group]['motion_command']['func']='obstacle_video_command.HuD04FixedObstacleCommand'
+        raw['command'][group]['motion_command']['func']='obstacle_video_command:HuD04FixedObstacleCommand'
     motion=raw['command']['setup_terms']['motion_command']['params']['motion_config']
     motion.update(motion_file=row['motion_file'],motion_dir='',shard_motions=False,
         use_adaptive_timesteps_sampler=False,resample_on_motion_end=False,start_at_timestep_zero_prob=1.,

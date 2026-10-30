@@ -3,8 +3,8 @@ import hashlib,json
 from pathlib import Path
 import numpy as np
 
-SCOPE={'max_tasks':1,'gpu_num':1,'worker_seconds_max':300,'automatic_retries':0,
-       'training_updates':0,'preview_seconds':2,'max_policy_steps':100,'num_envs':1,
+SCOPE={'max_tasks':1,'gpu_num':1,'worker_seconds_max':900,'automatic_retries':0,
+       'training_updates':0,'preview_seconds':20,'max_policy_steps':1000,'num_envs':1,
        'skills':['low-climb'],'max_clips':1}
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()

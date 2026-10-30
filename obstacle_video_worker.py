@@ -8,6 +8,7 @@ from local_trial_inputs import materialize
 from bounded_training_trial import unpack
 from inline_execution import decode_inline
 from obstacle_video_inputs import SCOPE,isolate
+from replay_log_fallback import emit_case_diagnostics
 
 def main():
     started=time.monotonic();active=[None]
@@ -67,14 +68,18 @@ def main():
             reqpath=work/(row['skill']+'-request.json');reqpath.write_text(json.dumps(req))
             planpath=work/'source-plan.json'
             if not planpath.exists():planpath.write_text(json.dumps(c['source_plan']))
-            case_limit=min(started+SCOPE['worker_seconds_max']-45,time.monotonic()+225)
+            case_limit=min(started+SCOPE['worker_seconds_max']-90,
+                time.monotonic()+max(225,SCOPE['worker_seconds_max']-180))
             child_env=isolated_child_env(os.environ,pythonpath=os.pathsep.join(paths),output=caseout,
                 asset_root=bundle/'asset',train_deadline=case_limit-35,task_id=c['task_id'])
             child_env.update(HUD04_VIDEO_REQUEST=str(reqpath),HUD04_FORMAL_PLAN=str(planpath),HUD04_VIDEO_DEADLINE=str(case_limit-35))
             for key in ['ISAAC_PATH','ISAACSIM_PATH','ISAACLAB_PATH','EXP_PATH','CARB_APP_PATH','OMNI_KIT_ALLOW_ROOT']:
                 if key in os.environ:child_env[key]=os.environ[key]
             stage(row['skill'])
-            code=child_run(['/isaac-sim/python.sh',str(root/'obstacle_video_child.py')],caseout/'native.log',child_env,case_limit,cwd=payload)
+            try:
+                code=child_run(['/isaac-sim/python.sh',str(root/'diagnostic_video_child.py')],caseout/'native.log',child_env,case_limit,cwd=payload)
+            finally:
+                emit_case_diagnostics(caseout)
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}
             state['cases'].append(record)
             print(json.dumps({'event':'obstacle_case_completed',**record}),flush=True)

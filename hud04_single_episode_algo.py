@@ -34,11 +34,20 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
         self.policy.eval()
         for parameter in self.policy.parameters():
             parameter.requires_grad_(False)
+        probe_enabled=request.get('same_state_action_probe',False)
+        if type(probe_enabled) is not bool or (probe_enabled and role!='student'):
+            raise ValueError('Same-state probe requires explicit student-only scope')
+        teacher_forward=self.policy.teacher_act if probe_enabled else None
         if role == 'student':
             self.policy.teacher_act = denied
         before = model_digest(self.policy)
         self.env.set_is_evaluating()
         output = Path(request['output'])
+        action_probe=None
+        if probe_enabled:
+            from hud04_action_probe import SameStateActionProbe
+            action_probe=SameStateActionProbe(self.policy,teacher_forward,output,self.live_contract,
+                empirical_normalization=self.config.empirical_normalization)
         probe = EpisodeProbe(self.env, output)
         report = {
             'schema': 'hud04-single-episode-diagnostic-v1',
@@ -81,6 +90,9 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
                         actions = self.policy.teacher_act(teacher)
                     if actions.shape != (1, 29) or not torch.isfinite(actions).all():
                         raise ValueError('Invalid action output')
+                    if action_probe is not None:
+                        action_probe.observe(step=step,frame=current_frame,actor=actor,teacher=teacher,
+                            depth=depth,student_actions=actions,expected_route=actual_route)
                     probe.policy_steps = step
                     checks_before = probe.check_count
                     obs, rewards, dones, extras = self.env.step({'actions': actions})
@@ -103,6 +115,8 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
             raise
         finally:
             probe.restore()
+            if action_probe is not None:
+                report['same_state_action_probe']=action_probe.finish()
             report.update(terminal_observation=probe.latest,
                           tracking_cache_sync=dict(getattr(self.env,'hud04_cache_sync',{})),
                           termination_events=probe.events,

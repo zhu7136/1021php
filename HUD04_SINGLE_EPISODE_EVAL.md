@@ -139,3 +139,24 @@ CPU 回归：原有 32 项 + 新增 10 项，共 42 项；另在本地私有原�
 ```bash
 python -m unittest -v test_hud04_episode_probe test_hud04_single_episode_algo test_hud04_tracking_details test_hud04_tracking_cache_sync
 ```
+
+## 同状态师生动作与输入诊断
+
+在已批准的单次 student 诊断请求中，显式设置 `same_state_action_probe: true`。
+对每个当前学生状态只读计算冻结教师动作，仅学生原始动作进入 env.step。
+不重新计算观测、推进命令、重置传感器、不训练，不修改已有控制或终止规则。
+记录 actor_obs 96 维原值与各分项统计、teacher_obs 450 维统计与路由、
+58x87 深度输入的有限率/零值率/标准差和帧间变化、29 维师生原始动作及误差。
+动作误差单位是原始策略输出，不是角度、力矩或成功率。
+选定状态的原始输入另存压缩 npz；有界数值记录同时回传平台日志，
+不以结果归档传输是否成功替代原生诊断有效性或进程退出状态。
+学生经验归一化必须关闭；教师仍使用 checkpoint 自带的冻结统计。
+这类统计不能单独证明蒸馏不足、相机异常或归一化根因。
+
+CPU 回归共 53 项，包括教师对比动作未用于控制、原状态输入不变、
+错误路由/非有限输入拒绝、初始化失败零动作、误差聚合和深度变化统计。
+本次新增观测路径尚待原生 GPU 验证。
+
+```bash
+python -m unittest test_hud04_episode_probe test_hud04_single_episode_algo test_hud04_tracking_details test_hud04_tracking_cache_sync test_hud04_action_probe
+```

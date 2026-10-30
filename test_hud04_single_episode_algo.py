@@ -26,6 +26,7 @@ class Policy(torch.nn.Module):
         self.weight = torch.nn.Parameter(torch.ones(1))
         self.student_calls = 0
         self.teacher_calls = 0
+        self.routing_column=449
 
     def act_inference(self, obs):
         self.student_calls += 1
@@ -53,7 +54,7 @@ Algorithm = load_algorithm()
 
 
 class AlgorithmTests(unittest.TestCase):
-    def run_case(self, role='student', fail_at=2, startup_failure=False, maximum=8):
+    def run_case(self, role='student', fail_at=2, startup_failure=False, maximum=8, action_probe=False):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as temporary:
             root = Path(temporary)
             command = SimpleNamespace(time_steps=torch.tensor([1]), motion=SimpleNamespace(motion_idxs=torch.full((30,), 2)))
@@ -81,11 +82,15 @@ class AlgorithmTests(unittest.TestCase):
             runner.policy = Policy()
             runner.optimizer = SimpleNamespace(step=lambda: None)
             runner.formal_next_iteration = 3686
-            runner._extract_groups = lambda obs: (torch.zeros(1,96),torch.zeros(1,450),torch.zeros(1,58,87))
+            privileged=torch.zeros(1,450);privileged[0,449]=2
+            runner._extract_groups = lambda obs: (torch.zeros(1,96),privileged,torch.zeros(1,58,87))
+            runner.live_contract={'widths':{'actor_obs':{'fixture':96}},'offsets':{'actor_obs':{'fixture':0}}}
+            runner.config=SimpleNamespace(empirical_normalization=False)
             req = {'scope':{'training_updates':0,'automatic_retries':0,'max_policy_steps':maximum},
                 'evaluation_role':role, 'source_completed_updates':3686,
                 'source_checkpoint_sha256':'test-fixture-only','obstacle_case':{'route':2},
                 'output':str(root),'_wb_agent':{'thread_id':'test','turn_id':'test'}}
+            if action_probe:req['same_state_action_probe']=True
             request = root/'request.json'
             request.write_text(json.dumps(req))
             with patch.dict(os.environ, {'HUD04_VIDEO_REQUEST':str(request),'HUD04_VIDEO_DEADLINE':str(time.monotonic()+20)}):
@@ -110,6 +115,23 @@ class AlgorithmTests(unittest.TestCase):
         result, runner, env = self.run_case(role='teacher')
         self.assertEqual(runner.policy.teacher_calls,2)
         self.assertEqual(runner.policy.student_calls,0)
+
+    def test_probe_controls_student_only_and_compares_same_step(self):
+        result,runner,env=self.run_case(action_probe=True)
+        self.assertEqual(runner.policy.student_calls,2)
+        self.assertEqual(runner.policy.teacher_calls,2)
+        self.assertEqual(result['policy_steps'],2)
+        self.assertEqual(result['same_state_action_probe']['aggregate_action_rmse'],1.)
+        self.assertFalse(result['same_state_action_probe']['teacher_actions_applied'])
+        with self.assertRaises(PermissionError):runner.policy.teacher_act(None)
+
+    def test_probe_teacher_control_forbidden(self):
+        with self.assertRaises(ValueError):self.run_case(role='teacher',action_probe=True)
+
+    def test_probe_no_forward_on_initialization_failure(self):
+        result,runner,env=self.run_case(action_probe=True,startup_failure=True)
+        self.assertEqual(result['same_state_action_probe']['steps'],0)
+        self.assertEqual(runner.policy.teacher_calls,0)
 
     def test_pre_reset_terminal_state_preserved(self):
         result, runner, env = self.run_case()

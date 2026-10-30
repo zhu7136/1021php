@@ -69,6 +69,10 @@ def main():
                 if c.get('evaluation_role') not in ['student','teacher'] or type(c.get('evaluation_seed')) is not int or not 0<=c['evaluation_seed']<=2:
                     raise ValueError('Explicit bounded diagnostic role and seed required')
                 req.update(evaluation_role=c['evaluation_role'],evaluation_seed=c['evaluation_seed'])
+                action_probe=c.get('same_state_action_probe',False)
+                if type(action_probe) is not bool or (action_probe and c['evaluation_role']!='student'):
+                    raise ValueError('Invalid same-state action probe scope')
+                req['same_state_action_probe']=action_probe
             reqpath=work/(row['skill']+'-request.json');reqpath.write_text(json.dumps(req))
             planpath=work/'source-plan.json'
             if not planpath.exists():planpath.write_text(json.dumps(c['source_plan']))
@@ -86,6 +90,23 @@ def main():
                 code=child_run(['/isaac-sim/python.sh',str(root/entry)],caseout/'native.log',child_env,case_limit,cwd=payload)
             finally:
                 emit_case_diagnostics(caseout)
+                if req.get('same_state_action_probe',False):
+                    # Preserve bounded numeric diagnostics in the platform log
+                    # even if the existing archive transport/teardown fails.
+                    for filename,event in [('action-probe-contract.json','hud04_action_probe_contract'),
+                            ('same-state-action-summary.json','hud04_same_state_action_summary')]:
+                        probe_path=caseout/filename
+                        if probe_path.is_file() and probe_path.stat().st_size<=65536:
+                            print(json.dumps({'event':event,**json.loads(probe_path.read_text())}),flush=True)
+                    probe_path=caseout/'same-state-actions.jsonl'
+                    if probe_path.is_file():
+                        if probe_path.stat().st_size>4*1024*1024:raise ValueError('Action probe log size exceeded')
+                        probe_rows=probe_path.read_text().splitlines()
+                        if len(probe_rows)>1000:raise ValueError('Action probe row count exceeded')
+                        for line in probe_rows:
+                            row=json.loads(line)
+                            if row.get('schema')!='hud04-same-state-action-probe-v1':raise ValueError('Action probe schema')
+                            print(json.dumps({'event':'hud04_same_state_action',**row},allow_nan=False),flush=True)
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}
             if entry=='hud04_eval_child.py':
                 result_path=caseout/'single-episode-result.json'

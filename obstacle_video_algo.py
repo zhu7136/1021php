@@ -7,7 +7,7 @@ class HuD04ObstacleVideo(HuD04OfflineVideo):
     def learn(self,num_learning_iterations=None):
         request=json.loads(Path(os.environ['HUD04_VIDEO_REQUEST']).read_text())
         row=request['obstacle_case']
-        if row['skill'] not in ['low-climb','high-climb'] or self.env.num_envs!=1:raise ValueError('Obstacle scope')
+        if row['skill'] not in ['high-step','low-climb','high-climb'] or self.env.num_envs!=1:raise ValueError('Obstacle scope')
         super().learn(num_learning_iterations)
         out=Path(request['output']);path=out/'video-evidence.json'
         evidence=json.loads(path.read_text())

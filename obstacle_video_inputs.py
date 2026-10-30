@@ -5,7 +5,7 @@ import numpy as np
 
 SCOPE={'max_tasks':1,'gpu_num':1,'worker_seconds_max':900,'automatic_retries':0,
        'training_updates':0,'preview_seconds':20,'max_policy_steps':1000,'num_envs':1,
-       'skills':['low-climb'],'max_clips':1}
+       'skills':['high-step'],'max_clips':1}
 
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
@@ -18,7 +18,7 @@ def isolate(data_root,output):
         arrays={k:z[k] for k in z.files}
     with np.load(data_root/'terrain_mesh.npz',allow_pickle=False) as z:
         vertices=z['vertices']
-    for route,skill in [(3,'low-climb'),(4,'high-climb')]:
+    for route,skill in [(2,'high-step'),(3,'low-climb'),(4,'high-climb')]:
         if skill not in SCOPE['skills']:continue
         pool=[r for r in manifest['cases'] if r['split']=='eval' and r['teacher_index']==route]
         # Preselect the first forward approach, not a successful rollout selected after the fact.

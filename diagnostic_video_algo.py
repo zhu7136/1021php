@@ -11,7 +11,16 @@ class HuD04DiagnosticVideo(HuD04ObstacleVideo):
             raise PermissionError('Pure inference only; at most 1000 steps')
         diagnostics=ReplayDiagnostics(self.env,request['output'],request['scope']['max_policy_steps'])
         original=self.env.step;error=None
-        self.env.step=lambda inputs:diagnostics.invoke(original,inputs)
+        diagnostics.nonrecorded_steps=0
+        def observed_step(inputs):
+            # Native reset_all() performs one zero-action physics warmup before
+            # recording starts. It is not a policy action or a video frame.
+            if not self.env.simulator.video_recorder.is_recording:
+                diagnostics.nonrecorded_steps+=1
+                if diagnostics.nonrecorded_steps>4:raise RuntimeError('Nonrecorded reset warmup cap')
+                return original(inputs)
+            return diagnostics.invoke(original,inputs)
+        self.env.step=observed_step
         try:
             return super().learn(num_learning_iterations)
         except BaseException as exc:

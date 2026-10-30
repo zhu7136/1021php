@@ -45,7 +45,8 @@ class ReplayDiagnostics:
             'horizontal_path_excluding_reset_steps_m':self.distance,
             'initial_root_xyz':self.initial,'final_root_xyz':self.last,'last_reference_frame':self.last_phase,
             'maximum_action_abs':self.actions_max_abs,'error_type':error_type,
-            'training_updates':0,'physics_or_actions_modified':False,'samples':self.samples}
+            'training_updates':0,'physics_or_actions_modified':False,
+            'nonrecorded_warmup_steps':getattr(self,'nonrecorded_steps',0),'samples':self.samples}
         self.output.mkdir(parents=True,exist_ok=True)
         (self.output/'replay-diagnostics.json').write_text(json.dumps(report,indent=2,allow_nan=False))
         print(json.dumps({'event':'replay_diagnostics',**{k:v for k,v in report.items() if k!='samples'}},allow_nan=False),flush=True)

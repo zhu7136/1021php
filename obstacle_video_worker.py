@@ -74,6 +74,10 @@ def main():
                 if type(action_probe) is not bool or (action_probe and c['evaluation_role']!='student'):
                     raise ValueError('Invalid same-state action probe scope')
                 req['same_state_action_probe']=action_probe
+                compact=c.get('compact_action_probe_logging',False)
+                if type(compact) is not bool or (compact and not action_probe):
+                    raise ValueError('Invalid compact action log scope')
+                req['compact_action_probe_logging']=compact
                 if 'depth_reset_diagnostics' in c:
                     from hud04_depth_diagnostics import options
                     req['depth_reset_diagnostics']=options(c['depth_reset_diagnostics'])
@@ -97,7 +101,7 @@ def main():
                 if req.get('same_state_action_probe',False):
                     # Preserve bounded numeric diagnostics in the platform log
                     # even if the existing archive transport/teardown fails.
-                    emit_action_probe_diagnostics(caseout)
+                    emit_action_probe_diagnostics(caseout,compact=req.get('compact_action_probe_logging',False))
                 if 'depth_reset_diagnostics' in req:
                     emit_depth_reset_diagnostics(caseout)
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}

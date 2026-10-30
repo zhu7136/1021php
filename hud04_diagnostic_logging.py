@@ -25,7 +25,8 @@ def diagnostic_error(exc, stage, attempted_step=None):
                        for frame in traceback.extract_tb(exc.__traceback__)[-8:]]}
 
 
-def emit_action_probe_diagnostics(caseout):
+def emit_action_probe_diagnostics(caseout, *, compact=False):
+    if type(compact) is not bool:raise ValueError('Action probe record contract')
     caseout = Path(caseout)
     for filename, event in [('action-probe-contract.json', 'hud04_action_probe_contract'),
                             ('same-state-action-summary.json', 'hud04_same_state_action_summary')]:
@@ -56,6 +57,9 @@ def emit_action_probe_diagnostics(caseout):
                 or record.get('teacher_actions_applied') is not False):
             raise ValueError('Action probe record contract')
         records.append(json.dumps({**record, 'event': 'hud04_same_state_action'}, allow_nan=False))
+    if compact:
+        from hud04_compact_action_log import compact_events
+        records=compact_events([json.loads(line) for line in lines])
     for record in records:
         print(record, flush=True)
 

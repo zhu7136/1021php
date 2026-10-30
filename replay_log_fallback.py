@@ -16,6 +16,11 @@ def emit_case_diagnostics(caseout):
             print(json.dumps({'event':'replay_file_fallback','file':name,'data':report}),flush=True)
         except Exception as e:
             print(json.dumps({'event':'replay_fallback_error','file':name,'error_type':type(e).__name__}),flush=True)
+    path=caseout/'pre-reset-tracking.jsonl'
+    if path.is_file() and path.stat().st_size<=256*1024:
+        rows=[json.loads(line) for line in path.read_text().splitlines() if line.strip()]
+        print(json.dumps({'event':'pre_reset_tracking_fallback','data':{'events':rows[:100],
+            'total_events':len(rows),'truncated':len(rows)>100}}),flush=True)
     path=caseout/'native.log'
     if path.is_file():
         with path.open('rb') as stream:

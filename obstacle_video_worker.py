@@ -77,7 +77,9 @@ def main():
                 if key in os.environ:child_env[key]=os.environ[key]
             stage(row['skill'])
             try:
-                code=child_run(['/isaac-sim/python.sh',str(root/'diagnostic_video_child.py')],caseout/'native.log',child_env,case_limit,cwd=payload)
+                entry=c.get('native_child','diagnostic_video_child.py')
+                if entry not in ['diagnostic_video_child.py','teacher_baseline_child.py']:raise ValueError('Unapproved native entry')
+                code=child_run(['/isaac-sim/python.sh',str(root/entry)],caseout/'native.log',child_env,case_limit,cwd=payload)
             finally:
                 emit_case_diagnostics(caseout)
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}

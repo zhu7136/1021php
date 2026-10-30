@@ -104,6 +104,7 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
         finally:
             probe.restore()
             report.update(terminal_observation=probe.latest,
+                          tracking_cache_sync=dict(getattr(self.env,'hud04_cache_sync',{})),
                           termination_events=probe.events,
                           simulated_policy_seconds=report['policy_steps'] * float(self.env.dt),
                           model_parameters_unchanged=before == model_digest(self.policy),

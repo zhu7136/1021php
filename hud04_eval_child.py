@@ -18,7 +18,15 @@ def configuration(request):
     if hashlib.sha256(Path(request['checkpoint']).read_bytes()).hexdigest() != request['source_checkpoint_sha256']:
         raise ValueError('Checkpoint hash mismatch')
     cfg = obstacle_configuration(request)
+    # Keep all original reset/step/termination implementations and thresholds;
+    # only schedule current-frame native pose-cache refresh before termination.
+    command = replace(cfg.command, **{
+        group: {name: replace(term, func='hud04_cache_fixed_command:HuD04CacheSynchronizedCommand')
+                if name == 'motion_command' else term
+                for name, term in getattr(cfg.command, group).items()}
+        for group in ('setup_terms', 'reset_terms', 'step_terms')})
     return replace(cfg,
+        command=command,
         algo=replace(cfg.algo, _target_='hud04_single_episode_algo.HuD04SingleEpisode'),
         training=replace(cfg.training, seed=request['evaluation_seed']),
         logger=replace(cfg.logger, headless_recording=False,

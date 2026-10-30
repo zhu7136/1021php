@@ -113,3 +113,29 @@ python -m unittest -v test_hud04_episode_probe test_hud04_single_episode_algo te
 32 项通过，其中新增 8 项覆盖分项单次调用、原返回 tensor 对象不变、
 方法恢复、异常传播、输入不变和状态 reset 转发。本补丁尚未经过原生 GPU 验证。
 发布代码不等于批准新的收费任务；后续任务仍需明确的单次 GPU 范围授权。
+
+## 有界修复试验：目标缓存刷新调度
+
+TASK_20261030_174 原生观测确认：初始化的四个末端目标缓存全零，
+锚点位置误差约 0.0339 m 且朝向分项未触发，末端位置分项触发。
+学生执行 0 步，不能评价策略性能；退出时仍有独立的原生段错误。
+
+`hud04_cache_fixed_command.py` 为单环境评估安装调度补丁：
+在原生 `_check_termination()` 前更新当前帧位置和姿态目标缓存。
+`hud04_tracking_cache_sync.py` 在远端从固定 SHA256 的原生 MotionCommand
+源码提取其已有目标计算块，不复制私有源码到本仓库。
+源码不匹配则拒绝运行，不回退到不同公式。
+不调用 command.step，不推进参考帧、不执行采样器、不改物理状态、
+不改动作、原生终止检查或阈值。拒绝多环境和训练模式。
+补丁覆盖命令 setup 后的检查，包括算法构造期的 reset；
+诊断 JSON 的 tracking_cache_sync 记录实际调用次数与源码哈希。
+
+CPU 回归：原有 32 项 + 新增 10 项，共 42 项；另在本地私有原生代码上
+验证非零世界坐标和 90 度 yaw 下的几何结果及输入不变。
+这仍不是 GPU 验证成功的声明。单案例通过也不是障碍成功率或实机安全认证。
+用户随后授予本问题所需有界 GPU 测试的持续授权；每次仍单任务、零训练、
+900 秒 worker 上限、1,000 策略步上限、首次原生终止即停、零自动重试。
+
+```bash
+python -m unittest -v test_hud04_episode_probe test_hud04_single_episode_algo test_hud04_tracking_details test_hud04_tracking_cache_sync
+```

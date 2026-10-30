@@ -25,12 +25,16 @@ def configuration(request):
                 if name == 'motion_command' else term
                 for name, term in getattr(cfg.command, group).items()}
         for group in ('setup_terms', 'reset_terms', 'step_terms')})
-    return replace(cfg,
+    prepared = replace(cfg,
         command=command,
         algo=replace(cfg.algo, _target_='hud04_single_episode_algo.HuD04SingleEpisode'),
         training=replace(cfg.training, seed=request['evaluation_seed']),
         logger=replace(cfg.logger, headless_recording=False,
                        video=replace(cfg.logger.video, enabled=False)))
+    # No change without an explicit depth diagnostic request. Selecting this
+    # option prepares a config; it grants no task/publication authorization.
+    from hud04_depth_diagnostics import configure_depth_diagnostics
+    return configure_depth_diagnostics(prepared, request)
 
 
 if __name__ == '__main__':

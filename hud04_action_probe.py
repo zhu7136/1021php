@@ -31,7 +31,8 @@ class SameStateActionProbe:
         occupied=[]
         for name,width in widths.items():occupied.extend(range(offsets[name],offsets[name]+width))
         if sorted(occupied)!=list(range(96)):raise ValueError('Actor layout overlaps or has gaps')
-        self.count=0;self.sum_squared=0.;self.max_abs_error=0.;self.previous_depth=None
+        self.count=0;self.compared_count=0;self.masked_count=0
+        self.sum_squared=0.;self.max_abs_error=0.;self.previous_depth=None
         self.depth_changed_steps=0;self.snapshots={};self.per_joint_squared=torch.zeros(29,dtype=torch.float64)
         metadata={'schema':'hud04-same-state-action-probe-v1','student_empirical_normalization':False,
                   'teacher_normalization':'frozen checkpoint-specific native normalization',
@@ -51,30 +52,41 @@ class SameStateActionProbe:
             if not torch.isfinite(value).all():raise ValueError('Nonfinite action probe input')
         route_column=int(self.policy.routing_column)
         route=float(teacher[0,route_column])
-        if route!=float(expected_route) or expected_route!=2:
+        if expected_route!=2 or route not in (-1.,float(expected_route)):
             raise ValueError('Teacher observation route mismatch')
         # A read-only teacher forward uses precisely the current state's existing
         # privileged observation; no environment, command, or sensor is recomputed.
-        target=self.teacher_forward(teacher)
-        if target.shape!=(1,29) or not torch.isfinite(target).all():raise ValueError('Teacher action shape/finite')
-        delta=student_actions-target
-        squared=delta.detach().double().cpu().square().flatten()
+        # Native -1 means expert-invalid/loss-masked, not a different skill.
+        # Preserve student control and native termination; do not compare a
+        # masked/zero teacher output or override the mask to manufacture a target.
+        target=None;delta=None
+        if route!=-1.:
+            target=self.teacher_forward(teacher)
+            if target.shape!=(1,29) or not torch.isfinite(target).all():raise ValueError('Teacher action shape/finite')
+            delta=student_actions-target
         actor_terms={name:tensor_stats(actor[:,self.contract['offsets']['actor_obs'][name]:
                                self.contract['offsets']['actor_obs'][name]+width])
                      for name,width in self.contract['widths']['actor_obs'].items()}
         change=None if self.previous_depth is None else float((depth-self.previous_depth).square().mean().sqrt())
         if change is not None and change>0:self.depth_changed_steps+=1
         self.previous_depth=depth.detach().clone()
-        self.count+=1;self.sum_squared+=float(squared.sum())
-        self.per_joint_squared+=squared;self.max_abs_error=max(self.max_abs_error,float(delta.abs().max()))
+        self.count+=1
+        if delta is not None:
+            squared=delta.detach().double().cpu().square().flatten()
+            self.compared_count+=1;self.sum_squared+=float(squared.sum())
+            self.per_joint_squared+=squared;self.max_abs_error=max(self.max_abs_error,float(delta.abs().max()))
+        else:self.masked_count+=1
         record={'schema':'hud04-same-state-action-probe-v1','step':step,'reference_frame':frame,
-                'route':expected_route,'teacher_actions_applied':False,
+                'route':int(route),'expected_route':expected_route,'teacher_actions_applied':False,
+                'comparison_valid':target is not None,
+                'comparison_skip_reason':'native_expert_invalid_mask' if target is None else None,
                 'actor_stats':tensor_stats(actor),'actor_terms':actor_terms,'actor_values':actor[0].tolist(),
                 'teacher_input_stats':tensor_stats(teacher),'depth_stats':tensor_stats(depth),
                 'depth_change_rms_since_previous_observation':change,
-                'student_action_stats':tensor_stats(student_actions),'teacher_action_stats':tensor_stats(target),
-                'action_rmse':float(delta.square().mean().sqrt()),'action_max_abs_error':float(delta.abs().max()),
-                'student_actions':student_actions[0].tolist(),'teacher_actions':target[0].tolist()}
+                'student_action_stats':tensor_stats(student_actions),'teacher_action_stats':tensor_stats(target) if target is not None else None,
+                'action_rmse':float(delta.square().mean().sqrt()) if delta is not None else None,
+                'action_max_abs_error':float(delta.abs().max()) if delta is not None else None,
+                'student_actions':student_actions[0].tolist(),'teacher_actions':target[0].tolist() if target is not None else None}
         with (self.output/'same-state-actions.jsonl').open('a') as stream:
             stream.write(json.dumps(record,allow_nan=False)+'\n');stream.flush()
         print(json.dumps({'event':'hud04_same_state_action',**record},allow_nan=False),flush=True)
@@ -85,10 +97,12 @@ class SameStateActionProbe:
 
     def finish(self):
         result={'schema':'hud04-same-state-action-probe-v1','steps':self.count,
+                'compared_steps':self.compared_count,'expert_invalid_steps':self.masked_count,
+                'action_metric_denominator_steps':self.compared_count,
                 'teacher_actions_applied':False,'action_units':'raw policy outputs',
-                'aggregate_action_rmse':(self.sum_squared/(self.count*29))**.5 if self.count else None,
-                'max_action_abs_error':self.max_abs_error if self.count else None,
-                'per_joint_rmse':(self.per_joint_squared/self.count).sqrt().tolist() if self.count else None,
+                'aggregate_action_rmse':(self.sum_squared/(self.compared_count*29))**.5 if self.compared_count else None,
+                'max_action_abs_error':self.max_abs_error if self.compared_count else None,
+                'per_joint_rmse':(self.per_joint_squared/self.compared_count).sqrt().tolist() if self.compared_count else None,
                 'depth_changed_observation_pairs':self.depth_changed_steps}
         if self.snapshots:np.savez_compressed(self.output/'selected-state-inputs.npz',**self.snapshots)
         (self.output/'same-state-action-summary.json').write_text(json.dumps(result,indent=2,allow_nan=False))

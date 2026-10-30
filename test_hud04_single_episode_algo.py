@@ -54,7 +54,8 @@ Algorithm = load_algorithm()
 
 
 class AlgorithmTests(unittest.TestCase):
-    def run_case(self, role='student', fail_at=2, startup_failure=False, maximum=8, action_probe=False):
+    def run_case(self, role='student', fail_at=2, startup_failure=False, maximum=8, action_probe=False,
+                 teacher_route=2, allow_error=False):
         with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as temporary:
             root = Path(temporary)
             command = SimpleNamespace(time_steps=torch.tensor([1]), motion=SimpleNamespace(motion_idxs=torch.full((30,), 2)))
@@ -62,8 +63,10 @@ class AlgorithmTests(unittest.TestCase):
                 simulator=SimpleNamespace(robot_root_states=torch.tensor([[1.,2.,3.]]), dof_pos=torch.tensor([[.1,.2]])),
                 command_manager=SimpleNamespace(get_state=lambda name: command), steps=0)
             env.termination_manager = FakeManager(env)
+            env.applied_actions = []
             env.set_is_evaluating = lambda: None
             def step(inputs):
+                env.applied_actions.append(inputs['actions'].clone())
                 env.steps += 1
                 env.trigger = (startup_failure and env.steps == 1) or (fail_at is not None and env.steps == fail_at + 1)
                 reset, timeout = env.termination_manager.check()
@@ -82,7 +85,7 @@ class AlgorithmTests(unittest.TestCase):
             runner.policy = Policy()
             runner.optimizer = SimpleNamespace(step=lambda: None)
             runner.formal_next_iteration = 3686
-            privileged=torch.zeros(1,450);privileged[0,449]=2
+            privileged=torch.zeros(1,450);privileged[0,449]=teacher_route
             runner._extract_groups = lambda obs: (torch.zeros(1,96),privileged,torch.zeros(1,58,87))
             runner.live_contract={'widths':{'actor_obs':{'fixture':96}},'offsets':{'actor_obs':{'fixture':0}}}
             runner.config=SimpleNamespace(empirical_normalization=False)
@@ -94,7 +97,11 @@ class AlgorithmTests(unittest.TestCase):
             request = root/'request.json'
             request.write_text(json.dumps(req))
             with patch.dict(os.environ, {'HUD04_VIDEO_REQUEST':str(request),'HUD04_VIDEO_DEADLINE':str(time.monotonic()+20)}):
-                runner.learn()
+                try:
+                    runner.learn()
+                except Exception as exc:
+                    if not allow_error:raise
+                    runner.fixture_error=exc
             result = json.loads((root/'single-episode-result.json').read_text())
             return result, runner, env
 
@@ -127,6 +134,42 @@ class AlgorithmTests(unittest.TestCase):
 
     def test_probe_teacher_control_forbidden(self):
         with self.assertRaises(ValueError):self.run_case(role='teacher',action_probe=True)
+
+    def test_masked_teacher_does_not_hide_native_termination(self):
+        result,runner,env=self.run_case(action_probe=True,teacher_route=-1)
+        self.assertEqual(result['outcome'],'native_termination')
+        self.assertEqual(result['policy_steps'],2)
+        self.assertEqual(env.steps,3)
+        self.assertEqual(runner.policy.student_calls,2)
+        self.assertEqual(runner.policy.teacher_calls,0)
+        self.assertEqual(result['same_state_action_probe']['compared_steps'],0)
+        self.assertEqual(result['same_state_action_probe']['expert_invalid_steps'],2)
+        self.assertIsNone(result['same_state_action_probe']['aggregate_action_rmse'])
+        self.assertTrue(result['model_parameters_unchanged'])
+
+    def test_instrumentation_preserves_student_actions_and_native_termination(self):
+        baseline,_,baseline_env=self.run_case(action_probe=False)
+        for route in [2,-1]:
+            with self.subTest(route=route):
+                result,_,env=self.run_case(action_probe=True,teacher_route=route)
+                self.assertEqual(result['outcome'],baseline['outcome'])
+                self.assertEqual(result['terminal_observation'],baseline['terminal_observation'])
+                self.assertEqual(len(env.applied_actions),len(baseline_env.applied_actions))
+                for actual,expected in zip(env.applied_actions,baseline_env.applied_actions):
+                    self.assertTrue(torch.equal(actual,expected))
+
+    def test_wrong_route_saves_error_context_before_reraising(self):
+        result,runner,env=self.run_case(action_probe=True,teacher_route=3,allow_error=True)
+        self.assertIsInstance(runner.fixture_error,ValueError)
+        self.assertEqual(result['outcome'],'engineering_invalid_exception')
+        self.assertEqual(result['policy_steps'],0)
+        self.assertEqual(result['error_details']['stage'],'same_state_action_probe')
+        self.assertEqual(result['error_details']['attempted_policy_step'],1)
+        self.assertEqual(result['error_details']['message'],'Teacher observation route mismatch')
+        self.assertEqual(result['last_probe_context']['teacher_observation_route'],3.)
+        self.assertEqual(result['last_probe_context']['expected_route'],2)
+        self.assertTrue(result['error_details']['frames'])
+        self.assertTrue(result['model_parameters_unchanged'])
 
     def test_probe_no_forward_on_initialization_failure(self):
         result,runner,env=self.run_case(action_probe=True,startup_failure=True)

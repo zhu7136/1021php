@@ -9,6 +9,7 @@ from bounded_training_trial import unpack
 from inline_execution import decode_inline
 from obstacle_video_inputs import SCOPE,isolate
 from replay_log_fallback import emit_case_diagnostics
+from hud04_diagnostic_logging import emit_action_probe_diagnostics, emit_depth_reset_diagnostics, diagnostic_error
 
 def main():
     started=time.monotonic();active=[None]
@@ -73,6 +74,9 @@ def main():
                 if type(action_probe) is not bool or (action_probe and c['evaluation_role']!='student'):
                     raise ValueError('Invalid same-state action probe scope')
                 req['same_state_action_probe']=action_probe
+                if 'depth_reset_diagnostics' in c:
+                    from hud04_depth_diagnostics import options
+                    req['depth_reset_diagnostics']=options(c['depth_reset_diagnostics'])
             reqpath=work/(row['skill']+'-request.json');reqpath.write_text(json.dumps(req))
             planpath=work/'source-plan.json'
             if not planpath.exists():planpath.write_text(json.dumps(c['source_plan']))
@@ -93,20 +97,9 @@ def main():
                 if req.get('same_state_action_probe',False):
                     # Preserve bounded numeric diagnostics in the platform log
                     # even if the existing archive transport/teardown fails.
-                    for filename,event in [('action-probe-contract.json','hud04_action_probe_contract'),
-                            ('same-state-action-summary.json','hud04_same_state_action_summary')]:
-                        probe_path=caseout/filename
-                        if probe_path.is_file() and probe_path.stat().st_size<=65536:
-                            print(json.dumps({'event':event,**json.loads(probe_path.read_text())}),flush=True)
-                    probe_path=caseout/'same-state-actions.jsonl'
-                    if probe_path.is_file():
-                        if probe_path.stat().st_size>4*1024*1024:raise ValueError('Action probe log size exceeded')
-                        probe_rows=probe_path.read_text().splitlines()
-                        if len(probe_rows)>1000:raise ValueError('Action probe row count exceeded')
-                        for line in probe_rows:
-                            row=json.loads(line)
-                            if row.get('schema')!='hud04-same-state-action-probe-v1':raise ValueError('Action probe schema')
-                            print(json.dumps({'event':'hud04_same_state_action',**row},allow_nan=False),flush=True)
+                    emit_action_probe_diagnostics(caseout)
+                if 'depth_reset_diagnostics' in req:
+                    emit_depth_reset_diagnostics(caseout)
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}
             if entry=='hud04_eval_child.py':
                 result_path=caseout/'single-episode-result.json'
@@ -123,7 +116,9 @@ def main():
         stage('complete' if state['worker_passed'] else 'completed_with_native_failures')
     except Exception as e:
         state['error_type']=type(e).__name__
-        print(json.dumps({'event':'obstacle_video_failure','stage':state['stage'],'error_type':type(e).__name__}),flush=True)
+        state['error_details']=diagnostic_error(e,state['stage'])
+        print(json.dumps({'event':'obstacle_video_failure','stage':state['stage'],'error_type':type(e).__name__,
+            'error_details':state['error_details']}),flush=True)
     state['elapsed_seconds']=time.monotonic()-started
     (out/'bootstrap-result.json').write_text(json.dumps(state,indent=2))
     with deadline(started+SCOPE['worker_seconds_max']-20):

@@ -65,4 +65,44 @@ class ProbeTests(unittest.TestCase):
             probe,args=self.fixture(folder);probe.observe(**args)
             with self.assertRaises(ValueError):probe.observe(**args)
 
+    def test_masked_route_skips_teacher_without_changing_observations(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as folder:
+            probe,args=self.fixture(folder);args['teacher'][0,449]=-1
+            before=args['teacher'].clone()
+            def forbidden(_):raise AssertionError('Masked teacher must not be evaluated')
+            probe.teacher_forward=forbidden
+            probe.observe(**args);result=probe.finish()
+            self.assertTrue(torch.equal(args['teacher'],before))
+            self.assertEqual(result['steps'],1)
+            self.assertEqual(result['expert_invalid_steps'],1)
+            self.assertEqual(result['compared_steps'],0)
+            self.assertIsNone(result['aggregate_action_rmse'])
+            record=json.loads((Path(folder)/'same-state-actions.jsonl').read_text())
+            self.assertEqual(record['route'],-1)
+            self.assertFalse(record['comparison_valid'])
+            self.assertIsNone(record['teacher_actions'])
+
+    def test_masked_step_excluded_from_denominator_and_next_step_continues(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as folder:
+            probe,args=self.fixture(folder);probe.observe(**args)
+            args.update(step=2);args['teacher'][0,449]=-1;probe.observe(**args)
+            args.update(step=3);args['teacher'][0,449]=2;probe.observe(**args)
+            result=probe.finish()
+            self.assertEqual(result['steps'],3)
+            self.assertEqual(result['compared_steps'],2)
+            self.assertEqual(result['action_metric_denominator_steps'],2)
+            self.assertEqual(result['aggregate_action_rmse'],1.)
+
+    def test_unknown_negative_fractional_routes_rejected(self):
+        for route in [-2,1.5,0,4]:
+            with self.subTest(route=route),tempfile.TemporaryDirectory(dir=Path(__file__).parent) as folder:
+                probe,args=self.fixture(folder);args['teacher'][0,449]=route
+                with self.assertRaises(ValueError):probe.observe(**args)
+
+    def test_nonfinite_inputs_still_rejected_when_teacher_masked(self):
+        with tempfile.TemporaryDirectory(dir=Path(__file__).parent) as folder:
+            probe,args=self.fixture(folder);args['teacher'][0,449]=-1
+            args['student_actions'][0,0]=float('inf')
+            with self.assertRaises(ValueError):probe.observe(**args)
+
 if __name__=='__main__':unittest.main()

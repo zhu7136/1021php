@@ -8,6 +8,8 @@ import torch
 from student_adapter.formal_algo import HuD04FormalDistillation
 from offline_video_algo import model_digest
 from hud04_episode_probe import EpisodeProbe, diagnostic_outcome
+from hud04_diagnostic_logging import diagnostic_error
+from hud04_depth_diagnostics import depth_diagnostic_status
 
 
 class HuD04SingleEpisode(HuD04FormalDistillation):
@@ -61,6 +63,8 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
             'setup_resets_before_learn_not_observed': True,
         }
         error = None
+        stage = 'initial_reset'
+        attempted_step = None
         probe.install()
         try:
             with torch.inference_mode():
@@ -75,6 +79,8 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
                 command = self.env.command_manager.get_state('motion_command')
                 previous_frame = int(command.time_steps[0].item())
                 for step in range(1, maximum + 1):
+                    attempted_step = step
+                    stage = 'observation_extraction'
                     if time.monotonic() >= float(os.environ['HUD04_VIDEO_DEADLINE']):
                         raise TimeoutError('Evaluation deadline')
                     actor, teacher, depth = self._extract_groups(obs)
@@ -85,17 +91,29 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
                     if actual_route != request['obstacle_case']['route']:
                         raise ValueError('Wrong expert/case route')
                     if role == 'student':
+                        stage = 'student_forward'
                         actions = self.policy.act_inference({'actor_obs': actor, 'depth_obs': depth})
                     else:
+                        stage = 'teacher_forward'
                         actions = self.policy.teacher_act(teacher)
                     if actions.shape != (1, 29) or not torch.isfinite(actions).all():
                         raise ValueError('Invalid action output')
                     if action_probe is not None:
+                        stage = 'same_state_action_probe'
+                        routing_column = int(self.policy.routing_column)
+                        observed_route = float(teacher[0, routing_column])
+                        report['last_probe_context'] = {
+                            'attempted_policy_step': step, 'reference_frame': current_frame,
+                            'expected_route': actual_route, 'teacher_routing_column': routing_column,
+                            'teacher_observation_route': observed_route if torch.isfinite(teacher[0, routing_column]).item() else None,
+                        }
                         action_probe.observe(step=step,frame=current_frame,actor=actor,teacher=teacher,
                             depth=depth,student_actions=actions,expected_route=actual_route)
                     probe.policy_steps = step
                     checks_before = probe.check_count
+                    stage = 'environment_step'
                     obs, rewards, dones, extras = self.env.step({'actions': actions})
+                    stage = 'post_step_validation'
                     if probe.check_count != checks_before + 1:
                         raise RuntimeError('Expected exactly one native termination check per control step')
                     report['policy_steps'] = step
@@ -112,12 +130,14 @@ class HuD04SingleEpisode(HuD04FormalDistillation):
             error = exc
             report['outcome'] = 'engineering_invalid_exception'
             report['error_type'] = type(exc).__name__
+            report['error_details'] = diagnostic_error(exc, stage, attempted_step)
             raise
         finally:
             probe.restore()
             if action_probe is not None:
                 report['same_state_action_probe']=action_probe.finish()
             report.update(terminal_observation=probe.latest,
+                          depth_reset_diagnostics=depth_diagnostic_status(self.env),
                           tracking_cache_sync=dict(getattr(self.env,'hud04_cache_sync',{})),
                           termination_events=probe.events,
                           simulated_policy_seconds=report['policy_steps'] * float(self.env.dt),

@@ -65,6 +65,10 @@ def main():
             req.update(output=str(caseout),bundle=str(bundle),data_root=str(payload/'formal_data'),
                 teachers=[str(payload/'teachers'/f'{j}.pt') for j in range(5)],checkpoint=str(checkpoint),
                 source_checkpoint_sha256=c['checkpoint']['sha256'],obstacle_case=row)
+            if c.get('native_child')=='hud04_eval_child.py':
+                if c.get('evaluation_role') not in ['student','teacher'] or type(c.get('evaluation_seed')) is not int or not 0<=c['evaluation_seed']<=2:
+                    raise ValueError('Explicit bounded diagnostic role and seed required')
+                req.update(evaluation_role=c['evaluation_role'],evaluation_seed=c['evaluation_seed'])
             reqpath=work/(row['skill']+'-request.json');reqpath.write_text(json.dumps(req))
             planpath=work/'source-plan.json'
             if not planpath.exists():planpath.write_text(json.dumps(c['source_plan']))
@@ -78,14 +82,23 @@ def main():
             stage(row['skill'])
             try:
                 entry=c.get('native_child','diagnostic_video_child.py')
-                if entry not in ['diagnostic_video_child.py','teacher_baseline_child.py']:raise ValueError('Unapproved native entry')
+                if entry not in ['diagnostic_video_child.py','teacher_baseline_child.py','hud04_eval_child.py']:raise ValueError('Unapproved native entry')
                 code=child_run(['/isaac-sim/python.sh',str(root/entry)],caseout/'native.log',child_env,case_limit,cwd=payload)
             finally:
                 emit_case_diagnostics(caseout)
             record={'skill':row['skill'],'native_returncode':code,'video_evidence_present':(caseout/'video-evidence.json').is_file()}
+            if entry=='hud04_eval_child.py':
+                result_path=caseout/'single-episode-result.json'
+                record.update(diagnostic_result_present=result_path.is_file(),task_success=None)
+                if result_path.is_file():
+                    diagnostic=json.loads(result_path.read_text())
+                    record.update(diagnostic_outcome=diagnostic['outcome'],policy_steps=diagnostic['policy_steps'],
+                        model_parameters_unchanged=diagnostic['model_parameters_unchanged'])
+                    record['diagnostic_valid']=not diagnostic['outcome'].startswith('engineering_invalid') and diagnostic['model_parameters_unchanged']
             state['cases'].append(record)
             print(json.dumps({'event':'obstacle_case_completed',**record}),flush=True)
-        state['worker_passed']=len(state['cases'])==SCOPE['max_clips'] and all(r['native_returncode']==0 and r['video_evidence_present'] for r in state['cases'])
+        state['worker_passed']=len(state['cases'])==SCOPE['max_clips'] and all(r['native_returncode']==0 and
+            (r.get('diagnostic_valid',False) if 'diagnostic_result_present' in r else r['video_evidence_present']) for r in state['cases'])
         stage('complete' if state['worker_passed'] else 'completed_with_native_failures')
     except Exception as e:
         state['error_type']=type(e).__name__

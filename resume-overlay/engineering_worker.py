@@ -21,7 +21,7 @@ def run(root,out,*,started,on_spawn):
  native=None
  vendor='/isaac-sim/python.sh';bundle=root/'bundle';site=root/'dependency-site'
  py=os.pathsep.join(map(str,runtime_pythonpath(root)))
- env=isolated_child_env(os.environ,pythonpath=py,output=out,asset_root=bundle/'asset',train_deadline=started+1500,task_id=source['task_id'])
+ env=isolated_child_env(os.environ,pythonpath=py,output=out,asset_root=bundle/'asset',train_deadline=started+3240,task_id=source['task_id'])
  for key in ('ISAAC_PATH','ISAACSIM_PATH','ISAACLAB_PATH','EXP_PATH','CARB_APP_PATH','OMNI_KIT_ALLOW_ROOT'):
   if key in os.environ:env[key]=os.environ[key]
  def spawn(command,log,cutoff,on_tick=None):
@@ -51,7 +51,7 @@ def run(root,out,*,started,on_spawn):
    request.update(resume=str(root/'resume.pt'),resume_sha256=CHECKPOINT_SHA256,continuation_validation=source['continuation_validation'])
   validate_request(request);verify_runtime_inputs(request)
   plan_path=out/'formal-plan.json';write_json(plan_path,p)
-  env.update(HUD04_FORMAL_PLAN=str(plan_path),HUD04_FORMAL_TRAIN_DEADLINE=str(started+1500))
+  env.update(HUD04_FORMAL_PLAN=str(plan_path),HUD04_FORMAL_TRAIN_DEADLINE=str(started+3240))
   state['stage']='gpu_preflight'
   code="from student_adapter.runtime_imports import verify_overlay_resolution;print(verify_overlay_resolution("+repr(str(bundle))+") ,flush=True);import torch,numpy;assert torch.__version__=='2.7.0+cu128' and numpy.__version__=='1.26.4';assert torch.cuda.device_count()==1;p=torch.cuda.get_device_properties(0);assert '4090' in p.name and [p.major,p.minor]==[8,9] and 23<=p.total_memory/2**30<=25;print(p.name,p.total_memory,flush=True)"
   r=spawn([vendor,'-c',code],'gpu-preflight.log',960);write_json(out/'preflight-exit.json',r)
@@ -60,7 +60,7 @@ def run(root,out,*,started,on_spawn):
   state['stage']='native_training';print(json.dumps({'event':'trial_stage','stage':'native_training','updates':p['additional_updates'],'num_envs':10,'continuing':continuing}),flush=True)
   from student_adapter.training_telemetry import ProgressMirror
   mirror=ProgressMirror(out,source['task_id'],p['_wb_agent'])
-  native=spawn([vendor,'-m','student_adapter.formal_child','--request',str(path),'--request-sha256',hashlib.sha256(path.read_bytes()).hexdigest()],'native.log',1620,on_tick=mirror)
+  native=spawn([vendor,'-m','student_adapter.formal_child','--request',str(path),'--request-sha256',hashlib.sha256(path.read_bytes()).hexdigest()],'native.log',3360,on_tick=mirror)
   state['metrics_relay_completed_updates']=mirror.last
   state['metrics_relay_error_type']=native.get('telemetry_error_type')
   write_json(out/'native-exit.json',native)
@@ -73,11 +73,11 @@ def run(root,out,*,started,on_spawn):
    result=json.loads(result_path.read_text());checkpoint=(out/result['checkpoint']).resolve()
    if checkpoint.is_relative_to(out.resolve()) and checkpoint.is_file():
     h=hashlib.sha256(checkpoint.read_bytes()).hexdigest()
-    added=result['additional_updates_completed'];start=100 if continuing else 0
+    added=result['additional_updates_completed'];start=1100 if continuing else 0
     state['learning_evidence_passed']=1<=added<=p['additional_updates'] and result['completed_updates']==start+added and result['teachers_frozen_verified'] is True and result['checkpoint_model_readback_verified'] is True and result['_wb_agent']==p['_wb_agent'] and h==result['checkpoint_sha256']
     if continuing:
      restored=json.loads((out/'formal-resume-verification.json').read_text())
-     state['resume_verified']=restored['start_completed_updates']==100 and restored['checkpoint_sha256']==CHECKPOINT_SHA256 and restored['optimizer_restore_and_readback'] is True
+     state['resume_verified']=restored['start_completed_updates']==1100 and restored['checkpoint_sha256']==CHECKPOINT_SHA256 and restored['optimizer_restore_and_readback'] is True
      state['learning_evidence_passed']=state['learning_evidence_passed'] and state['resume_verified']
   if continuing and state['learning_evidence_passed']:
    from student_adapter.bounded_resume import validate_outputs

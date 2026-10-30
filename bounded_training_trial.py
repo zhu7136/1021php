@@ -27,7 +27,7 @@ def main():
  def register(child):
   with lock:active[0]=child
  def guard():
-  time.sleep(max(0,started+1800-time.monotonic()))
+  time.sleep(max(0,started+3600-time.monotonic()))
   with lock:
    child=active[0]
    if child is not None and child.poll() is None:
@@ -85,7 +85,7 @@ def main():
         'input_mode':'local_git_shards' if a.shard_dir else 'scoped_https',
         'shard_manifest_sha256':a.shard_manifest_sha256}
  try:
-  payload=work/'payload';emit('trial_stage',stage='inputs',worker_seconds_max=1800)
+  payload=work/'payload';emit('trial_stage',stage='inputs',worker_seconds_max=3600)
   if a.shard_dir:
    from local_trial_inputs import materialize
    shard_dir=Path(a.shard_dir)
@@ -126,7 +126,7 @@ def main():
    # A small binding GET does not validate large-checkpoint throughput. Four
    # bounded range streams, 10s I/O deadlines, heartbeat, exact whole-file hash;
    # no automatic retries, partial-file reuse or extension of the worker clock.
-   emit('trial_resume_download_started',expected_bytes=resume_input['bytes'],source_completed_updates=100)
+   emit('trial_resume_download_started',expected_bytes=resume_input['bytes'],source_completed_updates=1100)
    progress={}
    try:
     receipt=download(resume_input['cap'],payload/'resume.pt',size=resume_input['bytes'],sha256=resume_input['sha256'],
@@ -145,7 +145,7 @@ def main():
     if source.is_symlink() or not source.is_file() or target.is_symlink():raise ValueError('Invalid pinned resume overlay')
     target.write_bytes(source.read_bytes())
    state['resume_checkpoint_sha256']=resume_input['sha256']
-   emit('trial_resume_inputs_verified',source_completed_updates=100,max_additional_updates=1000)
+   emit('trial_resume_inputs_verified',source_completed_updates=1100,max_additional_updates=3000)
   if (execution.get('plan',{}).get('execution_approved') is not True or
       execution.get('approval',{}).get('confirmed_by_user') is not True or
       not isinstance(execution.get('task_id'),str) or not execution['task_id'].startswith('TASK_')):
@@ -160,7 +160,7 @@ def main():
   state['error_type']=type(exc).__name__;emit('trial_failure',stage=state['stage'],error_type=type(exc).__name__)
  state['elapsed_seconds_before_packaging']=time.monotonic()-started
  (out/'bootstrap-result.json').write_text(json.dumps(state,indent=2))
- with deadline(started+1710):
+ with deadline(started+3420):
   files=[]
   for path in sorted(out.rglob('*')):
    if path.is_symlink():raise ValueError('Result symlink')
@@ -171,7 +171,7 @@ def main():
   with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED,compresslevel=1) as z:
    for path in sorted(out.rglob('*')):
     if path.is_file():z.write(path,path.relative_to(out))
- receipt=transfer(output,archive,method='PUT',size=archive.stat().st_size,sha256=digest(archive),absolute_deadline=started+1790)
+ receipt=transfer(output,archive,method='PUT',size=archive.stat().st_size,sha256=digest(archive),absolute_deadline=started+3590)
  emit('trial_result_uploaded',**receipt,worker_passed=state['worker_passed'])
  return 0 if state['worker_passed'] else 1
 

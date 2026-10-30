@@ -29,8 +29,8 @@ def validate_request(request):
   risk=request.get('engineering_validation')
   known={'native_shutdown_exit_zero_unresolved','native_cross_process_resume_unverified','formal_worker_and_collector_native_gpu_unverified'}
   continuation=request.get('continuation_validation')
-  bounded_resume=(continuation=={'purpose':'authorized_bounded_optimizer_continuation','max_additional_updates':1000,'start_completed_updates':100,'source_checkpoint_sha256':'e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15','shutdown_fault_accepted_not_hidden':True,'trajectory_exact_resume':False}
-    and (p['additional_updates'],p['num_envs'],p['worker_seconds_max'],p['save_interval'])==(1000,10,1800,250)
+  bounded_resume=(continuation=={'purpose':'authorized_bounded_optimizer_continuation','max_additional_updates':3000,'start_completed_updates':1100,'source_checkpoint_sha256':'77811184bf34000b14c16da6d247226d7616dec972b4881eff6bcf13c55940f2','shutdown_fault_accepted_not_hidden':True,'trajectory_exact_resume':False}
+    and (p['additional_updates'],p['num_envs'],p['worker_seconds_max'],p['save_interval'])==(3000,10,3600,500)
     and request.get('resume') is not None and request.get('resume_sha256')==continuation['source_checkpoint_sha256'])
   if bounded_resume:
    if risk!={'purpose':'measure_unresolved_training_pipeline','unresolved_gates':p['execution_gates'],'long_training_authorized':True,'resume_authorized':True} or not set(p['execution_gates']).issubset(known):raise PermissionError('Bounded continuation must retain unresolved gates')

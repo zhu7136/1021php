@@ -1,11 +1,11 @@
 {
   "approval": {
-    "additional_updates": 1000,
+    "additional_updates": 3000,
     "confirmed_by_user": false,
     "max_tasks": 0,
     "num_envs": 10,
     "purpose": "formal_pilot",
-    "worker_seconds_max": 1800
+    "worker_seconds_max": 3600
   },
   "engineering_validation": {
     "long_training_authorized": false,
@@ -20,7 +20,7 @@
   "plan": {
     "_wb_agent": {},
     "acceptance_thresholds_confirmed": false,
-    "additional_updates": 1000,
+    "additional_updates": 3000,
     "automatic_retries": 0,
     "evaluation_seeds": [
       1001,
@@ -40,8 +40,8 @@
     "learning_rate": 0.0003,
     "multigpu": false,
     "num_envs": 10,
-    "resume_policy": "strict optimizer continuation from verified 100-update checkpoint; trajectory reset, not exact replay",
-    "save_interval": 250,
+    "resume_policy": "strict optimizer continuation from verified 1100-update checkpoint; trajectory reset, not exact replay",
+    "save_interval": 500,
     "schema": "hud04-formal-draft-v1",
     "seed": 42,
     "skills": [
@@ -58,28 +58,28 @@
       "9a0b61cdb689886c1171f77eb725ff85f4910573d7fa6376fdf4594415e45711",
       "5002073080d1af5f4e00b1f6b35377f37ab72d85ff0ccf315d42fe9a5d8bf030"
     ],
-    "worker_seconds_max": 1800
+    "worker_seconds_max": 3600
   },
   "publication_only": true,
   "scope": {
     "max_tasks": 1,
     "max_training_processes": 1,
     "num_envs": 10,
-    "training_updates": 1000,
-    "save_interval": 250,
-    "worker_seconds_max": 1800,
+    "training_updates": 3000,
+    "save_interval": 500,
+    "worker_seconds_max": 3600,
     "automatic_retries": 0,
     "fresh_student": false,
-    "resume_completed_updates": 100
+    "resume_completed_updates": 1100
   },
   "task_id": null,
   "continuation_validation": {
     "purpose": "authorized_bounded_optimizer_continuation",
-    "max_additional_updates": 1000,
-    "start_completed_updates": 100,
-    "source_checkpoint_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15",
+    "max_additional_updates": 3000,
+    "start_completed_updates": 1100,
+    "source_checkpoint_sha256": "77811184bf34000b14c16da6d247226d7616dec972b4881eff6bcf13c55940f2",
     "shutdown_fault_accepted_not_hidden": true,
     "trajectory_exact_resume": false
   },
-  "resume_sha256": "e295f4acb723bb93e0cb8946b49c81e242dcaf73a84c5dc981486f1725ce1b15"
+  "resume_sha256": "77811184bf34000b14c16da6d247226d7616dec972b4881eff6bcf13c55940f2"
 }

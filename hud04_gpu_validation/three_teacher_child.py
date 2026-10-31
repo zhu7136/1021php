@@ -57,6 +57,14 @@ def main():
         print(json.dumps(dict(event='hud04_native_validation_started',num_envs=6,max_updates=5)),flush=True)
         train_agent.train(cfg,training_context=context)
         report['train_returned']=True;close_audit.write(out,report)
+    except BaseException as exc:
+        # Audit SystemExit as well as ordinary exceptions; never convert a
+        # failed learner/teardown into a successful native process exit.
+        report['train_exception_type']=type(exc).__name__
+        if isinstance(exc,SystemExit):
+            report['train_system_exit_code']=exc.code if isinstance(exc.code,(int,str,type(None))) else 'non_scalar'
+        close_audit.write(out,report)
+        raise
     finally:
         if app is not None:close_audit.close(app,out,report)
     report['child_returned']=True;close_audit.write(out,report)

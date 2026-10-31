@@ -14,6 +14,7 @@ from .ppo_routing import StrictRoutedTeacherCritic
 from .ppo_mask import ExplicitRoutePPOMixin
 from .ppo_config import ppo_checkpoint_contract, validate_ppo_checkpoint
 from .smoke_config import check_live_observations
+from .checkpoint_export import finalize_native_checkpoint
 
 class HuD04ThreeTeacherPPO(BoundedUpdatesMixin, ExplicitRoutePPOMixin, DistillationPPO):
     def _checkpoint_metadata(self, iteration=None):
@@ -75,9 +76,10 @@ class HuD04ThreeTeacherPPO(BoundedUpdatesMixin, ExplicitRoutePPOMixin, Distillat
             raise RuntimeError('Frozen teachers received gradients or became trainable')
         changed={n:any(not torch.equal(v,cpu_state(getattr(self.policy,n))[k]) for k,v in state.items()) for n,state in before.items()}
         if not all(changed.values()) or not all(self._route_counts):raise RuntimeError('Missing per-skill labels or student/critic/depth learning')
-        final=Path(os.environ['HUD04_SMOKE_OUTPUT'])/'student_dagger_ppo_validation.pt';self.save(str(final))
-        state=cpu_state(self.policy);optimizer=copy.deepcopy(self.optimizer.state_dict());self.load(str(final))
-        require_equal(state,cpu_state(self.policy));require_equal(optimizer,self.optimizer.state_dict())
+        output=Path(os.environ['HUD04_SMOKE_OUTPUT'])
+        exported=finalize_native_checkpoint(self,output,cpu_state,require_equal)
+        final=output/'student_dagger_ppo_validation.pt'
+        (output/'checkpoint-export.json').write_text(json.dumps(exported,indent=2))
         report=dict(algorithm='dagger_ppo',completed_updates=self.update_budget.completed,modules_changed=changed,
                     valid_labels_by_skill=self._route_counts,teachers_frozen=True,native_reload_verified=True,
                     checkpoint_sha256=hashlib.sha256(final.read_bytes()).hexdigest(),skill_success_verified=False)

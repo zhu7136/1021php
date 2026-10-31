@@ -10,6 +10,12 @@ def main():
     a=p.parse_args();payload=Path(a.payload).resolve();data=Path(a.data_root).resolve();out=Path(a.output).resolve();bundle=payload/'bundle'
     if not os.environ.get('HUD04_FLUX_TASK_ID') or float(a.train_deadline)<=time.monotonic():
         raise ValueError('Live bounded task parent required')
+    # The overlay and pinned runtime share a nested regular package. Repair
+    # its package path before either parent package can enter sys.modules.
+    if any(n == 'wbt_training' or n.startswith('wbt_training.') for n in sys.modules):
+        raise ValueError('PHP package imported before overlay repair')
+    from overlay_package_fix import repair_overlay
+    (out/'overlay-package-repair.json').write_text(json.dumps(repair_overlay(bundle),indent=2))
     checkout=Path(__file__).resolve().parents[1]
     for path in (payload/'native-source',Path(a.site),bundle/'runtime/php',bundle/'runtime/holosoma/src/holosoma',bundle/'overlay',bundle,checkout/'hud04_three_teacher',Path(__file__).resolve().parent):
         sys.path.insert(0,str(path))

@@ -3,7 +3,7 @@ import argparse,base64,json,os,re,stat,subprocess,sys,threading,time,zipfile
 from pathlib import Path,PurePosixPath
 from bootstrap_base import safe_extract,clean_env
 from scoped_transport import digest,transfer,validate_capability
-from range_input import download
+from git_shards import restore
 from worker_utils import stage,watchdog,emit
 
 INPUTS={
@@ -52,7 +52,7 @@ def validate_result(out,rc,task):
 
 def pack(work,state):
     (work/'bootstrap-status.json').write_text(json.dumps(state,indent=2));rows=[];total=0
-    candidates=[work/'bootstrap-status.json']+list((work/'native-output').rglob('*'))+[work/'install.log',work/'gpu-preflight.log']
+    candidates=[work/'bootstrap-status.json']+list((work/'native-output').rglob('*'))+[work/'install.log',work/'gpu-preflight.log',work/'git-input-verification.json']
     for p in sorted(set(candidates)):
         if not p.is_file() or p.is_symlink():continue
         if p.suffix=='.pt' and p.name!='student_dagger_ppo_validation.pt':continue
@@ -71,12 +71,12 @@ def pack(work,state):
 def main(argv=None):
     start=time.monotonic();p=argparse.ArgumentParser()
     p.add_argument('--execute',action='store_true')
-    for n in ('task-id','commit','base-cap','data-cap','output-cap','thread-id','turn-id'):p.add_argument('--'+n)
+    for n in ('task-id','commit','output-cap','thread-id','turn-id'):p.add_argument('--'+n)
     a=p.parse_args(argv)
     if not a.execute:emit('execution_not_requested',gpu_started=False,num_envs=6,max_updates=5,training_seconds_max=600,worker_seconds_max=1800,automatic_retries=0);return 0
-    if not a.task_id or not re.fullmatch(r'TASK_\d{8}_\d+',a.task_id) or not re.fullmatch('[0-9a-f]{40}',a.commit or '') or not all(getattr(a,n) for n in ('base_cap','data_cap','output_cap','thread_id','turn_id')):
+    if not a.task_id or not re.fullmatch(r'TASK_\d{8}_\d+',a.task_id) or not re.fullmatch('[0-9a-f]{40}',a.commit or '') or not all(getattr(a,n) for n in ('output_cap','thread_id','turn_id')):
         raise ValueError('Task/commit/provenance binding required')
-    caps={n:json.loads(base64.urlsafe_b64decode(getattr(a,n+'_cap'))) for n in ('base','data','output')}
+    caps={'output':json.loads(base64.urlsafe_b64decode(a.output_cap))}
     for n,c in caps.items():
         _,expiry=validate_capability(c,'PUT' if n=='output' else 'GET')
         if expiry<time.time()+1800:raise ValueError('Capability must cover bounded worker lifetime')
@@ -87,13 +87,16 @@ def main(argv=None):
     work=root/('private-validation-'+a.task_id);work.mkdir(exist_ok=False)
     state=dict(task_id=a.task_id,bootstrap_commit=a.commit,worker_seconds_max=1800,training_seconds_max=600,
         requested_num_envs=6,max_updates=5,automatic_retries=0,worker_passed=False,native_training_started=False,
-        algorithm='dagger_ppo',skill_success_verified=False,account_credentials_forwarded=False,stage='inputs')
+        algorithm='dagger_ppo',skill_success_verified=False,account_credentials_forwarded=False,
+        input_delivery='git_shards',stage='inputs')
     try:
-        paths={}
-        for n,(size,sha) in INPUTS.items():
-            emit('hud04_stage',stage='download_'+n,task_id=a.task_id)
-            paths[n]=work/(n+'.zip');progress={}
-            download(caps[n],paths[n],size=size,sha256=sha,absolute_deadline=start+600,progress=progress)
+        state['stage']='git_input_reassembly'
+        emit('hud04_stage',stage=state['stage'],task_id=a.task_id)
+        verified=restore(root/'git-inputs',work/'reassembled')
+        if time.monotonic()>start+600:raise TimeoutError('Input stage deadline')
+        (work/'git-input-verification.json').write_text(json.dumps(verified,indent=2))
+        paths={n:work/'reassembled'/(n+'.zip') for n in INPUTS}
+        emit('hud04_stage',stage='git_inputs_hash_verified',task_id=a.task_id,files=len(paths))
         payload=work/'payload';safe_extract(paths['base'],payload)
         data=extract_data(paths['data'],work/'dataset');state['inputs_hash_verified']=True
         vendor='/isaac-sim/python.sh';site=work/'dependency-site';state['stage']='install'

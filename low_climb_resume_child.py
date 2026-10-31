@@ -2,7 +2,7 @@
 import argparse,faulthandler,hashlib,json,os,sys
 from pathlib import Path
 from dataclasses import replace
-SOURCE_SHA='9a0b61cdb689886c1171f77eb725ff85f4910573d7fa6376fdf4594415e45711'
+SOURCE_SHA='9327aadc312160c8600ae611afc2d0909aff27a688aff684181fbef8cdf9ca2d'
 
 def main():
     # Capture native shutdown crashes; never force exit or suppress their status.
@@ -34,7 +34,7 @@ def main():
     os.environ['PHP_FLUX_OUTPUT']=str(out)
     os.environ['PHP_LOW_STEP_SOURCE_CHECKPOINT']=str(source)
     sys.argv=[sys.argv[0]]
-    (out/'provenance.json').write_text(json.dumps({'_wb_agent':{'thread_id':a.thread_id,'turn_id':a.turn_id},'robot':'Hu-D04','skill':'low-climb','dataset':'motions-low-climb-76','fresh_training':False,'source_run':'puljx4ho','source_checkpoint_sha256':SOURCE_SHA,'source_iteration':660,'first_new_iteration':661,'task_id':os.environ['PHP_FLUX_TASK_ID'],'teacher_converged':False}))
+    (out/'provenance.json').write_text(json.dumps({'_wb_agent':{'thread_id':a.thread_id,'turn_id':a.turn_id},'robot':'Hu-D04','skill':'low-climb','dataset':'motions-low-climb-76','fresh_training':False,'source_run':'lc660r01','source_checkpoint_sha256':SOURCE_SHA,'source_iteration':1296,'first_new_iteration':1297,'task_id':os.environ['PHP_FLUX_TASK_ID'],'teacher_converged':False}))
     from holosoma.utils.sim_utils import setup_simulator_imports
     from holosoma.utils.eval_utils import init_sim_imports
     from holosoma import train_agent

@@ -9,10 +9,10 @@ from scoped_transport import transfer,digest,validate_capability
 from range_input import download
 from worker_utils import stage,pack,watchdog,emit
 from budget_policy import deadlines,require_training_window
-TASK='TASK_20261029_018'
-SOURCE_ITERATION=660
-NEXT_ITERATION=661
-INPUTS={'base':(123410856,'490d7d1b8b927f42303816c1a40f440c05ef5393aec950724ab897fad45c643f'),'input':(119745403,'42dc240a35adea7cdaf49cfb38eaa83df89d39b86668dfa325580f2a79243128'),'checkpoint':(10344315,'9a0b61cdb689886c1171f77eb725ff85f4910573d7fa6376fdf4594415e45711')}
+TASK='TASK_20261031_125'
+SOURCE_ITERATION=1296
+NEXT_ITERATION=1297
+INPUTS={'base':(123410856,'490d7d1b8b927f42303816c1a40f440c05ef5393aec950724ab897fad45c643f'),'input':(119745403,'42dc240a35adea7cdaf49cfb38eaa83df89d39b86668dfa325580f2a79243128'),'checkpoint':(10344255,'9327aadc312160c8600ae611afc2d0909aff27a688aff684181fbef8cdf9ca2d')}
 
 def validate_result(out,rc,task=TASK):
     out=Path(out).resolve()

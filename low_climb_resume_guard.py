@@ -5,9 +5,9 @@ import torch
 from teacher_algo import FullTeacherPPO
 from flux.teacher_algo import BoundedPPO,_require_same_state
 
-SOURCE_SHA='9a0b61cdb689886c1171f77eb725ff85f4910573d7fa6376fdf4594415e45711'
-SOURCE_ITERATION=660
-NEXT_ITERATION=661
+SOURCE_SHA='9327aadc312160c8600ae611afc2d0909aff27a688aff684181fbef8cdf9ca2d'
+SOURCE_ITERATION=1296
+NEXT_ITERATION=1297
 
 class LowClimbResumePPO(FullTeacherPPO):
     def load(self,path):

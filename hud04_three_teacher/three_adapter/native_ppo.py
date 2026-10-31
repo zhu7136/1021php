@@ -71,9 +71,11 @@ class HuD04ThreeTeacherPPO(BoundedUpdatesMixin, ExplicitRoutePPOMixin, Distillat
         self._route_counts=[0]*3
         super().learn(num_learning_iterations)
         require_equal(frozen,cpu_state(self.policy.teachers))
+        if any(p.requires_grad or p.grad is not None for p in self.policy.teachers.parameters()):
+            raise RuntimeError('Frozen teachers received gradients or became trainable')
         changed={n:any(not torch.equal(v,cpu_state(getattr(self.policy,n))[k]) for k,v in state.items()) for n,state in before.items()}
         if not all(changed.values()) or not all(self._route_counts):raise RuntimeError('Missing per-skill labels or student/critic/depth learning')
-        final=Path(self.log_dir)/'student_dagger_ppo_validation.pt';self.save(str(final))
+        final=Path(os.environ['HUD04_SMOKE_OUTPUT'])/'student_dagger_ppo_validation.pt';self.save(str(final))
         state=cpu_state(self.policy);optimizer=copy.deepcopy(self.optimizer.state_dict());self.load(str(final))
         require_equal(state,cpu_state(self.policy));require_equal(optimizer,self.optimizer.state_dict())
         report=dict(algorithm='dagger_ppo',completed_updates=self.update_budget.completed,modules_changed=changed,

@@ -1,0 +1,1 @@
+"""Independent Hu-D04 three-teacher CPU-prepared adapter; no GPU approval."""

@@ -105,7 +105,10 @@ def main(argv=None):
         probe="import torch,numpy;p=torch.cuda.get_device_properties(0);print(p.name,p.total_memory,flush=True);assert torch.__version__=='2.7.0+cu128' and numpy.__version__=='1.26.4' and torch.cuda.device_count()==1 and '4090' in p.name and [p.major,p.minor]==[8,9] and 23<=p.total_memory/2**30<=25"
         if stage([vendor,'-c',probe],work/'gpu-preflight.log',env,start+750):raise ValueError('GPU contract mismatch')
         if time.monotonic()>start+750:raise TimeoutError('Late training start rejected')
-        train_deadline=min(start+1530,time.monotonic()+600)
+        # Reserve 60s for real native cleanup inside the approved 600s phase.
+        # Parent forcibly ends the entire native child (including startup and
+        # cleanup) after 600s; the learner receives at most 540s.
+        train_deadline=min(start+1530,time.monotonic()+540)
         out=work/'native-output';out.mkdir();env['HUD04_FLUX_TASK_ID']=a.task_id
         state.update(stage='native_training',native_training_started=True,training_deadline_monotonic=train_deadline)
         emit('hud04_stage',stage=state['stage'],task_id=a.task_id)

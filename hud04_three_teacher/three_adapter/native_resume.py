@@ -46,7 +46,7 @@ class HuD04ThreeTeacherResume(HuD04ThreeTeacherPPO):
         if not 0<remaining<=TRAIN_SECONDS or hasattr(self,'update_budget'):
             raise ValueError('Repeated or expired resume budget')
         c=self.config
-        if self.is_multi_gpu or self.env.num_envs!=4096 or self.num_teachers!=3 or self.current_learning_iteration!=SOURCE_ITER:
+        if self.is_multi_gpu or self.env.num_envs!=3000 or self.num_teachers!=3 or self.current_learning_iteration!=SOURCE_ITER:
             raise ValueError('Resume scope changed')
         if (c.num_learning_iterations,c.num_steps_per_env,c.num_learning_epochs,c.num_mini_batches,c.distillation_warmup_steps,c.ppo_start_epoch,c.dagger_end_epoch)!=(MAX_UPDATES,24,2,2,0,0,10000):
             raise ValueError('Recipe or update bound changed')

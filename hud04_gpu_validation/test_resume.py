@@ -64,5 +64,21 @@ class ResumeTests(unittest.TestCase):
         sys.path.insert(0,'/workspace/three-teacher-gpu/source')
         sys.path.insert(0,'/workspace/three-teacher-gpu')
         self.entry_help('resume_parent.py','three_teacher_parent.py')
+    def test_relay_cannot_change_bound_output(self):
+        sys.path.insert(0,'/workspace/three-teacher-gpu/source')
+        import capability_relay as relay
+        caps={'output':{'object_path':'/fixed-output'},'relay':{'object_path':'/fixed-relay'}}
+        new={'output':{'object_path':'/OTHER'},'relay':{'object_path':'/fixed-relay'}}
+        with patch.object(relay,'read_pointer',return_value=new),patch.object(relay,'validate_capability',return_value=(None,10**12)),patch.object(relay.time,'sleep',side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):relay.poll(caps,relay.time.monotonic()+10)
+        self.assertEqual(caps['output']['object_path'],'/fixed-output')
+    def test_relay_accepts_only_same_objects(self):
+        sys.path.insert(0,'/workspace/three-teacher-gpu/source')
+        import capability_relay as relay
+        caps={'output':{'object_path':'/fixed-output'},'relay':{'object_path':'/fixed-relay'}}
+        new={'output':{'object_path':'/fixed-output','test':1},'relay':{'object_path':'/fixed-relay','test':2}}
+        with patch.object(relay,'read_pointer',return_value=new),patch.object(relay,'validate_capability',return_value=(None,10**12)),patch.object(relay.time,'sleep',side_effect=KeyboardInterrupt):
+            with self.assertRaises(KeyboardInterrupt):relay.poll(caps,relay.time.monotonic()+10)
+        self.assertEqual(caps['output']['test'],1)
 
 if __name__=='__main__':unittest.main(verbosity=2)

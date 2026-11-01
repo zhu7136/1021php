@@ -53,9 +53,9 @@ def pack(work,state):
 def main():
     source=Path(__file__).with_name('three_teacher_parent.py').read_text()
     changes={
-      "'output-cap','thread-id'":"'output-cap','resume-cap','thread-id'",
-      "caps={'output':json.loads(base64.urlsafe_b64decode(a.output_cap))}":"caps={'output':json.loads(base64.urlsafe_b64decode(a.output_cap)),'resume':json.loads(base64.urlsafe_b64decode(a.resume_cap))}",
-      "time.time()+1800":"time.time()+7200",
+      "'output-cap','thread-id'":"'output-cap','resume-cap','relay-cap','thread-id'",
+      "caps={'output':json.loads(base64.urlsafe_b64decode(a.output_cap))}":"caps={'output':json.loads(base64.urlsafe_b64decode(a.output_cap)),'resume':json.loads(base64.urlsafe_b64decode(a.resume_cap)),'relay':json.loads(base64.urlsafe_b64decode(a.relay_cap))}",
+      "time.time()+1800":"time.time()+300",
       "target=unused":"target=unused"
     }
     changes.pop('target=unused')
@@ -70,7 +70,7 @@ def main():
       "'--train-deadline',str(train_deadline)]":"'--train-deadline',str(train_deadline),'--resume-checkpoint',str(resume)]",
       "rc=stage(cmd,out/'native.log',env,min(start+1650,train_deadline+60))":"rc=stage(cmd,out/'native.log',env,min(start+7050,train_deadline+60),stop_file=work/'stop-request',soft=train_deadline)",
       'absolute_deadline=start+1790':'absolute_deadline=start+7190',
-      "threading.Thread(target=watchdog,args=(start,),daemon=True).start()":"threading.Thread(target=watchdog,args=(start+5400,),daemon=True).start()"
+      "threading.Thread(target=watchdog,args=(start,),daemon=True).start()":"threading.Thread(target=watchdog,args=(start+5400,),daemon=True).start()\n    from capability_relay import poll\n    threading.Thread(target=poll,args=(caps,start+7200),daemon=True).start()"
     }
     for old,new in changes.items():
         if source.count(old)!=1:raise ValueError('Parent execution anchor changed')

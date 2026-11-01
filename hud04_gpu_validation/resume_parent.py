@@ -1,4 +1,4 @@
-"""One approved 4096-env continuation. No account credentials in worker."""
+"""One approved 3000-env continuation. No account credentials in worker."""
 import json,time,zipfile
 from pathlib import Path
 from scoped_transport import digest,transfer
@@ -22,7 +22,7 @@ def validate_result(out,rc,task):
     if p.is_symlink() or not p.is_file() or digest(p)!=r['checkpoint_sha256']:raise ValueError('Checkpoint digest mismatch')
     life=json.loads((out/'lifecycle.json').read_text())
     prov=json.loads((out/'provenance.json').read_text())
-    if prov.get('task_id')!=task or prov.get('num_envs')!=4096 or life.get('task_id')!=task:raise ValueError('Provenance mismatch')
+    if prov.get('task_id')!=task or prov.get('num_envs')!=3000 or life.get('task_id')!=task:raise ValueError('Provenance mismatch')
     if rc!=0 or not all(life.get(k) is True for k in ('train_returned','close_returned','child_returned','fast_shutdown_disabled_verified')):
         raise ValueError('Native lifecycle failed; checkpoint remains diagnostic')
     return dict(completed_updates=r['completed_updates'],fresh_process_resume_verified=True,checkpoint_sha256=r['checkpoint_sha256'])
@@ -42,7 +42,7 @@ def pack(work,state):
         if total>160*1024**2:raise ValueError('Result size bound exceeded')
         rows.append(dict(path=p.relative_to(work).as_posix(),bytes=p.stat().st_size,sha256=digest(p)))
     manifest=dict(task_id=state['task_id'],source_commit=state['bootstrap_commit'],files=rows,
-        num_envs=4096,max_updates=1000,training_seconds_max=6600,worker_seconds_max=7200,
+        num_envs=3000,max_updates=1000,training_seconds_max=6600,worker_seconds_max=7200,
         resume_source_sha256=SOURCE_SHA,automatic_retries=0)
     archive=work/'flux-result.zip'
     with zipfile.ZipFile(archive,'x',zipfile.ZIP_DEFLATED,compresslevel=1) as z:
@@ -62,7 +62,7 @@ def main():
     for old,new in changes.items():
         if source.count(old)!=1:raise ValueError('Parent binding anchor changed')
         source=source.replace(old,new,1)
-    for old,new in [('num_envs=6','num_envs=4096'),('max_updates=5','max_updates=1000'),('training_seconds_max=600','training_seconds_max=6600'),('worker_seconds_max=1800','worker_seconds_max=7200')]:source=source.replace(old,new)
+    for old,new in [('num_envs=6','num_envs=3000'),('max_updates=5','max_updates=1000'),('training_seconds_max=600','training_seconds_max=6600'),('worker_seconds_max=1800','worker_seconds_max=7200')]:source=source.replace(old,new)
     changes={
       "state['stage']='git_input_reassembly'":"resume=work/'resume.pt'\n        transfer(caps['resume'],resume,method='GET',size=47769831,sha256='"+SOURCE_SHA+"',absolute_deadline=start+300)\n        state['stage']='git_input_reassembly'",
       'min(start+1530,time.monotonic()+540)':'min(start+6900,time.monotonic()+6600)',

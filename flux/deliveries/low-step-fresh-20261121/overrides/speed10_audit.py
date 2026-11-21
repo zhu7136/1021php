@@ -15,7 +15,10 @@ def install_native_audit(env,out):
     assert actual.shape==(env.num_envs,31) and torch.isfinite(actual).all()
     assert torch.allclose(actual,expected[None,:].expand_as(actual),atol=1e-4,rtol=1e-5), 'native_velocity_limits_mismatch'
     ids=[i for i,n in enumerate(names) if is_target(n)]
-    assert len(ids)==8 and torch.all(expected[ids]==10)
+    assert len(ids)==8
+    for i in ids:
+        suffix=names[i].removesuffix('_joint').removeprefix('left_').removeprefix('right_')
+        assert expected[i].item()=={'hip_pitch':32.,'hip_roll':20.,'hip_yaw':32.,'knee':20.}[suffix], 'g1_target_limit_mismatch'
     report={'event':'native_velocity_limits_verified','source':'Articulation.root_physx_view.get_dof_max_velocities','num_envs':env.num_envs,'joint_names':names,'expected_rad_s':expected.tolist(),'native_min_rad_s':actual.amin(0).tolist(),'native_max_rad_s':actual.amax(0).tolist(),'target_joints':[names[i] for i in ids],'all_envs_matched':True}
     (out/'native-velocity-limits.json').write_text(json.dumps(report,indent=2))
     print(json.dumps(report),flush=True)

@@ -69,6 +69,7 @@ def prepare(work,plan):
  for name in ['config.json','teacher_child.py','teacher_algo.py','speed10_audit.py']:
   (payload/'teacher-code'/name).write_bytes((ROOT/'overrides'/name).read_bytes())
  (payload/'bundle/overlay/wbt_training/config_values/hud04_robot.py').write_bytes((ROOT/'overrides/hud04_robot.py').read_bytes())
+ (payload/'bundle/asset/urdf/HU_D04_01.urdf').write_bytes((ROOT/'overrides/HU_D04_01.urdf').read_bytes())
  check_rows(payload,plan['effective_overrides'])
  validate_config(json.loads((payload/'teacher-code/config.json').read_text()))
  return payload

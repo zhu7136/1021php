@@ -1,10 +1,12 @@
-# Hip/knee speed-limit trial
+# HuD04 low-step teacher: G1-matched hip/knee SIMULATION limits
 
-Fresh low-step teacher, random initialization, seed42, same56 clips/25676 frames,4096env.
-Only dynamics change:8 hip/knee joints from5 to10rad/s; gains, effort, armature and other joints unchanged.
-OneGPU,1800s worker wall cap including preparation and result sealing,2000update cap,zero retry.
-Queue/clone/allocation/release outside worker cap; not convergence or hardware certification.
-Native PhysX velocity limits must match config on all4096 environments before learning.
-Read-only measured speeds after every physics step; checkpoint at672updates if reached.
-New checkpoint and logs remain private; no historical weights loaded.
-Publishing this entry is not evidence of GPU execution or successful training.
+Fresh random initialization, seed42,4096envs,same56clips/25676frames.
+Only dynamics change relative to baseline: left/right hip_pitch32,hip_roll20,
+hip_yaw32,knee20 rad/s. Other joint limits, gains, damping, effort and armature unchanged.
+Configuration vector, implicit actuator calibration and versioned URDF agree.
+PhysX native limits must match all31joints/all4096envs before learning.
+Read-only speed evidence after every physics step; no hard clipping added.
+One4090D24GB; worker<=1800s including preparation/sealing, <=2000updates,
+zero automatic retries. Queue/clone/allocation/release outside worker cap.
+Not convergence, task-success, strict speed-cap or HuD04 hardware certification.
+New weights/logs stay private; original baseline and speed10 branch remain unchanged.

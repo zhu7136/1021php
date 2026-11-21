@@ -8,15 +8,20 @@
     "clips": 56,
     "frames": 25676,
     "automatic_retries": 0,
-    "hip_knee_velocity_limit_rad_s": 10.0,
     "baseline_limit_rad_s": 5.0,
     "training_seed": 42,
     "fresh_initialization": true,
-    "max_gpu_tasks": 1
+    "max_gpu_tasks": 1,
+    "hip_knee_velocity_limits_rad_s": {
+      "hip_pitch": 32.0,
+      "hip_roll": 20.0,
+      "hip_yaw": 32.0,
+      "knee": 20.0
+    }
   },
   "provenance": {
     "thread_id": "01a1f6bb-d86a-7bc3-beaa-1ad43376ad65",
-    "turn_id": "01a1fe92-3f3c-7602-8447-8332c6ce6016"
+    "turn_id": "01a1fee4-0550-7702-b30f-2a82f5c2d399"
   },
   "runtime_files": [
     {
@@ -3365,8 +3370,8 @@
   "effective_overrides": [
     {
       "path": "teacher-code/config.json",
-      "bytes": 36743,
-      "sha256": "7eedadb5374000cddb76370d18a2b93524659e46a497f54e905e436260790848"
+      "bytes": 36749,
+      "sha256": "968cceccc26ea748ce017150146be0eb41a273887193a902896aded96cbf310f"
     },
     {
       "path": "teacher-code/teacher_child.py",
@@ -3380,20 +3385,25 @@
     },
     {
       "path": "teacher-code/speed10_audit.py",
-      "bytes": 2655,
-      "sha256": "4504a8af45605d4c32c1d18c1d59e2393f23ef2e3e904f733ca02b080c72c6e2"
+      "bytes": 2861,
+      "sha256": "b10368af46c6ee8caa41b81a902e9973a2b909d7fa13b6cb07b350cd2f2ee5db"
     },
     {
       "path": "bundle/overlay/wbt_training/config_values/hud04_robot.py",
       "bytes": 4037,
-      "sha256": "dac015e8d2910c35ecf087b4d3b8865741eae1d369c1608b1ec866d839817ffa"
+      "sha256": "c3f203c0a8397a8088f9a79a8ffdd68f9925d7fc9e4cacae25a982520ba2988c"
+    },
+    {
+      "path": "bundle/asset/urdf/HU_D04_01.urdf",
+      "bytes": 49045,
+      "sha256": "c5704e29911e2ba389a5989ff7f6282fc7ffc7c963de81f2085d254f5a906d23"
     }
   ],
   "package_files": [
     {
       "path": "train_fresh.py",
-      "bytes": 10984,
-      "sha256": "d0b40802e7e865d916b6a503352ba572d426e4ca233d19f53a2cd1857c6b8a45"
+      "bytes": 11090,
+      "sha256": "f63972b489f1622510d22ce2412d92e60811d59f5800e125f9abac98b829d196"
     },
     {
       "path": "local_shards.py",
@@ -3406,19 +3416,24 @@
       "sha256": "24e92ac169f998acd280b670d48b7bae7f1d0dcc914ac5a276574d72c4a91e54"
     },
     {
+      "path": "overrides/HU_D04_01.urdf",
+      "bytes": 49045,
+      "sha256": "c5704e29911e2ba389a5989ff7f6282fc7ffc7c963de81f2085d254f5a906d23"
+    },
+    {
       "path": "overrides/config.json",
-      "bytes": 36743,
-      "sha256": "7eedadb5374000cddb76370d18a2b93524659e46a497f54e905e436260790848"
+      "bytes": 36749,
+      "sha256": "968cceccc26ea748ce017150146be0eb41a273887193a902896aded96cbf310f"
     },
     {
       "path": "overrides/hud04_robot.py",
       "bytes": 4037,
-      "sha256": "dac015e8d2910c35ecf087b4d3b8865741eae1d369c1608b1ec866d839817ffa"
+      "sha256": "c3f203c0a8397a8088f9a79a8ffdd68f9925d7fc9e4cacae25a982520ba2988c"
     },
     {
       "path": "overrides/speed10_audit.py",
-      "bytes": 2655,
-      "sha256": "4504a8af45605d4c32c1d18c1d59e2393f23ef2e3e904f733ca02b080c72c6e2"
+      "bytes": 2861,
+      "sha256": "b10368af46c6ee8caa41b81a902e9973a2b909d7fa13b6cb07b350cd2f2ee5db"
     },
     {
       "path": "overrides/teacher_algo.py",
@@ -3432,7 +3447,7 @@
     }
   ],
   "approval": {
-    "at_utc": "2026-11-21T14:40:12Z",
+    "at_utc": "2026-11-21T16:15:19Z",
     "gpu_num": 1,
     "worker_seconds_max": 1800,
     "update_cap": 2000,

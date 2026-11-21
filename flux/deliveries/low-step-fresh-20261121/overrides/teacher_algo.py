@@ -4,6 +4,7 @@ from pathlib import Path
 import torch
 from flux.teacher_algo import BoundedPPO,_StopAfterUpdate
 from learning_algo import snapshot
+from speed10_audit import install_native_audit
 class FullTeacherPPO(BoundedPPO):
  def _post_epoch_logging(self,it,loss_dict):
   stop=False
@@ -15,10 +16,13 @@ class FullTeacherPPO(BoundedPPO):
   with (out/'updates.jsonl').open('a') as f:f.write(json.dumps(row)+'\n');f.flush()
   print(json.dumps({'event':'formal_update',**row}),flush=True)
   if self._flux_completed_updates==1 or self._flux_completed_updates%100==0:self.save(str(Path(self.log_dir)/'model_latest.pt'))
+  if self._flux_completed_updates==1 or self._flux_completed_updates%100==0 or stop:self._speed10_flush(self._flux_completed_updates)
+  if self._flux_completed_updates==672:self.save(str(Path(self.log_dir)/'model_at_672.pt'))
   if stop:raise _StopAfterUpdate()
  def learn(self):
   out=Path(os.environ['PHP_FLUX_OUTPUT']);self._started=time.monotonic()
   assert self.env.num_envs==4096 and self.config.num_steps_per_env==24
+  self._speed10_flush=install_native_audit(self.env,out)
   before,old=snapshot(self)
   capacity={'event':'capacity_initialized','effective_num_envs':int(self.env.num_envs),'samples_per_update':4096*24,'gpu':torch.cuda.get_device_name(0),'cuda_total_bytes':torch.cuda.get_device_properties(0).total_memory}
   (out/'capacity.json').write_text(json.dumps(capacity));print(json.dumps(capacity),flush=True)

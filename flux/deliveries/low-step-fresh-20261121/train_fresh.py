@@ -66,8 +66,9 @@ def prepare(work,plan):
    if dest.exists():raise ValueError('bundle_member_collision')
    dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,dest)
  shutil.copytree(skill/'teacher-code',payload/'teacher-code')
- for name in ['config.json','teacher_child.py','teacher_algo.py']:
+ for name in ['config.json','teacher_child.py','teacher_algo.py','speed10_audit.py']:
   (payload/'teacher-code'/name).write_bytes((ROOT/'overrides'/name).read_bytes())
+ (payload/'bundle/overlay/wbt_training/config_values/hud04_robot.py').write_bytes((ROOT/'overrides/hud04_robot.py').read_bytes())
  check_rows(payload,plan['effective_overrides'])
  validate_config(json.loads((payload/'teacher-code/config.json').read_text()))
  return payload
@@ -91,7 +92,7 @@ def seal(out,work,report):
  selected=[]
  for p in sorted(out.rglob('*')):
   if p.is_symlink():continue
-  if p.is_file() and (p.suffix in {'.json','.jsonl','.yaml','.yml'} or p.name=='model_smoke_final.pt'):
+  if p.is_file() and (p.suffix in {'.json','.jsonl','.yaml','.yml'} or p.name in {'model_smoke_final.pt','model_at_672.pt'}):
    selected.append(p)
  # Preserve latest newly trained checkpoint even if native teardown failed.
  if not any(p.name=='model_smoke_final.pt' for p in selected):

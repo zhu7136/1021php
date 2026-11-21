@@ -1,3 +1,22 @@
+# Fresh-training entry, 2026-11-21
+
+`train_fresh.py` is the new dedicated entry; historical runtime fixtures are not
+executed. It reconstructs both hash-pinned archives, checks their manifests
+separately, applies reviewed 2000-update overrides, and starts only a fresh
+low-step teacher (4096 environments; all 56 clips / 25,676 frames).
+
+One GPU, 1800-second worker wall limit including preparation and selected-result
+sealing; zero automatic retry. Queue, Git clone, allocation, and release are
+outside that worker limit and may affect billing. This is not convergence or
+MuJoCo/deployment certification.
+
+No service credentials or signed upload URLs are delivered. Selected results
+and any newly trained final checkpoint are mirrored as checksummed archive
+chunks in the **private Flux task log**, not this public repository. Full-log
+retrieval and archive hash verification are required before claiming durable
+result recovery; the console preview may truncate output. Native lifecycle
+failure and successful optimizer updates are reported separately.
+
 # Hu-D04 低台阶：经用户授权的公开 Git 分片交付
 
 本仓库只交付本次从零训练所需的离线输入。**这不是训练成功记录，也不是已通过 GPU 验证的训练入口。**

@@ -1,0 +1,33 @@
+{
+  "branch": "aria/hud04-low-step-git-delivery-20261121",
+  "checkpoint_weights_included": false,
+  "checkpoints_loaded": false,
+  "clips": 56,
+  "cpu_reassembly_verified": true,
+  "files": [
+    {
+      "bytes": 113889241,
+      "name": "runtime.zip",
+      "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0"
+    },
+    {
+      "bytes": 91493471,
+      "name": "low-step-input.zip",
+      "sha256": "700461597f20cf2adad807a92f7996aed9eebba4a853e8444e5eb3d92b6bbb3e"
+    }
+  ],
+  "flux_clone_verified": false,
+  "flux_task_created": false,
+  "frames": 25676,
+  "fresh_training_required": true,
+  "gpu_started": false,
+  "manifest_sha256": "24e92ac169f998acd280b670d48b7bae7f1d0dcc914ac5a276574d72c4a91e54",
+  "owner": "zhu7136",
+  "purpose": "user-authorized public low-step fresh-training input delivery",
+  "public_asset_upload_authorized_at": "2026-11-21T12:21:12Z",
+  "repository": "1021php",
+  "runtime_note": "Runtime contains historical fixture source/configs, not an approved fresh low-step entry. Do not execute those fixtures.",
+  "shards": 5,
+  "skill": "low-step",
+  "source_run": "j5fpnbpy"
+}

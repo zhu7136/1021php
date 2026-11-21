@@ -1,0 +1,4 @@
+inputs/*.bin -filter -diff -merge -text
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf

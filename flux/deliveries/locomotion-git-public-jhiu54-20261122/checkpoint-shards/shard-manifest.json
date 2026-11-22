@@ -1,0 +1,33 @@
+{
+  "chunk_bytes": 3145728,
+  "files": [
+    {
+      "bytes": 10344063,
+      "name": "model_00500.pt",
+      "sha256": "b42fabd4343ca0c9b8ac21d796c99a290fcb9a096433933ebbb48586acae73af",
+      "shards": [
+        {
+          "bytes": 3145728,
+          "path": "f00-p00000.bin",
+          "sha256": "98e545ccb36258451b3b3ddcc8eaa52bc5e601906a763a1ed41f643b0ffd5648"
+        },
+        {
+          "bytes": 3145728,
+          "path": "f00-p00001.bin",
+          "sha256": "6b5b2788251cc25d74096335f857438d32268985ff32bdd02f7fa8d7830046d7"
+        },
+        {
+          "bytes": 3145728,
+          "path": "f00-p00002.bin",
+          "sha256": "3d47996b5a7ff20d1199e9d42011be8b848a2b903bafb35f1b2961f6d9b66c7b"
+        },
+        {
+          "bytes": 906879,
+          "path": "f00-p00003.bin",
+          "sha256": "a99724b1cb8f0217fc8da398776579b17295befd7040be74ca3dcf695b150e0a"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

@@ -47,7 +47,7 @@ def main():
   scanner=sim.scene.sensors['height_scanner'];scanner.update(0.,force_recompute=True)
   env._compute_observations();env._post_compute_observations_callback();env._clip_observations()
   expected=torch.cat([m.root_pos_w,m.root_quat_w,m.root_lin_vel_w,m.root_ang_vel_w],dim=-1)
-  root_error=float((sim.robot_root_states-expected).abs().max());joint_error=float((sim.dof_pos-m.joint_pos).abs().max());velocity_error=float((sim.dof_vel-m.joint_vel).abs().max())
+  root_error=float((sim.robot_root_states[:]-expected).abs().max());joint_error=float((sim.dof_pos-m.joint_pos).abs().max());velocity_error=float((sim.dof_vel-m.joint_vel).abs().max())
   init=dict(initial_root_max_abs_error=root_error,initial_joint_max_abs_error=joint_error,initial_joint_velocity_max_abs_error=velocity_error,no_initial_physics_steps=True,reference_frame=int(m.time_steps[0]),native_joint_names=list(sim.dof_names),native_body_names=list(sim._body_list),native_hard_joint_limits=sim.hard_dof_pos_limits.detach().cpu().tolist(),physics_dt=float(env.sim_dt),policy_dt=float(env.dt),device_name=torch.cuda.get_device_name(0),checkpoint_sha256=digest(),checkpoint_iteration=660,reference_frames=800,observation_shape=list(env.obs_buf_dict['actor_obs'].shape),training_updates=0,randomization_disabled=True,initial_anchor_for_relative_target='waist_pitch_link',_wb_agent=plan['provenance'])
   (out/'initial-state-proof.json').write_text(json.dumps(init,indent=2));assert max(root_error,joint_error,velocity_error)<1e-4 and init['observation_shape']==[1,449]
   actor=actor.to(device);env.comparison_stream=(out/'trajectory.jsonl').open('w');env.comparison_armed=True

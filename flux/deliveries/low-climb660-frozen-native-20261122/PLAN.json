@@ -65,7 +65,7 @@
   "public_files_are_authorized": true,
   "provenance": {
     "thread_id": "01a1f6bb-d86a-7bc3-beaa-1ad43376ad65",
-    "turn_id": "01a2031e-8c10-79f1-9ec8-2d97e6180beb"
+    "turn_id": "01a20331-cfd1-7a31-b7fd-b57a0548e68a"
   },
   "runtime_files": [
     {
@@ -3377,8 +3377,8 @@
     },
     {
       "path": "native_child.py",
-      "bytes": 6590,
-      "sha256": "13e8dd89b924bdf86e723deb6bed02e79783fa86d972cc65a1e8f4f9aac1f450"
+      "bytes": 6593,
+      "sha256": "d9ff9dc10e2dcaf0a3d72a924583f22c0037fd7e8b8b8f1bc75f45e2e67c38cb"
     },
     {
       "path": "frozen_compare.py",
@@ -3415,5 +3415,12 @@
       "bytes": 2987746,
       "sha256": "3b5a491ffe4cca53108306e91a323637bca95ebfd77443176a3f8fe413dbf6e5"
     }
-  ]
+  ],
+  "revision": {
+    "purpose": "RootStatesProxy tensor indexing fix before initial-state validation",
+    "previous_commit": "bc041296e549d90297f09c313e0d9b0327ff9aeb",
+    "continue_authorized_at_utc": "2026-11-22T12:18:46Z",
+    "training_updates": 0,
+    "checkpoint_unchanged": true
+  }
 }

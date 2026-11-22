@@ -1,0 +1,3419 @@
+{
+  "scope": {
+    "gpu_num": 1,
+    "worker_seconds_max": 900,
+    "max_tasks": 1,
+    "automatic_retries": 0,
+    "training_updates": 0,
+    "num_envs": 1,
+    "reference_frames": 800,
+    "policy_steps_max": 799
+  },
+  "checkpoint": {
+    "iteration": 660,
+    "sha256": "9a0b61cdb689886c1171f77eb725ff85f4910573d7fa6376fdf4594415e45711",
+    "bytes": 10344315
+  },
+  "inputs_manifest_sha256": "54a6cf2f088c8b2a07d064b7109fb8e32117f7aab0cbe64c4c86c613d8ffcec0",
+  "shared_runtime_inputs": "locomotion-g1all-fresh-20261122/inputs",
+  "shared_runtime_manifest_sha256": "5c4fa406c8c1381cd1dea9cec433b403a998cc2bfb303d0ec69248ccd4afdb4f",
+  "shared_runtime_file": {
+    "bytes": 113889241,
+    "name": "runtime.zip",
+    "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0",
+    "shards": [
+      {
+        "bytes": 50331648,
+        "path": "f00-p00000.bin",
+        "sha256": "89542658f321aa6129b45bf06cef8e819ccc0b5eca2959f4cbbba1371e3a790f"
+      },
+      {
+        "bytes": 50331648,
+        "path": "f00-p00001.bin",
+        "sha256": "21835806d646a622e7607fddb073b08a7136d4de4c519391548376554c511e54"
+      },
+      {
+        "bytes": 13225945,
+        "path": "f00-p00002.bin",
+        "sha256": "0cc72b54155824e55d4459f7c3756cea3e61377b6efb20ee600b966fe55d1704"
+      }
+    ]
+  },
+  "source_run": "puljx4ho",
+  "source_task": "TASK_20261029_018",
+  "source_case": {
+    "clip": "forward_walk0.6s_step0.7s_motion.npz",
+    "start_frame": 0,
+    "frames": 800,
+    "motion_sha256": "e9e099abaeb0e033dfcc4448c073e1367d12d1dc9dcc1b06e3a1ba6703a00c5b",
+    "terrain_sha256": "8727d2812506c87c72b46fe226bb487875d67eff762375a713cd20d10784ca8e",
+    "terrain_variant": 0,
+    "translation_xyz_m": [
+      5.187807009479286,
+      5.957281945091509,
+      0.0
+    ]
+  },
+  "translation_xyz": [
+    -5.178599175916586,
+    -5.957277320545525,
+    0.0
+  ],
+  "source_archive_sha256": "42dc240a35adea7cdaf49cfb38eaa83df89d39b86668dfa325580f2a79243128",
+  "approval_at_utc": "2026-11-22T11:53:13Z",
+  "public_shard_approval_at_utc": "2026-11-22T11:57:44Z",
+  "public_files_are_authorized": true,
+  "provenance": {
+    "thread_id": "01a1f6bb-d86a-7bc3-beaa-1ad43376ad65",
+    "turn_id": "01a2031e-8c10-79f1-9ec8-2d97e6180beb"
+  },
+  "runtime_files": [
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/base_link.STL",
+      "bytes": 1277634,
+      "sha256": "3523159f55ef13b00b2a0457f98a94e7cc80664cbd541cdbad822d27287fbeb8"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_ankle_pitch_link.STL",
+      "bytes": 60784,
+      "sha256": "56330a050041b7c7c1c12a34dce06e93be4c684f68c85668413ce65ff4b24f51"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_ankle_roll_link.STL",
+      "bytes": 1225384,
+      "sha256": "d1c9a577c09018a8ba5bf06ae1af58f6692cb0a022c2b847348de4e7a0e1441c"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_elbow_link.STL",
+      "bytes": 152884,
+      "sha256": "2888dc889477702b12e2f3815b379fe8ff499d3c57fc91e3d66a8246c32062c2"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_hip_pitch_link.STL",
+      "bytes": 254884,
+      "sha256": "95fe180a51d8eda2259163f90293f6d46119af90d6441f6877086e37cd5f6a7f"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_hip_roll_link.STL",
+      "bytes": 491484,
+      "sha256": "534adfa9f0397b15aadeb387f8feba52e9b06a1bf17ce79398b4d93c77b4418e"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_hip_yaw_link.STL",
+      "bytes": 554284,
+      "sha256": "f7211294866649906978641362fd25ae4cbff905e6f56713f6533c54529a833e"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_knee_link.STL",
+      "bytes": 1394184,
+      "sha256": "6eddc5871da1b6a5eec838580e85fa5ed4fb675df681f1494ee9984f1db4ea09"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_shoulder_pitch_link.STL",
+      "bytes": 413784,
+      "sha256": "f1c2c27e2c08d1d2d1bc2ca7ba85076104d5a4f89ccee3914c6bd66b0f344f01"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_shoulder_roll_link.STL",
+      "bytes": 453234,
+      "sha256": "642539bb3c6653ecd711da9f7032b87f52f9dc205f12f5f5719b1dc2ba3c9c98"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_shoulder_yaw_link.STL",
+      "bytes": 321034,
+      "sha256": "1d6336e6ef5f162b6f8d7dd52e02435aeaca3b9e16c8a8cb7430a494c4c1f421"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_wrist_pitch_link.STL",
+      "bytes": 89284,
+      "sha256": "76b99c5f53059abb1d07b77e3e076f200bfc1f91f1cf54f9258bb63785d74c7c"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_wrist_roll_link.STL",
+      "bytes": 239684,
+      "sha256": "5aa0af4ccdaf46d498267b0fae247b8d547d8d72dd8db4f7691fe42b567eb5d6"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/left_wrist_yaw_link.STL",
+      "bytes": 81984,
+      "sha256": "8403519d27e46a72426b2239d83cbaf48962c09bbf5a2e2283128f213ff70118"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/neck_pitch_link.STL",
+      "bytes": 500384,
+      "sha256": "c2408c7e5650a38b2ec76ef5995003d830b02b2054d623e574cded2d63351266"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/neck_yaw_link.STL",
+      "bytes": 573634,
+      "sha256": "09639025d46dcdeb1ef83a30655b96d94ef2cb0c2d7583d7663bac0c08a228cf"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_ankle_pitch_link.STL",
+      "bytes": 60734,
+      "sha256": "7b1ea8a1c2233bf1ba6102246a5ff403ad6364406a8ba93dad04c1604d6618db"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_ankle_roll_link.STL",
+      "bytes": 1225384,
+      "sha256": "dfaa9ae9dbe0c8d2073c8ff10428e5b29ec02bf05d50e82d26b5a2e01b524c14"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_elbow_link.STL",
+      "bytes": 182184,
+      "sha256": "9c7d4b1382573a7408633872062d0cf073e5118f7b4ed183910adf32e090a067"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_hip_pitch_link.STL",
+      "bytes": 254884,
+      "sha256": "9c1cdaf2bf1f8ee15f44de7e7c9efa23ac7254f4a766890321dd9b1f7d6501eb"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_hip_roll_link.STL",
+      "bytes": 491434,
+      "sha256": "4014b22c9100fbd518c8317c2dff79324e0ec109766a684decfa17e66aa8c00c"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_hip_yaw_link.STL",
+      "bytes": 554234,
+      "sha256": "071945e528f3d73313f9ab46f93baa35598b96249670d4b5d837b39b005f2bb4"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_knee_link.STL",
+      "bytes": 1393934,
+      "sha256": "679022f3f654b11a74ab6205e14e9cf8506e09372adbd8ce0e18ae5ab572de72"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_shoulder_pitch_link.STL",
+      "bytes": 413784,
+      "sha256": "78f244f2858b016a08a30bd3c68aa0b7814cfd499cb12aa5230227fac423dbc3"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_shoulder_roll_link.STL",
+      "bytes": 454534,
+      "sha256": "1cdc18995bf2bc4a448e3d60155397fe02aff91a9cc4252f4e3dcb9029d5a77a"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_shoulder_yaw_link.STL",
+      "bytes": 320534,
+      "sha256": "b7711c02409d50853d6c14431fce5f99b933d6e4e4bb877c7adaf12a2904444c"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_wrist_pitch_link.STL",
+      "bytes": 89234,
+      "sha256": "3c87d40c9f28e287328333b3342ea6292bbd20447b149a1986393789bd7e8b92"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_wrist_roll_link.STL",
+      "bytes": 239534,
+      "sha256": "e4804755e9991f05ad5389340e1e83ee1ef687a403896c21c0f785c28ff871fc"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/right_wrist_yaw_link.STL",
+      "bytes": 82484,
+      "sha256": "e4600c0e88c5b9cf1f1a79a583c9398c64e391395692a3003a070b2a1a4d17bc"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/waist_pitch_link.STL",
+      "bytes": 3298784,
+      "sha256": "781928e56f59717870778f2dd1384ca21a258bd10580fe9563f363b1f5ef56f5"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/waist_roll_link.STL",
+      "bytes": 192084,
+      "sha256": "4fd1dde80e42f1d8fced3debe4ef1dd308628105c359b58a9ed48e11d81258a8"
+    },
+    {
+      "path": "bundle/asset/meshes/HU_D04_01/waist_yaw_link.STL",
+      "bytes": 629834,
+      "sha256": "66aac6232157cb5d5689e2fbecd211fe3dcffc41485f59340b1e7810eeb76bbb"
+    },
+    {
+      "path": "bundle/asset/urdf/HU_D04_01.srdf",
+      "bytes": 2938,
+      "sha256": "6815e2421b58ff43d85a04bcede461a73110edca42c671188454042142025c1a"
+    },
+    {
+      "path": "bundle/asset/urdf/HU_D04_01.urdf",
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
+    },
+    {
+      "path": "bundle/asset/usd/HU_D04_01.usd",
+      "bytes": 1458,
+      "sha256": "9cd8cf50aa56e09a8aea8bb9a3fdec15af2a4dad622882c1d6f39fd3e967baa0"
+    },
+    {
+      "path": "bundle/asset/usd/configuration/HU_D04_01_base.usd",
+      "bytes": 25891259,
+      "sha256": "b37fba22a4cc13be0bb31df3a63352ee2679abfa0fa179c69576f2c585a5ae1f"
+    },
+    {
+      "path": "bundle/asset/usd/configuration/HU_D04_01_physics.usd",
+      "bytes": 13081,
+      "sha256": "12cd775e74c234772b66c4bea2b63824d86016fd75d64e67222b77b8bd2ee177"
+    },
+    {
+      "path": "bundle/asset/usd/configuration/HU_D04_01_robot.usd",
+      "bytes": 3057,
+      "sha256": "9f070eca577f6dbe8802af4171de7f719f6c541217f0d992ac201841df095e76"
+    },
+    {
+      "path": "bundle/asset/usd/configuration/HU_D04_01_sensor.usd",
+      "bytes": 649,
+      "sha256": "5a6260f8e2da58d2ef3794e3b7e3f55f96cc1ecbcfb9c313f400698d7c314095"
+    },
+    {
+      "path": "bundle/bundle-manifest.json",
+      "bytes": 121682,
+      "sha256": "c8959725092c967c24a7f88e74e980b959f28056627ca05f7d20ad3a2e0eea68"
+    },
+    {
+      "path": "bundle/config/forward_walk0.5s_step0.5s_motion.config.json",
+      "bytes": 33461,
+      "sha256": "85cb4ccf5227f4834e940430b840e2ca41d858453ae8b81d642c754d56c29e8a"
+    },
+    {
+      "path": "bundle/initial-native-import.json",
+      "bytes": 1286,
+      "sha256": "6bfa8b687df80dda8cbba069c8a022d49ece1fd473c5d70100a3bc4b605a9055"
+    },
+    {
+      "path": "bundle/overlay/flux/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/overlay/flux/teacher_algo.py",
+      "bytes": 6314,
+      "sha256": "af9558922b51fa5f89c25940c7d52d524166d63862b2075995d35341d9fd5585"
+    },
+    {
+      "path": "bundle/overlay/hud04_php31_action.py",
+      "bytes": 3743,
+      "sha256": "ed387d20f61071078e2dcd8c1600150b94ad3632c1c3ffb85a7b3da8072b7159"
+    },
+    {
+      "path": "bundle/overlay/hud04_php31_native.py",
+      "bytes": 928,
+      "sha256": "bbfeea8599a90b1a93dd59f1dd79baceaf4dc1066039598ea66df4eed94b9efa"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/__init__.py",
+      "bytes": 298,
+      "sha256": "56adb9918fe805f002d01ab277c563ce99c17841481426dca6950897f743ab0a"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/config_values/__init__.py",
+      "bytes": 56,
+      "sha256": "124554366ba7681b0aaebb6197af12dfe9c045c4b67a0275890460c83d668896"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/config_values/hud04_experiment.py",
+      "bytes": 10116,
+      "sha256": "498cad6569d1b61535b6327f28116e6c7982cb13138562b86bc6f405c684e6a0"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/config_values/hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_action.py",
+      "bytes": 3471,
+      "sha256": "3ccc241412496c55ec7a93603ca7a571e403ff31731387dd13146f4a5fadfacd"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_command_core.py",
+      "bytes": 2182,
+      "sha256": "66cf534b1f96474afd6d6d051fef28577740ede5a93691858f444022024d6115"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_env_core.py",
+      "bytes": 1840,
+      "sha256": "ad44ce38de2bcaffd4562b431c8458ef08585d0cab679e0241458f99fb74baf4"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_holosoma_action.py",
+      "bytes": 533,
+      "sha256": "d2c2c4b510bce57b3a932f8267ef030b3755b938866627366f23c6a04caefc86"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_holosoma_command.py",
+      "bytes": 368,
+      "sha256": "a50ebbdf742678bbe1d06ba00a912d2fba015db5ed23328d4915b81e9e4b8e20"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_holosoma_env.py",
+      "bytes": 299,
+      "sha256": "f8ab304a61515711c4b877afaa3fa6a5489a27b04a95f7261b268f43fa5ec32b"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_motion.py",
+      "bytes": 3111,
+      "sha256": "1986740b673637b2bdf76023bbc7dddeb3c14e0dd5e65c7907589efe16bc6811"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_state.py",
+      "bytes": 4956,
+      "sha256": "c63711052e7b3123725056826a7d9d9fc5d60bdd42e17c19dc9fb2f910bbc186"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/hud04_usd.py",
+      "bytes": 1832,
+      "sha256": "4bd233b903c4c6f5332d6292c090d5f977794285c06172570df196e4ec369384"
+    },
+    {
+      "path": "bundle/portable_config.py",
+      "bytes": 3667,
+      "sha256": "5bcdcad2fab79b44913b3366a42b90a72f98095a1101582506adc17024b6dca0"
+    },
+    {
+      "path": "bundle/reference/forward_walk0.5s_step0.5s_motion.npz",
+      "bytes": 4563627,
+      "sha256": "e85616f107481a1154114d05bcc3a3d1dfba24025597e06c0af52071685dde25"
+    },
+    {
+      "path": "bundle/reference/forward_walk0.5s_step0.5s_terrain.npy",
+      "bytes": 1728,
+      "sha256": "39ff22e79f8a2a83408b8bad52fa542189d85cee2ee11065aea1b45c3e521471"
+    },
+    {
+      "path": "bundle/reference/source-manifest.json",
+      "bytes": 41929,
+      "sha256": "66f4c71e23c9dc2badd2c4462f445f81d7df8adc9e385e82cbc3c320bf6f8b39"
+    },
+    {
+      "path": "bundle/runtime-source-manifest.json",
+      "bytes": 178585,
+      "sha256": "d8bec3e41c3e7a63e7f384928565be401c751fe82bd54b494c254d5cf1c891c2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    },
+    {
+      "path": "bundle/runtime/holosoma/pyproject.toml",
+      "bytes": 4204,
+      "sha256": "51f1f9bcc0c3f0b01fa32bedaaebdbd48911759bde9bd8707c86b9f8f65ef79b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/README.md",
+      "bytes": 10082,
+      "sha256": "cbc06b2cfb04001e169f1c4d73ac13d4d1de2790680473b8b6daa85c0d36320c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/__pycache__/__init__.cpython-313.pyc",
+      "bytes": 173,
+      "sha256": "a31f4445c841c9db766ba9488487415a57c9a5949607ebbd7f4f5e564331128c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/base_algo/base_algo.py",
+      "bytes": 5810,
+      "sha256": "b29d389ca908a8860545f1ada578c5fe408387aade0b21e51234c20470c39a5a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/callbacks/base_callback.py",
+      "bytes": 514,
+      "sha256": "09812a1e7aa05268403524b3169a6e03c71bc8dd0284311ead65c11c843f8f2a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/callbacks/payload.py",
+      "bytes": 6912,
+      "sha256": "489d30790573d81d75aae27ff6551958863e08b189eae23bbc51a6c9f01ee748"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/callbacks/push.py",
+      "bytes": 10525,
+      "sha256": "b90dc64372101c95bd23abc420b5191fed51ddd26fca1e54ba87df027402158a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/callbacks/recording.py",
+      "bytes": 8061,
+      "sha256": "a4f4a0f9461c0926d83c10c82f4b227a462e74b0d0cb90d5df8f5492569501f1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/distillation/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/distillation/distillation.py",
+      "bytes": 26325,
+      "sha256": "f8a01a1f5c7058ec2f832ea483a484b8dccb1e793f0cb9a8112c9acf8650495a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/distillation/rollout_storage.py",
+      "bytes": 2673,
+      "sha256": "cf868947dfd8edc7a44ab8888c7699e7a924c22f5d6c48815418ad9d3322fc8e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/distillation_ppo/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/distillation_ppo/distillation_ppo.py",
+      "bytes": 50836,
+      "sha256": "cb90b00a16b8749358610f48a87ff5c12ab22326f8a72c81595966c9cb01f8f9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/distillation_ppo/rollout_storage.py",
+      "bytes": 4776,
+      "sha256": "074bb8bc3b624b7cad4ff99e5500375e61357c6ad59bd3fa4d8091264d7b8888"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/fast_sac/fast_sac.py",
+      "bytes": 17728,
+      "sha256": "c0817d6256702bbc97668b6349c64dce6ef34558efe548877cec88593d776ea4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/fast_sac/fast_sac_agent.py",
+      "bytes": 45493,
+      "sha256": "0beb99362b0cdc5247b43818dfe9518357d90758cfc39d4c72c95126b65038fc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/fast_sac/fast_sac_utils.py",
+      "bytes": 17157,
+      "sha256": "282f289d5dd83f09d97cf92bc7159f08e9d8787b8daa4e2aed1331e570f23018"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/augmentation_utils.py",
+      "bytes": 22701,
+      "sha256": "ccdc61d650ceec0c1286f8badf065c97ace2f2d33e3d66f2817a00d9efc3fc21"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/data_utils.py",
+      "bytes": 5142,
+      "sha256": "7ddf6fc9ac2cad3e2fcc614983283265242791bbcf1ec4e783fd298d9274dfab"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/depth_backbone.py",
+      "bytes": 4589,
+      "sha256": "ae8d50d5b51128d8933785ba51d65338b98a24f72c6789a13ccbaf95930892c4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/logging_utils.py",
+      "bytes": 16233,
+      "sha256": "4ad7864ec212bedbc8601da373992f0b7281e175260c781d5ff7b31ca5b2f22e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/module_utils.py",
+      "bytes": 5140,
+      "sha256": "fc74fb10926eaf1e409c93efcdff71111c4090d953fdf7635419694cf073eae0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/modules.py",
+      "bytes": 14863,
+      "sha256": "fd422d0ba9fb21d08420125d3c4763e4edd21e769eb9301e2fd4e7359710d123"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/ppo_modules.py",
+      "bytes": 7326,
+      "sha256": "46142be3c3d700aafb13c401750918dd641eb12f266ee6adad71a341c7f9618f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/student_teacher_modules.py",
+      "bytes": 20548,
+      "sha256": "7db02a6c8cd1c441d8d0cf0fd86958ab0b83dd52ab9cf49806d210f6ad5b8251"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/tests/test_augmentation_utils.py",
+      "bytes": 12473,
+      "sha256": "0b138b1b9d3d7edff8581ac6ed86c4e35234913204fe0bd6639aa23171dba732"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/tests/test_distillation_contracts.py",
+      "bytes": 17298,
+      "sha256": "f483b6bd8d481a4748a2808fd9d415a21727d1de457684606c4c9edab5f0967c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/tests/test_logging_utils.py",
+      "bytes": 6538,
+      "sha256": "b1fcc83cac6ce5411fde5c75a108e3a40c9e2d35390b8f34c7aa8344f5ce3306"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/tests/test_module_dimensions.py",
+      "bytes": 10159,
+      "sha256": "8e6b42d7b7f8c748a483d3db38c973150a4fc61cb1b2df23fc8eb3b69ecc3ba4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/modules/tests/test_student_teacher_modules.py",
+      "bytes": 7053,
+      "sha256": "b712207eb98fbfd0e9b4985b73a4ba7e1df8a35b702c4a44d7ac10caf0da22c4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/agents/ppo/ppo.py",
+      "bytes": 39395,
+      "sha256": "0899268dff8e9f8def38db6b76d2e4afd193c3d7a4ef28550217dc142d6898f6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/__init__.py",
+      "bytes": 1599,
+      "sha256": "c09e36f12e84be31addc1553d176b9c5a19a290c388c16244174b48367fef36f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/base/__init__.py",
+      "bytes": 195,
+      "sha256": "3bce4c9f3cb004a8698995d6a71fdc2fdf6f3e7d9f5c9c827406d5697b198427"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/base/basic_sdk2py_bridge.py",
+      "bytes": 15265,
+      "sha256": "8453b7a734cc20776ee3514935a730cc0ff12bdbdff56b9f9047fe635512dab6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/booster/__init__.py",
+      "bytes": 133,
+      "sha256": "ece8609c3101ba86dfc5fe8d9813b39237c4448ef753d51a58f93cb9887dac3f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/booster/booster_sdk2py_bridge.py",
+      "bytes": 5133,
+      "sha256": "4a31e75b4af5c80d0ed87b4f13069249fdab43f97c02295b4b58c8e00ccfb114"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/ros2/__init__.py",
+      "bytes": 111,
+      "sha256": "ea59a52bb20ef61a6e4f8b358fc41c593f56a341579963e726e44b84e21d0387"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/ros2/ros2_bridge.py",
+      "bytes": 4954,
+      "sha256": "1db8001ac2899630e874856d7957df75a19255a8e2981f1699bb9abf1758b901"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/unitree/__init__.py",
+      "bytes": 551,
+      "sha256": "b51a659a86f3777d32376f5ce3a919819550a1752d7ae5a9ef1a4fe27b48ed72"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/unitree/tests/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/unitree/tests/_fake_unitree_interface.py",
+      "bytes": 4549,
+      "sha256": "e2557859a0cbeb8023708748b72f95058181cf74fe040d7074d221da139fc224"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/unitree/tests/test_unitree_mp_bridge.py",
+      "bytes": 8959,
+      "sha256": "8a7af6115294ed5b4c203d6e8ce98298384ef1316049e4816f48297222b2e599"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/unitree/unitree_sdk2py_bridge.py",
+      "bytes": 7185,
+      "sha256": "249020b197a4d365d2174e057ff54f7e23ed48f9dc6dcf647338a2b3d17a1166"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/bridge/unitree/unitree_sdk2py_bridge_mp.py",
+      "bytes": 14496,
+      "sha256": "d170a7214e1bdb19dae1152b3bddd41805142efd68d13e0345bcf6df0aa6fc82"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/action.py",
+      "bytes": 1002,
+      "sha256": "435637fa4292d4d0683afa0837a03f39adc7823061818140676d33a3a285aff7"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/algo.py",
+      "bytes": 15481,
+      "sha256": "d64e36ce3ca3a5ab17702a3575a4a9a8886e92f931d113217ead4775b4dcb33e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/command.py",
+      "bytes": 7098,
+      "sha256": "397060accb4a3f6ca7de77dbbb50c0eb92c1e170bc3e2b437877df0b3e12ceaa"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/curriculum.py",
+      "bytes": 1094,
+      "sha256": "e1a27b63180d975f3c1189fde1b72a25e09ebae57a9c40fcf8bb73cbea2c5409"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/distribution.py",
+      "bytes": 11558,
+      "sha256": "2b45adbb9649f2963d037573c2d250428b2fb952d962e74bb1a201080d41e8aa"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/env.py",
+      "bytes": 3157,
+      "sha256": "0fb26f0f944e0d1a3fdc8771084b1328da5631f7dd5a514158443647948c5c34"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/eval_callback.py",
+      "bytes": 3747,
+      "sha256": "67863fb6ef37414e5cb3000dbfa74cd0ed823921e5b6874c1c94b767e1cbc4a4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/experiment.py",
+      "bytes": 10694,
+      "sha256": "77a369834ac89987e7aedaafcff03a7b65e613ba137c37dc839a7e50a0e8d290"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/frequency.py",
+      "bytes": 4588,
+      "sha256": "5094ed68c4523d79dd09c11e9e9b95cd8916ac4cab244fb96b740111edbbf772"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/full_sim.py",
+      "bytes": 1551,
+      "sha256": "f9444352a4a626be6edc021dfedea24693580aed41cc4e563ae0b677d7fdf845"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/logger.py",
+      "bytes": 2827,
+      "sha256": "85391b83d2db9c86c27dbcff8a8751bdb068fb4e2cb8f6ba2125e9d53fa7e1e0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/observation.py",
+      "bytes": 1773,
+      "sha256": "1dcee197c14b181f2aaf3a44b44bd135c50d82666520fa15af85e899807bfb94"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/plugin.py",
+      "bytes": 24369,
+      "sha256": "e8c4609e689a3b2229e9d34d5b549dd16244c194936f8885c17da34cddba951c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/randomization.py",
+      "bytes": 6201,
+      "sha256": "076264a56432938323a0654874afe5f90a890cdd519b0861ab306675173a5ea9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/reward.py",
+      "bytes": 1104,
+      "sha256": "af763a069ddb4b722e67193d540308f5d3e97080e0303d95ad6e9d18fb3de105"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/robot.py",
+      "bytes": 6994,
+      "sha256": "4f385cb679c2babf629eabbc485ccd0aa71761fd6b20ec1d03cb1ce2fbb9cfe5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/run_sim.py",
+      "bytes": 4478,
+      "sha256": "263c9cc1c1c79a6104c36c5a6184449fd445e1ca75e8bbab2755d00012ee0a25"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/scene.py",
+      "bytes": 20307,
+      "sha256": "5a2a8f627eb2f25129ac081da82d4b6607b5256b239a854d37de2cf0429dd0eb"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/sensor.py",
+      "bytes": 14579,
+      "sha256": "d60f4a9af8389c0ec786409b7acebce7355f593b658253001c3d2814be51adb6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/simulator.py",
+      "bytes": 12266,
+      "sha256": "7f108541bc56989d2d18cd0668f5158f9aa03ea636f8082a4841ba0d99c59572"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/termination.py",
+      "bytes": 808,
+      "sha256": "6bfd24291ef844125bf3bdb3dd941810b0509f1b2015e474c99c5ef5a71bae44"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/terrain.py",
+      "bytes": 8031,
+      "sha256": "f4c8ca9f99ba143c6414cdef9526084afc6781bec60265edcafab0fe61775fbe"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/tests/test_frequency.py",
+      "bytes": 4908,
+      "sha256": "d29ea4d0882b916aa839db707d9d734373be2b9dc9f6667b247287d3ef5cd8ad"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/tests/test_link_physics.py",
+      "bytes": 8639,
+      "sha256": "94b6f2c50b37ee0c8dcf9534d189ba5559410b106d2123e948d4ea6a6477c6fe"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/tests/test_plugin_egress_config.py",
+      "bytes": 3252,
+      "sha256": "438ebcfa5970f67279910400b4aabd91d24e6fce63bf3ac8d7679bb6539f4de6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/tests/test_sensor_config.py",
+      "bytes": 2194,
+      "sha256": "aaaf37e28275d8672a4709db1e54a2282c253392e13fd9f3930bf1df9f892d01"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/tests/test_tyro_cli.py",
+      "bytes": 254,
+      "sha256": "1c52110caeb7d4e7d47810ee6d86d7b9cbc71d02732b0ab31f311f625fe50622"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/video.py",
+      "bytes": 5328,
+      "sha256": "c66ad71c2ccb25f1f65b80dea74e546be28f6a0f1d4698b9c134e79a37d96fb2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_types/viewer.py",
+      "bytes": 1606,
+      "sha256": "eec9e34c1cbb6e15abcdf77f1c44e69cfbe275102a24e6cf34273662190d42fb"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/__init__.py",
+      "bytes": 65,
+      "sha256": "59928664d397928f248a04bbc2ca1cb30e75bd93e765e2fb767405e17904dec3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/action.py",
+      "bytes": 832,
+      "sha256": "32c0e1e6f3d82410c052f2c0a4f6c00c49ee1ff7a51082c3aba5965e882fdadc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/algo.py",
+      "bytes": 4524,
+      "sha256": "02b99b641826d6acf3013927cfdf52f0cce6572d6912ee12bcde35acd444ad28"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/command.py",
+      "bytes": 977,
+      "sha256": "ccebaf9c7faed0a304ccee4c4cc2138bdcbf7e52ac99b4d389b11c1f14f92526"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/curriculum.py",
+      "bytes": 1137,
+      "sha256": "963961e959581e596d95d0b7c80f1105bd57de3e2bd37345435bfc62730da436"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/experiment.py",
+      "bytes": 1735,
+      "sha256": "7ca416f0ff3c6e77f16dc97561fda978343c1c653243cd2cae75c023529d5025"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/__init__.py",
+      "bytes": 134,
+      "sha256": "d652690081abe8d0c6e4fa4384aaf1ac398600b7ad95561f29787b2982da4784"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/__init__.py",
+      "bytes": 125,
+      "sha256": "0599f452ad6c818184a113168242e138271f5a8811ab84bce98b3d2554aa21bc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/action.py",
+      "bytes": 427,
+      "sha256": "733853e4a5852c4dae996e746b485aff728ccfea712bb6dda434d66f9965ce77"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/command.py",
+      "bytes": 1505,
+      "sha256": "7614fcadff0cdf5bf6a723d934430e71b052c0bc38c378218ff0c26a89633836"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/curriculum.py",
+      "bytes": 1904,
+      "sha256": "f045241f29ef60d67e8ecd557379c6b69cfb1d30a5527a5da114087cc605f1ac"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/experiment.py",
+      "bytes": 2226,
+      "sha256": "044a5bca32a8e258503f7b211cac4174e0fb9c130c284a5be85b39bc3786d4e6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/observation.py",
+      "bytes": 4627,
+      "sha256": "e9119ac57c9a940af12c875275c4cf84fda4ed7eca545f74d9e23ccaa870bd1a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/randomization.py",
+      "bytes": 4299,
+      "sha256": "8ebb2c357e970b6b2ae134ece15215d22caaeaf44f681e41368e6fc921eaea57"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/reward.py",
+      "bytes": 6269,
+      "sha256": "0456a8aa049f0f406782806cc0543a1fa53901ae9b3c54768e64f19ac205c0a3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/g1/termination.py",
+      "bytes": 694,
+      "sha256": "0ef334e7aec07c1694d051d07a32ef1c09d90e731c796ae436f55b1032284799"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/__init__.py",
+      "bytes": 139,
+      "sha256": "b11867dbf7f435e259684c544474d5b5ec42cd18f801619ab4234f3e8a0f80a8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/action.py",
+      "bytes": 427,
+      "sha256": "11119df53eb849923c66240a0cd77020d590d392320217ded8f8b141a0f44cca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/command.py",
+      "bytes": 1423,
+      "sha256": "e76087417db495e291d0a3928ae0f0d1cd4b7d6418fce95c38a0ee6f416b26dd"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/curriculum.py",
+      "bytes": 1782,
+      "sha256": "ecf376f5834c6cf5c6d74d23457385b0af62000ac93310d907ea2ab32c3b0261"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/experiment.py",
+      "bytes": 2266,
+      "sha256": "1a94b70d1cbc31ee5cfc14460485f550e06629156f931ac9c5ce6b602096a84d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/observation.py",
+      "bytes": 4623,
+      "sha256": "b344de0cde39635ddc6b1a22031cf273a28a03d79f47b6a4fa8a750fa43da810"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/randomization.py",
+      "bytes": 4335,
+      "sha256": "df2f11517a9e5a32fba98228dd6eebf0b9d9ad06fe461b5ffb2b477cfc720956"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/reward.py",
+      "bytes": 6269,
+      "sha256": "2eb0552f2469c2322209a7fd9b1ae6583a9b4320a4ab0f6069ec5ad792beddac"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/loco/t1/termination.py",
+      "bytes": 694,
+      "sha256": "565ee8e1e1f7d4117dcc2b33e78c993954f389a5b9e06a8980a03924578011c7"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/logger.py",
+      "bytes": 667,
+      "sha256": "58eee6264bb0df73ac3577a8f566ba5d41d5de8ca1864679c48f5ce839433ffc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/observation.py",
+      "bytes": 1134,
+      "sha256": "d743b9322cf4e9c419f351572f1cc9852570692b7aabd6cd92aae4b1daa6f10f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/plugin.py",
+      "bytes": 8110,
+      "sha256": "f3c6ecf65eb6b01d72c9e03251229b610ae84a67c9a37306b7f7e83aa0f6aad3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/randomization.py",
+      "bytes": 1378,
+      "sha256": "59784d85756805c0763fc5d03e7fdf72da309eb00abd084be479f710f867dfbc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/reward.py",
+      "bytes": 1253,
+      "sha256": "c7e55e36fa1282bfb1a2478108d95c3cbc04b22068a83ce821b85ca1fc1408ec"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/robot.py",
+      "bytes": 31040,
+      "sha256": "1b05ccd2c03d5402c6949a41619551ca6aa47a2dcfe018d40eb6711a85c0a678"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/run_sim.py",
+      "bytes": 3235,
+      "sha256": "03aa983a2819c869f4c660f86942b4eb3839fb908984113bcd3e73fb989402d7"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/scene.py",
+      "bytes": 3423,
+      "sha256": "4dc663bd442a94dddb5fa1839d0c4df9c38f240dbd30dd64e32276ad37b87252"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/sensor.py",
+      "bytes": 3138,
+      "sha256": "ad330bca00de9517ed369ecf3daa13934769266a8f2da66957d1a83bb79e1fd0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/simulator.py",
+      "bytes": 3420,
+      "sha256": "5ee77fe1b1f2704544f7bed9659510b61c7c94c5f05477e57d73199bd87b62dc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/termination.py",
+      "bytes": 936,
+      "sha256": "8f4f8aceb2ca7e3a97978b6b334d881f4bcc59aa4b499ae5186124095299dd84"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/terrain.py",
+      "bytes": 4596,
+      "sha256": "fc3db1138131ad776ac54a860ecaacd8ed753dfc93742b5b28cdc6d356a3ecca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/tests/test_depth_distillation_presets.py",
+      "bytes": 6556,
+      "sha256": "5eaf8a4d6394f683c9ba6bdfc7240150b34d77b5d40e1ad6d2deb613d54e40b4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/tests/test_distillation_presets_registry.py",
+      "bytes": 3367,
+      "sha256": "7c600501545b36ee851b233ad8f76ac4c1a51cb15ba86e1f562dd567f9aaf7b6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/tests/test_plugin_registry.py",
+      "bytes": 5501,
+      "sha256": "abd1d55cef3c21de078e1fb6ed1ff29905aa445e3340a1e1317ed43c50b9bb4a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/tests/test_registry.py",
+      "bytes": 13980,
+      "sha256": "0d30a061dacc4a3c49931b365e5f9c0f8f3f6bf32d5d837531c3c6f9461486d0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/__init__.py",
+      "bytes": 55,
+      "sha256": "ab68ec629d2bc448c1839716cbbd0ee0bad8fc67c20dc953cde8559f50aa8837"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/__init__.py",
+      "bytes": 134,
+      "sha256": "0b634f840148a65cbf95826f528a0fe02631591d7c89db18bac9aa89f83513a4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/command.py",
+      "bytes": 2337,
+      "sha256": "8bb7fc26b934124dab66de4b996ebc845677c21222d56cbb548cb59a9a3d4231"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/curriculum.py",
+      "bytes": 546,
+      "sha256": "327b6f01da24829803548a789aa01149965eec776619bb0d3fb71501a63e5d49"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/experiment.py",
+      "bytes": 7027,
+      "sha256": "fc26898ea995cc64ed9164a706e1aa61e5dc8e02631630003ffb1f551c02df38"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/observation.py",
+      "bytes": 4072,
+      "sha256": "71c0115764595aea0ed7ad5e3e5038999dd2857296f3f3cfc0f6160ebaaab2ee"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/randomization.py",
+      "bytes": 8748,
+      "sha256": "464ff8176ab7bb6eb5fc04220db190bcbf4cd5bc31cd9f56a47baec342032cfc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/reward.py",
+      "bytes": 4561,
+      "sha256": "921dd0e1857661fa71c5af963571167001334ec8665eaa32aafe3a6f89d5e55a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/scene.py",
+      "bytes": 502,
+      "sha256": "a1305cff71ac466884b04594a22c4bfc61d5d809720f88680557df50835c141f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/sensor.py",
+      "bytes": 6879,
+      "sha256": "14d0f8e4fd4a8353db6a2275c0a608f868a6661d7d8640f31b0d66cc788873b4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/config_values/wbt/g1/termination.py",
+      "bytes": 1916,
+      "sha256": "d31294a852715b4a5a24ff594e9f5c7c04447fb0e9eba2e4440a89329ccf3c85"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/data/__init__.py",
+      "bytes": 78,
+      "sha256": "ac254a20e580929bfb729864403eb024e572d3f1413d9080e3ec6fab8468937e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/data/scene_objects/rubber_duck/LICENSE",
+      "bytes": 135,
+      "sha256": "6459cbc841c3fba19730b65a90a67739ee52f1a628934d8a8b9dcd268d3919c0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/__init__.py",
+      "bytes": 83,
+      "sha256": "7fccd874efb07ad55841cbb1e68a101af23ca72dfc48238d74466a27d191b635"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/base_task/__init__.py",
+      "bytes": 133,
+      "sha256": "7c414f747d1b2a85a465ed174a72cc54064345c53cb7510c6c213b84cbbd21c0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/base_task/base_task.py",
+      "bytes": 27080,
+      "sha256": "4e66b8aea909c4ddc3d2cf344a33d5883c7e04edd1d0724be2b9e01b88ffe115"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/locomotion/__init__.py",
+      "bytes": 296,
+      "sha256": "c852bf17123a39e670e8d3fb16fc90533150f173b9860e55965f449a66ce4a0d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/locomotion/locomotion_manager.py",
+      "bytes": 15473,
+      "sha256": "130c745b420a7ff87519bd44961f07a6184bfd2633d092e50bc72ab1931357d3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/tests/test_e2e.py",
+      "bytes": 1803,
+      "sha256": "affb0bea57148d79d610ded19d2caa8a9afa484a6a93211efff6ad24199f5b00"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/tests/test_obs_dict_group.py",
+      "bytes": 4241,
+      "sha256": "5196eaffbc0640ead0727bf90a704fef50fa33db723bf4852c313b6ccf3da14b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/tests/test_push_randomization.py",
+      "bytes": 6958,
+      "sha256": "3b9df2fa9ead739ab6b0876ccc18478c5e91f060f25cd1f4201a97ca6c22c0a1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/envs/wbt/wbt_manager.py",
+      "bytes": 12963,
+      "sha256": "5bd1b8626781773d5368a14fefb16e35e8ffdd85728bcd389d345da0fce87735"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/eval_agent.py",
+      "bytes": 3972,
+      "sha256": "2a9db1d722fc9d8f7b978d911bfb660e5367430e7553ead67df5219d44b6215c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/examples/__init__.py",
+      "bytes": 86,
+      "sha256": "b65bab18d8e472fb9732e1f9e2fcccf2b4e279a39b604888fb919569859f6598"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/examples/object_managers_demo.py",
+      "bytes": 20523,
+      "sha256": "93b9836461915f12126a5c95803a88c8c421a0ad80218a39e867b5ecc6708a05"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/__init__.py",
+      "bytes": 452,
+      "sha256": "eb9041bce6c15887cd69866f55937eb12ef49adaa7bb5a302801cdac14fc02fb"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/__pycache__/__init__.cpython-313.pyc",
+      "bytes": 638,
+      "sha256": "2ec4ca477f47167bb2984bc739dce97e7c6ffa81be112f09ff9792aabb215ca9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/__init__.py",
+      "bytes": 311,
+      "sha256": "28b05bdc8be8157494ce257e75017c2d962287b6a08bd19c8dec0837eabbe5c6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/__pycache__/__init__.cpython-313.pyc",
+      "bytes": 529,
+      "sha256": "e57cb610f3072b2fc68e0c5471429eafa875656deabb5bf97ff08bde52c0994a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/__pycache__/base.cpython-313.pyc",
+      "bytes": 5242,
+      "sha256": "ff5a304cca7e55c8f086d50c8db19d9301cce1271c2c3b7d9fd06a2c640eb188"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/base.py",
+      "bytes": 4651,
+      "sha256": "4f0db37c56419c2d8bacdf282cf3cb907269a8b3cf2b7587c8526d719f81c502"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/manager.py",
+      "bytes": 7660,
+      "sha256": "b1b618b670477143713d7edc5cf6a6cb9565010a606f3d12b8fd8c8b00b4c9a6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/terms/__init__.py",
+      "bytes": 269,
+      "sha256": "7a11afd161f93d05b56fd6db6eebbfcfa3b4d4dbe7ec2f022c77a1edf65ae62f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/terms/joint_control.py",
+      "bytes": 19045,
+      "sha256": "c98847e89b3f8fca281c69ea0534272a669c9a4811de550863275b99caa8803f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/action/terms/tests/test_joint_position_target_action.py",
+      "bytes": 3567,
+      "sha256": "6fa3356aa8d2c08e34ddddf13138a4f0716e1c6beb730a90857ec07ac06ff31d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/__init__.py",
+      "bytes": 151,
+      "sha256": "91013b388fda9d980219cab7a58d8a06efa38d4e192d335b3657cf9ca3570b75"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/base.py",
+      "bytes": 1188,
+      "sha256": "a6a5bcf4de87323b6c61385fd2c5fe71106fa62a2deef249769e351f5bb09d98"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/manager.py",
+      "bytes": 8857,
+      "sha256": "51b9ea4c5b033f065e50976afaf57116a78ce01b9b6fcfd27b25079c9ad6d661"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/terms/__init__.py",
+      "bytes": 154,
+      "sha256": "d0ecb1fe8cebfcbfe3a5ae0af83e7c84d53bd1973ab020760556ddc50179f815"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/terms/locomotion.py",
+      "bytes": 9164,
+      "sha256": "1e3bc98a206a3fe683b27f84f277adb13b32421d8f272bcf64f83924bd6e53c6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/terms/tests/test_adaptive_sampler_compat.py",
+      "bytes": 1529,
+      "sha256": "a5ba69747bdf853fc5c98ec674b4a5960780605b15e6e5d8e7ae8a0adf14a9d8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/terms/tests/test_wbt_motion_command.py",
+      "bytes": 23862,
+      "sha256": "09e9050546381a5d3fd4b46186c485536a334066a59440804d5f67897706f552"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/command/terms/wbt.py",
+      "bytes": 82749,
+      "sha256": "4acfdb0d14e2877a1503bfb4508c6751db97d064ff270e99bdf74f489fe45d0a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/curriculum/__init__.py",
+      "bytes": 107,
+      "sha256": "a0b5cb2f09db54cbf7912d33ccb1f936f7ffcceb19e899e56b7b5ed114c433ae"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/curriculum/base.py",
+      "bytes": 1999,
+      "sha256": "7da8d288b855d646727f3b17ba67152b1b7c746f69bfd696c925e0249c5ce2aa"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/curriculum/manager.py",
+      "bytes": 6930,
+      "sha256": "06a70d7b549a82503f9e04b1c47028394a9716f1f47118da6d474566a47c11dd"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/curriculum/terms/__init__.py",
+      "bytes": 223,
+      "sha256": "da28ec070040e7bfdf2f6f0d2a9873898b3cb74c1e50382fec47a90c2d7c7768"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/curriculum/terms/locomotion.py",
+      "bytes": 15490,
+      "sha256": "59b06c7fa0ac2c099d43817521978293212cfc963395147894dff24a1b50d96f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/__init__.py",
+      "bytes": 609,
+      "sha256": "5e632e2a1f9e455d70b72b6d22a8674fefb82bcb947ba60d94241e2716a22293"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/base.py",
+      "bytes": 1566,
+      "sha256": "9743aded4f2e43db2cfdd053ad0f03a80b9d8ffc21c1b99146ccda605b31d8a4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/manager.py",
+      "bytes": 15827,
+      "sha256": "3c5ac22ba33894ce42a4ac12cb067dfd59da33b52f8fca5fc30f16586f371470"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/terms/__init__.py",
+      "bytes": 104,
+      "sha256": "31591098b8a49f6a10b49f1f484a4f5372f1f090884e7b8bb1fca2ffe4aed35f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/terms/cameras.py",
+      "bytes": 2192,
+      "sha256": "85b50d542011dc44edc67618a4c3024271f3a8985dd83adca34b618fb2a6819a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/terms/depth.py",
+      "bytes": 17116,
+      "sha256": "6d1483e1381e8ccb66aa6f23c236da2678783023a9b0f9d71af25942f133502c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/terms/locomotion.py",
+      "bytes": 5223,
+      "sha256": "bfd989efb491eea89d72f9a366ce6cc23d9971e1e3d1273c11aff58eac12eb94"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/terms/objects.py",
+      "bytes": 4877,
+      "sha256": "ba9b8082bc99d4ab23984770d306ad9585aa15d4429f112ef85dc5fbd9323759"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/terms/wbt.py",
+      "bytes": 9332,
+      "sha256": "470b1b83cd8a11f2b4920f0d8a4f87526240a35707d514afc340810023e16893"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/tests/test_camera_obs_terms.py",
+      "bytes": 5266,
+      "sha256": "0f108f895f04b1847064d1a61bde31f21b734724b5525cf407774433344c6579"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/tests/test_depth_obs_term.py",
+      "bytes": 1078,
+      "sha256": "6a6fc067c7fa6f8e1aa1feb03bfc760c2cc2ca35e464264f4cb2e7c313960adb"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/observation/tests/test_stateful_history_control.py",
+      "bytes": 10518,
+      "sha256": "19535adac22386f53b783536e18bb24071b22265f6cf1c6db1240f96a5c25140"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/__init__.py",
+      "bytes": 181,
+      "sha256": "875df99581bc28905caabda833cf877fd28b43aa8ecc4230660aba5cd01e0761"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/base.py",
+      "bytes": 1642,
+      "sha256": "dfa5cc22349f568e5376e0a41db02be9aff04bc7ca096a7933a3db9c29edae77"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/exceptions.py",
+      "bytes": 539,
+      "sha256": "28eb3e662038a4016123a21df637ad9a074180c3a7bf1485d589eeb64f5b3468"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/manager.py",
+      "bytes": 11692,
+      "sha256": "3587f51c3cfa130be24dbeff38e514af942e315493f232edf51a8e518d6b06d3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/terms/__init__.py",
+      "bytes": 42,
+      "sha256": "70b6228cdd131a9016db5d41eb05d089bf1965028f118a2a0fc0cb08f1a33908"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/terms/_shared.py",
+      "bytes": 860,
+      "sha256": "0c20deba4be4cf05d4222fdc0bdc601d1160fac8914b8fce371ae6b21511881c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/terms/locomotion.py",
+      "bytes": 48277,
+      "sha256": "f0b55d3bf232f92c79869892d45e0f1f9f51313f910946f0649e1eab4e9a716d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/randomization/terms/objects.py",
+      "bytes": 45557,
+      "sha256": "d5705ce8f2530a093ae10d86435c4cab6afc1abdd74b32eb8efe8b610956692b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reset_events/__init__.py",
+      "bytes": 310,
+      "sha256": "4a4c82139146a3b7edf444fc63df64d12a5c3588a1cfe44b2c462011926b0761"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reset_events/base.py",
+      "bytes": 857,
+      "sha256": "023debd54320972e1e3afd33410aedeae2138b154dbceedd62b21f2e9a130ba6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reset_events/manager.py",
+      "bytes": 2007,
+      "sha256": "b6188f8bdc9b5ae60c270d4c9a486c5cdc32fb6cbe07f12965f9061369f47c79"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reward/__init__.py",
+      "bytes": 146,
+      "sha256": "3529000f01cf23c50b8af2a5d887a49b5b84e6508f8214b746b0e439b6aeaef0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reward/base.py",
+      "bytes": 1590,
+      "sha256": "39afc2f14aab3a887614383e9051e647b9b34e9d0bba65fa6fe03296b31bf4f1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reward/manager.py",
+      "bytes": 11634,
+      "sha256": "01c6cb683b2e66840d566af61822e0c3e3383e0ae6e7becbf7c69f271c476041"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reward/terms/__init__.py",
+      "bytes": 80,
+      "sha256": "c3e26ca3200d9d6d4774827b4c94cf49b5b8dd36ea743e805c093e3c940eb184"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reward/terms/locomotion.py",
+      "bytes": 13467,
+      "sha256": "0ca9280f5d6aa1fcdc802b838c1555af10e9336305f67b990a59c80afe7105f1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/reward/terms/wbt.py",
+      "bytes": 8188,
+      "sha256": "7e6d018276c80839b0e55c612d12aad91c7733fb95fd11db61942f7344ca0a45"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/__init__.py",
+      "bytes": 110,
+      "sha256": "cc7a86560d26a24cdf94f1514ce9517f6a96d0a0dbe0c734069a743329f2180f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/base.py",
+      "bytes": 777,
+      "sha256": "127c8addd6e061f0f1fefdaa6a72f14ff44a57687754389740c9055cbd6b6d28"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/manager.py",
+      "bytes": 4968,
+      "sha256": "3c2c38d66e8745483900bd3de825bf04f65eae4b3c717626192246b191f4bc50"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/terms/__init__.py",
+      "bytes": 40,
+      "sha256": "4fa38d248177a6833fbbeed3e5c758afc584416fdb712ee8b7781626248a5edf"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/terms/common.py",
+      "bytes": 449,
+      "sha256": "11b69be9c846557a41db4671ca2cf36e27ca2072f98ad10b45d7940b59060cae"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/terms/locomotion.py",
+      "bytes": 3901,
+      "sha256": "4710779f7a63eaed5ff82c4fc52a04ade66bd37d15e9a725c232654e0aa1193f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/terms/tests/test_wbt.py",
+      "bytes": 1178,
+      "sha256": "051630aab0ef9838a101a3081cb5927ddc74b3629689f7b6382716ed9fad8652"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/termination/terms/wbt.py",
+      "bytes": 7251,
+      "sha256": "366740bf315c19a184d1aa3ca21a239d23a96516e525db100b09448dabb20065"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/terrain/__init__.py",
+      "bytes": 98,
+      "sha256": "150a88c4ab0c502030c367d2e396333bc4782efb459a528e244959b6504be043"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/terrain/base.py",
+      "bytes": 2552,
+      "sha256": "86102b15b960b2d339ceb49c3c30a75227f5f4afa655cc39bfcda045298ef239"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/terrain/manager.py",
+      "bytes": 1668,
+      "sha256": "54a24acadfcd5950a7c8fa8ddddf7dd6efceb3d65502dbc0b3360869eb78af5a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/terrain/terms/__init__.py",
+      "bytes": 36,
+      "sha256": "d1439b6c0134ebea318721ecfbe889d8b82ef5faabc27711c46a95fc876d332d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/terrain/terms/locomotion.py",
+      "bytes": 13099,
+      "sha256": "73319c44784096f03dd8610314ab881f4981eca2b60ba21ab20574c512639ebc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/managers/utils.py",
+      "bytes": 1741,
+      "sha256": "bda88763c343b2f892b0058ca48cc1ca65bc8ba5e18d7dbfb8fbb5b81f69e531"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/replay.py",
+      "bytes": 1304,
+      "sha256": "60f496bab29f9f44be13447cdb65722c40da4b5a9af8e255444af8494e16c6c4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/run_sim.py",
+      "bytes": 4168,
+      "sha256": "08720f65c163dda0f926b17bf28caa6288614708c6679675f0f2d7e70a27f0ef"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/base_sensor.py",
+      "bytes": 3853,
+      "sha256": "e2fed3caaaf6ea18dff5b7b21670cc17d3d19e54cead0fc6daf0e50d9d15f9d7"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/camera_config/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/camera_config/base_depth_camera_config.py",
+      "bytes": 2768,
+      "sha256": "d6b018ca04e4519bd74c8ba14bd0e91b62b1f92346c3fff524ef6029d78e0cd8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/camera_config/d435i_depth_config.py",
+      "bytes": 3826,
+      "sha256": "217dfd41c6046d4c24f7ad3654810021f37232b4bf5d5de38e0ee51318959415"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/camera_kernels_warp.py",
+      "bytes": 7811,
+      "sha256": "4c698aae6266b2d5f9c5b604c78073e5259c367c73f4fd3ab9e65ba2d77b1ef2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/camera_sensor.py",
+      "bytes": 10629,
+      "sha256": "92c84461c81a5173f7310ca4bb705a6bb313ba45330b45f0f22adf0bf1886bed"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/sensors/warp/sensor_utils.py",
+      "bytes": 2959,
+      "sha256": "b068fe6de650dd989eb092e4f2febface55186462b28399db3f6cd0f676aeb69"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/__init__.py",
+      "bytes": 322,
+      "sha256": "5d091e75cc05b267dba3e2a690317ee36942464c280960475f8ec180509f28f3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/base_simulator/base_simulator.py",
+      "bytes": 56154,
+      "sha256": "b2b2769b3b5e613634f35f540ea5da7f7f4f0f4de44eae275955d53f1284a5cd"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/base_simulator/hooks.py",
+      "bytes": 13952,
+      "sha256": "4b4bb32f1e69a2182002ce514f103d6884a8456e5bd75137042ba47c2933c4c4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/base_simulator/tests/test_hooks.py",
+      "bytes": 9016,
+      "sha256": "78bf9a9584f80e2968d9763381de8502bb07ce7329f9c9c03695c917a3f7c1cf"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/base_simulator/tests/test_plugins.py",
+      "bytes": 4286,
+      "sha256": "fc0e4a8ef36b706f81e708a7be6c54a5133e78b125c0f2bdf5b73b0fd3e31bda"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacgym/isaacgym.py",
+      "bytes": 75176,
+      "sha256": "c6379f83cea23b884c4e57043b114abbd1dccbbd3d07424bc7ebd709001d07ff"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacgym/physics.py",
+      "bytes": 6720,
+      "sha256": "4076707a981a10adf2966b6c223c2eaa6973f14dbea7c6de96248c878b8a752c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacgym/urdf_scene_loader.py",
+      "bytes": 34888,
+      "sha256": "a30d6299837c18d8969f7da6fa4365d387843759eab6aeb08e2ed7213ddf253e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacgym/video_recorder.py",
+      "bytes": 6412,
+      "sha256": "8b4bb4aca94ffb7d12bc8e4459be8dba04937510ce7e00d8805c793681a9642b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/__init__.py",
+      "bytes": 47,
+      "sha256": "08e572b7275a0eeef302b11056d63907b5531bae502c8b28d74d04daae7d51b3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/converters.py",
+      "bytes": 4717,
+      "sha256": "1f5b0b8c3d79a534159d2708d231b99b5b65b7b6fd84b2d9af3d02717d07838c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/event_cfg.py",
+      "bytes": 866,
+      "sha256": "78600aacc9f1dbd5d9671eedd3b70c52b16fefc9f92e99e24de35e1dbe1ce413"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/events.py",
+      "bytes": 17912,
+      "sha256": "0219b09c72f5820b4118446bbb80a52745eafebacd2448a348842d591f14bcc6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/isaaclab_viewpoint_camera_controller.py",
+      "bytes": 10478,
+      "sha256": "84e049aad20905100417f7134271faad9ef933de82078cedd71b860decc84d55"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/isaacsim.py",
+      "bytes": 80011,
+      "sha256": "2d20d063af240935260250a39aaace0028309efe4ce19c2a6915f0265be7e3a1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/isaacsim_articulation_cfg.py",
+      "bytes": 3373,
+      "sha256": "860755ec8a12ea611c0953d8b47d5ab38c2b61d51f4e68c91edff570b0e2f3a5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/object_spawner.py",
+      "bytes": 28747,
+      "sha256": "f2075354b9d669b4cd4ecf58a8088aaeb40bebd9d4d0567d9324714c31e15e1f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/prim_naming.py",
+      "bytes": 3341,
+      "sha256": "533fd8a9aca0e9f9f16c0cfe610feefaa57b9ef7743ccf66a325cb4fd4170d05"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/prim_utils.py",
+      "bytes": 13135,
+      "sha256": "65a33e33f294a412080165615fd3e296302843b0d85505df8a4c26fe37df32fb"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/proxy_utils.py",
+      "bytes": 2461,
+      "sha256": "46ba8453529561c8ef4d1d7d5447b0d651e6588d0e5e4bb21094757bf01ce52d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/spawners/__init__.py",
+      "bytes": 125,
+      "sha256": "90e864069d02ba70086a6d1117181f2eccc76bfd7bcd4dd1c11cbbc4e0ca5e5e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/spawners/from_files.py",
+      "bytes": 22359,
+      "sha256": "0387fbdbd4cafaaf1d309af700aac0cd83fdd37241d021db66e568c3194136c1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/spawners/from_files_cfg.py",
+      "bytes": 2555,
+      "sha256": "c9d4ad327ca68ff64b9ee70cf15ca8310e9dfed54be5a3338ae4c82e2f847ec7"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/spawners/schema_utils.py",
+      "bytes": 5169,
+      "sha256": "08c4e48d7aee5904320f14c5ef55e11304c80e76095ac850de6c2ba349f10736"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/state_adapter.py",
+      "bytes": 7801,
+      "sha256": "d0832d5d3272b6d56516d9b682096ec5b3ceed73b6a1c18ccf2dd314f37d8fe8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/state_utils.py",
+      "bytes": 1705,
+      "sha256": "a226831bbdf0d43e3eb5711f52412fe602c41c2f1cf1117a04bee9ea43896293"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/isaacsim/video_recorder.py",
+      "bytes": 10852,
+      "sha256": "269c1a693661bd970ec2f0c690cb07b619d5a36ed12e6e9040da74c0ed13be12"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/__init__.py",
+      "bytes": 102,
+      "sha256": "19a1dcb709051fea8b3786f1b9c2122532955b6d485c00090899e8d10cddd3bc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/backends/__init__.py",
+      "bytes": 1350,
+      "sha256": "8ae2bbb482c0fc50959b5666f2689656dccc7b16f5791a963d3ff663cbf055ca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/backends/base.py",
+      "bytes": 15106,
+      "sha256": "26d08a522accfa7980c85f83d154e30e9e15e5be289e73fa05495f0a7780951b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/backends/classic_backend.py",
+      "bytes": 19550,
+      "sha256": "3e62fc7d12102f60d9eb10aa3833d8f0dcefa3b3fe4c3f7c133c81cb5a792b0f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/backends/randomization.py",
+      "bytes": 20254,
+      "sha256": "9d1556a6461c1e53894ef237c8246cfa1d34b1ba702014ad7584e3b9a307e3ac"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/backends/warp_backend.py",
+      "bytes": 41321,
+      "sha256": "5f599b89c2e34d837465fb5f2e84312b1d88ff2f8843db0bde60b57d51cfeeea"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/backends/warp_bridge.py",
+      "bytes": 8212,
+      "sha256": "3fc4f0a47d73ec975fb90b82fe6e46efc4337fa9cdcff9caab41cba7f837e1e8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/command_registry.py",
+      "bytes": 3953,
+      "sha256": "7aa09fd6bd114865e0f804f9d45c26bc8b650878c4c7ad49155571206c7b2fab"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/fields.py",
+      "bytes": 4733,
+      "sha256": "a086b6440a1c52a9893e6f5304d5bae7ecf873e8e91928fec44f1bac0d8f2549"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/mjw_views.py",
+      "bytes": 21566,
+      "sha256": "11ec7703694528b52bd48cfbf31f29afccf5924584f66dcc895fa1066980ad03"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/mujoco.py",
+      "bytes": 90590,
+      "sha256": "7281feb29e34d7fd0cdf3d2f42e8f358e111eae8deeafcc6a6a22a69482a1049"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/scene_manager.py",
+      "bytes": 45046,
+      "sha256": "02f11d7568fd764038c4138bf1948ef8fc65ec104b11693f2a88195b560a74da"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/tensor_views.py",
+      "bytes": 19122,
+      "sha256": "d7d9e2b7eea62fc20d28e4098e13a29bf61b6b269766afac632f70c10edac6fc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/tests/test_trimesh_terrain_components.py",
+      "bytes": 6486,
+      "sha256": "03abb3d4e8b3a47aafc8ff56dd3de777c8e8942a9ab5db6896e68de68677d3d0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/mujoco/video_recorder.py",
+      "bytes": 7010,
+      "sha256": "702cb848a7898d4d6d1e9fbd3d45f5baa0e3b6f45dc089d21398314844c3d6f4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/__init__.py",
+      "bytes": 1097,
+      "sha256": "54825fba03e68017b98bc4fdd4c1819a89c2ffba6e713198420be7321ab7820d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/camera_consumer.py",
+      "bytes": 10802,
+      "sha256": "3d19c6f4fb7ae867c20bc5f424c06082e2bcebfbb42b96c2d35c53c4c554aa80"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/depth_color.py",
+      "bytes": 3306,
+      "sha256": "f97594cd2f222c7edf78757caeb799d37054dc5179db0e55238d050ccef9469b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/depth_shm_plugin.py",
+      "bytes": 19677,
+      "sha256": "c148ae88d0909a50390750f01f9924e8d6ff0daf76ddfcd9a63002a845af4a81"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/ros2/__init__.py",
+      "bytes": 182,
+      "sha256": "e8d42ea48aa66a21eba1ca0d0241e0f6fc9c49cc2d19f44e9d6a21bcb4071bca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/ros2/camera_info.py",
+      "bytes": 2045,
+      "sha256": "1b0a0d7843422b2166fe8f5f60bc315724e70fa8c08d8941b6cda52b4753a855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/ros2/encode.py",
+      "bytes": 5722,
+      "sha256": "d2b49bcddae2891793aac6a6a5af0d3643b9c039609e021512ac0d12eae2e6c6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/ros2/ros2_image_plugin.py",
+      "bytes": 10792,
+      "sha256": "4ef581a8140387842ab3d71fe9c57d6ec8b61ae1ac2129348e759b252cde1c34"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/ros2/worker.py",
+      "bytes": 3380,
+      "sha256": "3382fd2472ffd79ef8d228609b67fe72d26e6baa6a919c07b4f5b7be79bbee50"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_camera_consumer.py",
+      "bytes": 8588,
+      "sha256": "d7cc1a763166ebe10ab5e452bfe83cfc561a284d2f66e8afeb74c97431c5f971"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_depth_shm_plugin.py",
+      "bytes": 7582,
+      "sha256": "fe63acd5d18ef353897790cb5d459854aad1b3a92d834db2a8a8dc11ae98ebcd"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_depth_shm_threading.py",
+      "bytes": 17865,
+      "sha256": "86a82c929461c6be66c8b8aed2da87db2a71aa7decad53ae9e46abb663632bc3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_image_grid.py",
+      "bytes": 6277,
+      "sha256": "1c5791bc5b31bc4a3993e74ea81307d9aa3db8549b7e7bd9307f1e6c6e2400ca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_presets.py",
+      "bytes": 9200,
+      "sha256": "bb51ef5636fdcdb5e3ef5ef066db591b3b2d2eab4f39d709f188ce53e4f36870"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_ros2_helpers.py",
+      "bytes": 8677,
+      "sha256": "e35358dd29015d7d96a63b64a132d661f3b05613ca652fc3652dce9e8fd042ce"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/tests/test_ros2_image_plugin.py",
+      "bytes": 13703,
+      "sha256": "fcfa535a6626b90c9cadad9a336265f0d89945699e50b998136872ceb0be044e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/viz/__init__.py",
+      "bytes": 261,
+      "sha256": "9568bda0e53d1f95a047bbe1b934d11187e9f57753f09a65e8a9d36a2b97121d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/viz/image_grid.py",
+      "bytes": 7384,
+      "sha256": "6080136e1b6159f7a184f0b355322dec485cd8d04e4b0e1a865ee2cbf0c66674"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/plugins/viz/viz_plugin.py",
+      "bytes": 8937,
+      "sha256": "c3736a752178874d67e74dc70233ec36b1b18cff13f5db03dcb7e0fdf40df616"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/__init__.py",
+      "bytes": 53,
+      "sha256": "ecad065c351bf37543567a79717f4df13e171beef5383bfd57ba90999171235d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/asset_format.py",
+      "bytes": 2976,
+      "sha256": "47c51219d35069598c3d49819c511b36aad45f42e93a525b7f13c4dbfcab0b8f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/builtin_plugins.py",
+      "bytes": 768,
+      "sha256": "71c629e730e544993582786d6b792c6a923659b891f0e0ad6379aaaab94c692e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/camera_controller.py",
+      "bytes": 15534,
+      "sha256": "1316c18177dcc14952c93adff63a474803fcf1b34279520935c7f009e4901000"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/camera_sensor.py",
+      "bytes": 7990,
+      "sha256": "b917d46e8c45342b7348947a76018f76a47459aa26050e7181c8b1c25af996b3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/field_decorators.py",
+      "bytes": 1837,
+      "sha256": "84923469b0f704349cf02ba70bf5c302da3ecacdd5e77e07266d18fc9cbe5175"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/image_transform.py",
+      "bytes": 3094,
+      "sha256": "1a2ea33e09c177972dc91679618de7614e0de5fcea9737ce4904f329c1d9ebd2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/object_registry.py",
+      "bytes": 22940,
+      "sha256": "23cf1f4ba4c510a81626da4764e759560af91c10fcddc637a90e97437709cee1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/root_states_view.py",
+      "bytes": 4789,
+      "sha256": "5708e55c9994d1507d166bdca3162d531c644c38329a52f77057199eb81b77fa"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/ros2_plugins.py",
+      "bytes": 14420,
+      "sha256": "afa2ea46e2aa9294b67dc29621deaf2335c2f6d8e147c91d8d33331d2fc68407"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/scene_types.py",
+      "bytes": 1020,
+      "sha256": "6f516c5cc5614d0e7487dba13164780ad49102ccb7a86c87dfbca4ac6aa24047"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/simulator_bridge.py",
+      "bytes": 7752,
+      "sha256": "b1fdde6e0939c24a490a7168400cc7b1d216f73482931b7e72c6ee10fd9e72d5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/terrain.py",
+      "bytes": 26199,
+      "sha256": "fb65a3ce07229f1051307499b91b03c162caca6274d4690f30862167076383fe"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/terrain_types.py",
+      "bytes": 925,
+      "sha256": "43e9061a3014243abd497a82ed31e58b3b4ef08ea921dfd2258a68d29f384e6c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/tests/test_camera_runtime_cache.py",
+      "bytes": 4314,
+      "sha256": "0ca769cb8a35542499f40bfdf14f04f34c35164a7fb561bd2bab21e171f78571"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/tests/test_get_camera_data.py",
+      "bytes": 4100,
+      "sha256": "61120b3f828163afac7afa6cd10fd9eb050ec8ff73501e38be1f7720599448bb"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/tests/test_image_transform.py",
+      "bytes": 5762,
+      "sha256": "5115d5c9d4e9d1e48573f5b3e80eafde3413e74460459e9cb5e5037c21ab8d65"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/tests/test_optical_frame.py",
+      "bytes": 2951,
+      "sha256": "7b53081eef6b78503c6202f3a971b0beac52446010b4af80aae457f69b4ff4ad"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/tests/test_ros2_plugins.py",
+      "bytes": 8745,
+      "sha256": "32566e4338c31aa97733c18c55d8a33c08fc3c85c4e00d8b698b31105744e8e2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/tests/test_sensor_manager.py",
+      "bytes": 4597,
+      "sha256": "2d953973c97ce12db200744013507707932f462b8283bb7c657e634853990acc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/video_recorder.py",
+      "bytes": 21312,
+      "sha256": "81cf78db894b98fdace107028e476aed26f11ff8192dd70b5108c3a70fd8a514"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/shared/virtual_gantry.py",
+      "bytes": 23793,
+      "sha256": "4cf1992b6cdb5f17b4ddaa84646e178f653b18c8b636d208e46add14d7f27440"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/simulator/types.py",
+      "bytes": 2813,
+      "sha256": "9551401a9b89ab931561961228c0f90f6f99552ee2fa7d3e40bbf3375b7c8a9c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/train_agent.py",
+      "bytes": 18257,
+      "sha256": "3758381cc75811fd62edc3be9bdf3fee2aacf9dde0bf8d128dded0430a206c73"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/__pycache__/__init__.cpython-313.pyc",
+      "bytes": 179,
+      "sha256": "33075e6fe80a86f5eaf46c26e06e519db51aa2d1193885d806aa91fa174c1c8d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/__pycache__/safe_torch_import.cpython-313.pyc",
+      "bytes": 671,
+      "sha256": "1578146f2df5322e75d59e231484e2727054be2d24155f2035c904b566702e2b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/adapters/draw_utils.py",
+      "bytes": 1806,
+      "sha256": "eb844aef6c58e8a2e8c04f6cb6c38ec8117abb508aa109c77560686bef0a323d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/adapters/isaacgym_draw_adapter.py",
+      "bytes": 4752,
+      "sha256": "ce2608b0667da190e4cc5bc314b69c639e9701f916547ee9d27dbc53994ba87a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/adapters/isaacsim_draw_adapter.py",
+      "bytes": 1751,
+      "sha256": "3eb9515a9a20fc03dad9c342c596c9c40b62f05d0b4e2bb25a710a1fe528527a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/adapters/mujoco_draw_adapter.py",
+      "bytes": 10745,
+      "sha256": "16ca42a142a7bd3ef7ac28f49325cb71699f993653a8be36ca4ae44281309bde"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/average_meters.py",
+      "bytes": 2055,
+      "sha256": "722b9bd35377ccaf17959ddaafab7e0ab9f1770d4983964002cfafd25bacf34d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/clock.py",
+      "bytes": 4851,
+      "sha256": "eac21fa379170e74d9780b549453481022707fff7aebbd789cc849f0c6d54158"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/common.py",
+      "bytes": 5427,
+      "sha256": "25d65373bfe84529775a014533e791daecd677032b11f96f0685fe68424115c5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/config_registry.py",
+      "bytes": 10889,
+      "sha256": "9719934dde5d106b334f34c47c8d4724db54150f62021761c22f2e363cc79330"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/config_utils.py",
+      "bytes": 37,
+      "sha256": "e55b26d5d29b7577c3f04a91cccf5b28fbc06b8c0946895ad78a0882faed102e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/draw.py",
+      "bytes": 2389,
+      "sha256": "40b20b92ce1041162a8dc8e018bcf0eee9105dd6ae1bfaf6712b9ba23ad461d6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/eval_utils.py",
+      "bytes": 13040,
+      "sha256": "844c48fb007ba2bc5aa916b34775d5c4a713693447884cad0f2d6f197ddb2982"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/experiment_paths.py",
+      "bytes": 3794,
+      "sha256": "23828193b5af24a01f84901173723f44f50dbfc4fb984ac0f3265949889f5dc8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/file_cache.py",
+      "bytes": 12767,
+      "sha256": "a993a66653a242f6e163462dde8568836cf7d0a3bc81f8b4543f910fe03147a5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/helpers.py",
+      "bytes": 3890,
+      "sha256": "4b1a5571f6578b80aa7268ea79f65fa0d2141915749733d1c02372676b631868"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/inference_helpers.py",
+      "bytes": 11411,
+      "sha256": "8954b3e768193867a826bf70c99e2581b8c81bf6497bc9658be00f8074e46f29"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/logging.py",
+      "bytes": 1498,
+      "sha256": "219cbb03dedeaf3f1eb62826010e37559136ea7db81e825076a609a5e82ff636"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/module_utils.py",
+      "bytes": 240,
+      "sha256": "12dfb104409069a9eeff6e9c5a317decb55d91a198a44c0d9bf1cfed27946ba9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/path.py",
+      "bytes": 3400,
+      "sha256": "a74d18fd4a44bc6ab8aa7291f394030a056194dada28b59593c2bc9fcded40d3"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/perlin_noise.py",
+      "bytes": 6485,
+      "sha256": "6b5a63da14d05944271e77d0663ff80d640d8116b50f3e0b77eae51a9fd393d5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/pycompat.py",
+      "bytes": 700,
+      "sha256": "a1e5b08a335916c1541e9c5dcef1b480bd9c8155da53ba8b7f697ecb0cbdd5e5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/rate.py",
+      "bytes": 3819,
+      "sha256": "b6ed16df56cfa3aa26e90fa48e496d710e0a443cf3e7cf7ea55ed804b274b0fd"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/rotations.py",
+      "bytes": 23961,
+      "sha256": "7097fc0295c4534570c28a8f119cf4e8c76934748cef6d5dc6dbf94025f664b5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/safe_torch_import.py",
+      "bytes": 480,
+      "sha256": "3c299db5f398bcbdd7c32712b8f617ff749d412ceda4e4a24d5e1ac4272811c6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/sampler.py",
+      "bytes": 25066,
+      "sha256": "947b937241a78038e2747dec19149e09239f12cd4a449dd53cb58d8b79e5e1ca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/sim_utils.py",
+      "bytes": 24149,
+      "sha256": "6a9373d35f1560125af521a35fae3208457acd1639d19bb2555ed12cf7b0f3a2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/simulator_config.py",
+      "bytes": 3648,
+      "sha256": "67fe718d6dcc60e029ff36c8de7d4ab39a2380fb5838f678fcb43ff4b3db3d59"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/terrain_utils.py",
+      "bytes": 23067,
+      "sha256": "1ea85dcb80adbe014899e146231efb578529941f8980f761dc171912c4be76d5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tests/test_distributions.py",
+      "bytes": 10684,
+      "sha256": "b4d4f81d5bba59e00fc6a1ed9fa35d8dae007bdedc3fa23908664fecf90e82c9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tests/test_eval_utils.py",
+      "bytes": 14566,
+      "sha256": "1f75003f4b5899b2730c7e61a1c3228c3ec33488033ea219fe23ee218b735e35"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tests/test_keyed_distributions.py",
+      "bytes": 15891,
+      "sha256": "3a7119c02e96411d8fcd0a977f9b18354cc46f5ae21f1f2d463f0724e0a9ab8c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tests/test_rotations.py",
+      "bytes": 6027,
+      "sha256": "4b663bb861d6d8292b5546a14fe1a7a5b714532fcead2f3d39f14673faf276ba"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tests/test_torch_utils.py",
+      "bytes": 3276,
+      "sha256": "fe091c82f639f887d7c7c454587ec00ad4b2d692b8ea5053674ce4f8cae0bf2c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tests/test_tyro_utils.py",
+      "bytes": 6825,
+      "sha256": "3087ec29cc091b24b94a543908b8da80a0dd36ce0b8010c473366bda483e441c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/torch_jit.py",
+      "bytes": 11129,
+      "sha256": "fd78770f5e59f9d3b910b31c51743e80ea6916a713691f5ff6f88b1257ac0bff"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/torch_utils.py",
+      "bytes": 5518,
+      "sha256": "4b6848157480f55c825fc0859d025c3157a9337b79ebf5a3e30fbbea35bfa0a4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/tyro_utils.py",
+      "bytes": 4607,
+      "sha256": "12f61db715ea3283e1f65e046fc8b71dd56dd80f7f806bcf512f58e31f010e66"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/video_utils.py",
+      "bytes": 7368,
+      "sha256": "e73c04fe291de98c429791744500e7931bc81d06859635dc4dc125c3393df873"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/wandb.py",
+      "bytes": 3445,
+      "sha256": "e9805cd49aab7c94469ddfab684ae614503144aa9cbd530d6a2b3d8dfb3a52dc"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/wandb_registry.py",
+      "bytes": 7906,
+      "sha256": "7aae71fc664021cae2c6357f29cd7aaa2c9c97860c0211d5051ea27b14b4c2c8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/holosoma/utils/warp_utils.py",
+      "bytes": 5182,
+      "sha256": "8dc7ad925d1f92f5c3b28082ec5fc883de76343c34351b691318fea76272ed12"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/pyproject.toml",
+      "bytes": 5390,
+      "sha256": "a3a5fc131ea3a1fc5e802121151f6b5dced9c6de6d9e7f9b820bc394ae9ef30d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/__init__.py",
+      "bytes": 28,
+      "sha256": "771759476cc0cb1f5a8eb90d57179d813c4609876180b868101cb5e1c541fc6c"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/__init__.py",
+      "bytes": 43,
+      "sha256": "dd9e93ac096af8efe88fbb33e873fb3d63c74d80cafd787348a4b7f85f82dbae"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/_camera_presets.py",
+      "bytes": 8846,
+      "sha256": "e67bd456717cdc081ee6282a5addb8fea78d36d2bb07c7e4f1983e295687d020"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/_dr_matrix.py",
+      "bytes": 31171,
+      "sha256": "d651892a6c8e32768ca9b1bbcdb388046acb258d9699ffd6e205241c0dffd547"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/_robot_presets.py",
+      "bytes": 4985,
+      "sha256": "f177f443362cad268a71fe3387413089be4436e06e314b5aecbff9060e2bfaa6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/_run_harness.py",
+      "bytes": 4747,
+      "sha256": "0202509df67d1851fe035805864167648babdb2aa3067095154a74adf1e4dadf"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/_scene_presets.py",
+      "bytes": 36358,
+      "sha256": "9d2d5ef7999b3100baee2a133426f95e35c8c4ce1643eae94739b627bb9abfd8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/_sim_harness.py",
+      "bytes": 4202,
+      "sha256": "cca83059d0f52b8db0d8d527ef3bcb8f0d122df2d506f9117ef7d83d37f22a84"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/all_root_states_unified_assert.py",
+      "bytes": 17397,
+      "sha256": "aa37d30aa632d7f86f90dd4c7ec328f3b4eaf88646bf0175991694c3a23d535b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/behavior_assert.py",
+      "bytes": 76524,
+      "sha256": "f1450fa58386bbd77b471144b108a1877657c08493329621065e055374fb8c77"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_actor_mount_assert.py",
+      "bytes": 4865,
+      "sha256": "8c053565776a2e675bfe6a4b34e65907ef206cfef998fe48f30c2fec57a5f1a9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_assert.py",
+      "bytes": 8835,
+      "sha256": "10a6c121929fcb5cbcbfbb23861fab2f353a7fe47578d07f1d039c1f35bbf0d2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_follow_assert.py",
+      "bytes": 11639,
+      "sha256": "3136f585cc45adbb48bfa50694aaf3aac6f15d4084ae8e7b9cff587fa737c1d6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_geometry_assert.py",
+      "bytes": 12122,
+      "sha256": "0e063b833ca90329ec358d5c559ccd7d3355324812e3d6ead30f8d7c557962f7"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_multi_assert.py",
+      "bytes": 5004,
+      "sha256": "e92cbe3c7f23687b749cdcc655d645f5e4b4a152c11911b3327d22eb1c35083a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_obs_assert.py",
+      "bytes": 7827,
+      "sha256": "b6d7b46673df23cff953dce9b3f11eb94e81c3e3dc051bac220f94eb91888d92"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/camera_orientation_assert.py",
+      "bytes": 6265,
+      "sha256": "d4621c5579f3932715ca356db7c8c9bf622c5b3c29e90382c1d0ca48697ceaea"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/depth_assert.py",
+      "bytes": 8615,
+      "sha256": "1d870a888d9f408f7b5f81a79d2b30925497462c06b1cb6dc10aca6e2a8ded91"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/dr_matrix_assert.py",
+      "bytes": 15491,
+      "sha256": "fbd16a694049b2bbde33446a71d430934908f7d7de53a6208cd6e46a632244a8"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/__init__.py",
+      "bytes": 51,
+      "sha256": "8d958f1e7f2f6c7b8dd5710a318edec2dab114ff90714691a2a655e7bad32bc9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_all_root_states_unified_isaacgym.py",
+      "bytes": 1032,
+      "sha256": "cb8591b1a2ed51424478b13a57f09c7ab0e6a5dcad089d9a6e6deef549135aa5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_behavior_isaacgym.py",
+      "bytes": 3777,
+      "sha256": "4ce3ba8fae2b110f8372f1f198f7f22269bab27382d3b75602f1705fd31b9f06"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_camera_isaacgym.py",
+      "bytes": 6521,
+      "sha256": "ad3689383991cbd28ae5440f1a2cc7d46ea4e8cbfbe7b838f003c06353cb3c76"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_dr_matrix_isaacgym.py",
+      "bytes": 1633,
+      "sha256": "26f2534180b68aa086ce1599e6cd035bd877bd56fd668fc8ea470415e09d1414"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_physics_mapping_isaacgym.py",
+      "bytes": 6860,
+      "sha256": "ef883274786ff29d57b4f953a34fae21839bfcab65ebdd3030d6660095276c3d"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_render_modes.py",
+      "bytes": 1815,
+      "sha256": "4cf72573d42fe3771defe6a9934b2ace57dcd77df115411addd9892128b82892"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_scene_spawn_isaacgym.py",
+      "bytes": 4074,
+      "sha256": "f40648475d6f535d5ef1399be81065d4fe6439c0e46c786073f82247de787564"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_static_move_isaacgym.py",
+      "bytes": 1678,
+      "sha256": "811907c5788c25649dabd0358620e3a8e9870d0eed4d51e201a59d29b1c3ecca"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacgym/test_subset_write_isaacgym.py",
+      "bytes": 1243,
+      "sha256": "545150c1f9e52e834dfe99f3c02a25ff330c7bd77f4c980b66207096b59db2c5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/__init__.py",
+      "bytes": 51,
+      "sha256": "45055ca21857330c21f9055a56b0fc9e711054b9586b1f637943e73f8e61c93a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_all_root_states_unified_isaacsim.py",
+      "bytes": 1025,
+      "sha256": "af45d7d22aa000b73879434e5a6bdf919f689b3384c16ac08e2538c84f174ac2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_behavior_isaacsim.py",
+      "bytes": 2275,
+      "sha256": "d8336a1eafcf64724061a5a12657b05f1493b5cde35da65b1e6ea79d6dc777ac"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_camera_isaacsim.py",
+      "bytes": 6174,
+      "sha256": "cdb4caa3c1c91aa9b44c660ae93b29ab982ae5fdb405899189ef9f1624ead010"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_dr_matrix_isaacsim.py",
+      "bytes": 1711,
+      "sha256": "4908a61742347aa9f665f4603b3d8953c5260e3f091aa9181c809c5539155c34"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_object_spawner_cfg.py",
+      "bytes": 1477,
+      "sha256": "c321e698fe547ed52f754f1b07c891f49e0875c9665a3f9b8138263ecf512491"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_prim_naming.py",
+      "bytes": 3255,
+      "sha256": "5917f2a860cf9cbd900161b0c5024b45c4e3ef561e6426ca5553a3a22cb78750"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_render_modes.py",
+      "bytes": 1759,
+      "sha256": "13c6ecdea1eff894d0646422e42e09887996e5b5689519679e61ceb548f04180"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_scene_spawn_isaacsim.py",
+      "bytes": 3585,
+      "sha256": "018ebbce9badee3b2726b951024d89993b752c7f396bc0560a9d1ffb6d92328f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_state_accessors.py",
+      "bytes": 31070,
+      "sha256": "7f7cac3b3f812e51ecb2fbecd3539b67b91ca82ab67902453a0b7333a9c3f16b"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_static_move_isaacsim.py",
+      "bytes": 1786,
+      "sha256": "1eb33bf93890e11c903f8686e1db980f25c8e237866672efe5b30cb8b00ced5a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/isaacsim/test_subset_write_isaacsim.py",
+      "bytes": 1306,
+      "sha256": "ff8aeb5237b72111094ef45ec41b0d3308db5fc8e87ad83b94f404e68f044eb0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/_build.py",
+      "bytes": 4802,
+      "sha256": "0cc24f3b189c63ba612f7c049e060928370f4fade1dd0161691b734913e002cd"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_actor_state_gpu.py",
+      "bytes": 10674,
+      "sha256": "0b5a0111ff4727d805932634bbe55bcd2afab8ab31061075189237ed38390dbf"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_all_root_states_unified_classic.py",
+      "bytes": 1021,
+      "sha256": "5f46f8f461b88880b621d43e93d173702d3a1dbeee0680c8cce49dcc471e45ee"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_all_root_states_unified_warp.py",
+      "bytes": 1178,
+      "sha256": "ef14a35dea33589d5b3ff9eccb9d498c9875ad8b40724985ca74ad8424ce9580"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_behavior_mujoco.py",
+      "bytes": 4823,
+      "sha256": "99d8967f6f5de5ba6005382140cd6995cd42b831d18e783b11d1e5de70b8a4c6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_camera_mujoco.py",
+      "bytes": 10683,
+      "sha256": "7c467af3db1172ca74b1fc9f53fe551b403d0613a6bebc8ca412bc91b0340a59"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_dr_matrix_classic.py",
+      "bytes": 1413,
+      "sha256": "dad13c0af2304b401a06c5184007256575b6febcf74e45626b5e43a24d018843"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_dr_matrix_warp.py",
+      "bytes": 1608,
+      "sha256": "5bcc1f3474b64ba8a6d7aa729fe597984f3428f02ca18b5a3a70cc232115976a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_link_physics_apply_mujoco.py",
+      "bytes": 10944,
+      "sha256": "56ebeb552ec6d335cf831da1e7d4a299d1b65919ab52a725687b8b346b06e26f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_object_dr_classic_cpu.py",
+      "bytes": 7768,
+      "sha256": "aa974170236ee059f213a5ae434763f846e065c9cbe9fa7ed65389eec25bd6b1"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_object_dr_warp.py",
+      "bytes": 6072,
+      "sha256": "a9898af90363fa030472d5ab777c3ce84fde0e8b975e1d2e960807da19a0b4e9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_object_managers_demo.py",
+      "bytes": 1470,
+      "sha256": "66d8ab18ae83fec5c1254702c6f93f15173ccd67d5ae8786bd3afd0e87944e06"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_object_observations_live.py",
+      "bytes": 14263,
+      "sha256": "78a8ac2f576406560733f316c688ca25c5815ca2602901310da316c35a0c4fc9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_object_reset_and_jitter_gpu.py",
+      "bytes": 13254,
+      "sha256": "def802c3837de6c1acd4f084db303e5df0e644cb7ce48b3630dafa85a74c779a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_render_modes.py",
+      "bytes": 1898,
+      "sha256": "1e6c99d2030fc121a78037b4534c49c18ffd7ae57242e4c34c8dc946e7b20510"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_rigid_body_feature.py",
+      "bytes": 11115,
+      "sha256": "ef44e6bcf1cc5b4c8c5aac0b3ba1f753f4f9646515344773c463a00f6dfc0517"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_scene_spawn_mujoco.py",
+      "bytes": 11922,
+      "sha256": "877d9127de8ffe7cfa2d487687d637351cfcd66630ed1116161a317e5a7067ce"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_scene_spawn_warp.py",
+      "bytes": 2695,
+      "sha256": "d50cba13df45eb898cd2830b60e51486f04f68286fc6b1a9993a88f700677ad4"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_static_body_move_classic.py",
+      "bytes": 4297,
+      "sha256": "5df558ab069f26975957912b1188abd11eb8d7776a9a26546418304a96dca1b9"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_static_move_warp.py",
+      "bytes": 1401,
+      "sha256": "519e605e25753598772f71a04b1e8b9c8e306126511e5e76f73be2dbb116e755"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/mujoco/test_subset_write_warp.py",
+      "bytes": 1467,
+      "sha256": "04c68b83eaed961cb1c56a805fff3ed234c742264a42ac0cd8e622084b763184"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/object_spawner_cfg_assert.py",
+      "bytes": 16718,
+      "sha256": "52180b7f5baeb79782c2ebd57dfb6ffd4b62361a4a3983b5579549bf565ff654"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/scene_spawn_assert.py",
+      "bytes": 31552,
+      "sha256": "19bf8734ac27f3cb6a53898430421449ddc1e7ff14ef2197d7fd0623c7335ed6"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/static_move_assert.py",
+      "bytes": 9441,
+      "sha256": "8ee491dc0285b6d325c6f0aa29c409228c6e7090e386ca5eeacf4ec84f873935"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/subset_write_assert.py",
+      "bytes": 4607,
+      "sha256": "a355f710490378c03321147c40db22614c605c9191a314d5318b09c14ef551f2"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/test_asset_format_matrix.py",
+      "bytes": 4650,
+      "sha256": "221191805528cbe37907646157e985ffd8a08de07c108dabeefe4267980abe51"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/test_behavior_skip_matrix.py",
+      "bytes": 3059,
+      "sha256": "39193ff18fa870e860df12bea8909bcdf8d3b5b1bd742bac46ce125f71d2e7b5"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/test_camera_controller.py",
+      "bytes": 14857,
+      "sha256": "7581cff0d6b7256d30b7d0555a3a7bb67caf2cb7871ed79c2000fa911e1ff057"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/test_multibody_scene_file.py",
+      "bytes": 8896,
+      "sha256": "a110edfc04085aee2e98f3bae4403468dfd21a2e8a8c77e77e164ddb965b6671"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/test_object_registry_ordering.py",
+      "bytes": 7086,
+      "sha256": "c0ee6a2608074c68a3ee7f3d4d9729b66ac6abb97a793eac3852c3978fe6425f"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/simulators/world_camera_assert.py",
+      "bytes": 10659,
+      "sha256": "9a174bb2130599e942e89629c6780308556b392e05aa1c5974a280a92d600ba0"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/utils/__init__.py",
+      "bytes": 34,
+      "sha256": "972a88483bae978cae04dfd98175742af50218ee776533741eb9a2970c8cc92a"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/utils/test_file_cache.py",
+      "bytes": 20517,
+      "sha256": "0b7ad7bddac65ce8ac5646975d7283be3251f07eab2dc8249e856cb130973719"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/utils/test_onnx_export.py",
+      "bytes": 2358,
+      "sha256": "75daa981fa1c74ff5210b19aeb29792eff69085b45b9e8b770df643d59350f24"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/utils/test_path_resolution.py",
+      "bytes": 3313,
+      "sha256": "da606987f625c85de646e109da5277518e8b81894fdf5c5be1455f916706f71e"
+    },
+    {
+      "path": "bundle/runtime/holosoma/src/holosoma/tests/utils/test_torch_jit.py",
+      "bytes": 11987,
+      "sha256": "5b2aff74317294e06c4c2b6506e3c8fd780f09a334e56d8a4815064c7b8d2615"
+    },
+    {
+      "path": "bundle/runtime/php/LICENSE",
+      "bytes": 10142,
+      "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+    },
+    {
+      "path": "bundle/runtime/php/NOTICE",
+      "bytes": 67,
+      "sha256": "d4290ed64c2edd0fce1d84e3f9dfb2881240fe534def76b8cd29ed6af683e287"
+    },
+    {
+      "path": "bundle/runtime/php/flux/audit_motion_replication.py",
+      "bytes": 3888,
+      "sha256": "35700d6392354d685907c0667f6eed6aa10ab64ca3489c68d1a982207cf67cee"
+    },
+    {
+      "path": "bundle/runtime/php/flux/checkpoint_contract.py",
+      "bytes": 2201,
+      "sha256": "69e0984dcb4cfea941db36c30d141a54a718283ce6311f9a40b1e6a5f109f069"
+    },
+    {
+      "path": "bundle/runtime/php/flux/continuous_arms.py",
+      "bytes": 3135,
+      "sha256": "05f585860704fe4624b8e4ed0bb294ff0875f9b99526f906937c1587002f8587"
+    },
+    {
+      "path": "bundle/runtime/php/flux/control_chain_recorder.py",
+      "bytes": 5035,
+      "sha256": "45b5be001b5cdc8074a8285c75bf200322b61923b65f0fe28bc990114edd59d3"
+    },
+    {
+      "path": "bundle/runtime/php/flux/diagnose_action_scale.py",
+      "bytes": 1024,
+      "sha256": "070a23be3e23fdecb8e38d37387e8f3b841f2448a463831cc6707451d44ad821"
+    },
+    {
+      "path": "bundle/runtime/php/flux/diagnose_control_chain.py",
+      "bytes": 896,
+      "sha256": "6a0755a010bfdfc33225339b22ff5d29ef6901050ce8bfc5812a1ed4f2c84ede"
+    },
+    {
+      "path": "bundle/runtime/php/flux/diagnose_reward_noise.py",
+      "bytes": 757,
+      "sha256": "515d4e3cef249c64f5acdd052d55d3ba08bd89477845a4a280a6ff9a7c5657aa"
+    },
+    {
+      "path": "bundle/runtime/php/flux/diagnose_short_episodes.py",
+      "bytes": 17760,
+      "sha256": "58327856e959020923c23c6547e29132a704569966a3b2cf69f771a3bcf9fb80"
+    },
+    {
+      "path": "bundle/runtime/php/flux/diagnose_target_clamp.py",
+      "bytes": 1983,
+      "sha256": "39769bd5603e024e2bdfecb09dc4a09a3a8f915c6524cee3b551604f534abbfc"
+    },
+    {
+      "path": "bundle/runtime/php/flux/diagnostic_bundle.py",
+      "bytes": 1395,
+      "sha256": "63138323d5d6dcdd801125c5057739dc25af75b457399bdbc65f7b4ddcf6d0ab"
+    },
+    {
+      "path": "bundle/runtime/php/flux/environment_tensor_boundary.py",
+      "bytes": 1015,
+      "sha256": "3f825e6982ea2a22750048ca8f42ae75ca5641273c2bd36e80af9821c47502cd"
+    },
+    {
+      "path": "bundle/runtime/php/flux/formal_training_hooks.py",
+      "bytes": 5786,
+      "sha256": "f7c6db77387b1d42a01c029769a54213d78e4a5f0af5ac10abb374f3d68862c5"
+    },
+    {
+      "path": "bundle/runtime/php/flux/git_parts_v8.py",
+      "bytes": 3586,
+      "sha256": "875d673a0821e5ec94be7b41fe6b69cc23aa3e4ced32960c91275c3f510265ba"
+    },
+    {
+      "path": "bundle/runtime/php/flux/git_replay_v8.py",
+      "bytes": 8014,
+      "sha256": "d8ecfd8279c7d4e32b65f1d83097bc580d6d37c7feed49db8e9fc60548a806f8"
+    },
+    {
+      "path": "bundle/runtime/php/flux/git_smoke_v8.py",
+      "bytes": 24844,
+      "sha256": "6bb5c2ed1993e557d2e948d53d8ec87a8b1b659d20125a83fac85066abc84f95"
+    },
+    {
+      "path": "bundle/runtime/php/flux/git_train_stage1.py",
+      "bytes": 7208,
+      "sha256": "d52e43cd7cfdeb2279abf98d053b2d08f2f5464b817467f335e82da1aee0a9b6"
+    },
+    {
+      "path": "bundle/runtime/php/flux/holosoma_overlay/config_values/robot.py",
+      "bytes": 43480,
+      "sha256": "8145091013f1edc713d8aa8c30a81d9a5a6843b17ac762a36edbb194377f6a22"
+    },
+    {
+      "path": "bundle/runtime/php/flux/holosoma_overlay/config_values/wbt/hu_d04/__init__.py",
+      "bytes": 162,
+      "sha256": "47079929b346530ab396b111614d94527842833baeef32c2a246da5244239f6e"
+    },
+    {
+      "path": "bundle/runtime/php/flux/holosoma_overlay/config_values/wbt/hu_d04/reward.py",
+      "bytes": 2863,
+      "sha256": "0144548f2cb760cb93ee844e6abc1b4fab91406a69e9415c06214c97743a7978"
+    },
+    {
+      "path": "bundle/runtime/php/flux/kinematics.py",
+      "bytes": 4623,
+      "sha256": "b3f5f270b6b895bdfd323d93f70eb0cd48d4e2c60444a636e0c0017b8e8c3e60"
+    },
+    {
+      "path": "bundle/runtime/php/flux/low_noise_tools.py",
+      "bytes": 11006,
+      "sha256": "745d729adb968433e85ab293934f22fd9091c2550e97ecceff7d6835ee63ee37"
+    },
+    {
+      "path": "bundle/runtime/php/flux/offline_dependencies.py",
+      "bytes": 4026,
+      "sha256": "bbbf77a8f88919d466d75fe66068e29010af433a2b2ac507aec1966e44e72c36"
+    },
+    {
+      "path": "bundle/runtime/php/flux/replay_integrity.py",
+      "bytes": 9588,
+      "sha256": "81cc3760499cf66892735026246c635d639fa8d94b8b82b70bbfed919483b258"
+    },
+    {
+      "path": "bundle/runtime/php/flux/replay_teacher_finite.py",
+      "bytes": 13487,
+      "sha256": "c06933b0474ef647ea0c45409f4617844d64c3c3f7316269ea17046a2f977756"
+    },
+    {
+      "path": "bundle/runtime/php/flux/retarget_continuous.py",
+      "bytes": 5530,
+      "sha256": "9bd9d1d40edf8402929647584eda841aca9a3ebfb2eb36bbc864f0f2bd199677"
+    },
+    {
+      "path": "bundle/runtime/php/flux/retarget_hud04.py",
+      "bytes": 13180,
+      "sha256": "1792bbd625c21875641e9950a057b307e71a68a748e98924640967344b830bdd"
+    },
+    {
+      "path": "bundle/runtime/php/flux/reward_noise_recorder.py",
+      "bytes": 3694,
+      "sha256": "ea9e3766896a3b9f82483ec4bfb92cd7a54d8ed91b828647f17e500837c82de2"
+    },
+    {
+      "path": "bundle/runtime/php/flux/runtime_preflight.py",
+      "bytes": 2766,
+      "sha256": "a434dcbb009e32f4998e561c83ad0741863ad34e5144719f52ea9db681b1e769"
+    },
+    {
+      "path": "bundle/runtime/php/flux/source_preflight.py",
+      "bytes": 1805,
+      "sha256": "229a13596ae806b2132d2fc498dbe131d1b904a9f7b2ed49fa8d7d7d6f5986b7"
+    },
+    {
+      "path": "bundle/runtime/php/flux/startup_diagnostics.py",
+      "bytes": 7060,
+      "sha256": "cc4f0e536c4d2ee9c52f5fa2967a941b4e713e07d984694a786d53809dab44cb"
+    },
+    {
+      "path": "bundle/runtime/php/flux/train_fresh_pilot.py",
+      "bytes": 12334,
+      "sha256": "6e810422213a53a112d2c52fe7598b122d0d34092af3499b0e35eeffe58d2041"
+    },
+    {
+      "path": "bundle/runtime/php/flux/train_hud04.py",
+      "bytes": 10317,
+      "sha256": "52834fb7d71f6d62204b0ac1c52abb7c734a099a8ddcfbdf3bda3cb3bf6eaa9e"
+    },
+    {
+      "path": "bundle/runtime/php/flux/train_low_noise.py",
+      "bytes": 13881,
+      "sha256": "e1406ca1476be8da105dbeede60fbf508eb2d60eb01101d19bddf49afa3253b7"
+    },
+    {
+      "path": "bundle/runtime/php/flux/train_protected_pilot.py",
+      "bytes": 234,
+      "sha256": "35f10c471833762c1c2f5742fdd0444742532f15796659e97afa5b00083c8b3f"
+    },
+    {
+      "path": "bundle/runtime/php/flux/validate_hud04.py",
+      "bytes": 8924,
+      "sha256": "38e6e1db05b1d1d4bb006e98cab6b2c6bf330064dc63d5d4b9b4a84275d75f0f"
+    },
+    {
+      "path": "bundle/runtime/php/pyproject.toml",
+      "bytes": 938,
+      "sha256": "8a5e2b2d068b23f8dea4a64bf083e7ba73898ecb48a54930701ec9be697d1457"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/__init__.py",
+      "bytes": 68,
+      "sha256": "7278b88046ae6606b3491f935dc1d998155ab604132157e8a6a370759ccce8b7"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/__init__.py",
+      "bytes": 56,
+      "sha256": "124554366ba7681b0aaebb6197af12dfe9c045c4b67a0275890460c83d668896"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/curriculum.py",
+      "bytes": 6090,
+      "sha256": "a40159e70f5ad782e9b1b49d91d3d1c36dc4967e943fe348f201658d684c275f"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/depth_distillation.py",
+      "bytes": 13298,
+      "sha256": "e053a1cc22a67e6107fb490a9ff031b425a1709c33057898b9df7ea7f632b941"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/experiment.py",
+      "bytes": 11462,
+      "sha256": "1b006c8400388e9df3feeeb77792aa80ffd9b2478b8a490f283aa3def811446c"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/hu_d04/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/hu_d04/experiment.py",
+      "bytes": 5148,
+      "sha256": "150fe840027573f5e0ca0790fb81c0a14fbe1d34b908ea47ef647f2b4a460375"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/motion_command.py",
+      "bytes": 34416,
+      "sha256": "e338182452f9eb26e46db4fa445b4a1ec071334f478d5fcb0a54a08ef2563607"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/robot_config.py",
+      "bytes": 14538,
+      "sha256": "af82387e06f31068711aef771540c81b9941b95e5b67ee07d42afc163f10ef93"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/config_values/terrain.py",
+      "bytes": 27222,
+      "sha256": "72658e99aebeeec5bae5d87281f9093561768c7eecfb74eccabcdd3ab14b86fd"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/simulators/__init__.py",
+      "bytes": 39,
+      "sha256": "447db53b6e3c4d168be5f803f514911fb00aa6680507b05624eaed1341b80ca1"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/simulators/isaacsim.py",
+      "bytes": 617,
+      "sha256": "950532d831b6de4faed3fac322f3042486d5a42d09caa45d92fb79e32189b86f"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/train_agent.py",
+      "bytes": 5076,
+      "sha256": "4f9eeea105f0068825d7092fb5001ee84f34ef10285e0ac31862d530a038cfad"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/__init__.py",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/checkpoint.py",
+      "bytes": 6715,
+      "sha256": "bf1f6f8f416aa57323cf0f4211075677ce21387dedbbfa54d82733bede32bba6"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/compat.py",
+      "bytes": 5879,
+      "sha256": "7cc1b518ce7f9880be5edc7719cea96cbde5204b5e1cd85e7358abb585910492"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/exporter.py",
+      "bytes": 13616,
+      "sha256": "ae6fa7776bbe3c97c9c70921bd5f0a15137189e6603bd09b0a5d9b73fdf2045e"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/gmr_convert.py",
+      "bytes": 11236,
+      "sha256": "8d0fa2587af25e4a8de2974dcb308aa717e57015e73abcc8852c06f3778e7874"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/guarded_action.py",
+      "bytes": 2535,
+      "sha256": "a60a98c8f89d95cd1ce05503ff0171d16b5416025683f0d76a75075ee4928e5c"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/isaacsim_clock.py",
+      "bytes": 1651,
+      "sha256": "395ba6024b4f684a3ccb1df999b99666cf044c82f177ca51a65ed0cef96b5181"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/motion_replication.py",
+      "bytes": 5822,
+      "sha256": "026158e37f7381323d6eaf39aa3561ee7c7240ae607d5a7670696dd58f72fc9c"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/multi_motion_helpers.py",
+      "bytes": 7191,
+      "sha256": "6c4e16195f645bc93712a46a8e7188773aef1d0e66715bbba163a812dce62663"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/obstacle_helpers.py",
+      "bytes": 15006,
+      "sha256": "1c44de52bfbf66675c29226fd2434080e3bfce298a166ff1100827920e5b4c98"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/registry.py",
+      "bytes": 16496,
+      "sha256": "7e87eeddf6b421b1fa4bf68891ede78dbfc778edeb38f4d5aa4940dca7ede88a"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/release_metadata.py",
+      "bytes": 6941,
+      "sha256": "12c9115096bd3193ff3e4502c4fea368d7679d2aec10423bfaf523c0b649b843"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/smoke_bounds.py",
+      "bytes": 1102,
+      "sha256": "b734564e15fc467d15cff438a54021dddfa6889046f219f5ca673a33bbc55261"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/student_teacher.py",
+      "bytes": 12977,
+      "sha256": "773dd44971d1b09beb76da780422c16de66cd4ac0d9cf65dfd5bf6dd27f30eff"
+    },
+    {
+      "path": "bundle/runtime/php/wbt_training/utils/target_guard.py",
+      "bytes": 3413,
+      "sha256": "d6a82d17e35131c63717c1cb525d2192cc2c5ba125393b47b309a1e4e3010dfb"
+    },
+    {
+      "path": "bundle/terrain/forward_walk0.5s_step0.5s_motion.obj",
+      "bytes": 1837,
+      "sha256": "df881ae749d86925eefd52057a3b965b6745b0887eb141ee4af7525d0de741ab"
+    },
+    {
+      "path": "bundle/terrain/forward_walk0.5s_step0s_motion.obj",
+      "bytes": 1213,
+      "sha256": "7fcd7d610aa62091554a78626901da54e3be49e115e71467a37e111ea81331df"
+    },
+    {
+      "path": "bundle/terrain/forward_walk0.5s_step1.0s_motion.obj",
+      "bytes": 2375,
+      "sha256": "bc874ed58dcf4ea5945ab7bd3714a9b025c154bee0f1a51f923704bef4671685"
+    },
+    {
+      "path": "bundle/terrain/forward_walk0.8s_step0.5s_motion.obj",
+      "bytes": 1833,
+      "sha256": "1d4f2c4c1ca31956026b91619a7ec66d859e234c8f6d66297317330d27a4cfb2"
+    },
+    {
+      "path": "bundle/terrain/forward_walk0.8s_step0s_motion.obj",
+      "bytes": 1201,
+      "sha256": "3eabe4f8477239d2d819de150489f67057b9b3c5fbfab75c796bef1d6a7109e2"
+    },
+    {
+      "path": "bundle/terrain/forward_walk0.8s_step1.0s_motion.obj",
+      "bytes": 2393,
+      "sha256": "25160e0902fe5f504b0c62d8b480ea8dfd8999183c2359d4ad03d6f25ba2246e"
+    },
+    {
+      "path": "bundle/terrain/forward_walk1.2s_step0.5s_motion.obj",
+      "bytes": 1845,
+      "sha256": "eadda47826059f07408f825f2cb69505a52e6601ad7f440d4dc0da3d6f4a05a1"
+    },
+    {
+      "path": "bundle/terrain/forward_walk1.2s_step0s_motion.obj",
+      "bytes": 1207,
+      "sha256": "0fbcdf66bfc172b8f3c3361fc5636fb753da415a62f5e050edd6e35fc93dc0ad"
+    },
+    {
+      "path": "bundle/terrain/forward_walk1.2s_step1.0s_motion.obj",
+      "bytes": 2387,
+      "sha256": "f94d86a30e0a4a5faf775776f1662e6369d93ea3511c7665d156bc31465e206b"
+    },
+    {
+      "path": "bundle/terrain/forward_walk1.5s_step0.5s_motion.obj",
+      "bytes": 1843,
+      "sha256": "6fb466e2084d29597fe3768e0e9ab814f24207cd6d5bf15f423ecc08807afd0b"
+    },
+    {
+      "path": "bundle/terrain/forward_walk1.5s_step0s_motion.obj",
+      "bytes": 1197,
+      "sha256": "a1c33250737619a9509aa2ed59a53c64cd0243844ba750ee08fc1a9cbb3f55ae"
+    },
+    {
+      "path": "bundle/terrain/forward_walk1.5s_step1.0s_motion.obj",
+      "bytes": 2385,
+      "sha256": "bf20eaca69c52095dfbc980d4580896007b8365fb783a469b45339c4abedaf62"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk0.5s_step0.5s_motion.obj",
+      "bytes": 1839,
+      "sha256": "e6ebac0b6e4c83c17f44e34a629f1702ff92d860ab4cc2f07e1fcd22a354357f"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk0.5s_step0s_motion.obj",
+      "bytes": 1201,
+      "sha256": "fc9a13df5b49cb2d654bdb8714f12bed807f5a78e4305f1e70ca1800d5ddf856"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk0.5s_step1.0s_motion.obj",
+      "bytes": 2383,
+      "sha256": "98766ed612d4da74bf3dc18a06154910a378c2d43870292128edc01039e5744a"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk0.8s_step0.5s_motion.obj",
+      "bytes": 1821,
+      "sha256": "e4aef253fb8a0a505b43fb5d6636422db7b60f1f4e9438cb623e4e6b8da36447"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk0.8s_step0s_motion.obj",
+      "bytes": 1195,
+      "sha256": "fe1c3cff3f5ded7d8597f534f86466420ebe9bbcc8fe7852875cfaab27ab7dc7"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk0.8s_step1.0s_motion.obj",
+      "bytes": 2369,
+      "sha256": "43d14774e02048685ae289aaf7e5967cf9f4748f474adf684d32b68c842da184"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk1.2s_step0.5s_motion.obj",
+      "bytes": 1825,
+      "sha256": "a418bc75d3541ee0a58828c7a4e58d1f0c1f53f02be14e8bdb84a02d8c51cc23"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk1.2s_step0s_motion.obj",
+      "bytes": 1203,
+      "sha256": "02cee0f520d6d8b9edd251c8a766cda8eb197945c81dac3029d7db08312bb0e8"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk1.2s_step1.0s_motion.obj",
+      "bytes": 2361,
+      "sha256": "d8f167002c20298ff8065a6d0c76bd32797fa4f059cf89ad195b1f31f9ae0ac8"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk1.5s_step0.5s_motion.obj",
+      "bytes": 1811,
+      "sha256": "4e4f8bc6573a51ed7921f3c6c528d76b456d473b26b956df9658e581dea8a6b4"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk1.5s_step0s_motion.obj",
+      "bytes": 1199,
+      "sha256": "aa25bb0231e07c1c2baa84f6794dfc4eeee14ae184e2b4842e53e1e24de3bbe3"
+    },
+    {
+      "path": "bundle/terrain/left_45_walk1.5s_step1.0s_motion.obj",
+      "bytes": 2361,
+      "sha256": "4332eaf2bc6abbe19170f93ad0386b96cc4f6392f1ec728bd4a46dd6b5983dd6"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk0.5s_step0.5s_motion.obj",
+      "bytes": 1825,
+      "sha256": "35e610695d5778e76935701570251d0fb3acee7f9747209dfa21520bbe309da3"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk0.5s_step1.0s_motion.obj",
+      "bytes": 2361,
+      "sha256": "b73141dec56a3a0eb8915bc30cae746688305745bc2b853bc5a7ae448960bf99"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk0.8s_step0.5s_motion.obj",
+      "bytes": 1825,
+      "sha256": "d07bac1982eeaa8b871d5ec6ff848ae114f68d4af54816cb8d3c2ce5d958a873"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk0.8s_step1.0s_motion.obj",
+      "bytes": 2359,
+      "sha256": "907aa58d074a19b549a3868c992073616d204fe9c27da2ec05ce6f314b2a2af7"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk1.2s_step0.5s_motion.obj",
+      "bytes": 1829,
+      "sha256": "456e0dc848f551874e74e011904fa5dd921ddbeebc8a1a72c324123bf0653ca0"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk1.2s_step1.0s_motion.obj",
+      "bytes": 2367,
+      "sha256": "d17be80ea3812632616ba17ddbfea1ca788c99ce58304b7a493f85eb6dc99238"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk1.5s_step0.5s_motion.obj",
+      "bytes": 1845,
+      "sha256": "790f2d9e90bb236561f2f9085b317c580106dac523fc40405eae789352f3479f"
+    },
+    {
+      "path": "bundle/terrain/left_90_walk1.5s_step1.0s_motion.obj",
+      "bytes": 2385,
+      "sha256": "4b42726069aac32e1f0f6957fa68754fd04eccb957cf29d2250abd2506c9132e"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk0.5s_step0.5s_motion.obj",
+      "bytes": 1839,
+      "sha256": "20887233c1afeec7c9ff39694eef5d25e3c104a75482d874debb13087bcf19be"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk0.5s_step0s_motion.obj",
+      "bytes": 1213,
+      "sha256": "b4610b0004d9e1eb9865e082a605d02957dfd1bb81a0ea19040dc70aae6ba33c"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk0.5s_step1.0s_motion.obj",
+      "bytes": 2399,
+      "sha256": "27e6ba1bc8f26c73d453e8b4edcfbce0eeb993e65d72e5efa0b4c112ae739410"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk0.8s_step0.5s_motion.obj",
+      "bytes": 1847,
+      "sha256": "34f1a8f036752e46c752419284dfa8f72e8170004534d073364ceba94f45cf9b"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk0.8s_step0s_motion.obj",
+      "bytes": 1209,
+      "sha256": "67c78e9d2994aa1c501e3987bdd74530d9e6e259e4b2fbf992845f83209bc213"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk0.8s_step1.0s_motion.obj",
+      "bytes": 2391,
+      "sha256": "a18362a9aaeb4af3cfde82455d8409edb66bdc4e168c7c0caf7279627eebe9b7"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk1.2s_step0.5s_motion.obj",
+      "bytes": 1835,
+      "sha256": "8aff98e430e452354edf26344eab490b04c235b6e01284d6ffe5cd2f5e7697b0"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk1.2s_step0s_motion.obj",
+      "bytes": 1207,
+      "sha256": "49ed9e9a5d80981d5352ec051f18f6b8b690709e559ac30696935b7a74fa0dce"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk1.2s_step1.0s_motion.obj",
+      "bytes": 2389,
+      "sha256": "47bc92bddcf85d8ae86413621b622c1ef38e9ca945f0c04a748eabaad2ac3f14"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk1.5s_step0.5s_motion.obj",
+      "bytes": 1833,
+      "sha256": "ab543d41d8676e07d25b3e8dac434a2d2406a668549a41fd2ae13387453bba45"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk1.5s_step0s_motion.obj",
+      "bytes": 1207,
+      "sha256": "049206683cd1a4987234607ffb82a1a8e12f4361c8c92c76040305619b2d7332"
+    },
+    {
+      "path": "bundle/terrain/right_45_walk1.5s_step1.0s_motion.obj",
+      "bytes": 2383,
+      "sha256": "0b1b90c376c62189144ad28b45e048aea87764529ca86de60a5a47e589085ae6"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk0.5s_step0.5s_motion.obj",
+      "bytes": 1835,
+      "sha256": "b4e8a906cc04d44c32289c6ccd691bee752e9eea38651519182ea6aa73ad3f47"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk0.5s_step0s_motion.obj",
+      "bytes": 1213,
+      "sha256": "1567156f54d50e2005070d077f2fd3117f5ff7f3585ef645b5078b65d70b3b9a"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk0.5s_step1.0s_motion.obj",
+      "bytes": 2393,
+      "sha256": "4c31b0fda25c96b86abe46352dea5c06f5af4ddcb00245ea286f4137190de031"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk0.8s_step0.5s_motion.obj",
+      "bytes": 1835,
+      "sha256": "437cc629c8b9761296ac2857a93c2cc6232185be19e322f1da2ff917d8a94aa3"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk0.8s_step0s_motion.obj",
+      "bytes": 1211,
+      "sha256": "7a6f706bbdba7e8edee5bae6ad81c66102f1fad7d35bc8fa8236ae730b8b5e87"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk0.8s_step1.0s_motion.obj",
+      "bytes": 2375,
+      "sha256": "806ae8eff7933a82e87f165ffd7468503d4e7f93b223eddd031563acf7f7bf44"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk1.2s_step0.5s_motion.obj",
+      "bytes": 1839,
+      "sha256": "8f9d144f0466dcc4e2569513f5fefe23f17d3239fcbef36cd5bd4f636f5a766a"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk1.2s_step0s_motion.obj",
+      "bytes": 1217,
+      "sha256": "5bd0a7b00bf4b9622199848af9a10c0a945bcfb3772b4878caba96da55a7bba6"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk1.2s_step1.0s_motion.obj",
+      "bytes": 2387,
+      "sha256": "0ac10ec1fd8d4df6dfbc93567d72e940d5a752ae2a77159b4186038e8603601e"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk1.5s_step0.5s_motion.obj",
+      "bytes": 1855,
+      "sha256": "b3244b1f3d9eab73f2238e5e1af5ccdbffbc12196bd40cc46a42270430bd0645"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk1.5s_step0s_motion.obj",
+      "bytes": 1215,
+      "sha256": "e01d26f4f18e84eb4f356dc64c9e68bd3d90714078b71e4cb2ff4a4c10934a10"
+    },
+    {
+      "path": "bundle/terrain/right_90_walk1.5s_step1.0s_motion.obj",
+      "bytes": 2413,
+      "sha256": "81b0755b93f67bd02b51ebb93a3b3465972eb33a248e924a5a864f6fdc358737"
+    },
+    {
+      "path": "deps/overlay.lock",
+      "bytes": 3150,
+      "sha256": "818bdb9635a761d7a54bf5ae56ca36b2562c6ccb7ebdc78eb270b9f7e1b23970"
+    },
+    {
+      "path": "deps/upstream-manifest.json",
+      "bytes": 84631,
+      "sha256": "b0f0415311e16037a867ef41d62e595ddfbb70bee8d9f3d7bcc582fbaff38781"
+    },
+    {
+      "path": "deps/wheels/chardet-7.7.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 1648612,
+      "sha256": "7f13de78af5da07ddd813ff5a564c3aa8a113f05cba202be649e061c431a0e9a"
+    },
+    {
+      "path": "deps/wheels/colorlog-6.12.0-py3-none-any.whl",
+      "bytes": 12239,
+      "sha256": "30d392604e9110045a2c2aeefc27d7a017abbab63f3a8aee594eac0801df784e"
+    },
+    {
+      "path": "deps/wheels/docstring_parser-0.18.0-py3-none-any.whl",
+      "bytes": 22484,
+      "sha256": "b3fcbed555c47d8479be0796ef7e19c2670d428d72e96da63f3a40122860374b"
+    },
+    {
+      "path": "deps/wheels/easydict-1.13-py3-none-any.whl",
+      "bytes": 6804,
+      "sha256": "6b787daf4dcaf6377b4ad9403a5cee5a86adbc0ca9a5bcf5410e9902002aeac2"
+    },
+    {
+      "path": "deps/wheels/embreex-4.4.0.post1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 14540499,
+      "sha256": "2cd0f7d5c6342e6247e31f700761689cae7829454d8c6de0c41e62124a023e1f"
+    },
+    {
+      "path": "deps/wheels/glfw-2.11.0-py2.py3-none-manylinux_2_28_x86_64.whl",
+      "bytes": 248539,
+      "sha256": "76484fae4a4ef0f778a05e02422ecbe6960ae23039087fe2e0ad9742ab8c7bbe"
+    },
+    {
+      "path": "deps/wheels/httpcore-1.0.9-py3-none-any.whl",
+      "bytes": 78784,
+      "sha256": "2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55"
+    },
+    {
+      "path": "deps/wheels/httpx-0.28.1-py3-none-any.whl",
+      "bytes": 73517,
+      "sha256": "d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad"
+    },
+    {
+      "path": "deps/wheels/joblib-1.6.0-py3-none-any.whl",
+      "bytes": 306115,
+      "sha256": "3dbbf9f6e4b592a2357b854608e980fe6390d131d7a82f011a377ef2ebef7aba"
+    },
+    {
+      "path": "deps/wheels/loguru-0.7.3-py3-none-any.whl",
+      "bytes": 61595,
+      "sha256": "31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c"
+    },
+    {
+      "path": "deps/wheels/manifold3d-3.5.4-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 1426317,
+      "sha256": "d021c4096aa0e40748c0720b8386002de349b788b3ad7d92a3dba214110d0f0e"
+    },
+    {
+      "path": "deps/wheels/mapbox_earcut-2.1.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 77260,
+      "sha256": "89c81f3806540c5b7091fc7ac4dcc2336d6410a922ff9fb384835015c7709c1a"
+    },
+    {
+      "path": "deps/wheels/meshcat-0.3.2-py3-none-any.whl",
+      "bytes": 2640524,
+      "sha256": "cba0465d0e29658c48bb65d27f5c8e04ff0a1ac8ce916d65621146c06258a1c7"
+    },
+    {
+      "path": "deps/wheels/numpy-1.26.4-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 18252005,
+      "sha256": "666dbfb6ec68962c033a450943ded891bed2d54e6755e35e5835d63f4f6931d5"
+    },
+    {
+      "path": "deps/wheels/numpy_stl-4.1.1-py3-none-any.whl",
+      "bytes": 37483,
+      "sha256": "4690417e2d4b4ee3ac89d9dec0fcad5e8a56b6665eaec10639d575dc895c474d"
+    },
+    {
+      "path": "deps/wheels/onnx-1.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 16048190,
+      "sha256": "4a183c6178be001bf398260e5ac2c927dc43e7746e8638d6c05c20e321f8c949"
+    },
+    {
+      "path": "deps/wheels/pycollada-0.9.3-py3-none-any.whl",
+      "bytes": 129206,
+      "sha256": "636e6496f60987586db82455ea7bbd9ade775e8181c6590c83b698b6cd53a9f5"
+    },
+    {
+      "path": "deps/wheels/pygame-2.6.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 13977107,
+      "sha256": "ce8cc108b92de9b149b344ad2e25eedbe773af0dc41dfb24d1f07f679b558c60"
+    },
+    {
+      "path": "deps/wheels/pyngrok-8.1.2-py3-none-any.whl",
+      "bytes": 25935,
+      "sha256": "849e9f55706288b00eb28f4ae8ea16b05e52c609f80ef4a88ca23b385f2f9178"
+    },
+    {
+      "path": "deps/wheels/python_utils-4.1.4-py3-none-any.whl",
+      "bytes": 49838,
+      "sha256": "009251f6182f872cd4a74225cdf3636f48ee4596532082bd367797c5924d92bf"
+    },
+    {
+      "path": "deps/wheels/pyzmq-27.2.0-cp311-cp311-manylinux_2_26_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 888465,
+      "sha256": "39755dc4a923021bd0677990ffdbc21cff0e1ee1cf07fe3817acea153ef4cb67"
+    },
+    {
+      "path": "deps/wheels/shapely-2.1.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+      "bytes": 3110842,
+      "sha256": "136ab87b17e733e22f0961504d05e77e7be8c9b5a8184f685b4a91a84efe3c26"
+    },
+    {
+      "path": "deps/wheels/smart_open-8.0.4-py3-none-any.whl",
+      "bytes": 73881,
+      "sha256": "8a3a67679942fa40d1a93ed3aea37619b4b4ec5458f1d5a9228dfc301db11b4c"
+    },
+    {
+      "path": "deps/wheels/svg_path-7.1-py2.py3-none-any.whl",
+      "bytes": 18633,
+      "sha256": "2c4afb1457da48ff3b3ef802aacf50fd0f23f99e82b77c6f60abc0f1ddb9c312"
+    },
+    {
+      "path": "deps/wheels/typeguard-4.6.0-py3-none-any.whl",
+      "bytes": 36884,
+      "sha256": "79878165bb86f2cf5d41d159a0ff1792a796cf496882d2fe1b1c6c7049b9cdd7"
+    },
+    {
+      "path": "deps/wheels/typing_extensions-4.16.0-py3-none-any.whl",
+      "bytes": 45571,
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "path": "deps/wheels/tyro-1.0.16-py3-none-any.whl",
+      "bytes": 216925,
+      "sha256": "2f9087196113699647190459a12b6b4f2784dd0703c50ab1f7bf0f85a3a794ea"
+    },
+    {
+      "path": "deps/wheels/u_msgpack_python-2.8.0-py2.py3-none-any.whl",
+      "bytes": 10590,
+      "sha256": "1d853d33e78b72c4228a2025b4db28cda81214076e5b0422ed0ae1b1b2bb586a"
+    },
+    {
+      "path": "deps/wheels/vhacdx-0.1.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 260365,
+      "sha256": "e86ffd7d91b07e8b9881dd241d52f4e4cd346b2da9710bee23879d784ea06de5"
+    },
+    {
+      "path": "deps/wheels/wandb-0.22.0-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 19564075,
+      "sha256": "44da9a83301d89c008f608832b74237f9e0a0758b2bb6d69ba51652818fffb5e"
+    },
+    {
+      "path": "deps/wheels/xatlas-0.0.11-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "bytes": 262197,
+      "sha256": "c044ee009a427898b26c0929646bfb0e0356f6762be40a140f4af41a33026208"
+    },
+    {
+      "path": "deps/wheels/xxhash-4.0.2-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "bytes": 260984,
+      "sha256": "f8e86a0b5e28418162dfa68d6dc4bee873ea2efbd6ee67789903a0ee37a81c14"
+    },
+    {
+      "path": "deps/wheels/yourdfpy-0.0.60-py3-none-any.whl",
+      "bytes": 22194,
+      "sha256": "8a187a8b18c98db87c76e9a950581b3c875b761e00df83942526c17ea693166c"
+    },
+    {
+      "path": "native-source/bundle-manifest.json",
+      "bytes": 901,
+      "sha256": "88fcfae074a13a1903f0ff587f2ad8fecf08197aa1022d24699f0638793c54fb"
+    },
+    {
+      "path": "native-source/child.py",
+      "bytes": 3059,
+      "sha256": "7386d1cde43cab2c76aa99c8e90bfbbc6fc537720807e854e68b590fd0abc16a"
+    },
+    {
+      "path": "native-source/learning_algo.py",
+      "bytes": 2737,
+      "sha256": "4cda899ff2acfbe5931815213cc512aec3854697cd26906f145cbdc0f4b9aea5"
+    },
+    {
+      "path": "native-source/native_entry.py",
+      "bytes": 4514,
+      "sha256": "2ebf686d52f94fda68158bc4ec9bb5418a31421123a872c5621e0a01b3dad6ce"
+    },
+    {
+      "path": "native-source/runtime_versions.py",
+      "bytes": 5128,
+      "sha256": "cc690ac02eabd61c0ac20889edb73b38675511803990a8e20472b9d4a803aa61"
+    },
+    {
+      "path": "native-source/worker.py",
+      "bytes": 11293,
+      "sha256": "8139bfc87e983b629f5dc7d16a6b735d32519f4c960b66323c00bf56e5277f47"
+    },
+    {
+      "path": "trial-code/closure_evidence.py",
+      "bytes": 5662,
+      "sha256": "75f4f6b41c0e0bfbb0f24e22854e5ae10dcfb6f3b845273ffbabaaca6aeac2ca"
+    },
+    {
+      "path": "trial-code/config.json",
+      "bytes": 36759,
+      "sha256": "c96c120251efd3b19e175d47a74db6dac880bd7f4120538449444cd90870946d"
+    },
+    {
+      "path": "trial-code/resume_algo.py",
+      "bytes": 1930,
+      "sha256": "407654d9ccc696891bb9f377f752d2e8ec3cbe5b3a1554f4de61c4694e0fa0f4"
+    },
+    {
+      "path": "trial-code/trial_algo.py",
+      "bytes": 2353,
+      "sha256": "b21694b23c2a810abf4bd34d747bf6c16c96bf0da15af8a0798a3dad93661896"
+    },
+    {
+      "path": "trial-code/trial_child.py",
+      "bytes": 2593,
+      "sha256": "6f2982801ab61b6be3f5fe7565cf1993f411edce985b5bf9d57c3059e60c6abf"
+    }
+  ],
+  "package_files": [
+    {
+      "path": "local_shards.py",
+      "bytes": 6800,
+      "sha256": "e5368ccf21a22b888f5239197786ff64fdb59083f0b1380c7fdc8d6a5500fe07"
+    },
+    {
+      "path": "native_binding.py",
+      "bytes": 2576,
+      "sha256": "827304fcb0fe1c5186857970ba6d059c5ecfae172d69258a66899086dc3c0273"
+    },
+    {
+      "path": "native_child.py",
+      "bytes": 6590,
+      "sha256": "13e8dd89b924bdf86e723deb6bed02e79783fa86d972cc65a1e8f4f9aac1f450"
+    },
+    {
+      "path": "frozen_compare.py",
+      "bytes": 8205,
+      "sha256": "c5db38c6d869f0521b211330e9a54b08a31b1825b8a0a4f59cdcf3033c68d708"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1636,
+      "sha256": "d1bb0b3c61dcb1e90289d768d0c15f9a2f123499df10b9f0b56df9135e0056ab"
+    },
+    {
+      "path": "inputs/shard-manifest.json",
+      "bytes": 1112,
+      "sha256": "54a6cf2f088c8b2a07d064b7109fb8e32117f7aab0cbe64c4c86c613d8ffcec0"
+    },
+    {
+      "path": "inputs/f00-p00000.bin",
+      "bytes": 4194304,
+      "sha256": "43dc15afd47e22ff4c32748780579c921142553fd2beff8fcddfe244504fc4d0"
+    },
+    {
+      "path": "inputs/f00-p00001.bin",
+      "bytes": 4194304,
+      "sha256": "0b4921f4e6c8750cb5b233a010f1fb776f94c4456144a046f63b02a2e6dc7a10"
+    },
+    {
+      "path": "inputs/f00-p00002.bin",
+      "bytes": 1955707,
+      "sha256": "de4c826b618db6c002e8951d1f69da09e685bc456a5760ec1d5c1a6f8b5c7592"
+    },
+    {
+      "path": "inputs/f01-p00000.bin",
+      "bytes": 2987746,
+      "sha256": "3b5a491ffe4cca53108306e91a323637bca95ebfd77443176a3f8fe413dbf6e5"
+    }
+  ]
+}

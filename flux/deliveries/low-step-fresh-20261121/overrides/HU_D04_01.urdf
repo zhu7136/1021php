@@ -109,7 +109,7 @@
       lower="-2.618"
       upper="2.618"
       effort="140"
-      velocity="32" />
+      velocity="5" />
   </joint>
   <link name="left_hip_roll_link">
     <inertial>
@@ -165,7 +165,7 @@
       lower="-0.8727"
       upper="2.094"
       effort="140"
-      velocity="20" />
+      velocity="5" />
   </joint>
   <link name="left_hip_yaw_link">
     <inertial>
@@ -221,7 +221,7 @@
       lower="-2.618"
       upper="2.618"
       effort="140"
-      velocity="32" />
+      velocity="5" />
   </joint>
   <link name="left_knee_link">
     <inertial>
@@ -277,7 +277,7 @@
       lower="-0.087"
       upper="2.583"
       effort="140"
-      velocity="20" />
+      velocity="5" />
   </joint>
   <link name="left_ankle_pitch_link">
     <inertial>
@@ -519,7 +519,7 @@
       lower="-2.618"
       upper="2.618"
       effort="140"
-      velocity="32" />
+      velocity="5" />
   </joint>
   <link name="right_hip_roll_link">
     <inertial>
@@ -575,7 +575,7 @@
       lower="-2.094"
       upper="0.8727"
       effort="140"
-      velocity="20" />
+      velocity="5" />
   </joint>
   <link name="right_hip_yaw_link">
     <inertial>
@@ -631,7 +631,7 @@
       lower="-2.618"
       upper="2.618"
       effort="140"
-      velocity="32" />
+      velocity="5" />
   </joint>
   <link name="right_knee_link">
     <inertial>
@@ -687,7 +687,7 @@
       lower="-0.087"
       upper="2.583"
       effort="140"
-      velocity="20" />
+      velocity="5" />
   </joint>
   <link name="right_ankle_pitch_link">
     <inertial>

@@ -18,7 +18,7 @@ def install_native_audit(env,out):
     assert len(ids)==8
     for i in ids:
         suffix=names[i].removesuffix('_joint').removeprefix('left_').removeprefix('right_')
-        assert expected[i].item()=={'hip_pitch':32.,'hip_roll':20.,'hip_yaw':32.,'knee':20.}[suffix], 'g1_target_limit_mismatch'
+        assert expected[i].item()==5., 'original_5rad_target_limit_mismatch'
     report={'event':'native_velocity_limits_verified','source':'Articulation.root_physx_view.get_dof_max_velocities','num_envs':env.num_envs,'joint_names':names,'expected_rad_s':expected.tolist(),'native_min_rad_s':actual.amin(0).tolist(),'native_max_rad_s':actual.amax(0).tolist(),'target_joints':[names[i] for i in ids],'all_envs_matched':True}
     (out/'native-velocity-limits.json').write_text(json.dumps(report,indent=2))
     print(json.dumps(report),flush=True)

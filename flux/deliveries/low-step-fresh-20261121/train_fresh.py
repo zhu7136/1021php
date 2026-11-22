@@ -1,4 +1,4 @@
-"""One fresh low-step teacher, offline inputs, bounded worker, zero retries.
+"""Resume the original 5rad/s low-step teacher, bounded worker, zero retries.
 
 Default: CPU-only package preflight. --execute: one remote vendor-runtime child.
 No account credential or signed capability is accepted in arguments or Git.
@@ -14,6 +14,8 @@ ROOT=Path(__file__).resolve().parent
 PIN='24e92ac169f998acd280b670d48b7bae7f1d0dcc914ac5a276574d72c4a91e54'
 LIMIT=1800
 UPDATES=2000
+SOURCE_SHA='f29728d282f1909ad0d6313ab0cefc2476849aa1cd62bb30d6bbc78f369a16dc'
+RESUME_PATH='/workspace/resume-input/model_smoke_final.pt'
 
 def sha(p):
  h=hashlib.sha256()
@@ -43,7 +45,9 @@ def extract(zpath,target):
 def validate_config(c):
  t=c['training']; a=c['algo']['config']
  assert t['num_envs']==4096 and t['seed']==42 and t['headless'] and not t['multigpu']
- assert not any(t.get(k) for k in ['checkpoint','teacher_checkpoint','registry_name','wandb_path'])
+ assert t['checkpoint']==RESUME_PATH and a['load_optimizer'] is True
+ assert not any(t.get(k) for k in ['teacher_checkpoint','registry_name','wandb_path'])
+ assert all(v==5. for n,v in zip(c['robot']['dof_names'],c['robot']['dof_vel_limit_list']) if any(s in n for s in ['hip_pitch','hip_roll','hip_yaw','knee']))
  assert a['num_learning_iterations']==UPDATES and a['num_steps_per_env']==24
  assert len(c['robot']['dof_names'])==31 and c['robot']['actions_dim']==29
  assert 'low-step' in t['name']
@@ -66,7 +70,7 @@ def prepare(work,plan):
    if dest.exists():raise ValueError('bundle_member_collision')
    dest.parent.mkdir(parents=True,exist_ok=True);shutil.copy2(source,dest)
  shutil.copytree(skill/'teacher-code',payload/'teacher-code')
- for name in ['config.json','teacher_child.py','teacher_algo.py','speed10_audit.py']:
+ for name in ['config.json','teacher_child.py','teacher_algo.py','speed10_audit.py','resume_audit.py']:
   (payload/'teacher-code'/name).write_bytes((ROOT/'overrides'/name).read_bytes())
  (payload/'bundle/overlay/wbt_training/config_values/hud04_robot.py').write_bytes((ROOT/'overrides/hud04_robot.py').read_bytes())
  (payload/'bundle/asset/urdf/HU_D04_01.urdf').write_bytes((ROOT/'overrides/HU_D04_01.urdf').read_bytes())
@@ -81,7 +85,7 @@ def learning_report(out,code):
   d=json.loads((out/'learning_state.json').read_text());r['completed_updates']=d['completed_updates']
   cp=out/d['checkpoint_relative_path']
   flags=['actor_changed','critic_changed','actor_optimizer_steps_increased','critic_optimizer_steps_increased','parameters_finite']
-  r['learning_evidence_passed']=(1<=d['completed_updates']<=UPDATES and all(d.get(k) is True for k in flags)
+  r['learning_evidence_passed']=(1<=d['completed_updates']<=UPDATES and d.get('new_process_resume_verified') is True and all(d.get(k) is True for k in flags)
     and cp.is_file() and not cp.is_symlink() and cp.resolve().is_relative_to(out.resolve()) and sha(cp)==d['checkpoint_sha256'])
   life=json.loads((out/'lifecycle.json').read_text())
   r['native_lifecycle_passed']=code==0 and life.get('close_returned') is True and life.get('child_returned') is True
@@ -131,18 +135,25 @@ def main():
  if a.execute:
   signal.signal(signal.SIGALRM,deadline);signal.signal(signal.SIGTERM,deadline);signal.setitimer(signal.ITIMER_REAL,LIMIT)
  out=work/'output';out.mkdir()
- report=dict(task_id=a.task_id,git_commit=a.commit,fresh_training=True,skill='low-step',worker_seconds_max=LIMIT,
+ report=dict(task_id=a.task_id,git_commit=a.commit,fresh_training=False,skill='low-step',worker_seconds_max=LIMIT,
              update_cap=UPDATES,num_envs=4096,clips=56,frames=25676,automatic_retries=0,worker_passed=False,teacher_converged=False)
  try:
   payload=prepare(work,plan)
-  emit('inputs_verified',fresh_training=True,num_envs=4096,clips=56,frames=25676,historical_checkpoint_loaded=False)
+  emit('inputs_verified',fresh_training=False,num_envs=4096,clips=56,frames=25676,source_checkpoint_sha256=SOURCE_SHA)
   if not a.execute:
    emit('cpu_preflight_passed',gpu_started=False,**report);return 0
+  mount=ROOT.parents[2]/'flux/private-resume'
+  candidates=list(mount.glob('*.pt'))
+  if not 1<=len(candidates)<=8:raise ValueError('private_resume_mount_missing_or_ambiguous')
+  matching=[p for p in candidates if not p.is_symlink() and p.is_file() and p.stat().st_size==10344443 and sha(p)==SOURCE_SHA]
+  if len(matching)!=1:raise ValueError('mounted_resume_checkpoint_missing_or_hash_mismatch')
+  cp=matching[0].resolve()
+  emit('mounted_resume_checkpoint_verified',bytes=cp.stat().st_size,sha256=SOURCE_SHA,source_completed_updates=672)
   vendor=next((Path(x) for x in ['/isaac-sim/python.sh','/workspace/isaaclab/_isaac_sim/python.sh'] if Path(x).is_file()),None)
   if vendor is None:raise ValueError('vendor_python_missing')
   env={k:v for k,v in os.environ.items() if not any(s in k.upper() for s in ['API_KEY','TOKEN','SECRET','PASSWORD','CREDENTIAL'])}
   for k in ['flux_key1103','php1021','ins1116','limxanzhuangbao','tian1119tian','sxsc_tushare_token']:env.pop(k,None)
-  env.update(PYTHONUNBUFFERED='1',PYTHONDONTWRITEBYTECODE='1',WANDB_MODE='disabled',CUDA_VISIBLE_DEVICES='0',PHP_FLUX_TASK_ID=a.task_id)
+  env.update(PYTHONUNBUFFERED='1',PYTHONDONTWRITEBYTECODE='1',WANDB_MODE='disabled',CUDA_VISIBLE_DEVICES='0',PHP_FLUX_TASK_ID=a.task_id,PHP_RESUME_CHECKPOINT=str(cp))
   site=work/'dependency-site'
   command=[str(vendor),'-m','pip','install','--no-index','--no-deps','--find-links',str(payload/'deps/wheels'),'--target',str(site),'-r',str(payload/'deps/overlay.lock')]
   with (out/'install.log').open('xb') as log:
@@ -150,7 +161,7 @@ def main():
   if code:raise RuntimeError('offline_dependency_install_failed')
   command=[str(vendor),str(payload/'teacher-code/teacher_child.py'),'--payload',str(payload),'--output',str(out),'--site',str(site),
     '--thread-id',plan['provenance']['thread_id'],'--turn-id',plan['provenance']['turn_id']]
-  emit('simulator_start_requested',checkpoint_load_requested=False,update_cap=UPDATES)
+  emit('simulator_start_requested',checkpoint_load_requested=True,update_cap=UPDATES,source_completed_updates=672)
   with (out/'native.log').open('xb') as log:
    child=subprocess.Popen(command,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
    sent=0

@@ -28,10 +28,10 @@ ANCHOR_BODY_NAME = "waist_pitch_link"
 
 # suffix: Kp, Kd, effort_limit_sim, velocity_limit_sim, armature
 _CALIBRATION = {
-    "hip_pitch": (220., 6., 140., 32., .14125),
-    "hip_roll": (200., 5., 140., 20., .14125),
-    "hip_yaw": (200., 5., 140., 32., .14125),
-    "knee": (240., 6., 140., 20., .14125),
+    "hip_pitch": (220., 6., 140., 5., .14125),
+    "hip_roll": (200., 5., 140., 5., .14125),
+    "hip_yaw": (200., 5., 140., 5., .14125),
+    "knee": (240., 6., 140., 5., .14125),
     "ankle_pitch": (60., 1.5, 42., 13.6, .1845504),
     "ankle_roll": (60., 1.5, 42., 13.6, .1845504),
     "waist_yaw": (120., 3., 42., 13.6, .1845504),

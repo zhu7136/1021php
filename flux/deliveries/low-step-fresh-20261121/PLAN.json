@@ -1,6 +1,6 @@
 {
   "scope": {
-    "fresh_training": true,
+    "fresh_training": false,
     "skill": "low-step",
     "worker_seconds_max": 1800,
     "update_cap": 2000,
@@ -10,18 +10,20 @@
     "automatic_retries": 0,
     "baseline_limit_rad_s": 5.0,
     "training_seed": 42,
-    "fresh_initialization": true,
+    "fresh_initialization": false,
     "max_gpu_tasks": 1,
     "hip_knee_velocity_limits_rad_s": {
-      "hip_pitch": 32.0,
-      "hip_roll": 20.0,
-      "hip_yaw": 32.0,
-      "knee": 20.0
-    }
+      "hip_pitch": 5.0,
+      "hip_roll": 5.0,
+      "hip_yaw": 5.0,
+      "knee": 5.0
+    },
+    "source_task": "TASK_20261121_165",
+    "source_completed_updates": 672
   },
   "provenance": {
     "thread_id": "01a1f6bb-d86a-7bc3-beaa-1ad43376ad65",
-    "turn_id": "01a1fee4-0550-7702-b30f-2a82f5c2d399"
+    "turn_id": "01a2011c-da58-79c1-9dd8-1aa903288191"
   },
   "runtime_files": [
     {
@@ -3370,40 +3372,45 @@
   "effective_overrides": [
     {
       "path": "teacher-code/config.json",
-      "bytes": 36749,
-      "sha256": "968cceccc26ea748ce017150146be0eb41a273887193a902896aded96cbf310f"
+      "bytes": 36768,
+      "sha256": "a9e24299766e1a73e5a4d4574c051457da25edf6e3af6d4454c1c9d308f382b0"
     },
     {
       "path": "teacher-code/teacher_child.py",
-      "bytes": 2762,
-      "sha256": "bd9315c858592ac215e700fe0dad210a9be06992ca451a40679f6d8ab1d0c24a"
+      "bytes": 3111,
+      "sha256": "d55ada6c4c3809e4fffec4ccb65866efe097952cd98efee30acd11d996ab1372"
     },
     {
       "path": "teacher-code/teacher_algo.py",
-      "bytes": 3172,
-      "sha256": "972b6c77523ee5c7663e6d7c64a2a818430e5c14d37f112c260e0708047a346c"
+      "bytes": 4159,
+      "sha256": "d5323f93362c79bf306daa5a58976e4e3fd7b3538af0cb0dced1d623affff8c8"
     },
     {
       "path": "teacher-code/speed10_audit.py",
-      "bytes": 2861,
-      "sha256": "b10368af46c6ee8caa41b81a902e9973a2b909d7fa13b6cb07b350cd2f2ee5db"
+      "bytes": 2809,
+      "sha256": "6ca43aed484b47ddccce475002a86850efaef303953ff6f467cdba5b8711564c"
+    },
+    {
+      "path": "teacher-code/resume_audit.py",
+      "bytes": 2445,
+      "sha256": "2a42c2f031f3484865f5b9e856a4e4acaf51102ae3d8f85197b6ff997dbf7538"
     },
     {
       "path": "bundle/overlay/wbt_training/config_values/hud04_robot.py",
-      "bytes": 4037,
-      "sha256": "c3f203c0a8397a8088f9a79a8ffdd68f9925d7fc9e4cacae25a982520ba2988c"
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
     },
     {
       "path": "bundle/asset/urdf/HU_D04_01.urdf",
-      "bytes": 49045,
-      "sha256": "c5704e29911e2ba389a5989ff7f6282fc7ffc7c963de81f2085d254f5a906d23"
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
     }
   ],
   "package_files": [
     {
       "path": "train_fresh.py",
-      "bytes": 11090,
-      "sha256": "f63972b489f1622510d22ce2412d92e60811d59f5800e125f9abac98b829d196"
+      "bytes": 12110,
+      "sha256": "6c73fcb98bed64f6450cc9f6e7dcdc40d23118f8bb71413682647003444c17a5"
     },
     {
       "path": "local_shards.py",
@@ -3417,43 +3424,62 @@
     },
     {
       "path": "overrides/HU_D04_01.urdf",
-      "bytes": 49045,
-      "sha256": "c5704e29911e2ba389a5989ff7f6282fc7ffc7c963de81f2085d254f5a906d23"
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
     },
     {
       "path": "overrides/config.json",
-      "bytes": 36749,
-      "sha256": "968cceccc26ea748ce017150146be0eb41a273887193a902896aded96cbf310f"
+      "bytes": 36768,
+      "sha256": "a9e24299766e1a73e5a4d4574c051457da25edf6e3af6d4454c1c9d308f382b0"
     },
     {
       "path": "overrides/hud04_robot.py",
-      "bytes": 4037,
-      "sha256": "c3f203c0a8397a8088f9a79a8ffdd68f9925d7fc9e4cacae25a982520ba2988c"
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "overrides/resume_audit.py",
+      "bytes": 2445,
+      "sha256": "2a42c2f031f3484865f5b9e856a4e4acaf51102ae3d8f85197b6ff997dbf7538"
     },
     {
       "path": "overrides/speed10_audit.py",
-      "bytes": 2861,
-      "sha256": "b10368af46c6ee8caa41b81a902e9973a2b909d7fa13b6cb07b350cd2f2ee5db"
+      "bytes": 2809,
+      "sha256": "6ca43aed484b47ddccce475002a86850efaef303953ff6f467cdba5b8711564c"
     },
     {
       "path": "overrides/teacher_algo.py",
-      "bytes": 3172,
-      "sha256": "972b6c77523ee5c7663e6d7c64a2a818430e5c14d37f112c260e0708047a346c"
+      "bytes": 4159,
+      "sha256": "d5323f93362c79bf306daa5a58976e4e3fd7b3538af0cb0dced1d623affff8c8"
     },
     {
       "path": "overrides/teacher_child.py",
-      "bytes": 2762,
-      "sha256": "bd9315c858592ac215e700fe0dad210a9be06992ca451a40679f6d8ab1d0c24a"
+      "bytes": 3111,
+      "sha256": "d55ada6c4c3809e4fffec4ccb65866efe097952cd98efee30acd11d996ab1372"
     }
   ],
   "approval": {
-    "at_utc": "2026-11-21T16:15:19Z",
+    "at_utc": "2026-11-22T02:36:39Z",
     "gpu_num": 1,
     "worker_seconds_max": 1800,
     "update_cap": 2000,
     "automatic_retries": 0,
-    "training_initialization": "random",
+    "training_initialization": "full_native_checkpoint_resume",
     "public_code_publication_approved": true,
     "publication_approval_at_utc": "2026-11-21T14:46:01Z"
+  },
+  "resume_source": {
+    "taskId": "TASK_20261121_165",
+    "id": 4393294,
+    "fileName": "model_smoke_final.pt",
+    "checkpoint": "",
+    "policUrl": "upload/2026/11/21/model_smoke_final_20261121211511A355.pt",
+    "loadRun": "20261121_125016-hud04-low-step-full-teacher-30min-locomotion",
+    "sha256": "f29728d282f1909ad0d6313ab0cefc2476849aa1cd62bb30d6bbc78f369a16dc",
+    "bytes": 10344443,
+    "platform_checkpoint_matches_recovered_source": true,
+    "source_completed_updates": 672,
+    "source_iteration": 671,
+    "signed_url_persisted": false
   }
 }

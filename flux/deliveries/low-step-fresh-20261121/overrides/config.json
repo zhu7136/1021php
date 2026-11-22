@@ -9,7 +9,7 @@
     "checkpoint": "/workspace/resume-input/model_smoke_final.pt",
     "teacher_checkpoint": null,
     "project": "HuD04_WBT",
-    "name": "hud04-low-step-resume5-from672-30min",
+    "name": "hud04-low-step-resume5-from1363-30min",
     "max_eval_steps": null,
     "export_onnx": false,
     "registry_name": null,

@@ -3,14 +3,14 @@ import hashlib,json
 from pathlib import Path
 import torch
 from flux.teacher_algo import _require_same_state
-SOURCE_SHA='f29728d282f1909ad0d6313ab0cefc2476849aa1cd62bb30d6bbc78f369a16dc'
-SOURCE_UPDATES=672
+SOURCE_SHA='cf15fb0d86db22961a8774d0415286dd09f29e4fd278452172ddb81f8ba2c1a1'
+SOURCE_UPDATES=1363
 
 def verify_loaded_state(algo,path,out):
  path=Path(path)
  assert hashlib.sha256(path.read_bytes()).hexdigest()==SOURCE_SHA, 'resume_checkpoint_identity_changed'
  d=torch.load(path,map_location='cpu',weights_only=False)
- assert d['iter']==671 and algo.current_learning_iteration==671
+ assert d['iter']==SOURCE_UPDATES-1 and algo.current_learning_iteration==SOURCE_UPDATES-1
  assert algo.config.load_optimizer and d['experiment_config']['training']['num_envs']==4096
  names=d['experiment_config']['robot']['dof_names'];limits=d['experiment_config']['robot']['dof_vel_limit_list']
  assert sum(any(s in n for s in ['hip_pitch','hip_roll','hip_yaw','knee']) for n in names)==8
@@ -29,9 +29,9 @@ def verify_loaded_state(algo,path,out):
   key=name+'_optimizer_state_dict';opt=getattr(algo,name+'_optimizer')
   _require_same_state(d[key],opt.state_dict(),key);checked.append(name+'_optimizer')
   values=[float(v['step']) for v in opt.state_dict()['state'].values()]
-  assert values and min(values)==max(values)==13440.
+  assert values and min(values)==max(values)==27260.
   assert getattr(algo,name+'_learning_rate')==d[key]['param_groups'][0]['lr']
   steps[name]=min(values)
- report=dict(event='resume_state_verified',source_task='TASK_20261121_165',source_checkpoint_sha256=SOURCE_SHA,source_completed_updates=SOURCE_UPDATES,source_iteration=671,next_iteration=672,checked_modules_and_optimizers=checked,checked_normalizers=normalizers,normalizers_disabled_in_source=not algo.empirical_normalization,optimizer_steps=steps,learning_rates_restored=True,exact_training_state_loaded=True,trajectory_exact_resume=False)
+ report=dict(event='resume_state_verified',source_task='TASK_20261122_015',source_checkpoint_sha256=SOURCE_SHA,source_completed_updates=SOURCE_UPDATES,source_iteration=SOURCE_UPDATES-1,next_iteration=SOURCE_UPDATES,checked_modules_and_optimizers=checked,checked_normalizers=normalizers,normalizers_disabled_in_source=not algo.empirical_normalization,optimizer_steps=steps,learning_rates_restored=True,exact_training_state_loaded=True,trajectory_exact_resume=False)
  (Path(out)/'resume-state.json').write_text(json.dumps(report,indent=2));print(json.dumps(report),flush=True)
  return report

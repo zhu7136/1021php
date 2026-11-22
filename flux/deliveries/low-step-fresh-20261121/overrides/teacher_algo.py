@@ -30,7 +30,7 @@ class FullTeacherPPO(BoundedPPO):
  def learn(self):
   out=Path(os.environ['PHP_FLUX_OUTPUT']);self._started=time.monotonic()
   assert self.env.num_envs==4096 and self.config.num_steps_per_env==24
-  assert self._resume_evidence['exact_training_state_loaded'] and self.current_learning_iteration==671
+  assert self._resume_evidence['exact_training_state_loaded'] and self.current_learning_iteration==SOURCE_UPDATES-1
   # Upstream checkpoints store the last completed zero-based iteration.
   # Advance once for this new process; do not change native load/reload semantics.
   self.current_learning_iteration=SOURCE_UPDATES
@@ -40,7 +40,7 @@ class FullTeacherPPO(BoundedPPO):
   (out/'capacity.json').write_text(json.dumps(capacity));print(json.dumps(capacity),flush=True)
   result=super().learn()
   after,new=snapshot(self)
-  record={'completed_updates':self._flux_completed_updates,'actor_changed':any(not torch.equal(v,after['actor'][k]) for k,v in before['actor'].items()),'critic_changed':any(not torch.equal(v,after['critic'][k]) for k,v in before['critic'].items()),'actor_optimizer_steps_increased':new['actor_optimizer']>old['actor_optimizer'],'critic_optimizer_steps_increased':new['critic_optimizer']>old['critic_optimizer'],'parameters_finite':all(torch.isfinite(v).all().item() for a in after.values() for v in a.values()),'teacher_converged':False,'fresh_training':False,'new_process_resume_verified':True,'source_completed_updates':SOURCE_UPDATES,'cumulative_completed_updates':SOURCE_UPDATES+self._flux_completed_updates,'source_task':'TASK_20261121_165'}
+  record={'completed_updates':self._flux_completed_updates,'actor_changed':any(not torch.equal(v,after['actor'][k]) for k,v in before['actor'].items()),'critic_changed':any(not torch.equal(v,after['critic'][k]) for k,v in before['critic'].items()),'actor_optimizer_steps_increased':new['actor_optimizer']>old['actor_optimizer'],'critic_optimizer_steps_increased':new['critic_optimizer']>old['critic_optimizer'],'parameters_finite':all(torch.isfinite(v).all().item() for a in after.values() for v in a.values()),'teacher_converged':False,'fresh_training':False,'new_process_resume_verified':True,'source_completed_updates':SOURCE_UPDATES,'cumulative_completed_updates':SOURCE_UPDATES+self._flux_completed_updates,'source_task':'TASK_20261122_015'}
   checkpoint=Path(self.log_dir)/'model_smoke_final.pt'
   record.update(checkpoint_relative_path=str(checkpoint.relative_to(out)),checkpoint_sha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest())
   (out/'learning_state.json').write_text(json.dumps(record,indent=2))

@@ -14,7 +14,7 @@ ROOT=Path(__file__).resolve().parent
 PIN='24e92ac169f998acd280b670d48b7bae7f1d0dcc914ac5a276574d72c4a91e54'
 LIMIT=1800
 UPDATES=2000
-SOURCE_SHA='f29728d282f1909ad0d6313ab0cefc2476849aa1cd62bb30d6bbc78f369a16dc'
+SOURCE_SHA='cf15fb0d86db22961a8774d0415286dd09f29e4fd278452172ddb81f8ba2c1a1'
 RESUME_PATH='/workspace/resume-input/model_smoke_final.pt'
 
 def sha(p):
@@ -145,10 +145,10 @@ def main():
   mount=ROOT.parents[2]/'flux/private-resume'
   candidates=list(mount.glob('*.pt'))
   if not 1<=len(candidates)<=8:raise ValueError('private_resume_mount_missing_or_ambiguous')
-  matching=[p for p in candidates if not p.is_symlink() and p.is_file() and p.stat().st_size==10344443 and sha(p)==SOURCE_SHA]
+  matching=[p for p in candidates if not p.is_symlink() and p.is_file() and p.stat().st_size==10344763 and sha(p)==SOURCE_SHA]
   if len(matching)!=1:raise ValueError('mounted_resume_checkpoint_missing_or_hash_mismatch')
   cp=matching[0].resolve()
-  emit('mounted_resume_checkpoint_verified',bytes=cp.stat().st_size,sha256=SOURCE_SHA,source_completed_updates=672)
+  emit('mounted_resume_checkpoint_verified',bytes=cp.stat().st_size,sha256=SOURCE_SHA,source_completed_updates=1363)
   vendor=next((Path(x) for x in ['/isaac-sim/python.sh','/workspace/isaaclab/_isaac_sim/python.sh'] if Path(x).is_file()),None)
   if vendor is None:raise ValueError('vendor_python_missing')
   env={k:v for k,v in os.environ.items() if not any(s in k.upper() for s in ['API_KEY','TOKEN','SECRET','PASSWORD','CREDENTIAL'])}
@@ -161,7 +161,7 @@ def main():
   if code:raise RuntimeError('offline_dependency_install_failed')
   command=[str(vendor),str(payload/'teacher-code/teacher_child.py'),'--payload',str(payload),'--output',str(out),'--site',str(site),
     '--thread-id',plan['provenance']['thread_id'],'--turn-id',plan['provenance']['turn_id']]
-  emit('simulator_start_requested',checkpoint_load_requested=True,update_cap=UPDATES,source_completed_updates=672)
+  emit('simulator_start_requested',checkpoint_load_requested=True,update_cap=UPDATES,source_completed_updates=1363)
   with (out/'native.log').open('xb') as log:
    child=subprocess.Popen(command,env=env,stdout=log,stderr=subprocess.STDOUT,start_new_session=True)
    sent=0

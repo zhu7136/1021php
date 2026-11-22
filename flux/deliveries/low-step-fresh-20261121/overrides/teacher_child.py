@@ -22,7 +22,7 @@ def main():
  assert actual_checkpoint.is_file() and not actual_checkpoint.is_symlink()
  cfg=replace(cfg,training=replace(cfg.training,checkpoint=str(actual_checkpoint)),simulator=replace(cfg.simulator,_target_='wbt_training.simulators.isaacsim.IsaacSim'),algo=replace(cfg.algo,_target_='teacher_algo.FullTeacherPPO'),logger=DisabledLoggerConfig(base_dir=str(out)))
  os.environ['PHP_FLUX_OUTPUT']=str(out);os.environ['PHP_FLUX_STOP_FILE']=str(out/'STOP_AFTER_UPDATE');sys.argv=[sys.argv[0]]
- (out/'provenance.json').write_text(json.dumps({'_wb_agent':{'thread_id':a.thread_id,'turn_id':a.turn_id},'robot':'Hu-D04','fresh_training':False,'source_task':'TASK_20261121_165','source_completed_updates':672,'teacher_converged':False,'task_id':os.environ['PHP_FLUX_TASK_ID']}))
+ (out/'provenance.json').write_text(json.dumps({'_wb_agent':{'thread_id':a.thread_id,'turn_id':a.turn_id},'robot':'Hu-D04','fresh_training':False,'source_task':'TASK_20261122_015','source_completed_updates':1363,'teacher_converged':False,'task_id':os.environ['PHP_FLUX_TASK_ID']}))
  from holosoma.utils.sim_utils import setup_simulator_imports
  from holosoma.utils.eval_utils import init_sim_imports
  from holosoma import train_agent

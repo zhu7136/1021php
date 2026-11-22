@@ -1,0 +1,77 @@
+{
+  "chunk_bytes": 50331648,
+  "files": [
+    {
+      "bytes": 252062415,
+      "name": "locomotion-input.zip",
+      "sha256": "104842f89cd12fba38facd2cad58d87f61a5aa808e7272455ee8bc169f2c7756",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f00-p00000.bin",
+          "sha256": "18e583bc40a5d0db075e1182abde93a580f3f2729fa49c7ef52bfdbfd23b0c5c"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f00-p00001.bin",
+          "sha256": "5e6ad24b6a7efa996e5ef2c38e5b6738c844fbf6e41d385d1eb156c800e958af"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f00-p00002.bin",
+          "sha256": "d80d45c1e4c424760ab9eb66f1528434f6e5b1caf0e6d840d84ced30bc3f73b0"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f00-p00003.bin",
+          "sha256": "fdeb609697e66efb50d28aa00b3c2923e7faa4322287a08f214ece8a381f99ed"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f00-p00004.bin",
+          "sha256": "3da35c69a9be3b5ddecb8ec9c282a3fab7d6ce9cbcfc2c87d8cb75fb7902b91d"
+        },
+        {
+          "bytes": 404175,
+          "path": "f00-p00005.bin",
+          "sha256": "86cb5fbd91f5e086f85ba11e234cc45515fdad10d3fe4a88450390800f5d6a4f"
+        }
+      ]
+    },
+    {
+      "bytes": 113889241,
+      "name": "runtime.zip",
+      "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f01-p00000.bin",
+          "sha256": "89542658f321aa6129b45bf06cef8e819ccc0b5eca2959f4cbbba1371e3a790f"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00001.bin",
+          "sha256": "21835806d646a622e7607fddb073b08a7136d4de4c519391548376554c511e54"
+        },
+        {
+          "bytes": 13225945,
+          "path": "f01-p00002.bin",
+          "sha256": "0cc72b54155824e55d4459f7c3756cea3e61377b6efb20ee600b966fe55d1704"
+        }
+      ]
+    },
+    {
+      "bytes": 10344635,
+      "name": "source-checkpoint.pt",
+      "sha256": "75b3c06421cf0f9cd3abdb79c6591be33a79a7dc0f294bae683b40ff6acb86fe",
+      "shards": [
+        {
+          "bytes": 10344635,
+          "path": "f02-p00000.bin",
+          "sha256": "75b3c06421cf0f9cd3abdb79c6591be33a79a7dc0f294bae683b40ff6acb86fe"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

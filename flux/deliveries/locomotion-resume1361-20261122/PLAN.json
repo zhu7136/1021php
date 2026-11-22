@@ -1,0 +1,128 @@
+{
+  "skill": "locomotion",
+  "source_run": "769utc7b",
+  "source_task": "TASK_20261029_011",
+  "source_iteration": 1361,
+  "next_iteration": 1362,
+  "source_checkpoint_sha256": "75b3c06421cf0f9cd3abdb79c6591be33a79a7dc0f294bae683b40ff6acb86fe",
+  "actor_optimizer_steps": 27240,
+  "critic_optimizer_steps": 27240,
+  "worker_seconds_max": 1800,
+  "stop_request_seconds": 1500,
+  "native_deadline_seconds": 1670,
+  "single_gpu": true,
+  "gpu_model": "4090D 24GB",
+  "automatic_retries": 0,
+  "gpu_tasks_submitted": 0,
+  "delivery_status": "public_git_shards_authorized_20261122",
+  "native_gpu_resume_verified": false,
+  "task_success_certified": false,
+  "update_cap": 2000,
+  "periodic_checkpoint_interval": 100,
+  "reward_unchanged": true,
+  "dynamics_unchanged": true,
+  "observation_unchanged": true,
+  "restores_actor_critic_optimizers": true,
+  "restores_effective_learning_rates": true,
+  "trajectory_exact_resume": false,
+  "provenance": {
+    "thread_id": "01a1f6bb-d86a-7bc3-beaa-1ad43376ad65",
+    "turn_id": "01a201dd-5f59-7eb0-8def-b9fb20174f53"
+  },
+  "effective_overrides": [
+    {
+      "path": "teacher-code/config.json",
+      "bytes": 36897,
+      "sha256": "75cdd96dcfe9675f8c718b9ee123c4105b192b90ef4d19ae93970164fea0d890"
+    },
+    {
+      "path": "teacher-code/teacher_child.py",
+      "bytes": 3315,
+      "sha256": "393c473c32cdde2e4ae7377e0d4f6153c0959dfb361836548da921dd9cf5a7a4"
+    },
+    {
+      "path": "teacher-code/teacher_algo.py",
+      "bytes": 5252,
+      "sha256": "c9bfd1449f74d5ffbc05651354d0a0d3e5da54daa1ea10599c6b215097e9a570"
+    },
+    {
+      "path": "teacher-code/resume_audit.py",
+      "bytes": 2804,
+      "sha256": "1006398e3c06077d41aa3b4cfbc72e3082fb4084e2c4147c8cc4375bbd3c6255"
+    },
+    {
+      "path": "teacher-code/speed10_audit.py",
+      "bytes": 2809,
+      "sha256": "6ca43aed484b47ddccce475002a86850efaef303953ff6f467cdba5b8711564c"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/config_values/hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "bundle/asset/urdf/HU_D04_01.urdf",
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
+    }
+  ],
+  "files": [
+    {
+      "path": "locomotion-input.zip",
+      "bytes": 252062415,
+      "sha256": "104842f89cd12fba38facd2cad58d87f61a5aa808e7272455ee8bc169f2c7756"
+    },
+    {
+      "path": "overrides/HU_D04_01.urdf",
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
+    },
+    {
+      "path": "overrides/config.json",
+      "bytes": 36897,
+      "sha256": "75cdd96dcfe9675f8c718b9ee123c4105b192b90ef4d19ae93970164fea0d890"
+    },
+    {
+      "path": "overrides/hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "overrides/resume_audit.py",
+      "bytes": 2804,
+      "sha256": "1006398e3c06077d41aa3b4cfbc72e3082fb4084e2c4147c8cc4375bbd3c6255"
+    },
+    {
+      "path": "overrides/speed10_audit.py",
+      "bytes": 2809,
+      "sha256": "6ca43aed484b47ddccce475002a86850efaef303953ff6f467cdba5b8711564c"
+    },
+    {
+      "path": "overrides/teacher_algo.py",
+      "bytes": 5252,
+      "sha256": "c9bfd1449f74d5ffbc05651354d0a0d3e5da54daa1ea10599c6b215097e9a570"
+    },
+    {
+      "path": "overrides/teacher_child.py",
+      "bytes": 3315,
+      "sha256": "393c473c32cdde2e4ae7377e0d4f6153c0959dfb361836548da921dd9cf5a7a4"
+    },
+    {
+      "path": "runtime.zip",
+      "bytes": 113889241,
+      "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0"
+    },
+    {
+      "path": "source-checkpoint.pt",
+      "bytes": 10344635,
+      "sha256": "75b3c06421cf0f9cd3abdb79c6591be33a79a7dc0f294bae683b40ff6acb86fe"
+    },
+    {
+      "path": "train_locomotion.py",
+      "bytes": 11886,
+      "sha256": "2898f7767eb0278122106f954d36bbd8e471560f0f497e99d2b228b95f845e9c"
+    }
+  ],
+  "publication_approval_at_utc": "2026-11-22T06:06:55Z",
+  "execution_approval_at_utc": "2026-11-22T06:06:55Z"
+}

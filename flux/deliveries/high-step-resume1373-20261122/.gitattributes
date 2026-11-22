@@ -1,0 +1,1 @@
+inputs/*.bin -filter -diff -merge -text

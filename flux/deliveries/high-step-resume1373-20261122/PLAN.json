@@ -1,0 +1,128 @@
+{
+  "skill": "high-step",
+  "source_run": "sax6xgul",
+  "source_task": "TASK_20261029_010",
+  "source_iteration": 1373,
+  "next_iteration": 1374,
+  "source_checkpoint_sha256": "d8aac2800e777c3a10bb20f8e30ff8d5c8fda83d2d2517cbb20aae716ac8cc07",
+  "actor_optimizer_steps": 27480,
+  "critic_optimizer_steps": 27480,
+  "worker_seconds_max": 1800,
+  "stop_request_seconds": 1500,
+  "native_deadline_seconds": 1670,
+  "single_gpu": true,
+  "gpu_model": "4090D 24GB",
+  "automatic_retries": 0,
+  "gpu_tasks_submitted": 0,
+  "delivery_status": "public_git_shards_authorized_20261122",
+  "native_gpu_resume_verified": false,
+  "task_success_certified": false,
+  "update_cap": 2000,
+  "periodic_checkpoint_interval": 100,
+  "reward_unchanged": true,
+  "dynamics_unchanged": true,
+  "observation_unchanged": true,
+  "restores_actor_critic_optimizers": true,
+  "restores_effective_learning_rates": true,
+  "trajectory_exact_resume": false,
+  "provenance": {
+    "thread_id": "01a1f6bb-d86a-7bc3-beaa-1ad43376ad65",
+    "turn_id": "01a201a7-a4ca-7fd2-ad63-2ff9e43e41b5"
+  },
+  "effective_overrides": [
+    {
+      "path": "teacher-code/config.json",
+      "bytes": 36896,
+      "sha256": "6eeb6d4a7cce86f85b2413bd20fbe7c40fff1c8c48c0864512d22b1c38d21c9b"
+    },
+    {
+      "path": "teacher-code/teacher_child.py",
+      "bytes": 3314,
+      "sha256": "f2789b4a23d4585b1093957ee5075b8512463a5a30681ef7132f429df068b905"
+    },
+    {
+      "path": "teacher-code/teacher_algo.py",
+      "bytes": 5252,
+      "sha256": "f94cd4306302f153908813e8e4aa2e96180f50aadac88c54a15b5947bb05743b"
+    },
+    {
+      "path": "teacher-code/resume_audit.py",
+      "bytes": 2804,
+      "sha256": "746ba4ca6326043a08baa9d9324ff9a8963f94f3fb705d6aec82ecb7c6604fd9"
+    },
+    {
+      "path": "teacher-code/speed10_audit.py",
+      "bytes": 2809,
+      "sha256": "6ca43aed484b47ddccce475002a86850efaef303953ff6f467cdba5b8711564c"
+    },
+    {
+      "path": "bundle/overlay/wbt_training/config_values/hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "bundle/asset/urdf/HU_D04_01.urdf",
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
+    }
+  ],
+  "files": [
+    {
+      "path": "high-step-input.zip",
+      "bytes": 95515648,
+      "sha256": "e82f62132d302b8f8c03e636e376e47844382a030eb4086c45314f21cbf51ac2"
+    },
+    {
+      "path": "overrides/HU_D04_01.urdf",
+      "bytes": 49037,
+      "sha256": "5e3780ef8e5b9dcc56aec2e225ac0644850e91a42a3262424cbdca616d0980f3"
+    },
+    {
+      "path": "overrides/config.json",
+      "bytes": 36896,
+      "sha256": "6eeb6d4a7cce86f85b2413bd20fbe7c40fff1c8c48c0864512d22b1c38d21c9b"
+    },
+    {
+      "path": "overrides/hud04_robot.py",
+      "bytes": 4033,
+      "sha256": "5a24ef7f4237486bc1b13eb986c7d29f96bc562a215bea1e07979cf9c7fd9f15"
+    },
+    {
+      "path": "overrides/resume_audit.py",
+      "bytes": 2804,
+      "sha256": "746ba4ca6326043a08baa9d9324ff9a8963f94f3fb705d6aec82ecb7c6604fd9"
+    },
+    {
+      "path": "overrides/speed10_audit.py",
+      "bytes": 2809,
+      "sha256": "6ca43aed484b47ddccce475002a86850efaef303953ff6f467cdba5b8711564c"
+    },
+    {
+      "path": "overrides/teacher_algo.py",
+      "bytes": 5252,
+      "sha256": "f94cd4306302f153908813e8e4aa2e96180f50aadac88c54a15b5947bb05743b"
+    },
+    {
+      "path": "overrides/teacher_child.py",
+      "bytes": 3314,
+      "sha256": "f2789b4a23d4585b1093957ee5075b8512463a5a30681ef7132f429df068b905"
+    },
+    {
+      "path": "runtime.zip",
+      "bytes": 113889241,
+      "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0"
+    },
+    {
+      "path": "source-checkpoint.pt",
+      "bytes": 10344635,
+      "sha256": "d8aac2800e777c3a10bb20f8e30ff8d5c8fda83d2d2517cbb20aae716ac8cc07"
+    },
+    {
+      "path": "train_high_step.py",
+      "bytes": 11881,
+      "sha256": "8f139f053b0db6bd9ba2cedec7f0621c4c84dc735ac1a2f4ba8ca192b38d8723"
+    }
+  ],
+  "publication_approval_at_utc": "2026-11-22T05:06:55Z",
+  "execution_approval_at_utc": "2026-11-22T05:08:14Z"
+}

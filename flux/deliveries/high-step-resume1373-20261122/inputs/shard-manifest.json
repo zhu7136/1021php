@@ -1,0 +1,57 @@
+{
+  "chunk_bytes": 50331648,
+  "files": [
+    {
+      "bytes": 95515648,
+      "name": "high-step-input.zip",
+      "sha256": "e82f62132d302b8f8c03e636e376e47844382a030eb4086c45314f21cbf51ac2",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f00-p00000.bin",
+          "sha256": "dc585d5e52ccb945d9747506fa5ab8c72ddfbb2efa0d6cad15100ce97ae15b79"
+        },
+        {
+          "bytes": 45184000,
+          "path": "f00-p00001.bin",
+          "sha256": "0490a5fc08e4606630d150a3ed2e2fd20e4c396eed87485edac30ddf0a39cb24"
+        }
+      ]
+    },
+    {
+      "bytes": 113889241,
+      "name": "runtime.zip",
+      "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0",
+      "shards": [
+        {
+          "bytes": 50331648,
+          "path": "f01-p00000.bin",
+          "sha256": "89542658f321aa6129b45bf06cef8e819ccc0b5eca2959f4cbbba1371e3a790f"
+        },
+        {
+          "bytes": 50331648,
+          "path": "f01-p00001.bin",
+          "sha256": "21835806d646a622e7607fddb073b08a7136d4de4c519391548376554c511e54"
+        },
+        {
+          "bytes": 13225945,
+          "path": "f01-p00002.bin",
+          "sha256": "0cc72b54155824e55d4459f7c3756cea3e61377b6efb20ee600b966fe55d1704"
+        }
+      ]
+    },
+    {
+      "bytes": 10344635,
+      "name": "source-checkpoint.pt",
+      "sha256": "d8aac2800e777c3a10bb20f8e30ff8d5c8fda83d2d2517cbb20aae716ac8cc07",
+      "shards": [
+        {
+          "bytes": 10344635,
+          "path": "f02-p00000.bin",
+          "sha256": "d8aac2800e777c3a10bb20f8e30ff8d5c8fda83d2d2517cbb20aae716ac8cc07"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

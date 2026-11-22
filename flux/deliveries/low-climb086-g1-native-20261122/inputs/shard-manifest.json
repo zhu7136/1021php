@@ -1,0 +1,40 @@
+{
+  "chunk_bytes": 4194304,
+  "files": [
+    {
+      "bytes": 10344251,
+      "name": "teacher086.pt",
+      "sha256": "ec7d0fb9e7e10e8758a0d8936680a28508e9cda778157904b8f56b34c6f4e18e",
+      "shards": [
+        {
+          "bytes": 4194304,
+          "path": "f00-p00000.bin",
+          "sha256": "65c66434d8b0baa9f34a34f6c1edd8875066c364e576483e9ef6821b9aab9267"
+        },
+        {
+          "bytes": 4194304,
+          "path": "f00-p00001.bin",
+          "sha256": "65c00f97af661a71903a175d4df1e95cf923ff2283f3cc6bf94db086710e8491"
+        },
+        {
+          "bytes": 1955643,
+          "path": "f00-p00002.bin",
+          "sha256": "83b9412e67d9d84d2365a266cd4afffa075c1b8792e1f0a99ca7cdfca7fd77f8"
+        }
+      ]
+    },
+    {
+      "bytes": 2987746,
+      "name": "single-clip-input.zip",
+      "sha256": "30fd4b02e9828ab310d2d40c0b190a1c22d5a0f84fb0e40cb4d9e8c962af5096",
+      "shards": [
+        {
+          "bytes": 2987746,
+          "path": "f01-p00000.bin",
+          "sha256": "30fd4b02e9828ab310d2d40c0b190a1c22d5a0f84fb0e40cb4d9e8c962af5096"
+        }
+      ]
+    }
+  ],
+  "version": 1
+}

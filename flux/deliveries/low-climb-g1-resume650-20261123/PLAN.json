@@ -1,0 +1,58 @@
+{
+  "authorization_at_utc": "2026-11-23T00:58:12Z",
+  "source_task": "TASK_20261122_086",
+  "source_wandb_run": "73d9bd9c",
+  "source_iteration": 649,
+  "source_completed_updates": 650,
+  "source_checkpoint_sha256": "ec7d0fb9e7e10e8758a0d8936680a28508e9cda778157904b8f56b34c6f4e18e",
+  "base_commit": "63a5100ba082a26d8ce11398dc0a3aa9e70dea19",
+  "checkpoint_manifest_sha256": "656e20fe9b464f12a02dad45594a74d6dd98f33276e3944ba6572639341b864c",
+  "scope": {
+    "gpu_num": 1,
+    "max_tasks": 1,
+    "worker_seconds_max": 1800,
+    "stop_request_seconds": 1500,
+    "child_cutoff_seconds": 1670,
+    "maximum_additional_updates": 2000,
+    "automatic_retries": 0,
+    "num_envs": 4096
+  },
+  "public_delivery_authorized": true,
+  "main_unchanged_required": true,
+  "provenance": {
+    "thread_id": "01a205db-8fa6-7ef1-9937-c10372ebc18e",
+    "turn_id": "01a205f2-bbfc-7730-94bd-268847423662"
+  },
+  "package_files": [
+    {
+      "path": "README.md",
+      "bytes": 1681,
+      "sha256": "72528d61d88b0ad0e7a055fbc68ac9576988b44e59c2e671399acb2ce8aae57b"
+    },
+    {
+      "path": "overrides/config.json",
+      "bytes": 36784,
+      "sha256": "d197fbdcca54e9767da8f51cc8ccdeb3c39ec6885a427905eafe35ac642add27"
+    },
+    {
+      "path": "overrides/resume_audit.py",
+      "bytes": 2689,
+      "sha256": "2f801b97d585c93d9ece6f1e15daa848d492af0606b90e4d13038793239c70d7"
+    },
+    {
+      "path": "overrides/teacher_algo.py",
+      "bytes": 4080,
+      "sha256": "3b6410d81f5c5d584ca92482891d6db7f874f9af9d9e3b934f882092b0f2cc9d"
+    },
+    {
+      "path": "overrides/teacher_child.py",
+      "bytes": 3112,
+      "sha256": "52df18e225e39d398c60ff1596088e016c9753c1ba097ae216db32c0ba3fb8b6"
+    },
+    {
+      "path": "train_resume.py",
+      "bytes": 8098,
+      "sha256": "cbf9d0dea2930d10bd1c03dfa9802fd6214beaa2190cb72832e2105ab14bd723"
+    }
+  ]
+}

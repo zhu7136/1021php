@@ -1,0 +1,42 @@
+{
+  "checks": {
+    "all_800_frames_present": true,
+    "all_finite": true,
+    "quaternion_unit_max_error": 2.220446049250313e-16,
+    "joint_limit_violation_rad": 0,
+    "joint_velocity_limit_exceedances": 0,
+    "maximum_joint_speed_rad_s": 12.904638679088798,
+    "baseline_maximum_joint_speed_rad_s": 9.71411866569235,
+    "maximum_joint_acceleration_rad_s2": 535.2430779393242,
+    "baseline_maximum_joint_acceleration_rad_s2": 160.25224412136203,
+    "peak_acceleration_frame": 609,
+    "peak_acceleration_joint": "left_knee_joint",
+    "maximum_adjacent_frame_joint_change_rad": 0.48924477410103495,
+    "minimum_full_support_foot_height_m": 0.0004703423494166331,
+    "maximum_full_support_foot_height_m": 0.0005143693246928566,
+    "full_support_foot_frame_count": 563,
+    "new_obstacle_overlap_count_over_1mm": 0,
+    "increased_obstacle_overlap_count_over_1mm": 0,
+    "minimum_hip_face_gap_m": 0.004614504311065026,
+    "maximum_hand_target_error_m": 0.004933391146881365
+  },
+  "gates": {
+    "finite_and_normalized": true,
+    "joint_positions_and_speeds": true,
+    "hip_clearance": true,
+    "obstacle_no_new_significant_overlap": true,
+    "foot_support_within_3mm": true,
+    "hand_targets_within_1cm": true
+  },
+  "cpu_geometry_gate_passed": true,
+  "ready_for_short_gpu_probe": false,
+  "training_ready": false,
+  "new_obstacle_overlaps": [],
+  "increased_obstacle_overlaps": [],
+  "limitations": [
+    "No contact forces, torque, friction or dynamic balance certification",
+    "Self-intersection check still required",
+    "Acceleration peak reported, not hardware acceleration certification",
+    "Training NPZ fields not yet exported"
+  ]
+}

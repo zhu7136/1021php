@@ -1,0 +1,8 @@
+{
+  "complete": true,
+  "frames_checked": 800,
+  "new_or_increased_nonadjacent_self_overlap_over_1mm": [],
+  "method": "Native USD convex hull pairs, common-inscribed-ball radii, compare each 50Hz pose to original same frame; direct parent/child pairs excluded. Not exact engine collision filtering, contact penetration, forces, or dynamics certification.",
+  "checkpoint_sha256": "71a5ec975360f08a78d05bb86828c0821a155fab116502d2c79ca7744ebda67f",
+  "passed": true
+}

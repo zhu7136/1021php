@@ -1,0 +1,75 @@
+{
+  "training_reference_sha256": "5508793de1325d354f859ff1f72971e02bf52a5c1042ab6764626b693a6b12d1",
+  "checkpoint_sha256": "71a5ec975360f08a78d05bb86828c0821a155fab116502d2c79ca7744ebda67f",
+  "original_input_archive_sha256": "230345f6c7138ea959d663d7a679deef157c4c1cf1b5791398d90c39904ed48e",
+  "frames": 500,
+  "fps": 50,
+  "clips": 1,
+  "clip": "forward_walk0.6s_step0.7s_motion.npz",
+  "fresh_training_only": true,
+  "geometry_gate_passed": true,
+  "self_gate_passed": true,
+  "serialized_arrays_exact_readback": true,
+  "velocity_method": "Positions: central finite differences, one-sided endpoints. World angular rates: adjacent relative rotations R_next*inverse(R_current), center-averaged interiors.",
+  "array_shapes": {
+    "fps": [
+      1
+    ],
+    "joint_names": [
+      31
+    ],
+    "body_names": [
+      42
+    ],
+    "joint_pos": [
+      500,
+      38
+    ],
+    "joint_vel": [
+      500,
+      37
+    ],
+    "body_pos_w": [
+      500,
+      42,
+      3
+    ],
+    "body_quat_w": [
+      500,
+      42,
+      4
+    ],
+    "body_lin_vel_w": [
+      500,
+      42,
+      3
+    ],
+    "body_ang_vel_w": [
+      500,
+      42,
+      3
+    ],
+    "motion_ends": [
+      500
+    ],
+    "motion_idxs": [
+      500
+    ]
+  },
+  "ready_for_bounded_native_gpu_probe": true,
+  "policy_skill_success_certified": false,
+  "dynamics_certified": false,
+  "limitations": [
+    "Only first500 frames/10seconds: full800 suffix acceleration gate not passed",
+    "One training clip, not held-out evaluation or full40-clip skill certification",
+    "Tentative support schedule, no measured contact forces",
+    "No friction/torque/balance certification; native simulator verification remains required",
+    "No full continuous-time collision guarantee between 50Hz samples"
+  ],
+  "source_frames": 800,
+  "prefix_only": true,
+  "maximum_interval_joint_speed_rad_s": 9.451233062796934,
+  "maximum_joint_acceleration_rad_s2": 197.821297308299,
+  "baseline_maximum_joint_acceleration_rad_s2": 160.25224412136203,
+  "acceleration_gate": "No more than 2x original-prefix peak: research filter, not hardware rating"
+}

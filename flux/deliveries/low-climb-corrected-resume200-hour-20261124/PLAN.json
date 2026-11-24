@@ -1,0 +1,66 @@
+{
+  "submission_requested_at_utc": "2026-11-24T00:11:32Z",
+  "source_task": "TASK_20261123_410",
+  "source_wandb_run": "k3r4y099",
+  "source_completed_updates": 200,
+  "source_checkpoint_sha256": "370df740c687140ec8b87de7ae70bb1f9d3f2b88ed8983a0ab9f38e8fb0bc09b",
+  "corrected_reference_sha256": "5508793de1325d354f859ff1f72971e02bf52a5c1042ab6764626b693a6b12d1",
+  "training_target_seconds": 3600,
+  "worker_seconds_max": 4200,
+  "child_cutoff_worker_seconds": 4080,
+  "emergency_stop_worker_seconds": 3960,
+  "maximum_additional_updates": 100000,
+  "normal_stop": "actual_training_timer3600s_at_update_boundary",
+  "gpu_num": 1,
+  "max_tasks": 1,
+  "automatic_retries": 0,
+  "num_envs": 4096,
+  "clips": 1,
+  "frames": 500,
+  "fresh_training": false,
+  "source_checkpoint_publication": "necessary continuation input under prior public-upload authorization",
+  "new_outputs_publication": false,
+  "main_unchanged_required": true,
+  "provenance": {
+    "thread_id": "01a205db-8fa6-7ef1-9937-c10372ebc18e",
+    "turn_id": "01a20ae4-b816-7cc2-846d-a6b1117bfa8e"
+  },
+  "package_files": [
+    {
+      "path": "config.json",
+      "bytes": 36803,
+      "sha256": "a633f6f19b3ceed2b66d752f798035fc97dd15af45bfc075a4bc38575ef62c8f"
+    },
+    {
+      "path": "model_source.pt",
+      "bytes": 10344315,
+      "sha256": "370df740c687140ec8b87de7ae70bb1f9d3f2b88ed8983a0ab9f38e8fb0bc09b"
+    },
+    {
+      "path": "probe_audit.py",
+      "bytes": 1496,
+      "sha256": "169f398266d3bb107b32bb6c43a96bcd875bb14b40bbd20ff8de5eb9fada784e"
+    },
+    {
+      "path": "resume_audit.py",
+      "bytes": 2482,
+      "sha256": "347f46dc67dcfedf5297cf23217386740dfffb23a3d234af75fe6ac6d42211e1"
+    },
+    {
+      "path": "teacher_algo.py",
+      "bytes": 4465,
+      "sha256": "0cdca4e4d6e5779112a7efe476130876d03d57187f3af2a0b50f20d5293569b0"
+    },
+    {
+      "path": "teacher_child.py",
+      "bytes": 2780,
+      "sha256": "bbb0aac5e879828455c56ea68bb33cff8167acb044ebc35f3a6a88b59ce57b9e"
+    },
+    {
+      "path": "train_resume.py",
+      "bytes": 8805,
+      "sha256": "90d17498f8f0814cc41a3b71f80ea09cd614881d1c9abec3b15f5d9625d92e59"
+    }
+  ],
+  "authorization": "User explicitly requested submission of previously confirmed60min learning/70min worker, one GPU/task, zero automatic retries; resume actor and optimizer from200-update corrected-prefix500 checkpoint."
+}

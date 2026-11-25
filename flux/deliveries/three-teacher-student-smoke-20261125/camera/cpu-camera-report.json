@@ -1,0 +1,47 @@
+{
+  "status": "CAMERA_OVERLAY_CPU_CHECKED_NATIVE_UNVERIFIED",
+  "checks_passed": 21,
+  "checks": [
+    "official_and_training_mount_identical",
+    "parent_is_active_training_link",
+    "no_G1_body_names",
+    "all_32_visual_mesh_links_present",
+    "all_32_source_mesh_bytes_exact",
+    "all_meshes_have_finite_binary_STL_triangles",
+    "mount_translation_exact",
+    "rotation_units_converted_rad_to_deg",
+    "placement_is_deterministic",
+    "calibration_and_native_flags_honest",
+    "optical_rotation_is_right_handed",
+    "nominal_center_ray_forward_down",
+    "nominal_pixel_right_points_robot_right",
+    "nominal_pixel_down_points_down",
+    "actual_project_quaternion_matches_mount_matrix",
+    "analytic_ground_hits_finite_and_forward",
+    "analytic_left_right_image_not_mirrored",
+    "analytic_lower_pixel_hits_nearer_ground",
+    "observation_overlay_changes_camera_path",
+    "observation_overlay_preserves_size_latency",
+    "observation_overlay_preserves_actor_and_original"
+  ],
+  "body_mesh_count": 32,
+  "mesh_triangle_total": 359309,
+  "optical_axis_parent": [
+    0.8190726333819959,
+    0.0,
+    -0.5736898301736597
+  ],
+  "nominal_downward_pitch_deg": 35.007931741643006,
+  "analytic_ground_center_hit_m": [
+    1.9124950826986709,
+    0.0175,
+    0.0
+  ],
+  "test_scope": "Original config base classes and quaternion function; fixture observation dataclasses; byte/geometry/analytic-ray checks. No Warp renderer or native simulator.",
+  "new_gpu_tasks": 0,
+  "student_updates": 0,
+  "teacher_or_robot_asset_changes": 0,
+  "optical_calibration_verified": false,
+  "native_render_verified": false,
+  "student_entrypoint_integrated": false
+}

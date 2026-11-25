@@ -1,0 +1,118 @@
+{
+  "status": "CPU_BLOCKED_DO_NOT_SUBMIT_GPU",
+  "max_tasks": 1,
+  "gpu_num": 1,
+  "worker_seconds_max": 1200,
+  "num_envs": 96,
+  "envs_per_skill": 32,
+  "student_updates_max": 10,
+  "steps_per_env": 24,
+  "seed": 42,
+  "automatic_retries": 0,
+  "stage_order": [
+    "Verify exact input bytes and live schema",
+    "Frozen teacher replay under one selected native environment",
+    "Student smoke updates only if all gates pass"
+  ],
+  "public_upload_authorized": true,
+  "public_upload_repository": "zhu7136/1021php",
+  "main_changes_authorized": false,
+  "new_student_outputs_publication": false,
+  "blockers": [
+    "Existing depth-camera G1 torso_link/pelvis bodies are absent in HuD04 URDF",
+    "All three original reference archives lack vel_cmd required by the existing depth student; no all-zero replacement permitted",
+    "Executable HuD04 depth student and unified frozen native replay are not yet validated"
+  ],
+  "reference_counts": [
+    {
+      "skill": "locomotion",
+      "reference_sha256": "7f35ed58d0179c3cd18ba05926ef22981c648e0dba2bb973b7e8d8ee14cfde76",
+      "fields": [
+        "fps",
+        "joint_names",
+        "body_names",
+        "joint_pos",
+        "joint_vel",
+        "body_pos_w",
+        "body_quat_w",
+        "body_lin_vel_w",
+        "body_ang_vel_w",
+        "motion_ends",
+        "motion_idxs"
+      ],
+      "frames": 71042,
+      "joint_pos_shape": [
+        71042,
+        38
+      ],
+      "clip_count": 100,
+      "fps": [
+        50.0
+      ],
+      "has_velocity_command": false,
+      "all_numeric_arrays_finite": true
+    },
+    {
+      "skill": "low-step",
+      "reference_sha256": "8ae013c2fcb4c196758f98c0dc88f28c8e442f61e0082384f2145412cb1edf10",
+      "fields": [
+        "fps",
+        "joint_names",
+        "body_names",
+        "joint_pos",
+        "joint_vel",
+        "body_pos_w",
+        "body_quat_w",
+        "body_lin_vel_w",
+        "body_ang_vel_w",
+        "motion_ends",
+        "motion_idxs"
+      ],
+      "frames": 25676,
+      "joint_pos_shape": [
+        25676,
+        38
+      ],
+      "clip_count": 56,
+      "fps": [
+        50.0
+      ],
+      "has_velocity_command": false,
+      "all_numeric_arrays_finite": true
+    },
+    {
+      "skill": "high-step",
+      "reference_sha256": "4be737ed202c453a57932f45952e9a3167f23a128b63027c3cddb9a93bac85a5",
+      "fields": [
+        "fps",
+        "joint_names",
+        "body_names",
+        "joint_pos",
+        "joint_vel",
+        "body_pos_w",
+        "body_quat_w",
+        "body_lin_vel_w",
+        "body_ang_vel_w",
+        "motion_ends",
+        "motion_idxs"
+      ],
+      "frames": 26513,
+      "joint_pos_shape": [
+        26513,
+        38
+      ],
+      "clip_count": 60,
+      "fps": [
+        50.0
+      ],
+      "has_velocity_command": false,
+      "all_numeric_arrays_finite": true
+    }
+  ],
+  "training_updates": 0,
+  "new_gpu_tasks": 0,
+  "provenance": {
+    "thread_id": "01a205db-8fa6-7ef1-9937-c10372ebc18e",
+    "turn_id": "01a21148-f1e5-76b0-8e81-c6ed2dc24e36"
+  }
+}

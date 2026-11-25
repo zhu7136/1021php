@@ -1,0 +1,200 @@
+{
+  "version": 1,
+  "authorization_at_utc": "2026-11-25T05:58:44Z",
+  "publication_scope": "This task only: three pinned teacher checkpoints, three skill input archives, required shared runtime/robot assets and preparation code; never account credentials, signed URLs, business logs or generated student outputs",
+  "runtime_source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+  "files": [
+    {
+      "name": "inputs/runtime/runtime.zip",
+      "bytes": 113889241,
+      "sha256": "6ed95a54d8846611b8e2519dcc014a9aec9c5dd885914d15137cc18e8f1473e0",
+      "shards": [
+        {
+          "path": "inputs/runtime/f00-p00000.bin",
+          "bytes": 50331648,
+          "sha256": "89542658f321aa6129b45bf06cef8e819ccc0b5eca2959f4cbbba1371e3a790f"
+        },
+        {
+          "path": "inputs/runtime/f00-p00001.bin",
+          "bytes": 50331648,
+          "sha256": "21835806d646a622e7607fddb073b08a7136d4de4c519391548376554c511e54"
+        },
+        {
+          "path": "inputs/runtime/f00-p00002.bin",
+          "bytes": 13225945,
+          "sha256": "0cc72b54155824e55d4459f7c3756cea3e61377b6efb20ee600b966fe55d1704"
+        }
+      ]
+    },
+    {
+      "name": "inputs/locomotion/locomotion-input.zip",
+      "bytes": 252062415,
+      "sha256": "104842f89cd12fba38facd2cad58d87f61a5aa808e7272455ee8bc169f2c7756",
+      "shards": [
+        {
+          "path": "inputs/locomotion/f01-p00000.bin",
+          "bytes": 50331648,
+          "sha256": "18e583bc40a5d0db075e1182abde93a580f3f2729fa49c7ef52bfdbfd23b0c5c"
+        },
+        {
+          "path": "inputs/locomotion/f01-p00001.bin",
+          "bytes": 50331648,
+          "sha256": "5e6ad24b6a7efa996e5ef2c38e5b6738c844fbf6e41d385d1eb156c800e958af"
+        },
+        {
+          "path": "inputs/locomotion/f01-p00002.bin",
+          "bytes": 50331648,
+          "sha256": "d80d45c1e4c424760ab9eb66f1528434f6e5b1caf0e6d840d84ced30bc3f73b0"
+        },
+        {
+          "path": "inputs/locomotion/f01-p00003.bin",
+          "bytes": 50331648,
+          "sha256": "fdeb609697e66efb50d28aa00b3c2923e7faa4322287a08f214ece8a381f99ed"
+        },
+        {
+          "path": "inputs/locomotion/f01-p00004.bin",
+          "bytes": 50331648,
+          "sha256": "3da35c69a9be3b5ddecb8ec9c282a3fab7d6ce9cbcfc2c87d8cb75fb7902b91d"
+        },
+        {
+          "path": "inputs/locomotion/f01-p00005.bin",
+          "bytes": 404175,
+          "sha256": "86cb5fbd91f5e086f85ba11e234cc45515fdad10d3fe4a88450390800f5d6a4f"
+        }
+      ]
+    },
+    {
+      "name": "inputs/low-step/low-step-input.zip",
+      "bytes": 91493471,
+      "sha256": "700461597f20cf2adad807a92f7996aed9eebba4a853e8444e5eb3d92b6bbb3e",
+      "shards": [
+        {
+          "path": "inputs/low-step/f01-p00000.bin",
+          "bytes": 50331648,
+          "sha256": "6249d40ef35b8ec7786d13c61c5e45f1495586bcb28eccf1a121db4e1bc442c8"
+        },
+        {
+          "path": "inputs/low-step/f01-p00001.bin",
+          "bytes": 41161823,
+          "sha256": "708aef006d874c4f35197ea34ae8a26fb20de15eb0392022c4f41848ef60d077"
+        }
+      ]
+    },
+    {
+      "name": "inputs/high-step/high-step-input.zip",
+      "bytes": 95515648,
+      "sha256": "e82f62132d302b8f8c03e636e376e47844382a030eb4086c45314f21cbf51ac2",
+      "shards": [
+        {
+          "path": "inputs/high-step/f00-p00000.bin",
+          "bytes": 50331648,
+          "sha256": "dc585d5e52ccb945d9747506fa5ab8c72ddfbb2efa0d6cad15100ce97ae15b79"
+        },
+        {
+          "path": "inputs/high-step/f00-p00001.bin",
+          "bytes": 45184000,
+          "sha256": "0490a5fc08e4606630d150a3ed2e2fd20e4c396eed87485edac30ddf0a39cb24"
+        }
+      ]
+    }
+  ],
+  "reuse_git_blobs": [
+    {
+      "path": "inputs/runtime/f00-p00000.bin",
+      "sha": "b5c1d27e52dffa3ee67d93109c68c3ac126c6d19",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f00-p00000.bin"
+    },
+    {
+      "path": "inputs/runtime/f00-p00001.bin",
+      "sha": "eddce42b3364378430b147b0261f7c20b6623ab9",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f00-p00001.bin"
+    },
+    {
+      "path": "inputs/runtime/f00-p00002.bin",
+      "sha": "33acc937968460e9d860885be07ebdcebeffb4ef",
+      "bytes": 13225945,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f00-p00002.bin"
+    },
+    {
+      "path": "inputs/locomotion/f01-p00000.bin",
+      "sha": "6359e71cc2b67dcd808dcfc8b2acd33722167dc5",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f01-p00000.bin"
+    },
+    {
+      "path": "inputs/locomotion/f01-p00001.bin",
+      "sha": "42ffbd1cbe1a3577f86d4b97611f5be160544de5",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f01-p00001.bin"
+    },
+    {
+      "path": "inputs/locomotion/f01-p00002.bin",
+      "sha": "369e911f00c3694a9a00f26f2303f74ddc194959",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f01-p00002.bin"
+    },
+    {
+      "path": "inputs/locomotion/f01-p00003.bin",
+      "sha": "af32a5befe6e506ede7622c47af06c7ea5fea4cf",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f01-p00003.bin"
+    },
+    {
+      "path": "inputs/locomotion/f01-p00004.bin",
+      "sha": "97e7d2cfff35ee3515ad7a3a43cabac71c3a1335",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f01-p00004.bin"
+    },
+    {
+      "path": "inputs/locomotion/f01-p00005.bin",
+      "sha": "f6579e217dd3a0731da9e061ebd8b5d423da95e4",
+      "bytes": 404175,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/locomotion-g1all-fresh-20261122/inputs/f01-p00005.bin"
+    },
+    {
+      "path": "inputs/low-step/f01-p00000.bin",
+      "sha": "6f06833fcde6d80051426e9f9e5ae4659b7d618a",
+      "bytes": 50331648,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/low-step-fresh-20261121/inputs/f01-p00000.bin"
+    },
+    {
+      "path": "inputs/low-step/f01-p00001.bin",
+      "sha": "f14cd63dd2e1b298e760360315a57b228861e5c4",
+      "bytes": 41161823,
+      "source_commit": "69f84fd3d6585a0a6a7772cf3f9cc3f09f4782a8",
+      "source_path": "flux/deliveries/low-step-fresh-20261121/inputs/f01-p00001.bin"
+    },
+    {
+      "path": "inputs/high-step/f00-p00000.bin",
+      "sha": "a4142a3acde31d3f04c5a70978f6caf76e7f613d",
+      "bytes": 50331648,
+      "source_commit": "786cfdeb26fe9159c1dd817db2179bd075bd8cf0",
+      "source_path": "flux/deliveries/high-step-resume1373-20261122/inputs/f00-p00000.bin"
+    },
+    {
+      "path": "inputs/high-step/f00-p00001.bin",
+      "sha": "bc9380cba98403e82f4792d17a9c2ebadbfa5b7c",
+      "bytes": 45184000,
+      "source_commit": "786cfdeb26fe9159c1dd817db2179bd075bd8cf0",
+      "source_path": "flux/deliveries/high-step-resume1373-20261122/inputs/f00-p00001.bin"
+    }
+  ],
+  "teacher_slots": {
+    "0": "locomotion",
+    "1": "low-step",
+    "2": "high-step"
+  },
+  "motion_index_is_not_teacher_slot": true
+}

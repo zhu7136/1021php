@@ -1,0 +1,278 @@
+{
+  "status": "THREE_EXACT_CHECKPOINTS_CPU_PASSED_NATIVE_REPLAY_NOT_RUN",
+  "checks": [
+    {
+      "name": "locomotion_checkpoint_sha256",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "locomotion_normalization_disabled_and_no_transform_state",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "locomotion_activation_elu",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "locomotion_449_to_29_shape",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "locomotion_weights_finite",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "locomotion_synthetic_forward_finite_repeat_and_direct_equivalence",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "low-step_checkpoint_sha256",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "low-step_normalization_disabled_and_no_transform_state",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "low-step_activation_elu",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "low-step_449_to_29_shape",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "low-step_weights_finite",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "low-step_synthetic_forward_finite_repeat_and_direct_equivalence",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "high-step_checkpoint_sha256",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "high-step_normalization_disabled_and_no_transform_state",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "high-step_activation_elu",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "high-step_449_to_29_shape",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "high-step_weights_finite",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "high-step_synthetic_forward_finite_repeat_and_direct_equivalence",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_strip_column_0",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_strip_column_2",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_strip_column_449",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_rejects_wrong_observation_width",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_offset_uses_feature_width_not_term_rank",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_rejects_missing_term",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "routing_rejects_nonscalar_term",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "actual_PPO_dagger_mask_blocks_zero_teacher_label_gradient",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "three_exact_teachers_synthetic_mixed_dispatch_matches_individual",
+      "passed": true,
+      "details": null
+    },
+    {
+      "name": "all_three_teachers_frozen_and_source_bytes_unchanged",
+      "passed": true,
+      "details": null
+    }
+  ],
+  "teachers": [
+    {
+      "skill": "locomotion",
+      "evaluation_run": "9ertut6c",
+      "iteration": 1135,
+      "sha256": "e282fe92f8453ada517d04f8dfb326e828a1b59a0b38d76a0d996f640453e25c",
+      "checkpoint_local": "/workspace/three_teacher_student/flux059/recovered-final-archive/HuD04_WBT/20261122_091234-hud04-locomotion-RESUME500-all29-G1limits-30min-locomotion/model_smoke_final.pt",
+      "source_task": "TASK_20261122_059",
+      "source_velocity_variant": "G1-all29",
+      "status": "bytes_hash_and_CPU_synthetic_forward_verified",
+      "completed_updates": 1136,
+      "actor_input_dim": 449,
+      "action_dim": 29,
+      "network_weight_shapes": [
+        [
+          512,
+          449
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          128,
+          256
+        ],
+        [
+          29,
+          128
+        ]
+      ],
+      "synthetic_forward_max_abs_action": 3.7907679080963135,
+      "normalizer": "identity",
+      "activation": "ELU"
+    },
+    {
+      "skill": "low-step",
+      "evaluation_run": "rcrqa7aq",
+      "iteration": 2049,
+      "completed_updates": 2050,
+      "sha256": "22eb3ca0cf56b6c75ba13be7aa033303eac866966e57121d1ad25ef9630af875",
+      "source_task": "TASK_20261122_017",
+      "source_velocity_variant": "original-5rad",
+      "checkpoint_local": "/workspace/three_teacher_student/low-step/recovered-017/HuD04_WBT/20261122_033715-hud04-low-step-resume5-from1363-30min-locomotion/model_smoke_final.pt",
+      "status": "bytes_hash_and_CPU_synthetic_forward_verified",
+      "actor_input_dim": 449,
+      "action_dim": 29,
+      "network_weight_shapes": [
+        [
+          512,
+          449
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          128,
+          256
+        ],
+        [
+          29,
+          128
+        ]
+      ],
+      "synthetic_forward_max_abs_action": 4.696471691131592,
+      "normalizer": "identity",
+      "activation": "ELU"
+    },
+    {
+      "skill": "high-step",
+      "evaluation_run": "0uzn5fee",
+      "iteration": 2046,
+      "sha256": "12d7dc2d8e363da658173d8f1aa9ff1bc7bab71c8688b1738ccfe102d08bfc39",
+      "checkpoint_local": "/workspace/three_teacher_student/high-step/high-step-iteration2046.pt",
+      "source_task": "TASK_20261122_019",
+      "source_velocity_variant": "original-5rad",
+      "status": "bytes_hash_and_CPU_synthetic_forward_verified",
+      "actor_input_dim": 449,
+      "action_dim": 29,
+      "network_weight_shapes": [
+        [
+          512,
+          449
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          128,
+          256
+        ],
+        [
+          29,
+          128
+        ]
+      ],
+      "synthetic_forward_max_abs_action": 4.7983856201171875,
+      "normalizer": "identity",
+      "activation": "ELU"
+    }
+  ],
+  "checkpoint_count_verified": 3,
+  "checkpoint_count_required": 3,
+  "synthetic_observation_unit_tests": true,
+  "synthetic_dispatch_mapping_only": true,
+  "real_rollout_tested": false,
+  "teacher_source_sha256": "773dd44971d1b09beb76da780422c16de66cd4ac0d9cf65dfd5bf6dd27f30eff",
+  "student_optimizer_updates": 0,
+  "training_updates": 0,
+  "new_gpu_tasks": 0,
+  "new_flux_tasks": 0,
+  "blockers": [
+    "Unified native environment and frozen expert closed-loop replay not yet validated; locomotion uses G1-all29 while low/high use original5rad limits",
+    "Cached student source is a review snapshot, not a pinned runnable three-skill delivery",
+    "Full three-skill motion/assets/depth/runtime delivery and live clip-to-teacher mapping remain to be pinned and asserted",
+    "GPU budget requires explicit approval before any new task"
+  ],
+  "archive_recovery": {
+    "source_task": "TASK_20261122_059",
+    "archive_sha256": "db76d84d306f0c1d83bd2bf8a6d3643773d56bd14b9ed16fe322a676777bda55",
+    "archive_bytes": 9608718,
+    "all_archive_files_verified": true,
+    "verified_file_count": 15,
+    "checkpoint_local": "/workspace/three_teacher_student/flux059/recovered-final-archive/HuD04_WBT/20261122_091234-hud04-locomotion-RESUME500-all29-G1limits-30min-locomotion/model_smoke_final.pt",
+    "checkpoint_sha256": "e282fe92f8453ada517d04f8dfb326e828a1b59a0b38d76a0d996f640453e25c",
+    "exact_evaluation_checkpoint_hash_matches": true,
+    "new_gpu_tasks": 0,
+    "training_updates": 0,
+    "raw_logs_saved": false
+  },
+  "public_publication_authorized": false
+}

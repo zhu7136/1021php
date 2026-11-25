@@ -1,0 +1,110 @@
+{
+  "project": "zhul136-university-of-science-and-technology-of-china/HuD04_WBT",
+  "teachers": [
+    {
+      "skill": "locomotion",
+      "evaluation_run": "9ertut6c",
+      "iteration": 1135,
+      "sha256": "e282fe92f8453ada517d04f8dfb326e828a1b59a0b38d76a0d996f640453e25c",
+      "source_task": "TASK_20261122_059",
+      "source_velocity_variant": "G1-all29",
+      "status": "bytes_hash_and_CPU_synthetic_forward_verified",
+      "completed_updates": 1136,
+      "actor_input_dim": 449,
+      "action_dim": 29,
+      "network_weight_shapes": [
+        [
+          512,
+          449
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          128,
+          256
+        ],
+        [
+          29,
+          128
+        ]
+      ],
+      "synthetic_forward_max_abs_action": 3.7907679080963135,
+      "normalizer": "identity",
+      "activation": "ELU",
+      "checkpoint_path": "teachers/locomotion.pt"
+    },
+    {
+      "skill": "low-step",
+      "evaluation_run": "rcrqa7aq",
+      "iteration": 2049,
+      "completed_updates": 2050,
+      "sha256": "22eb3ca0cf56b6c75ba13be7aa033303eac866966e57121d1ad25ef9630af875",
+      "source_task": "TASK_20261122_017",
+      "source_velocity_variant": "original-5rad",
+      "status": "bytes_hash_and_CPU_synthetic_forward_verified",
+      "actor_input_dim": 449,
+      "action_dim": 29,
+      "network_weight_shapes": [
+        [
+          512,
+          449
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          128,
+          256
+        ],
+        [
+          29,
+          128
+        ]
+      ],
+      "synthetic_forward_max_abs_action": 4.696471691131592,
+      "normalizer": "identity",
+      "activation": "ELU",
+      "checkpoint_path": "teachers/low-step.pt"
+    },
+    {
+      "skill": "high-step",
+      "evaluation_run": "0uzn5fee",
+      "iteration": 2046,
+      "sha256": "12d7dc2d8e363da658173d8f1aa9ff1bc7bab71c8688b1738ccfe102d08bfc39",
+      "source_task": "TASK_20261122_019",
+      "source_velocity_variant": "original-5rad",
+      "status": "bytes_hash_and_CPU_synthetic_forward_verified",
+      "actor_input_dim": 449,
+      "action_dim": 29,
+      "network_weight_shapes": [
+        [
+          512,
+          449
+        ],
+        [
+          256,
+          512
+        ],
+        [
+          128,
+          256
+        ],
+        [
+          29,
+          128
+        ]
+      ],
+      "synthetic_forward_max_abs_action": 4.7983856201171875,
+      "normalizer": "identity",
+      "activation": "ELU",
+      "checkpoint_path": "teachers/high-step.pt"
+    }
+  ],
+  "complete": true,
+  "complete_scope": "Exact input checkpoint bytes and synthetic CPU forwards only; not executable training readiness",
+  "native_replay_passed": false,
+  "student_trained": false
+}

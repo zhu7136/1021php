@@ -1,0 +1,93 @@
+{
+  "references": [
+    {
+      "skill": "locomotion",
+      "reference_sha256": "7f35ed58d0179c3cd18ba05926ef22981c648e0dba2bb973b7e8d8ee14cfde76",
+      "fields": [
+        "fps",
+        "joint_names",
+        "body_names",
+        "joint_pos",
+        "joint_vel",
+        "body_pos_w",
+        "body_quat_w",
+        "body_lin_vel_w",
+        "body_ang_vel_w",
+        "motion_ends",
+        "motion_idxs"
+      ],
+      "frames": 71042,
+      "joint_pos_shape": [
+        71042,
+        38
+      ],
+      "clip_count": 100,
+      "fps": [
+        50.0
+      ],
+      "has_velocity_command": false,
+      "all_numeric_arrays_finite": true
+    },
+    {
+      "skill": "low-step",
+      "reference_sha256": "8ae013c2fcb4c196758f98c0dc88f28c8e442f61e0082384f2145412cb1edf10",
+      "fields": [
+        "fps",
+        "joint_names",
+        "body_names",
+        "joint_pos",
+        "joint_vel",
+        "body_pos_w",
+        "body_quat_w",
+        "body_lin_vel_w",
+        "body_ang_vel_w",
+        "motion_ends",
+        "motion_idxs"
+      ],
+      "frames": 25676,
+      "joint_pos_shape": [
+        25676,
+        38
+      ],
+      "clip_count": 56,
+      "fps": [
+        50.0
+      ],
+      "has_velocity_command": false,
+      "all_numeric_arrays_finite": true
+    },
+    {
+      "skill": "high-step",
+      "reference_sha256": "4be737ed202c453a57932f45952e9a3167f23a128b63027c3cddb9a93bac85a5",
+      "fields": [
+        "fps",
+        "joint_names",
+        "body_names",
+        "joint_pos",
+        "joint_vel",
+        "body_pos_w",
+        "body_quat_w",
+        "body_lin_vel_w",
+        "body_ang_vel_w",
+        "motion_ends",
+        "motion_idxs"
+      ],
+      "frames": 26513,
+      "joint_pos_shape": [
+        26513,
+        38
+      ],
+      "clip_count": 60,
+      "fps": [
+        50.0
+      ],
+      "has_velocity_command": false,
+      "all_numeric_arrays_finite": true
+    }
+  ],
+  "existing_g1_camera_body": "torso_link",
+  "existing_g1_camera_body_in_hud04_urdf": false,
+  "existing_g1_ray_cast_pelvis_in_hud04_urdf": false,
+  "required_before_GPU": "Adapt and CPU-test HuD04 camera extrinsics/body and mesh contract, velocity command semantics and exact three-skill teacher routing; do not launch unmodified G1 preset",
+  "gpu_started": false
+}
